@@ -1,2 +1,2 @@
-# group game project
+# Group Game Project
  
