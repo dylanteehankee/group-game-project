@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Player movement speed.
     private float playerSpeed = 15.0f;
+
+    // Store rigidbody locally.
     private Rigidbody2D playerBody;
-    // Start is called before the first frame update
+
     void Start()
     {
         playerBody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
+   
     void Update()
     {   
         float timeElapsed = Time.deltaTime;
@@ -26,6 +29,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // Checks for user input and potentially acts on it
+    // Parameters:
+    //      float timeElapsed - time since last update call in seconds
     private void CheckUserInput(float timeElapsed){
         if (Input.GetButtonDown("Fire1"))
         {
@@ -37,14 +43,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Move the player based on Input axis. 
     private void MovePlayerFromInput(){
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
         
+
+        // Move in direction of the horizontal and vertical input with magnitude speed. 
         playerBody.velocity = Vector2.ClampMagnitude(new Vector2(horizontalInput, verticalInput), 1) * 
             this.playerSpeed;
     }
 
+    // Finds the angle of the gameObject to a point
+    // Parameters:
+    //      Vector2 pointTo - (x,y) of the point the gameObject should point to
+    // Returns:
+    //      float - angle to pointTo in radians
     private float GetAngleToPoint(Vector2 pointTo)
     {
         Vector2 relativePos = pointTo - (Vector2)transform.position;
