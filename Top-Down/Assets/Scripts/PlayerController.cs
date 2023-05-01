@@ -15,12 +15,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        float timeElapsed = Time.deltaTime;
         MovePlayerFromInput();
 
         float angle = GetAngleToPoint((Vector2)Camera.main.ScreenToWorldPoint(
             new Vector2(Input.mousePosition.x, Input.mousePosition.y)));
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Rad2Deg * angle));
-        
+
+        CheckUserInput(timeElapsed);
+
+    }
+
+    private void CheckUserInput(float timeElapsed){
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Debug.Log("Bang?!?");
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+           
+        }
     }
 
     private void MovePlayerFromInput(){
