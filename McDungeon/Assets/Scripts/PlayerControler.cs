@@ -33,7 +33,7 @@ namespace McDungeon
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
 
-            spell_1 = spellHome.GetComponent<FireBallMaker>();
+            spell_1 = spellHome.GetComponent<BlizzardMaker>();
         }
 
 
@@ -69,12 +69,15 @@ namespace McDungeon
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                spell_1.ShowRange(mousePos);
+                spell_1.Activate();
+            }
+            if (Input.GetKey(KeyCode.Q))
+            {
+                spell_1.ShowRange(this.transform.position, mousePos);
             }
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                GameObject fireBall = spell_1.Execute(this.transform.position, mousePos);
-                fireBall.GetComponent<FireBallController>().Config(6f, 10f, 3);
+                GameObject spellInstance = spell_1.Execute(this.transform.position, mousePos);
             }
 
 
@@ -86,12 +89,6 @@ namespace McDungeon
 
         void Shoot()
         {
-            // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // Vector3 spellDir = mousePos - this.transform.position;
-            // spellDir = spellDir.normalized;
-            // GameObject fireBall = Instantiate(prefab_fireball, this.transform.position, Quaternion.identity);
-            // fireBall.GetComponent<FireBallController>().Config(3f, 10f, 3, spellDir);
-            // Debug.Log("spellDir: " + spellDir);
         }
 
         private void ChnagWeaponDirection()
