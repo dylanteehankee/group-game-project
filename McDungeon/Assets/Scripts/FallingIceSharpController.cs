@@ -24,20 +24,24 @@ namespace McDungeon
 
         void Start()
         {
-            particelRenderer = this.gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>();
             collider2D = this.gameObject.GetComponent<CircleCollider2D>();
             iceSharp = this.gameObject.transform.GetChild(0).gameObject;
+            particelRenderer = this.gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>();
         }
 
         public void Config(Vector3 startPos, Vector3 endPos, float formTime, float travelTime, float lifeTime, float targetScale)
         {
+            particelRenderer = this.gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>();
+            collider2D = this.gameObject.GetComponent<CircleCollider2D>();
+            iceSharp = this.gameObject.transform.GetChild(0).gameObject;
+
             this.startPos = startPos;
             this.endPos = endPos;
             this.formTime = formTime;
             this.travelTime = formTime + travelTime;
             this.lifeTime = formTime + travelTime + lifeTime;
             this.targetScale = targetScale;
-            var distance = startPos - endPos;
+            var distance = endPos - startPos;
             distance.z = 0f;
             direction = distance.normalized;
             speed = distance.magnitude / travelTime;
@@ -79,6 +83,7 @@ namespace McDungeon
             else if (timeSinceBorn > lifeTime)
             {
                 // IceSharp Expired.
+                // Debug.Log("Destroied");
                 Destroy(this.gameObject);
             }
 
