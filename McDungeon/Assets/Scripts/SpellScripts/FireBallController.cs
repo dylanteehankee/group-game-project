@@ -33,6 +33,14 @@ namespace McDungeon
             this.direction = newDirection.normalized;
         }
 
+
+        public void Config(float newSpeed, float newLifeTime, int newMaxBounce)
+        {
+            this.speed = newSpeed;
+            this.lifeTime = newLifeTime;
+            this.maxBounce = newMaxBounce;
+        }
+
         void Update()
         {
             this.transform.position = this.transform.position + speed * direction * Time.deltaTime;

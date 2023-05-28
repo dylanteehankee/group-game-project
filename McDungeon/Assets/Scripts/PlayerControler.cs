@@ -8,9 +8,11 @@ namespace McDungeon
     {
         [SerializeField] private float speed;
         [SerializeField] private GameObject Weapon;
+        [SerializeField] private GameObject spellHome;
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackSpeedFactor;
         [SerializeField] private float attackAngle;
+        private ISpellMaker spell_1;
         private bool attacking;
         private GameObject closeRangeWeapon;
         private MeshRenderer hitBoxRender;
@@ -22,12 +24,16 @@ namespace McDungeon
 
         void Start()
         {
-            attacking = false;
+            spellHome = GameObject.Find("SpellMakerHome");
             closeRangeWeapon = Weapon.transform.GetChild(1).gameObject;
             hitBoxRender = closeRangeWeapon.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>();
             hitBoxCllider = closeRangeWeapon.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
+
+            attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
+
+            spell_1 = spellHome.GetComponent<FireBallMaker>();
         }
 
 
@@ -48,6 +54,7 @@ namespace McDungeon
 
         void Update()
         {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if (Input.GetButtonUp("Fire1"))
             {
@@ -60,9 +67,14 @@ namespace McDungeon
                 Shoot();
             }
 
-            if (Input.GetButtonDown("Q"))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                
+                spell_1.ShowRange(mousePos);
+            }
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                GameObject fireBall = spell_1.Execute(this.transform.position, mousePos);
+                fireBall.GetComponent<FireBallController>().Config(6f, 10f, 3);
             }
 
 
@@ -74,12 +86,12 @@ namespace McDungeon
 
         void Shoot()
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 spellDir = mousePos - this.transform.position;
-            spellDir = spellDir.normalized;
-            GameObject fireBall = Instantiate(prefab_fireball, this.transform.position, Quaternion.identity);
-            fireBall.GetComponent<FireBallController>().Config(3f, 10f, 3, spellDir);
-            Debug.Log("spellDir: " + spellDir);
+            // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // Vector3 spellDir = mousePos - this.transform.position;
+            // spellDir = spellDir.normalized;
+            // GameObject fireBall = Instantiate(prefab_fireball, this.transform.position, Quaternion.identity);
+            // fireBall.GetComponent<FireBallController>().Config(3f, 10f, 3, spellDir);
+            // Debug.Log("spellDir: " + spellDir);
         }
 
         private void ChnagWeaponDirection()
