@@ -88,7 +88,7 @@ namespace McDungeon
                 generatedAmount++;
             }
 
-            if (timeSinceBorn > lifeTime + 2f)
+            if (timeSinceBorn > lifeTime + 5f)
             {
                 Destroy(this.gameObject);
             }
