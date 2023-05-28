@@ -69,7 +69,7 @@ namespace McDungeon
                 float ratioToCenter = Random.Range(0.05f, 1f);
                 ratioToCenter -= ratioToCenter % 0.02f;
                 Vector2 randomPoint = Random.insideUnitCircle.normalized * ratioToCenter;
-                Debug.Log(randomPoint);
+                // Debug.Log(randomPoint);
 
                 // Generate corresponded start/end position for ice-sharp.
                 Vector3 startPos = new Vector3(randomPoint.x * unitRadiusX * cloudRatio, unitHeight + randomPoint.y * unitRadiusY * cloudRatio, 0f);
@@ -83,7 +83,7 @@ namespace McDungeon
                 // Generate new IceSharp.
                 GameObject iceSharp = Instantiate(prefab_iceSharp, this.transform.position, Quaternion.identity);
                 iceSharp.GetComponent<FallingIceSharpController>().Config(startPos, endPos, 1f, 1f, 3f, targetScale);
-                Debug.Log("ice sharp generated");
+                // Debug.Log("ice sharp generated");
 
                 generatedAmount++;
             }

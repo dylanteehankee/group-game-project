@@ -10,18 +10,19 @@ namespace McDungeon
         [SerializeField] private float attackSpeedFactor;
         [SerializeField] private float attackAngle;
         [SerializeField] private GameObject player;
-        private bool attacking;
         private SpriteRenderer hitBoxRender;
         private CapsuleCollider2D hitBoxCllider;
+        private float weaponDir; // angle
+        private bool active = true;
+        private bool attacking;
         private float atkProgress; // 0 - 1
-        private bool active = false;
 
         void Start()
         {
             hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
 
-            active = false;
+            active = true;
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
@@ -48,7 +49,7 @@ namespace McDungeon
             if (!attacking)
             {
                 // change weapon direction
-                ChnagWeaponDirection();
+                ChangeWeaponDirection();
             }
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -67,11 +68,12 @@ namespace McDungeon
             }
         }
 
-        private void ChnagWeaponDirection()
+        private void ChangeWeaponDirection()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3 lookDir = mousePos - this.transform.position;
             float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
+            weaponDir = angle;
             this.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
@@ -83,7 +85,7 @@ namespace McDungeon
             }
 
 
-            float angle = -attackAngle / 2f + attackAngle * atkProgress;
+            float angle = -attackAngle / 2f + attackAngle * atkProgress + weaponDir;
             this.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
             if (atkProgress == 1f)
@@ -102,7 +104,7 @@ namespace McDungeon
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
+            // Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
         }
     }
 }
