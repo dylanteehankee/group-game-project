@@ -15,10 +15,13 @@ namespace Obscura
 
         void Start()
         {
-            speed = 1f;
-            lifeTime = 10f;
-            timeSinceBorn = 0f;
-            bouncedCount = 0;
+            if (speed == 0f)
+            {
+                speed = 1f;
+                lifeTime = 10f;
+                timeSinceBorn = 0f;
+                bouncedCount = 0;
+            }
         }
 
         public void Config(float newSpeed, float newLifeTime, int newMaxBounce, Vector3 newDirection)
