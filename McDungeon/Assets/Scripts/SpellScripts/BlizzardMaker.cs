@@ -6,7 +6,7 @@ namespace McDungeon
     {
         [SerializeField] private GameObject prefab_blizzard;
         [SerializeField] private GameObject blizzardPosIndicator;
-        private float range = 3f;
+        private float range = 4f;
         private Vector3 spellPos;
 
 
