@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Obscura
+namespace McDungeon
 {
     public class PlayerController : MonoBehaviour
     {
