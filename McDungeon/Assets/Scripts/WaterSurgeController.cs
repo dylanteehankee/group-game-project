@@ -27,10 +27,10 @@ namespace McDungeon
             particelModule = particelSystem.main; // Get the main module of the Particle System
 
             // Stop the Particle System
-            particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particelSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particelModule.duration = surgeInterval;
+            particelSystem.Play();
 
-            particleSystem.Play();
             surgeCount = 0;
         }
 
@@ -47,7 +47,7 @@ namespace McDungeon
         {
             this.transform.position = this.transform.position + speed * direction * Time.deltaTime;
 
-            if (timeSinceBorn > surgeInterval * (surgeCount + 0.5f))
+            if (timeSinceBorn > surgeInterval * (surgeCount + 0.1f))
             {
                 // Surge Brust.
                 collider2D.enabled = true;
@@ -56,7 +56,7 @@ namespace McDungeon
 
                 surgeCount++;
             }
-            else if (timeSinceBorn > surgeInterval * (surgeCount))
+            else if (timeSinceBorn > surgeInterval * (surgeCount - 0.4f))
             {
                 // End last Surge Brust.
                 collider2D.enabled = false;
