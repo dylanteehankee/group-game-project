@@ -60,6 +60,11 @@ namespace McDungeon
                 Shoot();
             }
 
+            if (Input.GetButtonDown("Q"))
+            {
+                
+            }
+
 
             if (attacking)
             {
