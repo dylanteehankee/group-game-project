@@ -6,14 +6,14 @@ namespace McDungeon
 {
     public class CRWeaponController : MonoBehaviour
     {
+        [SerializeField] private GameObject player;
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackSpeedFactor;
         [SerializeField] private float attackAngle;
-        [SerializeField] private GameObject player;
+        [SerializeField] private bool active;
         private SpriteRenderer hitBoxRender;
         private CapsuleCollider2D hitBoxCllider;
-        private float weaponDir; // angle
-        private bool active = true;
+        private float weaponDir;   // angle
         private bool attacking;
         private float atkProgress; // 0 - 1
 
@@ -22,7 +22,7 @@ namespace McDungeon
             hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
 
-            active = true;
+            attackSpeedFactor = 0.4f;
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
@@ -34,6 +34,15 @@ namespace McDungeon
             {
                 WeaponUpdate();
             }
+        }
+
+        public void Config(float attackSpeed, float attackAngle, bool active, float attackSpeedFactor = 0.4f)
+        {
+            this.attackSpeed = attackSpeed;
+            this.attackAngle = attackAngle;
+            this.active = active;
+            this.attackSpeedFactor = attackSpeedFactor;
+            Debug.Log("configed weapon");
         }
 
         public void SetActive(bool setToState)

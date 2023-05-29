@@ -244,9 +244,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4fb5db5ae2ac54cad1349786650461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
-  Weapon: {fileID: 4723683637459498705}
   spellHome: {fileID: 0}
+  Weapon: {fileID: 4723683637459498705}
+  closeRangeWeapon: {fileID: 0}
+  speed: 2.5
   prefab_fireball: {fileID: 7838530794719727910, guid: ee6705bbdaf457445b810e99a8b03448, type: 3}
 --- !u!61 &135693547787367905
 BoxCollider2D:
@@ -492,6 +493,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1521379300989172074}
+    - target: {fileID: 9047964100590782711, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
+      propertyPath: attackAngle
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9047964100590782711, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
+      propertyPath: attackSpeed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

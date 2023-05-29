@@ -6,9 +6,10 @@ namespace McDungeon
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private float speed;
-        [SerializeField] private GameObject Weapon;
         [SerializeField] private GameObject spellHome;
+        [SerializeField] private GameObject Weapon;
+        [SerializeField] private CRWeaponController closeRangeWeapon;
+        [SerializeField] private float speed;
         private ISpellMaker spell_1;
 
         [SerializeField] private GameObject prefab_fireball;
@@ -19,6 +20,9 @@ namespace McDungeon
         {
             spellHome = GameObject.Find("SpellMakerHome");
             spell_1 = spellHome.GetComponent<BlizzardMaker>();
+
+            closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
+            closeRangeWeapon.Config(10f, 120f, true);
         }
 
 
