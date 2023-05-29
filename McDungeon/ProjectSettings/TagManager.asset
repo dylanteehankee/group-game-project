@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BouncyWall
+  - Enemy
+  - WeaponHitbox
+  - PlayerHitbox
   layers:
   - Default
   - TransparentFX
