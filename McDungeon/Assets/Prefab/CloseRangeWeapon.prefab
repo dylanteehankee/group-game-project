@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 5629774987295859754}
   - component: {fileID: 9047964100590782711}
   m_Layer: 0
-  m_Name: CloseRange
+  m_Name: CloseRangeWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
