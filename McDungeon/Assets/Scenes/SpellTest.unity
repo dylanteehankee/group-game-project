@@ -1153,11 +1153,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 647194321395995697, guid: a2c9dd73bc475384299db9370d95619f, type: 3}
   m_PrefabInstance: {fileID: 1626952524}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &944507503 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8309686686079751521, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
-  m_PrefabInstance: {fileID: 6309787477264572298}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1394175119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1625,25 +1620,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9999999, y: 1}
   m_EdgeRadius: 0
---- !u!1 &1848271497 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2573927753783751022, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
-  m_PrefabInstance: {fileID: 6309787477264572298}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1848271500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848271497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 060958af9296d19419027dc4c5a4c4d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab_blizzard: {fileID: 26100195978765874, guid: d225ebde49655e04fa5e14ee00881a9b, type: 3}
-  blizzardPosIndicator: {fileID: 944507503}
 --- !u!1 &1904852628
 GameObject:
   m_ObjectHideFlags: 0
@@ -2305,21 +2281,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8309686686079751521, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9084462092241801745, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
-      propertyPath: m_SortingOrder
-      value: 7
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2573927753783751022, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1848271500}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24c776ab15ddb8245972801ca1b79b5a, type: 3}
 --- !u!1 &7310600920038582691 stripped
 GameObject:
