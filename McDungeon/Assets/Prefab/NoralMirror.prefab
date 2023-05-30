@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTransparence: 0.6
-  minTransparence: 0.2
+  minTransparence: 0
   speed: 1
 --- !u!1001 &2659598310172383076
 PrefabInstance:
@@ -366,19 +366,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7938948512734544521, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7938948512734544521, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7938948512734544521, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.11
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7938948512734544521, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.013
+      value: -0.9
       objectReference: {fileID: 0}
     - target: {fileID: 7938948512734544521, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_LocalPosition.z

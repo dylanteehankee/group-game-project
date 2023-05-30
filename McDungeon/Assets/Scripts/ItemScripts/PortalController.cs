@@ -9,10 +9,9 @@ namespace McDungeon
         [SerializeField] private GameObject face;
         [SerializeField] private GameObject cover;
         [SerializeField] private bool special;
+        [SerializeField] private bool unlocked;
         
-
         private bool active;
-        private bool unlocked;
 
         void Start()
         {
@@ -47,6 +46,15 @@ namespace McDungeon
                     Debug.Log("Activated Portal");
 
                 }
+            }
+        }
+
+        public void Unlock()
+        {
+            unlocked = true;
+            if (special)
+            {
+                cover.SetActive(false);
             }
         }
 

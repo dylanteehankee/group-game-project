@@ -10,7 +10,7 @@ namespace McDungeon
         private SpriteRenderer renderer;
         private float transparency;
         private float increase;
-        
+
         void Start()
         {
             renderer = this.gameObject.GetComponent<SpriteRenderer>();
@@ -20,7 +20,7 @@ namespace McDungeon
 
         void Update()
         {
-            if (transparency < minTransparence)
+            if (transparency < minTransparence - 0.1)
             {
                 increase = 1f;
             }
@@ -36,7 +36,16 @@ namespace McDungeon
         private void ChangeTransparency()
         {
             Color color = renderer.material.color;
-            color.a = transparency;
+            if (transparency < 0f)
+            {
+
+                color.a = 0f;
+            }
+            else
+            {
+                color.a = transparency;
+
+            }
             renderer.material.color = color;
         }
     }

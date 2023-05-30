@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 8
   m_Sprite: {fileID: -1292170773, guid: 5c89d89f07baced4f8aa4fcc8acac9be, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1fa10e7de20fee44aed76c12cbc9e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTransparence: 0.7
-  minTransparence: 0.2
+  maxTransparence: 0.6
+  minTransparence: 0.1
   speed: 1
 --- !u!1 &6487877584983169148
 GameObject:
@@ -326,6 +326,7 @@ MonoBehaviour:
   face: {fileID: 5256577815567126938}
   cover: {fileID: 6487877584983169148}
   special: 1
+  unlocked: 0
 --- !u!1001 &6394315494721756467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -388,15 +389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8768802044537089696, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_Color.b
-      value: 0.8707843
+      value: 0.8490566
       objectReference: {fileID: 0}
     - target: {fileID: 8768802044537089696, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.5661895
       objectReference: {fileID: 0}
     - target: {fileID: 8768802044537089696, guid: 8502f7aa4258cce49bd292ab4d591e0b, type: 3}
       propertyPath: m_Color.r
-      value: 0.2783019
+      value: 0.5166429
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
