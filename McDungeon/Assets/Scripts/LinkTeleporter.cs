@@ -18,8 +18,9 @@ public class LinkTeleporter : MonoBehaviour
     void LateUpdate(){
         if (!targetRoom && !beenDisabled)
         {
-            //disable mesh renderer
-            GetComponent<SpriteRenderer>().enabled = false;
+            //disable collider so player can't teleport to a room that doesn't exist
+            GetComponent<Animator>().enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
             beenDisabled = true;
         }
     }
@@ -31,7 +32,20 @@ public class LinkTeleporter : MonoBehaviour
             {
                 if (!teleported){
                     targetRoom.GetComponent<LinkTeleporter>().teleported = true;
-                    other.transform.position = new Vector2(targetRoom.transform.position.x, targetRoom.transform.position.y);
+                    //transform position of player to a unit in front of the target room
+                    //check target rotation and teleport in front of the door
+                    if(targetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0)){
+                        other.transform.position = new Vector2(targetRoom.transform.position.x, targetRoom.transform.position.y - 2);
+                    }
+                    else if(targetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+                        other.transform.position = new Vector2(targetRoom.transform.position.x + 2, targetRoom.transform.position.y);
+                    }
+                    else if(targetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+                        other.transform.position = new Vector2(targetRoom.transform.position.x, targetRoom.transform.position.y + 2);
+                    }
+                    else if(targetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+                        other.transform.position = new Vector2(targetRoom.transform.position.x - 2, targetRoom.transform.position.y);
+                    }
                     GameObject parentObject = targetRoom.transform.parent.gameObject;
                     mainCamera.transform.position = new Vector3(parentObject.transform.position.x, parentObject.transform.position.y, -10);
                     Debug.Log("Teleported to " + parentObject.name + " at " + targetRoom.transform.position);

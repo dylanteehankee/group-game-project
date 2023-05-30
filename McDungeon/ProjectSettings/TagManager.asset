@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CombatRoom
+  - PuzzleRoom
+  - ShopRoom
+  - TutorialRoom
+  - StartRoom
+  - EndRoom
   layers:
   - Default
   - TransparentFX
