@@ -3,15 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerHitbox
+  - MobHitbox
+  - Knight
+  - MobSpawner
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
-  - 
+  - PlayerHitbox
   - 
   - 
   - 
@@ -38,6 +42,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3873865737
+    locked: 0
+  - name: Mobs
+    uniqueID: 2468942643
+    locked: 0
+  - name: Player
+    uniqueID: 2416847929
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
