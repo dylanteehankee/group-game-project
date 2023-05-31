@@ -57,8 +57,6 @@ namespace Mobs{
                     return this.gNomePrefab;
                 case MobTypes.Mage:
                     return this.magePrefab;
-                case MobTypes.Knight:
-                    return this.knightPrefab;
                 default:
                     Debug.Log("Invalid Mob Type. Returning Slime.");
                     return slimePrefab;
