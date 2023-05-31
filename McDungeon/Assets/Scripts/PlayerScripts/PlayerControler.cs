@@ -27,7 +27,7 @@ namespace McDungeon
         private float effectTimer;
         private float effectDamegePerSec;
         private float effectCount;
-        private float effectSlowRate;
+        private float effectSlowRate = 1.0f;
 
         private ISpellMaker spell_1;
         [SerializeField] private GameObject prefab_fireball;
