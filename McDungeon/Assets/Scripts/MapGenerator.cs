@@ -174,8 +174,8 @@ public class MapGenerator : MonoBehaviour
                             //Link Teleporter A1 to Teleporter A2
                             GameObject PortalA1 = room.transform.GetChild(2).gameObject;
                             GameObject PortalA2 = adjacentRoom.transform.GetChild(1).gameObject;
-                            PortalA1.GetComponent<LinkTeleporter>().targetRoom = PortalA2;
-                            PortalA2.GetComponent<LinkTeleporter>().targetRoom = PortalA1;
+                            PortalA1.GetComponent<LinkTeleporter>().TargetRoom = PortalA2;
+                            PortalA2.GetComponent<LinkTeleporter>().TargetRoom = PortalA1;
                             Debug.Log("Portal A1: " + PortalA1.name + " Portal A2: " + PortalA2.name);
                         }
                     }
@@ -188,8 +188,8 @@ public class MapGenerator : MonoBehaviour
                             //Link Teleporter B1 to Teleporter B2
                             GameObject PortalB1 = room.transform.GetChild(3).gameObject;
                             GameObject PortalB2 = adjacentRoom.transform.GetChild(4).gameObject;
-                            PortalB1.GetComponent<LinkTeleporter>().targetRoom = PortalB2;
-                            PortalB2.GetComponent<LinkTeleporter>().targetRoom = PortalB1;
+                            PortalB1.GetComponent<LinkTeleporter>().TargetRoom = PortalB2;
+                            PortalB2.GetComponent<LinkTeleporter>().TargetRoom = PortalB1;
                             Debug.Log("Portal B1: " + PortalB1.name + " Portal B2: " + PortalB2.name);
                         }
                     }
