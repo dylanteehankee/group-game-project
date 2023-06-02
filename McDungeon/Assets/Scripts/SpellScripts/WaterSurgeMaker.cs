@@ -29,7 +29,7 @@ namespace McDungeon
             // Instantiate spell
             Vector3 spellDir = (mousePos - posistion).normalized;
             GameObject waterSurge = Instantiate(prefab_waterSurge, posistion + spellDir, Quaternion.identity);
-            waterSurge.GetComponent<FireBallController>().Config(1f, 10f, 2f, spellDir);
+            waterSurge.GetComponent<WaterSurgeController>().Config(1f, 10f, 2f, spellDir);
 
             // Debug.Log("spellDir: " + spellDir);
 
