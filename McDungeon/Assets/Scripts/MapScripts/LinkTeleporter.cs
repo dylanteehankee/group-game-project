@@ -21,6 +21,10 @@ public class LinkTeleporter : MonoBehaviour
         if (!TargetRoom && !beenDisabled)
         {
             //disable collider so player can't teleport to a room that doesn't exist
+            if (parent.CompareTag("StartRoom")){
+                GetComponent<SpriteRenderer>().enabled = false;
+            }
+
             GetComponent<Animator>().enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             beenDisabled = true;
