@@ -44,19 +44,14 @@ namespace McDungeon
             hitTakenInterverl = 0.2f; // 0.2 sec
         }
 
-
-        void FixedUpdate()
+        void Update()
         {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // move player
             Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
             direction = direction.normalized;
 
             this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
-        }
-
-        void Update()
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -111,7 +106,6 @@ namespace McDungeon
                     // Might change player color
                 }
             }
-
 
 
         }
