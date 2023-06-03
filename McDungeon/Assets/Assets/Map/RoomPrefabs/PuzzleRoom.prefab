@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb1412b649b651948ab8049f2cae6f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startButtonPrefab: {fileID: 8427407593103202324, guid: c462f397356f29749b15700860e23f99, type: 3}
   torchPrefab: {fileID: 5008959366003660046, guid: 9f264d11486ca18488ce7518f18e96fd, type: 3}
   buttonPrefab: {fileID: 8427407593103202324, guid: 9994b09523d0b994facc09f9567b877c, type: 3}
   wallPrefab: {fileID: 8147305198550599334, guid: 66cf1e1b556fefe428145d754030b594, type: 3}
