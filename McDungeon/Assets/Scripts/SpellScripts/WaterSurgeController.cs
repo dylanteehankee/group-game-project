@@ -36,9 +36,15 @@ namespace McDungeon
 
         public void Config(float speed, float lifeTime, float surgeInterval, Vector3 direction)
         {
-            collider2D = this.gameObject.GetComponent<CircleCollider2D>();
-            particelRenderer = this.gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>();
-            surgeCount = 0;
+            this.speed = speed;
+            this.lifeTime = lifeTime;
+            this.surgeInterval = surgeInterval;
+            this.direction = direction;
+
+
+            this.collider2D = this.gameObject.GetComponent<CircleCollider2D>();
+            this.particelRenderer = this.gameObject.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>();
+            this.surgeCount = 0;
         }
 
         void Update()

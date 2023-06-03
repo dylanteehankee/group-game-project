@@ -29,14 +29,22 @@ namespace McDungeon
         private float effectCount;
         private float effectSlowRate = 1.0f;
 
-        private ISpellMaker spell_1;
-        [SerializeField] private GameObject prefab_fireball;
+        private ISpellMaker spell_fire;
+        private ISpellMaker spell_ice;
+        private ISpellMaker spell_water;
+        private ISpellMaker spell_lightning;
+        private ISpellMaker spell_Q;
 
 
         void Start()
         {
             spellHome = GameObject.Find("SpellMakerHome");
-            spell_1 = spellHome.GetComponent<BlizzardMaker>();
+            spell_fire = spellHome.GetComponent<FireBallMaker>();
+            spell_ice = spellHome.GetComponent<BlizzardMaker>();
+            spell_water = spellHome.GetComponent<WaterSurgeMaker>();
+            spell_lightning = spellHome.GetComponent<ThunderdMaker>();
+
+            spell_Q = spell_water;
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
             closeRangeWeapon.Config(10f, 120f, true);
@@ -55,15 +63,15 @@ namespace McDungeon
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                spell_1.Activate();
+                spell_Q.Activate();
             }
             if (Input.GetKey(KeyCode.Q))
             {
-                spell_1.ShowRange(this.transform.position, mousePos);
+                spell_Q.ShowRange(this.transform.position, mousePos);
             }
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                GameObject spellInstance = spell_1.Execute(this.transform.position, mousePos);
+                spell_Q.Execute(this.transform.position, mousePos);
             }
 
             // Hit timer management.
