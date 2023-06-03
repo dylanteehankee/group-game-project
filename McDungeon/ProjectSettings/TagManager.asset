@@ -8,6 +8,13 @@ TagManager:
   - Enemy
   - WeaponHitbox
   - PlayerHitbox
+  - PuzzleRoom
+  - ShopRoom
+  - CombatRoom
+  - TutorialRoom
+  - StartRoom
+  - EndRoom
+  - Teleporter
   layers:
   - Default
   - TransparentFX
