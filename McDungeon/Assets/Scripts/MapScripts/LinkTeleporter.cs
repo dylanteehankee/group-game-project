@@ -8,8 +8,9 @@ public class LinkTeleporter : MonoBehaviour
     public bool Teleported {get; set;} = false;
     public bool isInside {get; set;} = false;
     private GameObject parent;
-    private bool beenDisabled = false;
+    public bool beenDisabled = false;
     private bool closeDoor = false; 
+    public bool onWallTile {get; set;} = false;
     Animator animator;
 
     void Start(){
@@ -21,12 +22,9 @@ public class LinkTeleporter : MonoBehaviour
         if (!TargetRoom && !beenDisabled)
         {
             //disable collider so player can't teleport to a room that doesn't exist
-            if (parent.CompareTag("StartRoom")){
-                GetComponent<SpriteRenderer>().enabled = false;
-            }
-
+            GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<Animator>().enabled = false;
-            GetComponent<BoxCollider2D>().enabled = false;
+            //GetComponent<BoxCollider2D>().enabled = false;
             beenDisabled = true;
         }
 
@@ -80,6 +78,10 @@ public class LinkTeleporter : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(other.CompareTag("Wall")){
+            onWallTile = true;
+        }
+
         if (TargetRoom != null){
             if (other.CompareTag("Player"))
             {

@@ -15,6 +15,7 @@ TagManager:
   - StartRoom
   - EndRoom
   - Teleporter
+  - Wall
   layers:
   - Default
   - TransparentFX

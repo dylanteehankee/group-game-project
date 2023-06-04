@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 4468722058313345722}
   - component: {fileID: 5216366945178934610}
   - component: {fileID: 3950568760534124229}
+  - component: {fileID: 5784073450859969831}
   m_Layer: 0
   m_Name: RoomWalls
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -769,6 +770,19 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 2543544007167179148}
+--- !u!114 &5784073450859969831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2543544007167179148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b68c2f1df7c0c1641a877e99d63d5dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileReplacement: {fileID: 11400000, guid: bda9ef46c4b25e14fb7173370c983404, type: 2}
 --- !u!1 &3694973841213032598
 GameObject:
   m_ObjectHideFlags: 0
