@@ -83,7 +83,7 @@ public class PuzzleController : MonoBehaviour
 
     public PuzzleRoomState GetPuzzleRoomState()
     {
-        return PuzzleStateModel.roomState;
+        return puzzleState.roomState;
     }
 
     public void StartPuzzleRoom()

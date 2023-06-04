@@ -11,22 +11,22 @@ public class WallController : PuzzleElementController
     public GameObject rightWall;
     public GameObject wallInterior;
 
-    private WallStateModel myStateModel;
+    protected WallStateModel myStateModel;
 
-    private string buttonTriggerID;
+    protected string buttonTriggerID;
 
-    private bool openWhenPress = false;
+    protected bool openWhenPress = false;
 
     private Vector3 openPosition;
     private Vector3 closedPosition;
 
-    private float transitionTime;
-    private float currentTransitionAmount; // 0 is closed, transitionTime is open
+    protected float transitionTime;
+    protected float currentTransitionAmount; // 0 is closed, transitionTime is open
 
-    private float delayTime;
-    private float currentDelayTime = 0.0f;
+    protected float delayTime;
+    protected float currentDelayTime = 0.0f;
 
-    public void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
+    public virtual void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
         string buttonTriggerID, Vector3 openPosition, Vector3 closedPosition, Vector3 wallScale, float transitionTime, float delayTime)
     {
         base.Init(newElementID, pc);
@@ -92,13 +92,11 @@ public class WallController : PuzzleElementController
         leftWall.GetComponent<Renderer>().enabled = false;
         rightWall.GetComponent<Renderer>().enabled = false;
 
-        wallInterior.transform.localScale = new Vector3(1 - (0.25f / newScale.x), 1 - (0.25f / newScale.y), 0);
-
         wallInterior.GetComponent<Renderer>().enabled = false; // Set to true for destroy fireball debugging. 
 
         wallInterior.transform.localScale = new Vector3(1 - (5.0f / newScale.x), 1 - (5.0f / newScale.y), 0);
     }
-    
+
     void Update()
     {
         if(!hasInitiated)
