@@ -25,6 +25,18 @@ namespace Mobs
         [SerializeField]
         private GameObject potionDropPrefab;
 
+        void Update()
+        {
+            this.attackCooldown += Time.deltaTime;
+            if (this.stunDelayTime < hitStun)
+            {
+                this.stunDelayTime += Time.deltaTime;
+            }
+            else
+            {
+                moveTowardPlayer();
+            }
+        }
         void OnDestroy()
         {
             this.transform.parent.gameObject.GetComponent<MobManager>().Unsubscribe(this.gameObject);
