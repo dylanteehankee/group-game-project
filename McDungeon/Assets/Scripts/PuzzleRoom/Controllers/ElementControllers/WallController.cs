@@ -9,6 +9,7 @@ public class WallController : PuzzleElementController
     public GameObject bottomWall;
     public GameObject leftWall;
     public GameObject rightWall;
+    public GameObject wallInterior;
 
     private WallStateModel myStateModel;
 
@@ -90,6 +91,12 @@ public class WallController : PuzzleElementController
         bottomWall.GetComponent<Renderer>().enabled = false;
         leftWall.GetComponent<Renderer>().enabled = false;
         rightWall.GetComponent<Renderer>().enabled = false;
+
+        wallInterior.transform.localScale = new Vector3(1 - (0.25f / newScale.x), 1 - (0.25f / newScale.y), 0);
+
+        wallInterior.GetComponent<Renderer>().enabled = false; // Set to true for destroy fireball debugging. 
+
+        wallInterior.transform.localScale = new Vector3(1 - (5.0f / newScale.x), 1 - (5.0f / newScale.y), 0);
     }
 
     // Could be optional for now. 

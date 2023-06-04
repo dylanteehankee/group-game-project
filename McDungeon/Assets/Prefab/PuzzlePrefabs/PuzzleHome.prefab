@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-848333250006340211
 MonoBehaviour:
@@ -51,5 +51,6 @@ MonoBehaviour:
   startButtonPrefab: {fileID: 8427407593103202324, guid: c462f397356f29749b15700860e23f99, type: 3}
   torchPrefab: {fileID: 5008959366003660046, guid: 9f264d11486ca18488ce7518f18e96fd, type: 3}
   buttonPrefab: {fileID: 8427407593103202324, guid: 9994b09523d0b994facc09f9567b877c, type: 3}
+  buttonSwitchPrefab: {fileID: 8427407593103202324, guid: 9856402b656c3d74694ec7f568d7c450, type: 3}
   wallPrefab: {fileID: 8147305198550599334, guid: 66cf1e1b556fefe428145d754030b594, type: 3}
   disappearWallPrefab: {fileID: 8147305198550599334, guid: 4a978a78ae3b57d429b18d2d47ee1319, type: 3}

@@ -30,6 +30,7 @@ public class PuzzleController : MonoBehaviour
 
     [SerializeField] public GameObject torchPrefab;
     [SerializeField] public GameObject buttonPrefab;   
+    [SerializeField] public GameObject buttonSwitchPrefab;  
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject disappearWallPrefab;
 
@@ -224,8 +225,8 @@ public class PuzzleController : MonoBehaviour
     public void InitPuzzle2()
     {
         AddObjectToPuzzle(puzzleCreator
-            .CreateButton(
-                button: Instantiate(buttonPrefab, gameObject.transform), 
+            .CreateSwitchButton(
+                button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
                 id: "1",
                 position: new Vector3(11.0f, 5.0f, 0) 
             )
@@ -299,7 +300,7 @@ public class PuzzleController : MonoBehaviour
                 id: "7", 
                 position: new Vector3(21.8f, 5.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
         AddObjectToPuzzle(puzzleCreator
@@ -308,7 +309,7 @@ public class PuzzleController : MonoBehaviour
                 id: "8", 
                 position: new Vector3(21.8f, 7.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
         AddObjectToPuzzle(puzzleCreator
@@ -317,7 +318,7 @@ public class PuzzleController : MonoBehaviour
                 id: "9", 
                 position: new Vector3(21.8f, 11.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
 
@@ -327,7 +328,7 @@ public class PuzzleController : MonoBehaviour
                 id: "10", 
                 position: new Vector3(0.2f, 3.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
 
@@ -337,7 +338,7 @@ public class PuzzleController : MonoBehaviour
                 id: "11", 
                 position: new Vector3(0.2f, 5.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
         AddObjectToPuzzle(puzzleCreator
@@ -346,7 +347,7 @@ public class PuzzleController : MonoBehaviour
                 id: "12", 
                 position: new Vector3(0.2f, 9.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
         AddObjectToPuzzle(puzzleCreator
@@ -355,7 +356,7 @@ public class PuzzleController : MonoBehaviour
                 id: "13", 
                 position: new Vector3(0.2f, 11.0f, 0),
                 expirable: true, 
-                lightDuration: 15.0f
+                lightDuration: 20.0f
             )
         );
         

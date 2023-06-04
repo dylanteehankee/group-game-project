@@ -9,6 +9,8 @@ public class DisappearWallController : PuzzleElementController
     public GameObject bottomWall;
     public GameObject leftWall;
     public GameObject rightWall;
+    
+    public GameObject wallInterior;
 
     private WallStateModel myStateModel;
 
@@ -72,7 +74,7 @@ public class DisappearWallController : PuzzleElementController
             bottomWall.SetActive(collisionActive);
             leftWall.SetActive(collisionActive);
             rightWall.SetActive(collisionActive);
-            Debug.Log("Setting the walls active " + collisionActive);
+            wallInterior.SetActive(collisionActive);
         } 
     }
 
@@ -96,6 +98,10 @@ public class DisappearWallController : PuzzleElementController
         bottomWall.GetComponent<Renderer>().enabled = false;
         leftWall.GetComponent<Renderer>().enabled = false;
         rightWall.GetComponent<Renderer>().enabled = false;
+
+        wallInterior.GetComponent<Renderer>().enabled = false; // Set to true for destroy fireball debugging. 
+
+        wallInterior.transform.localScale = new Vector3(1 - (5.0f / newScale.x), 1 - (5.0f / newScale.y), 0);
     }
 
     // Could be optional for now. 

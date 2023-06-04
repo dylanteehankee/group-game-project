@@ -12,10 +12,19 @@ public class PuzzleCreator
         this.puzzleController = puzzleController;
     }
 
-     public (string, ButtonStateModel, ButtonController) CreateButton(GameObject button, string id, Vector3 position)
+    public (string, ButtonStateModel, ButtonController) CreateButton(GameObject button, string id, Vector3 position)
     {
         ButtonStateModel buttonModel = new ButtonStateModel(puzzleController, id);
         ButtonController buttonController = button.GetComponent<ButtonController>();
+        buttonController.Init(id, puzzleController, buttonModel);
+        button.transform.localPosition = position;
+        return (id, buttonModel, buttonController);
+    }
+
+    public (string, ButtonStateModel, ButtonSwitchController) CreateSwitchButton(GameObject button, string id, Vector3 position)
+    {
+        ButtonStateModel buttonModel = new ButtonStateModel(puzzleController, id);
+        ButtonSwitchController buttonController = button.GetComponent<ButtonSwitchController>();
         buttonController.Init(id, puzzleController, buttonModel);
         button.transform.localPosition = position;
         return (id, buttonModel, buttonController);
