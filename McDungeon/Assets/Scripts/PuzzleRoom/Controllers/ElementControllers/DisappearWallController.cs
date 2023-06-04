@@ -12,6 +12,10 @@ public class DisappearWallController : PuzzleElementController
     
     public GameObject wallInterior;
 
+    public GameObject blockPrefab;
+    private List<GameObject> blockSprites;
+    public Sprite blockSprite;
+
     private WallStateModel myStateModel;
 
     private string buttonTriggerID;
@@ -25,7 +29,7 @@ public class DisappearWallController : PuzzleElementController
     private float currentDelayTime = 0.0f;
 
     public void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
-        string buttonTriggerID, Vector3 wallScale, float transitionTime, float delayTime)
+        string buttonTriggerID, Sprite blockSprite, Vector3 wallScale, float transitionTime, float delayTime)
     {
         base.Init(newElementID, pc);
         myStateModel = myModel;
@@ -34,6 +38,9 @@ public class DisappearWallController : PuzzleElementController
         this.transitionTime = transitionTime;
         this.delayTime = delayTime;
         currentTransitionAmount = 0.0f;
+
+        this.blockSprite = blockSprite;
+        blockSprites = new List<GameObject>();
         Rescale(wallScale);
     }
 
@@ -64,8 +71,16 @@ public class DisappearWallController : PuzzleElementController
     private void ChangeColorTransparency(float ratio)
     {
         Color oldColor = gameObject.GetComponent<SpriteRenderer>().color;
+        if(oldColor.a == ratio)
+            return;
         oldColor.a = ratio;
         gameObject.GetComponent<SpriteRenderer>().color = oldColor;
+        // Change the main wall's controller to influence the blocks.
+
+        foreach(GameObject block in blockSprites)
+        {
+            block.GetComponent<SpriteRenderer>().color = oldColor;
+        }
 
         bool collisionActive = (ratio >= 0.1f); // Fade cutoff value for activity
         if(topWall.activeSelf != collisionActive)
@@ -81,6 +96,23 @@ public class DisappearWallController : PuzzleElementController
     private void Rescale(Vector3 newScale)
     {
         gameObject.transform.localScale = newScale;
+        gameObject.GetComponent<Renderer>().enabled = false;
+        
+        int blockWidth = ((int)newScale.x) / 2;
+        int blockHeight = ((int)newScale.y) / 2;
+        for(int i = 0 ; i <  blockWidth; i++)
+        {
+            for(int j = 0 ; j < blockHeight ; j++)
+            {
+                GameObject newBlock = Instantiate(blockPrefab, gameObject.transform);
+                newBlock.GetComponent<SpriteRenderer>().sprite = blockSprite;
+                newBlock.transform.localScale = new Vector3(1.0f / ((float)blockWidth), 1.0f / ((float)blockHeight ), 0);
+                newBlock.transform.localPosition = new Vector3(((-0.5f * (blockWidth - 1)) + i) / ((float)blockWidth), 
+                    ((-0.5f * (blockHeight - 1)) + j) / ((float)blockHeight ), 0);
+                blockSprites.Add(newBlock);
+            }
+        }
+
         newScale = 10.0f * newScale;
         topWall.transform.localScale = new Vector3(1, 0.1f / newScale.y, 0);
         topWall.transform.localPosition = new Vector3(0, 0.5f - (0.05f/newScale.y), 0);
@@ -119,10 +151,10 @@ public class DisappearWallController : PuzzleElementController
             {
                 case PuzzleWallState.Open: 
                     ChangeColorTransparency(0.0f);
-                    gameObject.GetComponent<Renderer>().enabled = false;
+                    //gameObject.GetComponent<Renderer>().enabled = false;
                     break;
                 case PuzzleWallState.Opening:
-                    gameObject.GetComponent<Renderer>().enabled = true;
+                    //gameObject.GetComponent<Renderer>().enabled = true;
                     currentTransitionAmount += timeElapsed;
                     if(currentTransitionAmount > transitionTime)
                     {
@@ -133,10 +165,10 @@ public class DisappearWallController : PuzzleElementController
                     break;
                 case PuzzleWallState.Closed: 
                     ChangeColorTransparency(1.0f);
-                    gameObject.GetComponent<Renderer>().enabled = true;
+                    //gameObject.GetComponent<Renderer>().enabled = true;
                     break;
                 case PuzzleWallState.Closing:
-                    gameObject.GetComponent<Renderer>().enabled = true;
+                    //gameObject.GetComponent<Renderer>().enabled = true;
                     currentTransitionAmount -= timeElapsed;
                     if(currentTransitionAmount < 0)
                     {

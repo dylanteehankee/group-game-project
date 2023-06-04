@@ -11,6 +11,9 @@ public class WallController : PuzzleElementController
     public GameObject rightWall;
     public GameObject wallInterior;
 
+    public GameObject blockPrefab;
+    public Sprite blockSprite;
+
     protected WallStateModel myStateModel;
 
     protected string buttonTriggerID;
@@ -27,7 +30,7 @@ public class WallController : PuzzleElementController
     protected float currentDelayTime = 0.0f;
 
     public virtual void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
-        string buttonTriggerID, Vector3 openPosition, Vector3 closedPosition, Vector3 wallScale, float transitionTime, float delayTime)
+        string buttonTriggerID, Sprite blockSprite, Vector3 openPosition, Vector3 closedPosition, Vector3 wallScale, float transitionTime, float delayTime)
     {
         base.Init(newElementID, pc);
         myStateModel = myModel;
@@ -71,9 +74,24 @@ public class WallController : PuzzleElementController
         gameObject.transform.position = newPosition;
     }
 
-    private void Rescale(Vector3 newScale)
+    protected void Rescale(Vector3 newScale)
     {
         gameObject.transform.localScale = newScale;
+
+        int blockWidth = ((int)newScale.x) / 2;
+        int blockHeight = ((int)newScale.y) / 2;
+        Debug.Log("Wall with " + blockWidth + " by " + blockHeight);
+        //for(int i = 0 ; i <  blockWidth; i++)
+        {
+            //for(int j = 0 ; j < blockHeight ; j++)
+            {
+                GameObject newBlock = Instantiate(blockPrefab, gameObject.transform);
+                newBlock.GetComponent<SpriteRenderer>().sprite = blockSprite;
+
+            }
+        }
+
+
         newScale = 10.0f * newScale;
         topWall.transform.localScale = new Vector3(1, 0.1f / newScale.y, 0);
         topWall.transform.localPosition = new Vector3(0, 0.5f - (0.05f/newScale.y), 0);
