@@ -17,6 +17,8 @@ public class PuzzleController : MonoBehaviour
 
     private GameObject startButton;
 
+    [SerializeField] public int puzzleID;
+
     [SerializeField] public GameObject startButtonPrefab;
 
     [SerializeField] public GameObject torchPrefab;
@@ -24,17 +26,22 @@ public class PuzzleController : MonoBehaviour
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject disappearWallPrefab;
 
-    // Start is called before the first frame update
     void Start()
     {
-       
+       Init();
+    }
+
+    /// <summary>
+    /// Init() initializes fields used by the puzzle controller, as well as the start puzzle button. 
+    /// </summary>
+    private void Init()
+    {
         elementControllers = new Dictionary<string, PuzzleElementController>();
         elementTriggers = new Dictionary<string, List<string>>();
         puzzleState = new PuzzleStateModel();
 
         puzzleCreator = new PuzzleCreator(this);
-        // InvokePuzzle1 for demo puzzle, InvokePuzzle3 for another puzzle
-        //InitPuzzle2();
+
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
         startButton.transform.localPosition = new Vector3(-0.5f, 1.5f, 0f);
@@ -45,9 +52,36 @@ public class PuzzleController : MonoBehaviour
         if(puzzleState.roomState == PuzzleRoomState.NotStarted)
         {
             puzzleState.roomState = PuzzleRoomState.InProgress;
-            InitPuzzle2();
+            switch(puzzleID)
+            {
+                case 1:
+                    InitPuzzle1();
+                    break;
+                case 2:
+                    InitPuzzle2();
+                    break;
+                default:
+                    break;
+            }
         }
         startButton.SetActive(false);
+    }
+
+    public void EndPuzzleRoom()
+    {
+        if(puzzleState.roomState == PuzzleRoomState.InProgress)
+        {
+            puzzleState.roomState = PuzzleRoomState.Completed;
+            foreach(KeyValuePair<string, PuzzleElementController> kvp in elementControllers)
+            {
+                Destroy(kvp.Value.gameObject);
+                puzzleCreator = null;
+                elementControllers = null;
+                elementTriggers = null;
+                puzzleState = null;
+                winCondition = null;
+            }
+        }
     }
 
     public void AddItemTrigger(string responderID, string triggerID)
@@ -88,6 +122,7 @@ public class PuzzleController : MonoBehaviour
                 }
                 if(wonGame)
                 {
+                    EndPuzzleRoom();
                     Debug.Log("You won the game");
                 }
             }
