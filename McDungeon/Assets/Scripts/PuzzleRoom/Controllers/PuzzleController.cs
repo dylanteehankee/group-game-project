@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// The PuzzleController should be an object directly under the puzzle room object. 
+/// It should be positioned in the bototm left corner of the puzzle room. 
+/// </summary>
 public class PuzzleController : MonoBehaviour
 {
     private Dictionary<string, PuzzleElementController> elementControllers;
@@ -18,7 +22,10 @@ public class PuzzleController : MonoBehaviour
     private GameObject startButton;
 
     [SerializeField] public int puzzleID;
+    [SerializeField] public int puzzleGridWidth;
+    [SerializeField] public int puzzleGridHeight;
 
+    [SerializeField] public GameObject bouncyWallPrefab;
     [SerializeField] public GameObject startButtonPrefab;
 
     [SerializeField] public GameObject torchPrefab;
@@ -36,15 +43,41 @@ public class PuzzleController : MonoBehaviour
     /// </summary>
     private void Init()
     {
+        // Instantiate supporting objects and data structures. 
         elementControllers = new Dictionary<string, PuzzleElementController>();
         elementTriggers = new Dictionary<string, List<string>>();
         puzzleState = new PuzzleStateModel();
-
         puzzleCreator = new PuzzleCreator(this);
 
+        // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
-        startButton.transform.localPosition = new Vector3(-0.5f, 1.5f, 0f);
+        startButton.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight, 0f);
+
+        // Create invisible bouncy walls for the fireball. 
+        GameObject topWall = Instantiate(bouncyWallPrefab, gameObject.transform);
+        GameObject botWall = Instantiate(bouncyWallPrefab, gameObject.transform);
+        GameObject rightWall = Instantiate(bouncyWallPrefab, gameObject.transform);
+        GameObject leftWall = Instantiate(bouncyWallPrefab, gameObject.transform);
+
+        topWall.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight * 2, 0);
+        topWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.1f, 1);
+
+        botWall.transform.localPosition = new Vector3(puzzleGridWidth, 0, 0);
+        botWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.1f, 1);
+
+        leftWall.transform.localPosition = new Vector3(0, puzzleGridHeight, 0);
+        leftWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.1f, 1);
+        leftWall.transform.localRotation = Quaternion.Euler(0, 0, 90);
+
+        rightWall.transform.localPosition = new Vector3(puzzleGridWidth * 2, puzzleGridHeight, 0);
+        rightWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.1f, 1);
+        rightWall.transform.localRotation = Quaternion.Euler(0, 0, 90);
+
+        topWall.GetComponent<SpriteRenderer>().enabled = false;
+        botWall.GetComponent<SpriteRenderer>().enabled = false;
+        rightWall.GetComponent<SpriteRenderer>().enabled = false;
+        leftWall.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public void StartPuzzleRoom()
@@ -148,7 +181,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "1", 
-                position: new Vector3(8.8f, 4f, 0),
+                position: new Vector3(13.8f, 3f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -157,7 +190,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "2", 
-                position: new Vector3(0.2f, 4f, 0),
+                position: new Vector3(0.2f, 5f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -166,7 +199,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "3", 
-                position: new Vector3(8.8f, 1f, 0),
+                position: new Vector3(13.8f, 7f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -175,7 +208,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "4", 
-                position: new Vector3(0.2f, 1f, 0),
+                position: new Vector3(0.2f, 9f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -194,7 +227,7 @@ public class PuzzleController : MonoBehaviour
             .CreateButton(
                 button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "1",
-                position: new Vector3(-0.5f, 0.5f, 0) //(-0.5,+1.5)
+                position: new Vector3(11.0f, 5.0f, 0) 
             )
         );
 
@@ -202,7 +235,7 @@ public class PuzzleController : MonoBehaviour
             .CreateButton(
                 button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "2",
-                position: new Vector3(-0.5f, 2.5f, 0)
+                position: new Vector3(11.0f, 11.0f, 0)
             )
         );
          AddObjectToPuzzle(puzzleCreator
@@ -210,8 +243,8 @@ public class PuzzleController : MonoBehaviour
                 wall: Instantiate(disappearWallPrefab, gameObject.transform), 
                 id: "3", 
                 buttonTriggerID: "1",
-                wallScale: new Vector3(0.5f, 5, 1),
-                position: new Vector3(2.5f, 1.5f, 0),
+                wallScale: new Vector3(2.0f, 14.0f, 1),
+                position: new Vector3(19.0f, 7.0f, 0),
                 transitionTime: 1.0f,
                 changePauseTime: 0.2f
             )
@@ -221,8 +254,8 @@ public class PuzzleController : MonoBehaviour
                 wall: Instantiate(disappearWallPrefab, gameObject.transform), 
                 id: "4", 
                 buttonTriggerID: "2",
-                wallScale: new Vector3(0.5f, 5, 1),
-                position: new Vector3(-3.5f, 1.5f, 0),
+                wallScale: new Vector3(2.0f, 14.0f, 1),
+                position: new Vector3(3.0f, 7.0f, 0),
                 transitionTime: 1.0f,
                 changePauseTime: 0.2f
             )
@@ -233,8 +266,8 @@ public class PuzzleController : MonoBehaviour
                 wall: Instantiate(disappearWallPrefab, gameObject.transform), 
                 id: "5", 
                 buttonTriggerID: null,
-                wallScale: new Vector3(2f, 0.5f, 1),
-                position: new Vector3(3f, 2.0f, 0),
+                wallScale: new Vector3(6.0f, 2.0f, 1),
+                position: new Vector3(19.0f, 9.0f, 0),
                 transitionTime: 1.0f,
                 changePauseTime: 0.2f
             )
@@ -245,8 +278,8 @@ public class PuzzleController : MonoBehaviour
                 wall: Instantiate(disappearWallPrefab, gameObject.transform), 
                 id: "6", 
                 buttonTriggerID: null,
-                wallScale: new Vector3(0.5f, 1.5f, 1),
-                position: new Vector3(-3f, -0.25f, 0),
+                wallScale: new Vector3(2.0f, 4.0f, 1),
+                position: new Vector3(5.0f, 3.0f, 0),
                 transitionTime: 1.0f,
                 changePauseTime: 0.2f
             )
@@ -264,7 +297,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "7", 
-                position: new Vector3(3.8f, -0.5f, 0),
+                position: new Vector3(21.8f, 5.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -273,7 +306,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "8", 
-                position: new Vector3(3.8f, 1.25f, 0),
+                position: new Vector3(21.8f, 7.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -282,7 +315,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "9", 
-                position: new Vector3(-4.8f, 3f, 0),
+                position: new Vector3(21.8f, 11.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -292,7 +325,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "10", 
-                position: new Vector3(3.8f, 3f, 0),
+                position: new Vector3(0.2f, 3.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -302,7 +335,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "11", 
-                position: new Vector3(-4.8f, -0.5f, 0),
+                position: new Vector3(0.2f, 5.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -311,7 +344,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "12", 
-                position: new Vector3(-4.8f, -0.5f, 0),
+                position: new Vector3(0.2f, 9.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )
@@ -320,7 +353,7 @@ public class PuzzleController : MonoBehaviour
             .CreateTorch(
                 torch: Instantiate(torchPrefab, gameObject.transform), 
                 id: "13", 
-                position: new Vector3(-4.8f, 2.0f, 0),
+                position: new Vector3(0.2f, 11.0f, 0),
                 expirable: true, 
                 lightDuration: 15.0f
             )

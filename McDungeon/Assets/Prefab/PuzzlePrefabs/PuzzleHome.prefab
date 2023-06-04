@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1147431540665934255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8005653836801457382}
+  - component: {fileID: -848333250006340211}
+  m_Layer: 0
+  m_Name: PuzzleHome
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8005653836801457382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147431540665934255}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-848333250006340211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147431540665934255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb1412b649b651948ab8049f2cae6f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleID: 0
+  puzzleGridWidth: 0
+  puzzleGridHeight: 0
+  bouncyWallPrefab: {fileID: 794939564806964480, guid: 0ec27bc9d146faf499ccef87e71dc261, type: 3}
+  startButtonPrefab: {fileID: 8427407593103202324, guid: c462f397356f29749b15700860e23f99, type: 3}
+  torchPrefab: {fileID: 5008959366003660046, guid: 9f264d11486ca18488ce7518f18e96fd, type: 3}
+  buttonPrefab: {fileID: 8427407593103202324, guid: 9994b09523d0b994facc09f9567b877c, type: 3}
+  wallPrefab: {fileID: 8147305198550599334, guid: 66cf1e1b556fefe428145d754030b594, type: 3}
+  disappearWallPrefab: {fileID: 8147305198550599334, guid: 4a978a78ae3b57d429b18d2d47ee1319, type: 3}
