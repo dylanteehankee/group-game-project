@@ -38,13 +38,7 @@ public class TorchController : PuzzleElementController
     {
         // Torch does not respond to other state changes in the puzzle. 
     }
-
-    // Could be optional for now. 
-    public override void OnChange()
-    {
-
-    }
-
+    
     public void OnFireballTouch()
     {
         Debug.Log("Lit torch");
@@ -99,21 +93,21 @@ public class TorchController : PuzzleElementController
         switch((PuzzleTorchState)myStateModel.GetState())
         {
             case PuzzleTorchState.Lit:
-                gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,255,255,255);
+                myRenderer.color = new Color32(255,255,255,255);
                 if(lightDuration - timeSinceLit < flickerTimeCutoff)
                 {
                     if( ((int)((lightDuration - timeSinceLit) / flickerFrequency) % 2) == 0)
                     {
-                        gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,255,255,255);
+                        myRenderer.color = new Color32(255,255,255,255);
                     }
                     else
                     {
-                        gameObject.GetComponent<SpriteRenderer>().color = new Color32(150,150,150,255);
+                        myRenderer.color = new Color32(150,150,150,255);
                     }
                 }
                 else
                 {
-                    gameObject.GetComponent<SpriteRenderer>().color = new Color32(255,255,255,255);
+                    myRenderer.color = new Color32(255,255,255,255);
                 }
                 
                 if(myAnimator.enabled == false)

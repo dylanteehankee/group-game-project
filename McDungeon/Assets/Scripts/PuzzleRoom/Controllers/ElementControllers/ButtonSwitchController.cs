@@ -3,44 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ButtonSwitchController : PuzzleElementController
+public class ButtonSwitchController : ButtonController
 {
 
-    private ButtonStateModel myStateModel;
-
-    public void Init(string newElementID, PuzzleController pc, ButtonStateModel myModel)
-    {
-        base.Init(newElementID, pc);
-        myStateModel = myModel;
-    }
-
-    public override void RespondTo(PuzzleStateModel puzzleState, string invoker)
-    {
-        // Button does not respond to other state changes in the puzzle. 
-    }
-
-    // Could be optional for now. 
-    public override void OnChange()
-    {
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            this.OnStep();
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            this.OnExit();
-        }
-    }
-
-    public void OnStep()
+    public override void OnStep()
     {
         if(myStateModel.GetState() == (int) PuzzleButtonState.Pressed)
         {
@@ -52,11 +18,11 @@ public class ButtonSwitchController : PuzzleElementController
         }
     }
 
-    public void OnExit()
+    public override void OnExit()
     {
         
     }
-
+/*
     void Update()
     {
         if(!hasInitiated)
@@ -74,5 +40,5 @@ public class ButtonSwitchController : PuzzleElementController
                 break;
         }
     }
-
+*/
 }

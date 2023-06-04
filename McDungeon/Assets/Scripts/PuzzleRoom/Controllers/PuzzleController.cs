@@ -81,6 +81,11 @@ public class PuzzleController : MonoBehaviour
         leftWall.GetComponent<SpriteRenderer>().enabled = false;
     }
 
+    public PuzzleRoomState GetPuzzleRoomState()
+    {
+        return PuzzleStateModel.roomState;
+    }
+
     public void StartPuzzleRoom()
     {
         if(puzzleState.roomState == PuzzleRoomState.NotStarted)
@@ -100,6 +105,8 @@ public class PuzzleController : MonoBehaviour
         }
         startButton.SetActive(false);
     }
+
+
 
     public void EndPuzzleRoom()
     {
@@ -228,7 +235,8 @@ public class PuzzleController : MonoBehaviour
             .CreateSwitchButton(
                 button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
                 id: "1",
-                position: new Vector3(11.0f, 5.0f, 0) 
+                position: new Vector3(11.0f, 5.0f, 0),
+                shape: PuzzleElementShapeLink.Circle
             )
         );
 
@@ -236,7 +244,8 @@ public class PuzzleController : MonoBehaviour
             .CreateButton(
                 button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "2",
-                position: new Vector3(11.0f, 11.0f, 0)
+                position: new Vector3(11.0f, 11.0f, 0),
+                shape: PuzzleElementShapeLink.Square
             )
         );
          AddObjectToPuzzle(puzzleCreator

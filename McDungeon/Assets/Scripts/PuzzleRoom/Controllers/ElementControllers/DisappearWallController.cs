@@ -104,12 +104,6 @@ public class DisappearWallController : PuzzleElementController
         wallInterior.transform.localScale = new Vector3(1 - (5.0f / newScale.x), 1 - (5.0f / newScale.y), 0);
     }
 
-    // Could be optional for now. 
-    public override void OnChange()
-    {
-        
-    }
-
     void Update()
     {
         if(!hasInitiated)

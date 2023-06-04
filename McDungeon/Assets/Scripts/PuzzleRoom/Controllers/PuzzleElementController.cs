@@ -20,7 +20,4 @@ public abstract class PuzzleElementController : MonoBehaviour
 
     public abstract void RespondTo(PuzzleStateModel puzzleState, string invoker);
 
-    // Could be optional for now. 
-    public abstract void OnChange();
-
 }

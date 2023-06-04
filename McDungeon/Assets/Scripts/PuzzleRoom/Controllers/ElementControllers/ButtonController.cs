@@ -6,23 +6,24 @@ using System;
 public class ButtonController : PuzzleElementController
 {
 
-    private ButtonStateModel myStateModel;
+    protected ButtonStateModel myStateModel;
 
-    public void Init(string newElementID, PuzzleController pc, ButtonStateModel myModel)
+    protected Sprite pressedSprite;
+
+    protected Sprite unpressedSprite;
+
+
+    public void Init(string newElementID, PuzzleController pc, ButtonStateModel myModel, Sprite pressedSprite, Sprite unpressedSprite)
     {
         base.Init(newElementID, pc);
         myStateModel = myModel;
+        this.pressedSprite = pressedSprite;
+        this.unpressedSprite = unpressedSprite;
     }
 
     public override void RespondTo(PuzzleStateModel puzzleState, string invoker)
     {
         // Button does not respond to other state changes in the puzzle. 
-    }
-
-    // Could be optional for now. 
-    public override void OnChange()
-    {
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,7 +41,7 @@ public class ButtonController : PuzzleElementController
         }
     }
 
-    public void OnStep()
+    public virtual void OnStep()
     {
         if(myStateModel.GetState() != (int) PuzzleButtonState.Pressed)
         {
@@ -48,7 +49,7 @@ public class ButtonController : PuzzleElementController
         }
     }
 
-    public void OnExit()
+    public virtual void OnExit()
     {
         if(myStateModel.GetState() != (int) PuzzleButtonState.Unpressed)
         {
@@ -66,10 +67,10 @@ public class ButtonController : PuzzleElementController
         switch(buttonState)
         {
             case PuzzleButtonState.Pressed:
-                gameObject.GetComponent<SpriteRenderer>().color = new Color32(176,176,176,255);
+                gameObject.GetComponent<SpriteRenderer>().sprite = pressedSprite;
                 break;
             case PuzzleButtonState.Unpressed:
-                gameObject.GetComponent<SpriteRenderer>().color = new Color32(100,100,100,255);
+                gameObject.GetComponent<SpriteRenderer>().sprite = unpressedSprite;
                 break;
         }
     }

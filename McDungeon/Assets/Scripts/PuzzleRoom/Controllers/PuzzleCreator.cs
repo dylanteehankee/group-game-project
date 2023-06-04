@@ -7,25 +7,45 @@ public class PuzzleCreator
 {
     private PuzzleController puzzleController;
 
+    private readonly string puzzleImagePath = "Sprites/Puzzle/";
+
+    private Dictionary<PuzzleElementShapeLink, (Sprite unpressed, Sprite pressed)> buttonSprites;
+    // Key is the symbol on the button, whether it is square, circle, or none.
+    // Value is tuple of sprites where (buttonUnpressed, buttonPressed). 
+
+    private Dictionary<PuzzleElementShapeLink, Sprite> wallSprites;
+
     public PuzzleCreator(PuzzleController puzzleController)
     {
         this.puzzleController = puzzleController;
+        buttonSprites = new Dictionary<PuzzleElementShapeLink, (Sprite unpressed, Sprite pressed)>();
+        buttonSprites.Add(PuzzleElementShapeLink.Circle, 
+            (Resources.Load<Sprite>(puzzleImagePath + "ButtonElement/circle_button_unpressed"), 
+            Resources.Load<Sprite>(puzzleImagePath + "ButtonElement/circle_button_pressed"))
+        );
+         buttonSprites.Add(PuzzleElementShapeLink.Square, 
+            (Resources.Load<Sprite>(puzzleImagePath + "ButtonElement/square_button_unpressed"), 
+            Resources.Load<Sprite>(puzzleImagePath + "ButtonElement/square_button_pressed"))
+        );
+
+
+        wallSprites = new Dictionary<PuzzleElementShapeLink, Sprite>();
     }
 
-    public (string, ButtonStateModel, ButtonController) CreateButton(GameObject button, string id, Vector3 position)
+    public (string, ButtonStateModel, ButtonController) CreateButton(GameObject button, string id, Vector3 position, PuzzleElementShapeLink shape)
     {
         ButtonStateModel buttonModel = new ButtonStateModel(puzzleController, id);
         ButtonController buttonController = button.GetComponent<ButtonController>();
-        buttonController.Init(id, puzzleController, buttonModel);
+        buttonController.Init(id, puzzleController, buttonModel, buttonSprites[shape].pressed, buttonSprites[shape].unpressed);
         button.transform.localPosition = position;
         return (id, buttonModel, buttonController);
     }
 
-    public (string, ButtonStateModel, ButtonSwitchController) CreateSwitchButton(GameObject button, string id, Vector3 position)
+    public (string, ButtonStateModel, ButtonSwitchController) CreateSwitchButton(GameObject button, string id, Vector3 position, PuzzleElementShapeLink shape)
     {
         ButtonStateModel buttonModel = new ButtonStateModel(puzzleController, id);
         ButtonSwitchController buttonController = button.GetComponent<ButtonSwitchController>();
-        buttonController.Init(id, puzzleController, buttonModel);
+        buttonController.Init(id, puzzleController, buttonModel, buttonSprites[shape].pressed, buttonSprites[shape].unpressed);
         button.transform.localPosition = position;
         return (id, buttonModel, buttonController);
     }
@@ -60,4 +80,11 @@ public class PuzzleCreator
         return (id, torchModel, torchController);
     }
 
+}
+
+public enum PuzzleElementShapeLink
+{
+    None,
+    Square, 
+    Circle
 }
