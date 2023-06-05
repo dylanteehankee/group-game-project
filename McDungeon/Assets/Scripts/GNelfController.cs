@@ -20,7 +20,7 @@ namespace Mobs
         private float hitStun = 1f;
         private float stunDelayTime = 0f;
         private float attackCooldown = 0f;
-
+        [SerializeField]
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
@@ -53,8 +53,7 @@ namespace Mobs
             Vector2 playerLocation = this.playerObject.transform.position;
             var deltaLocation = playerLocation - position;
             deltaLocation.Normalize();
-
-            if (deltaLocation.x > Mathf.Abs(deltaLocation.y))
+            if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
             {
                 this.GetComponent<Animator>().SetInteger("Direction", 0);
                 if (deltaLocation.x < 0)
@@ -68,11 +67,11 @@ namespace Mobs
             }
             else if (deltaLocation.y < 0)
             {
-                this.GetComponent<Animator>().SetInteger("Direction", 1);
+                this.GetComponent<Animator>().SetInteger("Direction", -1);
             }
             else
             {
-                this.GetComponent<Animator>().SetInteger("Direction", -1);
+                this.GetComponent<Animator>().SetInteger("Direction", 1);
             }
 
             if (Vector2.Distance(position, playerLocation) < this.attackRange)
