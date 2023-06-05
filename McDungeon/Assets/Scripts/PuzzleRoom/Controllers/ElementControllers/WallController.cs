@@ -79,6 +79,7 @@ public class WallController : PuzzleElementController
     protected void Rescale(Vector3 newScale)
     {
         gameObject.transform.localScale = newScale;
+         gameObject.GetComponent<Renderer>().enabled = false;
  
         int blockWidth = ((int)newScale.x) / 2;
         int blockHeight = ((int)newScale.y) / 2;

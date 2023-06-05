@@ -237,8 +237,8 @@ public class PuzzleController : MonoBehaviour
     public void InitPuzzle2()
     {
         AddObjectToPuzzle(puzzleCreator
-            .CreateSwitchButton(
-                button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
+            .CreateButton(
+                button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "1",
                 position: new Vector3(11.0f, 5.0f, 0),
                 shape: PuzzleElementShapeLink.Circle
