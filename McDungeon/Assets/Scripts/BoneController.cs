@@ -6,7 +6,7 @@ namespace Mobs
 {
     public class BoneController : MonoBehaviour
     {
-        private bool active;
+        private bool active = true;
          public void Throw(Vector2 playerLocation)
         {
             Vector2 location = this.transform.position;
@@ -14,7 +14,8 @@ namespace Mobs
             deltaLocation.Normalize();
             this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 800);
         }
-
+        // Fix later to disable collider after collision
+        // Add no collision if not moving
         void OnCollisionEnter2D(Collision2D collision)
         {
             var collider = collision.collider;
