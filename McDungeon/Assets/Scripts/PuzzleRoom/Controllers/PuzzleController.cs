@@ -99,6 +99,12 @@ public class PuzzleController : MonoBehaviour
                 case 2:
                     InitPuzzle2();
                     break;
+                case 3:
+                    InitPuzzle3();
+                    break;
+                case 4:
+                    InitPuzzle4();
+                    break;
                 default:
                     break;
             }
@@ -117,9 +123,9 @@ public class PuzzleController : MonoBehaviour
             {
                 Destroy(kvp.Value.gameObject);
                 // Don't reset puzzle state.
-                elementControllers = null;
-                elementTriggers = null;
-                winCondition = null;
+                //elementControllers = null;
+                //elementTriggers = null;
+                //winCondition = null;
             }
         }
     }
@@ -376,6 +382,378 @@ public class PuzzleController : MonoBehaviour
         winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
         winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
         winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
+    }
+
+    public void InitPuzzle3()
+    {
+        AddObjectToPuzzle(puzzleCreator
+            .CreateButton(
+                button: Instantiate(buttonPrefab, gameObject.transform), 
+                id: "1",
+                position: new Vector3(5.0f, 19.0f, 0),
+                shape: PuzzleElementShapeLink.Square
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateButton(
+                button: Instantiate(buttonPrefab, gameObject.transform), 
+                id: "2",
+                position: new Vector3(13.0f, 7.0f, 0),
+                shape: PuzzleElementShapeLink.Circle
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "3", 
+                buttonTriggerID: "1",
+                shape: PuzzleElementShapeLink.Square,
+                wallScale: new Vector3(6.0f, 6.0f, 1),
+                position: new Vector3(13.0f, 21.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "4", 
+                buttonTriggerID: "2",
+                shape: PuzzleElementShapeLink.Circle,
+                wallScale: new Vector3(6.0f, 6.0f, 1),
+                position: new Vector3(5.0f, 5.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "5", 
+                buttonTriggerID: "1",
+                shape: PuzzleElementShapeLink.Square,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(1.0f, 7.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "6", 
+                buttonTriggerID: "2",
+                shape: PuzzleElementShapeLink.Circle,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(9.0f, 19.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "7", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(6.0f, 2.0f, 1),
+                position: new Vector3(5.0f, 21.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "8", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(3.0f, 19.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "9", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(7.0f, 19.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "10", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(6.0f, 2.0f, 1),
+                position: new Vector3(13.0f, 5.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "11", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(11.0f, 7.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "12", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(15.0f, 7.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+
+        AddItemTrigger(
+            responderID: "3", 
+            triggerID: "1"
+        );
+        AddItemTrigger(
+            responderID: "4", 
+            triggerID: "2"
+        );
+        AddItemTrigger(
+            responderID: "5", 
+            triggerID: "1"
+        );
+        AddItemTrigger(
+            responderID: "6", 
+            triggerID: "2"
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "13", 
+                position: new Vector3(9.0f, 25.8f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "14", 
+                position: new Vector3(17.0f, 25.8f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "15", 
+                position: new Vector3(7.0f, 0.2f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "16", 
+                position: new Vector3(0.2f, 3.0f, 0),
+                expirable: true, 
+                lightDuration: 20.0f
+            )
+        );
+        
+        winCondition = new Dictionary<string, (int state, bool satisfied)>();
+       
+        winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("14", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("15", ((int)PuzzleTorchState.Lit, false));
+        winCondition.Add("16", ((int)PuzzleTorchState.Lit, false));
+    }
+
+    public void InitPuzzle4()
+    {
+        AddObjectToPuzzle(puzzleCreator
+            .CreateSwitchButton(
+                button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
+                id: "1",
+                position: new Vector3(9.0f, 1.0f, 0),
+                shape: PuzzleElementShapeLink.Circle
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateButton(
+                button: Instantiate(buttonPrefab, gameObject.transform), 
+                id: "2",
+                position: new Vector3(9.0f, 3.0f, 0),
+                shape: PuzzleElementShapeLink.Square
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateWall(
+                wall: Instantiate(wallPrefab, gameObject.transform), 
+                id: "3", 
+                buttonTriggerID: "1",
+                shape: PuzzleElementShapeLink.Circle,
+                openPosition: new Vector3(3.0f, 9.0f, 0),
+                closedPosition: new Vector3(3.0f, 1.0f, 0),
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                transitionTime: 3.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateWall(
+                wall: Instantiate(wallPrefab, gameObject.transform), 
+                id: "4", 
+                buttonTriggerID: "1",
+                shape: PuzzleElementShapeLink.Circle,
+                openPosition: new Vector3(15.0f, 8.0f, 0),
+                closedPosition: new Vector3(15.0f, 2.0f, 0),
+                wallScale: new Vector3(2.0f, 4.0f, 1),
+                transitionTime: 5.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "5", 
+                buttonTriggerID: "2",
+                shape: PuzzleElementShapeLink.Square,
+                wallScale: new Vector3(2.0f, 4.0f, 1),
+                position: new Vector3(5.0f, 6.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+         AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "6", 
+                buttonTriggerID: "2",
+                shape: PuzzleElementShapeLink.Square,
+                wallScale: new Vector3(2.0f, 2.0f, 1),
+                position: new Vector3(13.0f, 1.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "7", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 4.0f, 1),
+                position: new Vector3(5.0f, 2.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "8", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(2.0f, 6.0f, 1),
+                position: new Vector3(13.0f, 5.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateDisappearWall(
+                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                id: "9", 
+                buttonTriggerID: null,
+                shape: PuzzleElementShapeLink.None,
+                wallScale: new Vector3(6.0f, 2.0f, 1),
+                position: new Vector3(9.0f, 7.0f, 0),
+                transitionTime: 1.0f,
+                changePauseTime: 0.2f
+            )
+        );
+
+        AddItemTrigger(
+            responderID: "3", 
+            triggerID: "1"
+        );
+        AddItemTrigger(
+            responderID: "4", 
+            triggerID: "1"
+        );
+        AddItemTrigger(
+            responderID: "5", 
+            triggerID: "2"
+        );
+        AddItemTrigger(
+            responderID: "6", 
+            triggerID: "2"
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "10", 
+                position: new Vector3(7.0f, 9.8f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "11", 
+                position: new Vector3(17.8f, 3.0f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "12", 
+                position: new Vector3(17.8f, 5.0f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+        AddObjectToPuzzle(puzzleCreator
+            .CreateTorch(
+                torch: Instantiate(torchPrefab, gameObject.transform), 
+                id: "13", 
+                position: new Vector3(11.0f, 9.8f, 0),
+                expirable: true, 
+                lightDuration: 15.0f
+            )
+        );
+
+        winCondition = new Dictionary<string, (int state, bool satisfied)>();
+       
         winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
         winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
         winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
