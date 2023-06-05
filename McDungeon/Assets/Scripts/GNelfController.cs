@@ -24,19 +24,35 @@ namespace Mobs
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
+        private SpriteRenderer spriteRenderer;
+        private Animator animator;
+
+        void Start()
+        {
+            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.animator = GetComponent<Animator>();
+        }
 
         void Update()
         {
+            Vector2 location = this.transform.position;
+            Vector2 playerLocation = this.playerObject.transform.position;
+
             this.attackCooldown += Time.deltaTime;
             if (this.stunDelayTime < hitStun)
             {
                 this.stunDelayTime += Time.deltaTime;
             }
+            else if (Vector2.Distance(location, playerLocation) < this.attackRange)
+            {
+                this.attackPlayer(playerLocation - location);
+            }
             else
             {
-                moveTowardPlayer();
+                this.moveTowardPlayer(location, playerLocation);
             }
         }
+
         void OnDestroy()
         {
             this.transform.parent.gameObject.GetComponent<MobManager>().Unsubscribe(this.gameObject);
@@ -47,42 +63,11 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer()
-        {
-            Vector2 position = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-            var deltaLocation = playerLocation - position;
+        private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
+        {var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
-            if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
-            {
-                this.GetComponent<Animator>().SetInteger("Direction", 0);
-                if (deltaLocation.x < 0)
-                {
-                    this.GetComponent<SpriteRenderer>().flipX = true;
-                }
-                else
-                {
-                    this.GetComponent<SpriteRenderer>().flipX = false;
-                }
-            }
-            else if (deltaLocation.y < 0)
-            {
-                this.GetComponent<Animator>().SetInteger("Direction", -1);
-            }
-            else
-            {
-                this.GetComponent<Animator>().SetInteger("Direction", 1);
-            }
-
-            if (Vector2.Distance(position, playerLocation) < this.attackRange)
-            {
-                this.transform.Translate(Vector2.zero);
-                this.attackPlayer(deltaLocation);
-            }
-            else
-            {
-                this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
-            }
+            this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
+            this.spriteDirection(deltaLocation);
         }
 
         private void attackPlayer(Vector2 deltaLocation)
@@ -92,6 +77,30 @@ namespace Mobs
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                 Debug.Log("ATTACKING PLAYER");
                 this.attackCooldown = 0;
+            }
+        }
+
+        private void spriteDirection(Vector2 deltaLocation)
+        {
+            if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
+            {
+                this.animator.SetInteger("Direction", 0);
+                if (deltaLocation.x < 0)
+                {
+                    this.spriteRenderer.flipX = true;
+                }
+                else
+                {
+                    this.spriteRenderer.flipX = false;
+                }
+            }
+            else if (deltaLocation.y < 0)
+            {
+                this.animator.SetInteger("Direction", -1);
+            }
+            else
+            {
+                this.animator.SetInteger("Direction", 1);
             }
         }
 
