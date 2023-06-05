@@ -64,7 +64,8 @@ namespace Mobs
         }
 
         private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
-        {var deltaLocation = playerLocation - location;
+        {
+            var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
             this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
             this.spriteDirection(deltaLocation);
