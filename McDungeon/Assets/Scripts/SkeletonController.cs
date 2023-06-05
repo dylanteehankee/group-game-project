@@ -91,14 +91,12 @@ namespace Mobs
         {
             if (this.elapsedThrowTime == 0)
             {
-                this.elapsedThrowTime += Time.deltaTime;
                 this.transform.Translate(Vector2.zero);
                 this.animator.SetTrigger("Attack");
                 isThrowing = true;
             }
             else if (this.elapsedThrowTime > (this.throwTime / 2) && hasBone)
             {
-                this.elapsedThrowTime += Time.deltaTime;
                 deltaLocation.Normalize();
                 Vector2 location = this.transform.position;
                 this.bone = (GameObject)Instantiate(this.bonePrefab);
@@ -111,11 +109,9 @@ namespace Mobs
             {
                 this.isThrowing = false;
                 this.elapsedThrowTime = 0;
+                return;
             }
-            else
-            {
-                this.elapsedThrowTime += Time.deltaTime;
-            }
+            this.elapsedThrowTime += Time.deltaTime;
         }
 
         private void spriteControl(Vector2 deltaLocation)

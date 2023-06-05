@@ -20,21 +20,40 @@ namespace Mobs
         private float hitStun = 1f;
         private float stunDelayTime = 0f;
         private float attackCooldown = 0f;
-
+        private float attackTime = 1.0f;
+        private bool isAttacking = false;
+        private bool hitPlayer = false;
+        [SerializeField]
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
+        private float elapsedAttackTime = 0.0f;
+        private SpriteRenderer spriteRenderer;
+        private Animator animator;
+
+        void Start()
+        {
+            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.animator = GetComponent<Animator>();
+        }
 
         void Update()
         {
+            Vector2 location = this.transform.position;
+            Vector2 playerLocation = this.playerObject.transform.position;
+
             this.attackCooldown += Time.deltaTime;
             if (this.stunDelayTime < hitStun)
             {
                 this.stunDelayTime += Time.deltaTime;
             }
+            else if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCooldown > this.attackSpeed)) || isAttacking)
+            {
+                this.attackPlayer(playerLocation - location);
+            }
             else
             {
-                moveTowardPlayer();
+                this.moveTowardPlayer(location, playerLocation);
             }
         }
 
@@ -48,30 +67,66 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer()
+        private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
         {
-            Vector2 position = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-            var deltaLocation = playerLocation - position;
+            var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
-            if (Vector2.Distance(position, playerLocation) < this.attackRange)
+            this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
+            this.spriteDirection(deltaLocation);
+        }
+
+        private void attackPlayer(Vector2 deltaLocation)
+        {
+            if (elapsedAttackTime == 0)
             {
                 this.transform.Translate(Vector2.zero);
-                this.attackPlayer();
+                this.animator.SetTrigger("Attack");
+                this.isAttacking = true;
+                this.hitPlayer = false;
+            }
+            else if (this.elapsedAttackTime > this.attackTime)
+            {
+                this.isAttacking = false;
+                this.elapsedAttackTime = 0;
+                this.attackCooldown = 0;
+                return;
+            }
+            else if (this.elapsedAttackTime > 0.15 && !hitPlayer)
+            {
+                this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
+                Debug.Log("ATTACKING PLAYER");
+                this.hitPlayer = true;
+            }
+            this.elapsedAttackTime += Time.deltaTime;
+        }
+
+        private void spriteDirection(Vector2 deltaLocation)
+        {
+            if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
+            {
+                this.animator.SetBool("Direction", true);
+                this.spriteRenderer.flipY = false;
+                if (deltaLocation.x < 0)
+                {
+                    this.spriteRenderer.flipX = true;
+                }
+                else
+                {
+                    this.spriteRenderer.flipX = false;
+                }
             }
             else
             {
-                
-                this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
-            }
-        }
-
-        private void attackPlayer()
-        {
-            if (this.attackCooldown > this.attackSpeed)
-            {
-                Debug.Log("ATTACKING PLAYER");
-                this.attackCooldown = 0;
+                this.animator.SetBool("Direction", false);
+                this.spriteRenderer.flipX = false;
+                if (deltaLocation.y > 0)
+                {
+                    this.spriteRenderer.flipY = true;
+                }
+                else
+                {
+                    this.spriteRenderer.flipY = false;
+                }
             }
         }
 
