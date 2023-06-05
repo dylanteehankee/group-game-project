@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4202008653054338845}
   - component: {fileID: 7781150057164011766}
   - component: {fileID: 4627188297302880586}
+  - component: {fileID: 5185989276852243298}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Untagged
@@ -76,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2747690628134850419, guid: 16037dbd798344f57a526d53d48f5ead, type: 3}
-  m_Color: {r: 0.4198113, g: 1, b: 0.5737081, a: 1}
+  m_Sprite: {fileID: -1530549436, guid: 1b8050a480fd642f6917ad4efd533315, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -168,3 +169,24 @@ MonoBehaviour:
   moveSpeed: 1
   hitStun: 1
   potionDropPrefab: {fileID: 0}
+--- !u!95 &5185989276852243298
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178146216519888684}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7ebeb3e6eec8f48f7b444d0cb2f02d34, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
