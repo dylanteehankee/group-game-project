@@ -6421,7 +6421,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleID
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
+      propertyPath: puzzleGridWidth
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
+      propertyPath: puzzleGridHeight
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8650441407172949294, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: m_Name
