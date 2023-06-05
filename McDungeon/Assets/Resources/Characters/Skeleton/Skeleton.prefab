@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4202008653054338845}
   - component: {fileID: 7781150057164011766}
   - component: {fileID: 8847354757379179795}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &-4428384177947143298
 SpriteRenderer:
@@ -113,7 +113,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &7781150057164011766
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -162,9 +162,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mobHealth: 15
-  attackRange: 1
-  attackSpeed: 0.5
-  MobDamage: 1
+  attackRange: 5
   moveSpeed: 1
   hitStun: 0.5
+  playerObject: {fileID: 0}
   potionDropPrefab: {fileID: 0}
+  bonePrefab: {fileID: 2743265911000779979, guid: 3bf04d539ad554ba2a470bb680b1c746, type: 3}
