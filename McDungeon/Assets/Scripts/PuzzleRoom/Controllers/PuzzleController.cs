@@ -116,10 +116,9 @@ public class PuzzleController : MonoBehaviour
             foreach(KeyValuePair<string, PuzzleElementController> kvp in elementControllers)
             {
                 Destroy(kvp.Value.gameObject);
-                puzzleCreator = null;
+                // Don't reset puzzle state.
                 elementControllers = null;
                 elementTriggers = null;
-                puzzleState = null;
                 winCondition = null;
             }
         }
