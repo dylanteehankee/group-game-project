@@ -783,6 +783,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileReplacement: {fileID: 11400000, guid: bda9ef46c4b25e14fb7173370c983404, type: 2}
+  leftGateTile: {fileID: 11400000, guid: 5fcbf1724d1d840468c400e48a2d72d3, type: 2}
+  rightGateTile: {fileID: 11400000, guid: 58b9b759de3122f45ae4c02d370884ff, type: 2}
+  middleGateTile: {fileID: 11400000, guid: d079e452809d37a49adb7fee206f6449, type: 2}
 --- !u!1 &3694973841213032598
 GameObject:
   m_ObjectHideFlags: 0

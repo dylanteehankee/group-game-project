@@ -9,13 +9,20 @@ public class LinkTeleporter : MonoBehaviour
     public bool isInside {get; set;} = false;
     private GameObject parent;
     public bool beenDisabled = false;
+    private bool RoomCompleted = false;
     private bool closeDoor = false; 
+    private PuzzleStateModel puzzleState;
     public bool onWallTile {get; set;} = false;
-    Animator animator;
+    private Animator animator;
+
+    private PuzzleController puzzleController;
 
     void Start(){
         animator = GetComponent<Animator>();
         parent = transform.parent.gameObject;
+        if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
+            puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
+        }
     }
 
     void LateUpdate(){
@@ -28,7 +35,8 @@ public class LinkTeleporter : MonoBehaviour
             beenDisabled = true;
         }
 
-        if (TargetRoom && isInside){
+        //RoomCompleted makes sure that this update only runs up until the room is completed
+        if (TargetRoom && isInside && !RoomCompleted){
             //if player already picked in startRoom, open door
             if (parent.CompareTag("StartRoom")){
                 /*if (enemyCount == 0){
@@ -48,20 +56,33 @@ public class LinkTeleporter : MonoBehaviour
                 }*/
             }
             //if no puzzle in room, set hasPuzzle to false
-            else if (parent.CompareTag("PuzzleRoom")){
-                /*if (puzlleFinished == true){
-                    closeDoor = false;
+            else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
+                if (puzzleController != null){
+                    if (puzzleController.GetPuzzleRoomState() != PuzzleRoomState.Completed){
+                        closeDoor = true;
+                        if(puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
+                           GetComponent<SpriteRenderer>().enabled = false;
+                        }
+                        else{
+                            GetComponent<SpriteRenderer>().enabled = true;
+                        }
+                    }
+                    else {
+                        Debug.Log ("Puzzle completed");
+                        closeDoor = false;
+                        RoomCompleted = true;
+                    }
                 }
-                else{
-                    closeDoor = true;
-                }*/
             }
             //if player already is in shop, keep door open
             else if (parent.CompareTag("ShopRoom")){
                 closeDoor = false;
+                RoomCompleted = true;
             }
+            //if player already is in endRoom, keep door closed
             else if (parent.CompareTag("EndRoom")){
                 closeDoor = true;
+                RoomCompleted = true;
             }
             
             //if player is inside room, close door if closeDoor is true
@@ -85,46 +106,46 @@ public class LinkTeleporter : MonoBehaviour
         if (TargetRoom != null){
             if (other.CompareTag("Player"))
             {
-                if (!Teleported){
-                    TargetRoom.GetComponent<LinkTeleporter>().Teleported = true;
-                    //transform position of player to a unit in front of the target room
-                    //check target rotation and teleport in front of the door
-                    if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0)){
-                        other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y - 2);
-                    }
-                    else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90)){
-                        other.transform.position = new Vector2(TargetRoom.transform.position.x + 2, TargetRoom.transform.position.y);
-                    }
-                    else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180)){
-                        other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y + 2);
-                    }
-                    else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90)){
-                        other.transform.position = new Vector2(TargetRoom.transform.position.x - 2, TargetRoom.transform.position.y);
-                    }
-
-                    GameObject parentTarget = TargetRoom.transform.parent.gameObject;
-
-                    GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;
-                    GameObject Portal2 = parentTarget.transform.GetChild(2).gameObject;
-                    GameObject Portal3 = parentTarget.transform.GetChild(3).gameObject;
-                    GameObject Portal4 = parentTarget.transform.GetChild(4).gameObject;
-
-                    Portal1.GetComponent<LinkTeleporter>().isInside = true;
-                    Portal2.GetComponent<LinkTeleporter>().isInside = true;
-                    Portal3.GetComponent<LinkTeleporter>().isInside = true;
-                    Portal4.GetComponent<LinkTeleporter>().isInside = true;
-
-                    Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
+                //if (!Teleported){
+                //TargetRoom.GetComponent<LinkTeleporter>().Teleported = true;
+                //transform position of player to a unit in front of the target room
+                //check target rotation and teleport in front of the door
+                if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0)){
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y - 2);
                 }
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x + 2, TargetRoom.transform.position.y);
+                }
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y + 2);
+                }
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x - 2, TargetRoom.transform.position.y);
+                }
+
+                GameObject parentTarget = TargetRoom.transform.parent.gameObject;
+
+                GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;
+                GameObject Portal2 = parentTarget.transform.GetChild(2).gameObject;
+                GameObject Portal3 = parentTarget.transform.GetChild(3).gameObject;
+                GameObject Portal4 = parentTarget.transform.GetChild(4).gameObject;
+
+                Portal1.GetComponent<LinkTeleporter>().isInside = true;
+                Portal2.GetComponent<LinkTeleporter>().isInside = true;
+                Portal3.GetComponent<LinkTeleporter>().isInside = true;
+                Portal4.GetComponent<LinkTeleporter>().isInside = true;
+
+                Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
+            //}
             }
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    /* void OnTriggerExit2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
             Teleported = false;
         }
-    }
+    } */
 }
