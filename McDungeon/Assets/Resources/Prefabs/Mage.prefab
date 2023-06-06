@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4202008653054338845}
   - component: {fileID: 7781150057164011766}
   - component: {fileID: 3284429707353329542}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mage
-  m_TagString: Untagged
+  m_TagString: MobHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,8 +99,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 10
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}

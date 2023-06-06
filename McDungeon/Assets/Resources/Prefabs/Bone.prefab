@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 7216981745963263562}
   - component: {fileID: 4698856424528355425}
   - component: {fileID: 5501995528960789943}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bone
-  m_TagString: Bone
+  m_TagString: Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &6331847818671073105
 CircleCollider2D:
@@ -70,7 +70,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.2
 --- !u!50 &6542902517597949163
 Rigidbody2D:
   serializedVersion: 4

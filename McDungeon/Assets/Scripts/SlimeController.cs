@@ -12,22 +12,22 @@ namespace Mobs
         private int attackRange = 1;
         [SerializeField]
         private float attackSpeed = 1f;
+        private float attackCooldown = 0f;
         [SerializeField]
         public int MobDamage = 1;
         [SerializeField]
         private float moveSpeed = 1f;
         [SerializeField]
         private float hitStun = 1f;
-        private float stunDelayTime = 0f;
-        private float attackCooldown = 0f;
+        private float elapsedStun = 0f;
         private float attackTime = 1.0f;
+        private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
         [SerializeField]
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
-        private float elapsedAttackTime = 0.0f;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
@@ -43,9 +43,9 @@ namespace Mobs
             Vector2 playerLocation = this.playerObject.transform.position;
 
             this.attackCooldown += Time.deltaTime;
-            if (this.stunDelayTime < hitStun)
+            if (this.elapsedStun < hitStun)
             {
-                this.stunDelayTime += Time.deltaTime;
+                this.elapsedStun += Time.deltaTime;
             }
             else if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCooldown > this.attackSpeed)) || isAttacking)
             {
@@ -79,6 +79,7 @@ namespace Mobs
         {
             if (elapsedAttackTime == 0)
             {
+                this.spriteRenderer.flipY = false;
                 this.transform.Translate(Vector2.zero);
                 this.animator.SetTrigger("Attack");
                 this.isAttacking = true;
@@ -132,12 +133,16 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.stunDelayTime = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
             {
                 Destroy(this.gameObject);
+                return;
             }
+            this.elapsedStun = 0;
+            this.isAttacking = false;
+            this.elapsedAttackTime = 0;
+            this.attackCooldown = 0;
         }
     }
 }

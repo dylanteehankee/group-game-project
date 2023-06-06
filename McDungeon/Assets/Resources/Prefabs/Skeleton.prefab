@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3970484899172668137}
   m_Layer: 7
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: MobHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,9 +131,11 @@ MonoBehaviour:
   attackRange: 5
   moveSpeed: 1
   hitStun: 0.5
+  hasBone: 1
   playerObject: {fileID: 0}
   potionDropPrefab: {fileID: 0}
   bonePrefab: {fileID: 2743265911000779979, guid: 3bf04d539ad554ba2a470bb680b1c746, type: 3}
+  bone: {fileID: 0}
 --- !u!95 &942053016471472941
 Animator:
   serializedVersion: 5

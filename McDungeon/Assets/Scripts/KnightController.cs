@@ -12,20 +12,25 @@ namespace Mobs
         private int attackRange = 2;
         [SerializeField]
         private float attackSpeed = 2f;
+        private float attackCooldown = 0f;
         [SerializeField]
         public int MobDamage = 2;
         [SerializeField]
         private float moveSpeed = 1.5f;
         [SerializeField]
         private float hitStun = 1.5f;
-        private float stunDelayTime = 0f;
-        private float attackCooldown = 0f;
+        private float elapsedStun = 0f;
+        private float shieldCooldown = 5f;
+        private float elapsedShieldCD = 0f;
+        private bool hasShield = true;
         private bool active = false;
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
         [SerializeField]
         private GameObject swordDropPrefab;
+        private SpriteRenderer spriteRenderer;
+        private Animator animator;
 
         // Delete Start when implemented
         void Start()
@@ -46,14 +51,27 @@ namespace Mobs
         {
             if (this.active)
             {
-                this.attackCooldown += Time.deltaTime;
-                if (this.stunDelayTime < hitStun)
+                elapsedShieldCD += Time.deltaTime;
+                if (elapsedShieldCD > shieldCooldown)
                 {
-                    this.stunDelayTime += Time.deltaTime;
+                    hasShield = true;
+                }
+
+                Vector2 location = this.transform.position;
+                Vector2 playerLocation = this.playerObject.transform.position;
+
+                this.attackCooldown += Time.deltaTime;
+                if (this.elapsedStun < hitStun)
+                {
+                    this.elapsedStun += Time.deltaTime;
+                }
+                else if (Vector2.Distance(location, playerLocation) < this.attackRange)
+                {
+                    this.attackPlayer(playerLocation - location);
                 }
                 else 
                 {
-                    moveTowardPlayer();
+                    moveTowardPlayer(location, playerLocation);
                 }
             }
         }
@@ -68,28 +86,19 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer()
+        private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
         {
-            Vector2 position = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-            var deltaLocation = playerLocation - position;
+            var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
-            if (Vector2.Distance(position, playerLocation) < this.attackRange)
-            {
-                this.transform.Translate(Vector2.zero);
-                this.attackPlayer();
-            }
-            else
-            {
-
-                this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
-            }
+            this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
+            // this.spriteDirection(deltaLocation);
         }
 
-        private void attackPlayer()
+        private void attackPlayer(Vector2 deltaLocation)
         {
             if (this.attackCooldown > this.attackSpeed)
             {
+                this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                 Debug.Log("ATTACKING PLAYER");
                 this.attackCooldown = 0;
             }
@@ -97,11 +106,19 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.stunDelayTime = 0;
-            this.mobHealth -= damage;
-            if (this.mobHealth < 0)
+            if (hasShield)
             {
-                Destroy(this.gameObject);
+                hasShield = false;
+                elapsedShieldCD = 0;
+            }
+            else
+            {
+                this.elapsedStun = 0;
+                this.mobHealth -= damage;
+                if (this.mobHealth < 0)
+                {
+                    Destroy(this.gameObject);
+                }
             }
         }
 

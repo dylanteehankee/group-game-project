@@ -97,6 +97,12 @@ namespace Mobs
                 this.animator.SetTrigger("Attack");
                 isThrowing = true;
             }
+            else if (this.elapsedThrowTime > this.throwTime)
+            {
+                this.isThrowing = false;
+                this.elapsedThrowTime = 0;
+                return;
+            }
             else if (this.elapsedThrowTime > (this.throwTime / 2) && hasBone)
             {
                 deltaLocation.Normalize();
@@ -106,12 +112,6 @@ namespace Mobs
                 this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject);
                 this.hasBone = false;
                 Debug.Log("THROWING BONE");
-            }
-            else if (this.elapsedThrowTime > this.throwTime)
-            {
-                this.isThrowing = false;
-                this.elapsedThrowTime = 0;
-                return;
             }
             this.elapsedThrowTime += Time.deltaTime;
         }
@@ -139,22 +139,12 @@ namespace Mobs
                 this.animator.SetInteger("Direction", 1);
             }
         }
-
-        public void TakeDamage(float damage)
-        {
-            this.elapsedStun = 0;
-            this.mobHealth -= damage;
-            if (this.mobHealth < 0)
-            {
-                Destroy(this.gameObject);
-            }
-        }
         
         public bool HasBone()
         {
             return hasBone;
         }
-        
+
         public void GrabBone()
         {
             if (!hasBone)
@@ -178,6 +168,19 @@ namespace Mobs
                 newBone.GetComponent<BoneController>().SetOwner(this.gameObject);
                 this.bone = newBone;
             }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            this.mobHealth -= damage;
+            if (this.mobHealth < 0)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            this.elapsedStun = 0;
+            this.isThrowing = false;
+            this.elapsedThrowTime = 0;
         }
     }
 }
