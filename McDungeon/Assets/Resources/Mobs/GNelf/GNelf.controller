@@ -57,7 +57,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GNelfUp
+  m_Name: GNelfWalkUp
   m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions:
@@ -110,7 +110,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GNelfSide
+  m_Name: GNelfWalkSide
   m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions:
@@ -191,7 +191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GNelfDown
+  m_Name: GNelfWalkDown
   m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions:

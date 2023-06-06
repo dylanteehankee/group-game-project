@@ -11,13 +11,11 @@ namespace Mobs
         [SerializeField]
         private int attackRange = 5;
         [SerializeField]
-        private float attackSpeed = 1f;
+        private float attackSpeed = 2f;
         [SerializeField]
-        private float castSpeed = 5f;
+        private float castSpeed = 10f;
         [SerializeField]
-        private float castTime = 2f;
-        [SerializeField]
-        public int MobDamage = 2;
+        private float castTime = 4f;
         [SerializeField]
         private float moveSpeed = 1f;
         [SerializeField]
@@ -26,23 +24,49 @@ namespace Mobs
         private float attackCooldown = 0f;
         private float castCooldown = 0f;
         private float castDelayTime = 0f;
+        private float throwTime = 0.8f;
+        private float elapsedThrowTime = 0f;
+        private bool isThrowing = false;
+        private bool hasKnife = false;
+        private bool isCasting = false;
+        [SerializeField]
         private GameObject playerObject;
         [SerializeField]
         private GameObject gNelfPrefab;
         [SerializeField]
         private GameObject potionDropPrefab;
+        [SerializeField]
+        private GameObject knifePrefab;
+        private SpriteRenderer spriteRenderer;
+        private Animator animator;
 
+        void Start()
+        {
+            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.animator = this.GetComponent<Animator>();
+        }
         void Update()
         {
+            Vector2 location = this.transform.position;
+            Vector2 playerLocation = this.playerObject.transform.position;
+
             this.attackCooldown += Time.deltaTime;
             this.castCooldown += Time.deltaTime;
             if (this.elapsedStun < hitStun)
             {
                 this.elapsedStun += Time.deltaTime;
             }
+            else if (!isThrowing && (this.castCooldown > this.castSpeed || isCasting))
+            {
+                this.casting();
+            }
+            else if((Vector2.Distance(location, playerLocation) < this.attackRange && this.attackCooldown > this.attackSpeed) || isThrowing)
+            {
+                this.throwKnife(playerLocation - location);
+            }
             else
             {
-                moveTowardPlayer();
+                moveTowardPlayer(playerLocation - location);
             }
         }
 
@@ -56,58 +80,103 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer()
+        private void moveTowardPlayer(Vector2 deltaLocation)
         {
-            Vector2 position = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-            var deltaLocation = playerLocation - position;
             deltaLocation.Normalize();
-            if (Vector2.Distance(position, playerLocation) < this.attackRange || this.castDelayTime > 0)
-            {
-                this.transform.Translate(Vector2.zero);
-                this.attackPlayer();
-            }
-            else
-            {
-                this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
-            }
+            this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
+            this.spriteDirection(deltaLocation);
         }
 
-        private void attackPlayer()
+        private void throwKnife(Vector2 deltaLocation)
         {
-            if (this.attackCooldown > this.attackSpeed && this.castDelayTime == 0)
+            if (this.elapsedThrowTime == 0)
             {
-                Debug.Log("ATTACKING PLAYER");
-                this.attackCooldown = 0;
+                this.transform.Translate(Vector2.zero);
+                this.animator.SetTrigger("Attack");
+                isThrowing = true;
+                hasKnife = true;
             }
-            else if (this.castCooldown > this.castSpeed || this.castDelayTime > 0)
+            else if (this.elapsedThrowTime > this.throwTime)
             {
-                if (this.castDelayTime > this.castTime)
+                this.isThrowing = false;
+                this.elapsedThrowTime = 0;
+                this.attackCooldown = 0;
+                return;
+            }
+            else if (this.elapsedThrowTime > 0.6 && hasKnife)
+            {
+                deltaLocation.Normalize();
+                Vector2 location = this.transform.position;
+                var knife = (GameObject)Instantiate(this.knifePrefab);
+                knife.transform.position = location;
+                knife.GetComponent<KnifeController>().Throw(this.playerObject.transform.position);
+                this.hasKnife = false;
+                Debug.Log("THROWING KNIFE");
+            }
+            this.elapsedThrowTime += Time.deltaTime;
+        }
+
+        private void casting()
+        {
+            if (!isCasting)
+            {
+                Debug.Log("CASTING");
+                this.animator.SetTrigger("Cast");
+                isCasting = true;
+            }
+            else if (this.castDelayTime > this.castTime)
+            {
+                var spawner = this.transform.parent.gameObject.GetComponent<MobManager>();
+                spawner.SpawnGNelfs(this.gNelfPrefab, this.transform.position);
+                this.castDelayTime = 0;
+                this.castCooldown = 0;
+                this.isCasting = false;
+                this.animator.SetTrigger("Cast");
+                return;
+            }
+
+            this.castDelayTime += Time.deltaTime;
+        }
+
+        private void spriteDirection(Vector2 deltaLocation)
+        {
+            if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
+            {
+                this.animator.SetInteger("Direction", 0);
+                if (deltaLocation.x < 0)
                 {
-                    var spawner = this.transform.parent.gameObject.GetComponent<MobManager>();
-                    var newGNelf = (GameObject)Instantiate(this.gNelfPrefab, spawner.transform);
-                    spawner.Subscribe(newGNelf);
-                    newGNelf.transform.position = new Vector3(this.transform.position.x + Random.Range(-1, 1), this.transform.position.y + Random.Range(-1, 1), 0);
-                    spawner.Notify();
-                    this.castDelayTime = 0;
-                    this.castCooldown = 0;
+                    this.spriteRenderer.flipX = true;
                 }
                 else
                 {
-                    this.castDelayTime += Time.deltaTime;
+                    this.spriteRenderer.flipX = false;
                 }
+            }
+            else if (deltaLocation.y < 0)
+            {
+                this.animator.SetInteger("Direction", -1);
+            }
+            else
+            {
+                this.animator.SetInteger("Direction", 1);
             }
         }
 
         public void TakeDamage(float damage)
         {
-            this.elapsedStun = 0;
-            this.castDelayTime = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
             {
                 Destroy(this.gameObject);
+                return;
             }
+            this.elapsedStun = 0;
+            this.isThrowing = false;
+            this.elapsedThrowTime = 0;
+            this.attackCooldown = 0;
+            this.castDelayTime = 0;
+            this.castCooldown = 0;
+            this.isCasting = false;
         }
     }
 }

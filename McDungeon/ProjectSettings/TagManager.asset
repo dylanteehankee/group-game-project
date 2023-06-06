@@ -8,7 +8,7 @@ TagManager:
   - MobHitbox
   - Knight
   - MobSpawner
-  - Bone
+  - Throwable
   layers:
   - Default
   - TransparentFX

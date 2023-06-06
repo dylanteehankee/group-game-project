@@ -7,20 +7,19 @@ namespace Mobs
     public class GNelfController : MonoBehaviour, IMobController
     {
         [SerializeField]
-        private float mobHealth = 10;
+        private float mobHealth = 4.0f;
         [SerializeField]
-        private float attackRange = 1.5f;
+        private float attackRange = 1f;
         [SerializeField]
         private float attackSpeed = 1f;
         private float attackCooldown = 0f;
         [SerializeField]
         public int MobDamage = 1;
         [SerializeField]
-        private float moveSpeed = 1f;
+        private float moveSpeed = 2f;
         [SerializeField]
         private float hitStun = 1f;
         private float elapsedStun = 0f;
-        [SerializeField]
         private GameObject playerObject;
         [SerializeField]
         private GameObject potionDropPrefab;
@@ -49,7 +48,7 @@ namespace Mobs
             }
             else
             {
-                this.moveTowardPlayer(location, playerLocation);
+                this.moveTowardPlayer(playerLocation - location);
             }
         }
 
@@ -63,9 +62,8 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
+        private void moveTowardPlayer(Vector2 deltaLocation)
         {
-            var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
             this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
             this.spriteDirection(deltaLocation);
@@ -107,12 +105,13 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.elapsedStun = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
             {
                 Destroy(this.gameObject);
+                return;
             }
+            this.elapsedStun = 0;
         }
     }
 }
