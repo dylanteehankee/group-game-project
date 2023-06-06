@@ -6,30 +6,53 @@ namespace Mobs
 {
     public class BoneController : MonoBehaviour
     {
+        [SerializeField]
+        private int boneSpeed = 1000;
         private bool active = true;
-         public void Throw(Vector2 playerLocation)
-        {
-            Vector2 location = this.transform.position;
-            var deltaLocation = playerLocation - location;
-            deltaLocation.Normalize();
-            this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 800);
-        }
-        // Fix later to disable collider after collision
+        private GameObject ownerSkeleton;
+        private bool pickup = true;
+
+        // Fix later to disable collision after collision
         // Add no collision if not moving
         void OnCollisionEnter2D(Collision2D collision)
         {
-            var collider = collision.collider;
-            if (this.active && collider.gameObject.tag == "PlayerHitbox")
+            if (this.active && collision.gameObject.tag == "PlayerHitbox")
             {
                 Vector2 location = this.transform.position;
-                Vector2 playerLocation = collider.transform.position;
+                Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 deltaLocation.Normalize();
-                collider.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
             }
+            else if (pickup && collision.gameObject.tag == "MobHitbox" && !collision.gameObject.GetComponent<SkeletonController>().HasBone())
+            {
+                pickup = false;
+                collision.gameObject.GetComponent<SkeletonController>().GrabBone();
+                if (collision.gameObject != ownerSkeleton)
+                {
+                    var newBone = collision.gameObject.GetComponent<SkeletonController>().GetBone();
+                    ownerSkeleton.GetComponent<SkeletonController>().Reassign(newBone);
+                }
+                Destroy(this.gameObject);
+            }
+        }
+
+        public void Throw(Vector2 playerLocation, GameObject skeleton)
+        {
+            ownerSkeleton = skeleton;
+            Vector2 location = this.transform.position;
+            var deltaLocation = playerLocation - location;
+            deltaLocation.Normalize();
+            this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
+            Destroy(this.gameObject, 40);
+        }
+
+        public void SetOwner(GameObject newOwner)
+        {
+            this.ownerSkeleton = newOwner;
         }
     }
 }

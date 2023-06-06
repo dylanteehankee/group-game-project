@@ -14,9 +14,12 @@ namespace Mobs
         private float moveSpeed = 1f;
         [SerializeField]
         private float hitStun = 0.5f;
-        private float stunDelayTime = 0f;
+        private float elapsedStun = 0f;
         private float throwCooldown = 1f;
+        private float elapsedThrowCD = 0f;
         private float throwTime = 0.8f;
+        private float elapsedThrowTime = 0f;
+        [SerializeField]
         private bool hasBone = true;
         private bool isThrowing = false;
         [SerializeField]
@@ -25,9 +28,8 @@ namespace Mobs
         private GameObject potionDropPrefab;
         [SerializeField]
         private GameObject bonePrefab;
+        [SerializeField]
         private GameObject bone;
-        private float elapsedThrowCD = 0f;
-        private float elapsedThrowTime = 0f;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
@@ -42,9 +44,9 @@ namespace Mobs
             Vector2 location = this.transform.position;
             Vector2 playerLocation = this.playerObject.transform.position;
             
-            if (this.stunDelayTime < hitStun)
+            if (this.elapsedStun < hitStun)
             {
-                this.stunDelayTime += Time.deltaTime;
+                this.elapsedStun += Time.deltaTime;
             }
             else if ((Vector2.Distance(location, playerLocation) < this.attackRange && hasBone) || isThrowing)
             {
@@ -101,7 +103,7 @@ namespace Mobs
                 Vector2 location = this.transform.position;
                 this.bone = (GameObject)Instantiate(this.bonePrefab);
                 this.bone.transform.position = location + deltaLocation;
-                this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position);
+                this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject);
                 this.hasBone = false;
                 Debug.Log("THROWING BONE");
             }
@@ -140,22 +142,41 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.stunDelayTime = 0;
+            this.elapsedStun = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
             {
                 Destroy(this.gameObject);
             }
         }
-
-        void OnCollisionEnter2D(Collision2D collision)
+        
+        public bool HasBone()
         {
-            var collider = collision.collider;
-            if (collider.gameObject.tag == "Bone")
+            return hasBone;
+        }
+        
+        public void GrabBone()
+        {
+            if (!hasBone)
             {
-                Destroy(collision.gameObject);
+                Debug.Log("Pickup");
                 this.hasBone = true;
                 this.elapsedThrowCD = 0.0f;
+            }
+        }
+
+        public GameObject GetBone()
+        {
+            return this.bone;
+        }
+
+        public void Reassign(GameObject newBone)
+        {
+            if (!hasBone)
+            {
+                Debug.Log("Triggered");
+                newBone.GetComponent<BoneController>().SetOwner(this.gameObject);
+                this.bone = newBone;
             }
         }
     }
