@@ -12,14 +12,14 @@ namespace Mobs
         private float attackRange = 1.5f;
         [SerializeField]
         private float attackSpeed = 1f;
+        private float attackCooldown = 0f;
         [SerializeField]
         public int MobDamage = 1;
         [SerializeField]
         private float moveSpeed = 1f;
         [SerializeField]
         private float hitStun = 1f;
-        private float stunDelayTime = 0f;
-        private float attackCooldown = 0f;
+        private float elapsedStun = 0f;
         [SerializeField]
         private GameObject playerObject;
         [SerializeField]
@@ -39,9 +39,9 @@ namespace Mobs
             Vector2 playerLocation = this.playerObject.transform.position;
 
             this.attackCooldown += Time.deltaTime;
-            if (this.stunDelayTime < hitStun)
+            if (this.elapsedStun < hitStun)
             {
-                this.stunDelayTime += Time.deltaTime;
+                this.elapsedStun += Time.deltaTime;
             }
             else if (Vector2.Distance(location, playerLocation) < this.attackRange)
             {
@@ -107,7 +107,7 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.stunDelayTime = 0;
+            this.elapsedStun = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
             {

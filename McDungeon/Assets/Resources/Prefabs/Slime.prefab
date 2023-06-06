@@ -100,8 +100,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 10
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -168,6 +168,7 @@ MonoBehaviour:
   MobDamage: 1
   moveSpeed: 1
   hitStun: 1
+  playerObject: {fileID: 0}
   potionDropPrefab: {fileID: 0}
 --- !u!95 &5185989276852243298
 Animator:

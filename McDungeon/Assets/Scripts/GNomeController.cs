@@ -22,7 +22,7 @@ namespace Mobs
         private float moveSpeed = 1f;
         [SerializeField]
         private float hitStun = 0.25f;
-        private float stunDelayTime = 0f;
+        private float elapsedStun = 0f;
         private float attackCooldown = 0f;
         private float castCooldown = 0f;
         private float castDelayTime = 0f;
@@ -36,9 +36,9 @@ namespace Mobs
         {
             this.attackCooldown += Time.deltaTime;
             this.castCooldown += Time.deltaTime;
-            if (this.stunDelayTime < hitStun)
+            if (this.elapsedStun < hitStun)
             {
-                this.stunDelayTime += Time.deltaTime;
+                this.elapsedStun += Time.deltaTime;
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Mobs
 
         public void TakeDamage(float damage)
         {
-            this.stunDelayTime = 0;
+            this.elapsedStun = 0;
             this.castDelayTime = 0;
             this.mobHealth -= damage;
             if (this.mobHealth < 0)
