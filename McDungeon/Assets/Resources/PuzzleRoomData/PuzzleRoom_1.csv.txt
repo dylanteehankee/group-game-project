@@ -1,0 +1,6 @@
+Buttons,ID,Xpos,Ypos,ShapeLink
+PushButton,1,11,5,Circle
+PushButton,2,11,11,Square
+,,,,
+Disappear Walls,ID,buttonTriggerID,Ypos,
+DisappeaWall,,,,

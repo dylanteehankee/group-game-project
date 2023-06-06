@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 /// <summary>
 /// The PuzzleController should be an object directly under the puzzle room object. 
@@ -34,9 +35,106 @@ public class PuzzleController : MonoBehaviour
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject disappearWallPrefab;
 
+    private Dictionary<string, PuzzleElementShapeLink> stringToPuzzleElementShape; 
+
     void Start()
     {
        Init();
+    }
+
+    private void InitPuzzleItems(string puzzlePath)
+    {
+        stringToPuzzleElementShape = new Dictionary<string, PuzzleElementShapeLink>();
+        stringToPuzzleElementShape.Add("Circle", PuzzleElementShapeLink.Circle);
+        stringToPuzzleElementShape.Add("Square", PuzzleElementShapeLink.Square);
+        stringToPuzzleElementShape.Add("None", PuzzleElementShapeLink.None);
+        
+        string filePath = "Assets/Resources/PuzzleRoomData/" + puzzlePath;
+        //FileInfo openFile = new FileInfo("Assets/Resources/PuzzleRoomData/DemoTest.txt");
+
+        StreamReader fileReader = new StreamReader(File.OpenRead(filePath));
+        string line = fileReader.ReadLine();
+        
+        while(line != null){
+            string[] split = line.Split(',');
+            switch(split[0])
+            {
+                case "PushButton":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateButton(
+                            button: Instantiate(buttonPrefab, gameObject.transform), 
+                            id: split[1],
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            shape: stringToPuzzleElementShape[split[4]]
+                        )
+                    );
+                    break;
+                case "SwitchButton":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateSwitchButton(
+                            button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
+                            id: split[1],
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            shape: stringToPuzzleElementShape[split[4]]
+                        )
+                    );
+                    break;
+                case "DisappearWall":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateDisappearWall(
+                            wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            buttonTriggerID: split[2],
+                            shape: stringToPuzzleElementShape[split[3]],
+                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
+                            position: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
+                            transitionTime: float.Parse(split[8]),
+                            changePauseTime: float.Parse(split[9])
+                        )
+                    );
+                    AddItemTrigger(
+                        responderID: split[1], 
+                        triggerID: split[2]
+                    );
+                    break;
+                case "SlidingWall":
+                case "StaticWall": 
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateDisappearWall(
+                            wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            buttonTriggerID: null,
+                            shape: stringToPuzzleElementShape[split[2]],
+                            wallScale: new Vector3(float.Parse(split[3]), float.Parse(split[4]), 1),
+                            position: new Vector3(float.Parse(split[5]), float.Parse(split[6]), 0),
+                            transitionTime: 0f,
+                            changePauseTime: 0f
+                        )
+                    );
+                    break;
+                case "Torch":
+                    Debug.Log("Printing torch items");
+                    foreach(string item in split)
+                    {
+                        Debug.Log(item);
+                    }
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateTorch(
+                            torch: Instantiate(torchPrefab, gameObject.transform), 
+                            id: split[1], 
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            //expirable: bool.Parse(split[4]), 
+                            expirable: true, 
+                            lightDuration: float.Parse(split[5])
+                        )
+                    );
+                    break;
+                default:
+                    break;
+            }
+            line = fileReader.ReadLine();
+        }
+        fileReader.Close();
     }
 
     /// <summary>
@@ -49,6 +147,7 @@ public class PuzzleController : MonoBehaviour
         elementTriggers = new Dictionary<string, List<string>>();
         puzzleState = new PuzzleStateModel();
         puzzleCreator = new PuzzleCreator(this);
+        
 
         // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
@@ -97,8 +196,18 @@ public class PuzzleController : MonoBehaviour
                     InitPuzzle1();
                     break;
                 case 2:
-                    InitPuzzle2();
+                {
+                    InitPuzzleItems("PuzzleRoom_1.csv");
+                    winCondition = new Dictionary<string, (int state, bool satisfied)>();
+                    winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
+                }
                 case 3:
                     InitPuzzle3();
                     break;
