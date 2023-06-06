@@ -113,11 +113,6 @@ public class PuzzleController : MonoBehaviour
                     );
                     break;
                 case "Torch":
-                    Debug.Log("Printing torch items");
-                    foreach(string item in split)
-                    {
-                        Debug.Log(item);
-                    }
                     AddObjectToPuzzle(puzzleCreator
                         .CreateTorch(
                             torch: Instantiate(torchPrefab, gameObject.transform), 

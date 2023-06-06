@@ -72,7 +72,7 @@ public class TileUpdate : MonoBehaviour
                 else if((grandParent.CompareTag("TutorialRoom") || grandParent.CompareTag("PuzzleRoom"))){
                     if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
                         //TODO:
-                        Debug.Log("Puzzle room in progress");
+                        // Debug.Log("Puzzle room in progress");
                         replaceTileMap.SetTile(adjacent1, tileReplacement);
                         replaceTileMap.SetTile(adjacent2, tileReplacement);
                         replaceTileMap.SetTile(currentCell, tileReplacement);

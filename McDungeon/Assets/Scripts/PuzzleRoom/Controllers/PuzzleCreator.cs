@@ -16,8 +16,6 @@ public class PuzzleCreator
 
     private Dictionary<PuzzleElementShapeLink, Sprite> wallSprites;
 
-    private Dictionary<string, PuzzleElementShapeLink> stringToPuzzleElementShape;
-
     public PuzzleCreator(PuzzleController puzzleController)
     {
         this.puzzleController = puzzleController;
@@ -41,83 +39,6 @@ public class PuzzleCreator
         wallSprites.Add(PuzzleElementShapeLink.None, 
             Resources.Load<Sprite>(puzzleImagePath + "WallElement/static_wall")
         );
-
-        stringToPuzzleElementShape = new Dictionary<string, PuzzleElementShapeLink>();
-        stringToPuzzleElementShape.Add("Circle", PuzzleElementShapeLink.Circle);
-        stringToPuzzleElementShape.Add("Square", PuzzleElementShapeLink.Square);
-        stringToPuzzleElementShape.Add("None", PuzzleElementShapeLink.None);
-    }
-
-    public List<(string, PuzzleElementStateModel, PuzzleElementController)> GetPuzzleItems(string puzzlePath)
-    {
-        string filePath = "Assets/Resources/PuzzleRoomData/" + puzzlePath;
-        //FileInfo openFile = new FileInfo("Assets/Resources/PuzzleRoomData/DemoTest.txt");
-        List<(string, PuzzleElementStateModel, PuzzleElementController)> allElements = 
-            new List<(string, PuzzleElementStateModel, PuzzleElementController)>();
-
-        StreamReader fileReader = new StreamReader(File.OpenRead(filePath));
-        string line = fileReader.ReadLine();
-        
-        while(line != null){
-            string[] split = line.Split(',');
-            Debug.Log(split[0]);
-            switch(split[0])
-            {
-                /*
-                case "PushButton":
-                    allElements.Add(
-                        CreateButton(
-                            button: puzzleController.gameObject.Instantiate(puzzleController.buttonPrefab, puzzleController.gameObject.transform), 
-                            id: split[1],
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            shape: stringToPuzzleElementShape[split[4]]
-                        )
-                    );
-                    break;
-                case "SwitchButton":
-                    allElements.Add(
-                        CreateSwitchButton(
-                            button: puzzleController.gameObject.Instantiate(puzzleController.buttonSwitchPrefab, puzzleController.gameObject.transform), 
-                            id: split[1],
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            shape: stringToPuzzleElementShape[split[4]]
-                        )
-                    );
-                    break;
-                case "DisappearWall":
-                    allElements.Add(
-                        CreateDisappearWall(
-                            wall: puzzleController.gameObject.Instantiate(puzzleController.disappearWallPrefab, puzzleController.gameObject.transform), 
-                            id: split[1], 
-                            buttonTriggerID: split[2],
-                            shape: stringToPuzzleElementShape[split[3]],
-                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
-                            position: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
-                            transitionTime: float.Parse(split[8]),
-                            changePauseTime: float.Parse(split[9])
-                        )
-                    );
-                    break;
-                case "SlidingWall":
-                case "StaticWall":
-                case "Torch":
-                    allElements.Add(
-                        CreateTorch(
-                            torch: puzzleController.gameObject.Instantiate(puzzleController.torchPrefab, puzzleController.gameObject.transform), 
-                            id: split[1], 
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            expirable: Boolean.Parse(split[4]), 
-                            lightDuration: float.Parse(split[5])
-                        )
-                    );
-                default:
-                    break;
-                */
-            }
-            line = fileReader.ReadLine();
-        }
-        fileReader.Close();
-        return allElements;
     }
 
     public (string, ButtonStateModel, ButtonController) CreateButton(GameObject button, string id, Vector3 position, PuzzleElementShapeLink shape)
