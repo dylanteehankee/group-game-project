@@ -32,17 +32,30 @@ namespace Mobs{
             }
         }
 
-        public void SpawnMobs(MobTypes type)
+        public void SpawnMobs(MobTypes type, int amount = 4)
         {
             var mobPrefab = this.getMobPrefab(type);
-
-            for (int i = 0; i < this.mobCount; i++) {
+            for (int i = 0; i < amount; i++) {
                 var newMob = (GameObject)Instantiate(mobPrefab, this.gameObject.transform);
                 this.Subscribe(newMob);
-                newMob.transform.position = new Vector3(Random.Range(-10,10), Random.Range(-10, 10), 0);
+                newMob.transform.position = new Vector2(Random.Range(-10,10), Random.Range(-10, 10));
             }
-
             this.Notify();
+        }
+
+        public void SpawnGNelfs(GameObject gNelf, Vector2 spawnLocation, int amount = 3)
+        {
+            for (int i = 0; i < amount; i++) {
+                var newGNelf = (GameObject)Instantiate(gNelf, this.gameObject.transform);
+                this.Subscribe(newGNelf);
+                newGNelf.transform.position = new Vector2(spawnLocation.x + Random.Range(-1, 1), spawnLocation.y + Random.Range(-1, 1));
+            }
+            this.Notify();
+        }
+
+        public void SpawnKnights(GameObject knight, Vector2[] locations)
+        {
+            return;
         }
 
         private GameObject getMobPrefab(MobTypes type)
@@ -84,6 +97,11 @@ namespace Mobs{
         public List<GameObject> GetMobs()
         {
             return this.mobsList;
+        }
+
+        public void moveSpawner(Vector2 destination)
+        {
+            this.transform.position = destination;
         }
     }
 }
