@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630bc9910e34d41cbad467fbf5290bfd, type: 3}
+  m_Name: StatusEffects
+  m_EditorClassIdentifier: 
+  deathPrefab: {fileID: 8643498518171995909, guid: 7f62c29ef76b84d419a93961f58c3b33, type: 3}
+  stunPrefab: {fileID: 5425346345451318863, guid: 6305606c0853b461689df8c61ff3982d, type: 3}
+  freezePrefab: {fileID: 1035507365052288132, guid: 719b76af6299c4180843ff8bd7a9f4a7, type: 3}
+  ablazePrefab: {fileID: 8721503922700538264, guid: 6a38b01ad357b4d318b335f3753c9165, type: 3}
+  potionDropPrefab: {fileID: 0}
