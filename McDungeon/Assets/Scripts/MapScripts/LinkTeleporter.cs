@@ -7,7 +7,7 @@ public class LinkTeleporter : MonoBehaviour
     public GameObject TargetRoom {get; set;} = null;
     public bool Teleported {get; set;} = false;
     public bool isInside {get; set;} = false;
-    private GameObject parent;
+    private GameObject parent, grandparent;
     public bool beenDisabled = false;
     private bool RoomCompleted = false;
     private bool closeDoor = false; 
@@ -23,6 +23,7 @@ public class LinkTeleporter : MonoBehaviour
         if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
             puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
+        grandparent = parent.transform.parent.gameObject;
     }
 
     void LateUpdate(){
@@ -135,6 +136,7 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
+                grandparent.GetComponent<MapGenerator>().updateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
             //}
             }
