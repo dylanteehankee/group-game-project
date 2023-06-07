@@ -7,29 +7,34 @@ namespace Mobs
     public class SkeletonController : MonoBehaviour, IMobController
     {
         [SerializeField]
-        private float mobHealth = 15;
-        [SerializeField]
-        private float attackRange = 5f;
-        [SerializeField]
-        private float moveSpeed = 1f;
-        [SerializeField]
-        private float hitStun = 0.5f;
-        private float elapsedStun = 0f;
-        private float throwCooldown = 1f;
-        private float elapsedThrowCD = 0f;
-        private float throwTime = 0.8f;
-        private float elapsedThrowTime = 0f;
-        [SerializeField]
-        private bool hasBone = true;
-        private bool isThrowing = false;
-        [SerializeField]
         private GameObject playerObject;
         [SerializeField]
-        private GameObject potionDropPrefab;
+        private StatusEffects statusEffects;
         [SerializeField]
         private GameObject bonePrefab;
         [SerializeField]
+        private float mobHealth = 15.0f;
+        [SerializeField]
+        private float attackRange = 5.0f;
+        [SerializeField]
+        private float attackSpeed = 1.0f;
+        private float attackCD = 0.0f;
+        private const float THROWDURATION = 0.8f;
+        private float elapsedThrowTime = 0.0f;
+        private bool isThrowing = false;
+        private bool hasBone = true;
         private GameObject bone;
+        [SerializeField]
+        private float moveSpeed = 1.0f;
+        private float speedModifier = 1.0f;
+        [SerializeField]
+        private float stunDuration = 0.5f;
+        private bool stunned = false;
+        private bool isAblaze = false;
+        private bool isFreeze = false;
+        private GameObject stunObject;
+        private GameObject ablazeObject;
+        private GameObject freezeObject;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
@@ -41,28 +46,26 @@ namespace Mobs
 
         void Update()
         {
-            Vector2 location = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-            
-            if (this.elapsedStun < hitStun)
+            if (!this.stunned && !this.isFreeze)
             {
-                this.elapsedStun += Time.deltaTime;
-            }
-            else if ((Vector2.Distance(location, playerLocation) < this.attackRange && hasBone) || isThrowing)
-            {
-                if (this.elapsedThrowCD < this.throwCooldown)
+                Vector2 location = this.transform.position;
+                Vector2 playerLocation = this.playerObject.transform.position;
+                if ((Vector2.Distance(location, playerLocation) < this.attackRange && hasBone) || isThrowing)
                 {
-                    this.elapsedThrowCD += Time.deltaTime;
-                    this.moveTowardPlayer(location, playerLocation);
+                    if (this.attackCD < this.attackSpeed)
+                    {
+                        this.attackCD += Time.deltaTime;
+                        this.moveTowardPlayer(location, playerLocation);
+                    }
+                    else
+                    {
+                        this.attackPlayer(playerLocation - location);
+                    }
                 }
                 else
                 {
-                    this.attackPlayer(playerLocation - location);
+                    this.moveTowardPlayer(location, playerLocation);
                 }
-            }
-            else
-            {
-                this.moveTowardPlayer(location, playerLocation);
             }
         }
 
@@ -97,13 +100,13 @@ namespace Mobs
                 this.animator.SetTrigger("Attack");
                 isThrowing = true;
             }
-            else if (this.elapsedThrowTime > this.throwTime)
+            else if (this.elapsedThrowTime > THROWDURATION)
             {
                 this.isThrowing = false;
                 this.elapsedThrowTime = 0;
                 return;
             }
-            else if (this.elapsedThrowTime > (this.throwTime / 2) && hasBone)
+            else if (this.elapsedThrowTime > (THROWDURATION / 2) && hasBone)
             {
                 deltaLocation.Normalize();
                 Vector2 location = this.transform.position;
@@ -151,7 +154,7 @@ namespace Mobs
             {
                 Debug.Log("Pickup");
                 this.hasBone = true;
-                this.elapsedThrowCD = 0.0f;
+                this.attackCD = 0.0f;
             }
         }
 
@@ -170,17 +173,98 @@ namespace Mobs
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, EffectTypes type)
         {
             this.mobHealth -= damage;
-            if (this.mobHealth < 0)
+            this.death();
+            this.stunned = true;
+            this.status(type);
+            StopCoroutine("stunStatus");
+            StartCoroutine("stunStatus");
+        }
+
+        private void death()
+        {
+            if (this.mobHealth <= 0)
             {
+                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
                 Destroy(this.gameObject);
                 return;
             }
-            this.elapsedStun = 0;
+        }
+
+        private IEnumerator stunStatus()
+        {
+            if (!this.stunObject)
+            {
+                this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.7f));
+            }
             this.isThrowing = false;
+            this.animator.SetBool("Stun", true);
+            yield return new WaitForSeconds(stunDuration);
+            this.animator.SetBool("Stun", false);
             this.elapsedThrowTime = 0;
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
+            this.stunned = false;
+            Destroy(this.stunObject);
+        }
+
+        private void status(EffectTypes type)
+        {
+            switch (type)
+            {
+                case EffectTypes.None:
+                    break;
+                case EffectTypes.Ablaze:
+                    if (!this.ablazeObject)
+                    {
+                        this.ablazeObject = this.statusEffects.Ablaze(this.transform, Vector2.one, Vector2.zero);
+                        this.isAblaze = true;
+                    }
+                    StopCoroutine("ablazeStatus");
+                    StartCoroutine("ablazeStatus");
+                    break;
+                case EffectTypes.Freeze:
+                    if (!this.freezeObject)
+                    {
+                        this.freezeObject = this.statusEffects.Freeze(this.transform, new Vector2(2, 1.6f), Vector2.zero);
+                        this.animator.SetBool("Freeze", true);
+                        this.isFreeze = true;
+                    }
+                    StopCoroutine("freezeStatus");
+                    StartCoroutine("freezeStatus");
+                    break;
+                case EffectTypes.Slow:
+                    StopCoroutine("slowStatus");
+                    StartCoroutine("slowStatus");
+                    break;
+            }
+        }
+        private IEnumerator ablazeStatus()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                yield return new WaitForSeconds(this.statusEffects.GetAblazeDuration() / 4);
+                this.mobHealth -= this.statusEffects.GetAblazeDamage();
+                this.death();
+            }
+            this.isAblaze = false;
+            Destroy(this.ablazeObject);
+        }
+
+        private IEnumerator freezeStatus()
+        {
+            yield return new WaitForSeconds(this.statusEffects.GetFreezeDuration());
+            this.isFreeze = false;
+            this.animator.SetBool("Freeze", false);
+            Destroy(this.freezeObject);
+        }
+
+        private IEnumerator slowStatus()
+        {
+            this.speedModifier = this.statusEffects.GetSlowModifier();
+            yield return new WaitForSeconds(this.statusEffects.GetSlowDuration());
+            this.speedModifier = 1.0f;
         }
     }
 }
