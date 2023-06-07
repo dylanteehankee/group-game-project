@@ -83,9 +83,9 @@ namespace Mobs
             {
                 this.elapsedCast += Time.deltaTime;
             }
-        }
+        }   
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, EffectTypes type)
         {
             this.elapsedStun = 0;
             this.elapsedCast = 0;

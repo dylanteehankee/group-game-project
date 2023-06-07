@@ -104,7 +104,7 @@ namespace Mobs
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, EffectTypes type)
         {
             if (hasShield)
             {
