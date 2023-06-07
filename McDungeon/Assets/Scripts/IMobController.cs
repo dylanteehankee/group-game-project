@@ -7,6 +7,6 @@ namespace Mobs
     public interface IMobController
     {
         void GetPlayer(GameObject player);
-        void TakeDamage(float damage);
+        void TakeDamage(float damage, EffectTypes type);
     }
 }
