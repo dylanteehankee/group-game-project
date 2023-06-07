@@ -226,6 +226,9 @@ public class MapGenerator : MonoBehaviour
         currentRoomCoordinates = getKeyFromValue(roomDictionary, startRoom);
         GameObject startMiniRoom = miniMap.transform.GetChild(currentRoomCoordinates.x * map.GetLength(1) + currentRoomCoordinates.y).gameObject;
         startMiniRoom.GetComponent<SpriteRenderer>().color = Color.white;
+
+        //update adjacent rooms
+        updateAdjacent(currentRoomCoordinates);
     }
     //Update minimap based on current room
     public void updateMiniMap(GameObject currentRoom){
@@ -240,6 +243,12 @@ public class MapGenerator : MonoBehaviour
         //set current room to white
         miniRoom.GetComponent<SpriteRenderer>().color = Color.white;
 
+        //update adjacent rooms
+        updateAdjacent(currentRoomCoordinates);
+    }
+
+    // Check Adjacent Rooms
+    private void updateAdjacent(Vector2Int currentRoomCoordinates){
         //set adjacent rooms up, down, left, and right that are transparent to orange
         if (currentRoomCoordinates.x + 1 < map.GetLength(0)){
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x + 1, currentRoomCoordinates.y);
