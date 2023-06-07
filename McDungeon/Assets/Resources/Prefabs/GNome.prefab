@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1768202193, guid: 562ae45815ede49b6bae339e03b4a6d1, type: 3}
+  m_Sprite: {fileID: -320998831, guid: 5d8dc80cb13554eeb9bd98546e4ada34, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 0.8828125}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -138,6 +138,9 @@ MonoBehaviour:
   gNelfPrefab: {fileID: 7178146216519888684, guid: 2013b24d140af401484b84be3c7209cd, type: 3}
   potionDropPrefab: {fileID: 0}
   knifePrefab: {fileID: 7757278891287518263, guid: b897274acf1d549558801d0c5f44471a, type: 3}
+  deathPrefab: {fileID: 8643498518171995909, guid: 7f62c29ef76b84d419a93961f58c3b33, type: 3}
+  stunPrefab: {fileID: 5425346345451318863, guid: 6305606c0853b461689df8c61ff3982d, type: 3}
+  frozenPrefab: {fileID: 1035507365052288132, guid: 719b76af6299c4180843ff8bd7a9f4a7, type: 3}
 --- !u!95 &-5852795329368791669
 Animator:
   serializedVersion: 5
