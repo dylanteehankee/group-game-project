@@ -15,11 +15,11 @@ namespace McDungeon
             active = false;
             progress = 0;
             code[0] = 'W';
-            code[1] = 'A';
-            code[2] = 'S';
-            code[3] = 'D';
-            code[4] = 'D';
-            code[5] = 'S';
+            code[1] = 'S';
+            code[2] = 'A';
+            code[3] = 'W';
+            code[4] = 'S';
+            code[5] = 'A';
         }
 
         void Update()
