@@ -98,6 +98,24 @@ public class PuzzleController : MonoBehaviour
                     );
                     break;
                 case "SlidingWall":
+                     AddObjectToPuzzle(puzzleCreator
+                        .CreateWall(
+                            wall: Instantiate(wallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            buttonTriggerID: split[2],
+                            shape: stringToPuzzleElementShape[split[3]],
+                            openPosition: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
+                            closedPosition: new Vector3(float.Parse(split[8]), float.Parse(split[9]), 0),
+                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
+                            transitionTime: float.Parse(split[10]),
+                            changePauseTime: float.Parse(split[11])
+                        )
+                    );
+                    AddItemTrigger(
+                        responderID: split[1], 
+                        triggerID: split[2]
+                    );
+                    break;
                 case "StaticWall": 
                     AddObjectToPuzzle(puzzleCreator
                         .CreateDisappearWall(
@@ -207,7 +225,13 @@ public class PuzzleController : MonoBehaviour
                     InitPuzzle3();
                     break;
                 case 4:
-                    InitPuzzle4();
+                    //InitPuzzle4();
+                    InitPuzzleItems("PuzzleRoom_3.csv");
+                    winCondition = new Dictionary<string, (int state, bool satisfied)>();
+                    winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
                 default:
                     break;
