@@ -20,6 +20,7 @@ namespace McDungeon
         [SerializeField] private float speed;
         private float hitTakenInterverl;
         private float hitTimer;
+        private bool readyForAction = true;
 
         private Effect effectType;
         private bool hasEffect;
@@ -34,7 +35,20 @@ namespace McDungeon
         private ISpellMaker spell_water;
         private ISpellMaker spell_lightning;
         private ISpellMaker spell_Q;
+        private ISpellMaker spell_E;
+        private char spell;
 
+        private float actionCoolDown = 0f;
+        private float atkCoolDown = 0.5f;
+
+        private float spellQCoolDown = 5f;
+        private float spellQCoolDowntimer = 0f;
+        private float spellECoolDown = 5f;
+        private float spellECoolDowntimer = 0f;
+
+        private float spellCastDuration = 1f;
+        private float spellCastTimer = 0f;
+        private bool castingSpell = false;
 
         void Start()
         {
@@ -45,9 +59,10 @@ namespace McDungeon
             spell_lightning = spellHome.GetComponent<ThunderdMaker>();
 
             spell_Q = spell_water;
+            spell_E = spell_lightning;
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
-            closeRangeWeapon.Config(10f, 120f, true);
+            closeRangeWeapon.Config(10f, 10f, 120f, 1f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
         }
@@ -61,17 +76,39 @@ namespace McDungeon
 
             this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
 
-            if (Input.GetKeyDown(KeyCode.Q))
+            // Reduce all coll down count.
+            UpdateCoolDowns();
+
+            // Manage Action
+            if (actionCoolDown <= 0f)
             {
-                spell_Q.Activate();
+                // Read input to determine next action.
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    closeRangeWeapon.SetActive(true);
+                    actionCoolDown = atkCoolDown;
+                }
+                else if (Input.GetKey(KeyCode.Q) && spellQCoolDowntimer <= 0f)
+                {
+                    spell_Q.Activate();
+                    castingSpell = true;
+                    spellCastTimer = spellCastDuration;
+                    actionCoolDown = 100f;
+                    spell = 'Q';
+                }
+                else if (Input.GetKey(KeyCode.E) && spellECoolDowntimer <= 0f)
+                {
+                    spell_E.Activate();
+                    castingSpell = true;
+                    spellCastTimer = spellCastDuration;
+                    actionCoolDown = 100f;
+                    spell = 'E';
+                }
             }
-            if (Input.GetKey(KeyCode.Q))
+
+            if (castingSpell)
             {
-                spell_Q.ShowRange(this.transform.position, mousePos);
-            }
-            if (Input.GetKeyUp(KeyCode.Q))
-            {
-                spell_Q.Execute(this.transform.position, mousePos);
+                CastSpell(mousePos);
             }
 
             // Hit timer management.
@@ -80,7 +117,7 @@ namespace McDungeon
                 hitTimer += Time.deltaTime;
             }
 
-
+            // Effect timer management.
             if (hasEffect)
             {
                 if (effectTimer < effectDuration)
@@ -94,6 +131,11 @@ namespace McDungeon
                     effectDamegePerSec = 0f;
                     effectSlowRate = 1f; // no slow
                     effectCount = 0;
+
+                    if (effectType == Effect.Frezze)
+                    {
+                        readyForAction = true;
+                    }
                     effectType = Effect.None;
                     hasEffect = false;
                 }
@@ -110,17 +152,13 @@ namespace McDungeon
                 // Frezze
                 if (effectType == Effect.Frezze && effectSlowRate != 0.111f)
                 {
+                    readyForAction = false;
                     effectSlowRate = 0.111f;
                     // Might change player color
                 }
             }
-
-
         }
 
-        void Shoot()
-        {
-        }
 
         void OnCollisionEnter2D(Collision2D collision)
         {
@@ -158,7 +196,109 @@ namespace McDungeon
                 // Reset timer
                 hitTimer = 0f;
             }
+
+            if (hasEffect && effectType == Effect.Frezze)
+            {
+                // Clear Frezze effect
+                effectTimer = 0f;
+                effectDuration = 0f;
+                effectDamegePerSec = 0f;
+                effectSlowRate = 1f; // no slow
+                effectCount = 0;
+                readyForAction = true;
+                effectType = Effect.None;
+                hasEffect = false;
+            }
         }
 
+        void UpdateCoolDowns()
+        {
+            if (actionCoolDown > 0f)
+            {
+                actionCoolDown -= Time.deltaTime;
+            }
+
+            if (spellQCoolDowntimer > 0f)
+            {
+                spellQCoolDowntimer -= Time.deltaTime;
+            }
+
+            if (spellECoolDowntimer > 0f)
+            {
+                spellECoolDowntimer -= Time.deltaTime;
+            }
+        }
+
+        void CastSpell(Vector3 mousePos)
+        {
+            if (spell == 'Q')
+            {
+                // Spell Casting progress monitor.
+                if (Input.GetKey(KeyCode.Q) && spellCastTimer > 0f)
+                {
+                    spell_Q.ShowRange(this.transform.position, mousePos);
+                    spellCastTimer -= Time.deltaTime;
+                    Debug.Log("Spell Q casting");
+                }
+
+                if (spellCastTimer <= 0f)
+                {
+                    // Show ready
+                    Debug.Log("Spell Q ready");
+                }
+
+                if (Input.GetKeyUp(KeyCode.Q))
+                {
+                    if (spellCastTimer  <= 0f)
+                    {
+                        spell_Q.Execute(this.transform.position, mousePos);
+                        actionCoolDown = 0.1f;
+                        spellQCoolDowntimer = spellQCoolDown;
+                        Debug.Log("Spell Q Casted");
+                    }
+                    else
+                    {
+                        actionCoolDown = 0.1f;
+                        Debug.Log("Spell Q Cancelled");
+                    }
+
+                    castingSpell = false;
+                }
+            }
+            else if (spell == 'E')
+            {
+                // Spell Casting progress monitor.
+                if (Input.GetKey(KeyCode.E) && spellCastTimer > 0f)
+                {
+                    spell_E.ShowRange(this.transform.position, mousePos);
+                    spellCastTimer -= Time.deltaTime;
+                    Debug.Log("Spell E casting");
+                }
+
+                if (spellCastTimer <= 0f)
+                {
+                    // Show ready
+                    Debug.Log("Spell E ready");
+                }
+
+                if (Input.GetKeyUp(KeyCode.E))
+                {
+                    if (spellCastTimer <= 0f)
+                    {
+                        spell_E.Execute(this.transform.position, mousePos);
+                        actionCoolDown = 0.1f;
+                        spellECoolDowntimer = spellECoolDown;
+                        Debug.Log("Spell E Casted");
+                    }
+                    else
+                    {
+                        actionCoolDown = 0.1f;
+                        Debug.Log("Spell E Cancelled");
+                    }
+
+                    castingSpell = false;
+                }
+            }
+        }
     }
 }

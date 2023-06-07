@@ -20,7 +20,7 @@ namespace McDungeon
 
         public void ShowRange(Vector3 posistion, Vector3 mousePos)
         {
-            Debug.Log("Spell Aiming");
+            // Debug.Log("Spell Aiming");
         }
 
 
