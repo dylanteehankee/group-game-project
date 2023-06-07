@@ -8,6 +8,9 @@ namespace Mobs
     {
         [SerializeField]
         private int boneSpeed = 1000;
+        [SerializeField]
+        private int damage = 2;
+        private float knockbackDuration = 1.0f;
         private bool active = true;
         private GameObject ownerSkeleton;
         private bool pickup = true;
@@ -18,11 +21,14 @@ namespace Mobs
         {
             if (this.active && collision.gameObject.tag == "PlayerHitbox")
             {
+                Rigidbody2D playerRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
+                playerRigidbody.isKinematic = false;
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 deltaLocation.Normalize();
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
+                StartCoroutine(knockback(playerRigidbody));
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
@@ -38,6 +44,12 @@ namespace Mobs
                 }
                 Destroy(this.gameObject);
             }
+        }
+
+        private IEnumerator knockback(Rigidbody2D player)
+        {
+            yield return new WaitForSeconds(knockbackDuration);
+            player.isKinematic = true;
         }
 
         public void Throw(Vector2 playerLocation, GameObject skeleton)

@@ -8,19 +8,29 @@ public class KnifeController : MonoBehaviour
     private int knifeSpeed = 1000;
     [SerializeField]
     private int damage = 1;
+    private float knockbackDuration = 1.0f;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "PlayerHitbox")
         {
+            Rigidbody2D playerRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
+            playerRigidbody.isKinematic = false;
             Vector2 location = this.transform.position;
             Vector2 playerLocation = collision.transform.position;
             var deltaLocation = playerLocation - location;
-            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed);
+            playerRigidbody.AddForce(deltaLocation * knifeSpeed);
+            StartCoroutine(knockback(playerRigidbody));
             Destroy(this.gameObject);
         }
     }
 
+    private IEnumerator knockback(Rigidbody2D player)
+    {
+        yield return new WaitForSeconds(knockbackDuration);
+        player.isKinematic = true;
+    }
+    
     public void Throw(Vector2 playerLocation)
     {
         Vector2 location = this.transform.position;
