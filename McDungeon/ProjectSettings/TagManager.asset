@@ -9,6 +9,7 @@ TagManager:
   - Knight
   - MobSpawner
   - Throwable
+  - Effect
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - UI
   - PlayerHitbox
   - MobHitbox
-  - 
+  - Effects
   - 
   - 
   - 
