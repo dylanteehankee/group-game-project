@@ -42,6 +42,15 @@ namespace McDungeon
             closeRangeWeapon.Config(10f, 120f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
+
+            GameObject.Find("GameManager").GetComponent<UIManager>().GenerateTextBubble(
+                this.gameObject.transform,
+                text:  "Lots of random text, this has gotta suck if this does not wrap around. Light up all the torches to win.",
+                dimensions: new Vector3(10, 2, 0), 
+                offset: new Vector3(-5, 3, 0), 
+                fontSize: 3.5f,
+                duration: 10.0f      
+            );
         }
 
 

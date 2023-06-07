@@ -9,25 +9,16 @@ public class SpeechBubbleController : MonoBehaviour
 
     private TMP_Text textComponent;
 
-    private float duration;
+    private float duration = 10.0f;
     private float timeElapsed = 0.0f;
 
     void Start()
-    {
-        gameObject.GetComponent<Renderer>().enabled = false;
-        textComponent = textObject.GetComponent<TMP_Text>();
-        textComponent.text = "Oops!!!";
-        Init(
-            "Lots of random text, this has gotta suck if this does not wrap around. Light up all the torches to win.",
-            new Vector3(10, 2, 0),
-            new Vector3(-5, 3, 0),
-            3.5f,
-            10.0f
-        );
+    {   
     }
 
-    void Init(string text, Vector3 dimensions, Vector3 offset, float fontSize, float duration)
+    public void Init(string text, Vector3 dimensions, Vector3 offset, float fontSize, float duration)
     {
+        textComponent = textObject.GetComponent<TMP_Text>();
         this.duration = duration;
         textComponent.text = text;
         textComponent.fontSize = fontSize;
@@ -42,6 +33,10 @@ public class SpeechBubbleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        timeElapsed += Time.deltaTime;
+        if(timeElapsed > duration)
+        {
+            Destroy(gameObject);
+        }
     }
 }
