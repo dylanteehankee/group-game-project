@@ -240,8 +240,40 @@ public class MapGenerator : MonoBehaviour
         //set current room to white
         miniRoom.GetComponent<SpriteRenderer>().color = Color.white;
 
-        //set adjacent rooms top, bottom, left, right, grey, if it was the previous room, dont set it to grey
-        
+        //set adjacent rooms up, down, left, and right that are transparent to orange
+        if (currentRoomCoordinates.x + 1 < map.GetLength(0)){
+            Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x + 1, currentRoomCoordinates.y);
+            GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
+            //check if the color is transparent
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+                Debug.Log("adjacent exists to the right");
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
+        if (currentRoomCoordinates.x - 1 >= 0){
+            Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x - 1, currentRoomCoordinates.y);
+            GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+                Debug.Log("adjacent exists to the left");
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
+        if (currentRoomCoordinates.y + 1 < map.GetLength(1)){
+            Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y + 1);
+            GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+                Debug.Log("adjacent exists to the up");
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
+        if (currentRoomCoordinates.y - 1 >= 0){
+            Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y - 1);
+            GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+                Debug.Log("adjacent exists to the down");
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+            }
+        }
     }
 
     //get key from value in dictionary
