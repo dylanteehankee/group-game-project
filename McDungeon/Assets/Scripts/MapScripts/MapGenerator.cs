@@ -217,7 +217,8 @@ public class MapGenerator : MonoBehaviour
                 miniRoomPrefab.transform.localPosition = new Vector3(j, -i, 0);
                 //make all of them in layer 3
                 miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 3;
-                miniRoomPrefab.GetComponent<SpriteRenderer>().color = Color.black;
+                //set all rooms to transparent
+                miniRoomPrefab.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             }
         }
 
