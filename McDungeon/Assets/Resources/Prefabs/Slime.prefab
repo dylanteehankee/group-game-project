@@ -127,14 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb21cf2363894cf5aeaf620dd10d81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   mobHealth: 10
   attackRange: 1
   attackSpeed: 1
   MobDamage: 1
   moveSpeed: 1
-  hitStun: 1
-  playerObject: {fileID: 0}
-  potionDropPrefab: {fileID: 0}
+  stunDuration: 1
 --- !u!95 &5185989276852243298
 Animator:
   serializedVersion: 5

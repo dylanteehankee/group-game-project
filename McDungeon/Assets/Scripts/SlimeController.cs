@@ -7,27 +7,33 @@ namespace Mobs
     public class SlimeController : MonoBehaviour, IMobController
     {
         [SerializeField]
-        private float mobHealth = 10;
+        private GameObject playerObject;
         [SerializeField]
-        private int attackRange = 1;
+        private StatusEffects statusEffects;
         [SerializeField]
-        private float attackSpeed = 1f;
-        private float attackCooldown = 0f;
+        private float mobHealth = 10.0f;
         [SerializeField]
-        public int MobDamage = 1;
+        private float attackRange = 1.0f;
         [SerializeField]
-        private float moveSpeed = 1f;
-        [SerializeField]
-        private float hitStun = 1f;
-        private float elapsedStun = 0f;
-        private float attackTime = 1.0f;
+        private float attackSpeed = 1.0f;
+        private float attackCD = 0.0f;
+        private const float ATTACKDURATION = 1.0f;
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
         [SerializeField]
-        private GameObject playerObject;
+        public int MobDamage = 1;
         [SerializeField]
-        private GameObject potionDropPrefab;
+        private float moveSpeed = 1.0f;
+        private float speedModifier = 1.0f;
+        [SerializeField]
+        private float stunDuration = 1.0f;
+        private bool stunned = false;
+        private bool isAblaze = false;
+        private bool isFreeze = false;
+        private GameObject stunObject;
+        private GameObject ablazeObject;
+        private GameObject freezeObject;
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
@@ -39,21 +45,19 @@ namespace Mobs
 
         void Update()
         {
-            Vector2 location = this.transform.position;
-            Vector2 playerLocation = this.playerObject.transform.position;
-
-            this.attackCooldown += Time.deltaTime;
-            if (this.elapsedStun < hitStun)
+            if (!this.stunned && !this.isFreeze)
             {
-                this.elapsedStun += Time.deltaTime;
-            }
-            else if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCooldown > this.attackSpeed)) || isAttacking)
-            {
-                this.attackPlayer(playerLocation - location);
-            }
-            else
-            {
-                this.moveTowardPlayer(location, playerLocation);
+                Vector2 location = this.transform.position;
+                Vector2 playerLocation = this.playerObject.transform.position;
+                this.attackCD += Time.deltaTime;
+                if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCD > this.attackSpeed)) || isAttacking)
+                {
+                    this.attackPlayer(location, playerLocation);
+                }
+                else
+                {
+                    this.moveTowardPlayer(playerLocation - location);
+                }
             }
         }
 
@@ -67,15 +71,14 @@ namespace Mobs
             this.playerObject = player;
         }
 
-        private void moveTowardPlayer(Vector2 location, Vector2 playerLocation)
+        private void moveTowardPlayer(Vector2 deltaLocation)
         {
-            var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
             this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
             this.spriteDirection(deltaLocation);
         }
 
-        private void attackPlayer(Vector2 deltaLocation)
+        private void attackPlayer(Vector2 location, Vector2 playerLocation)
         {
             if (elapsedAttackTime == 0)
             {
@@ -85,15 +88,16 @@ namespace Mobs
                 this.isAttacking = true;
                 this.hitPlayer = false;
             }
-            else if (this.elapsedAttackTime > this.attackTime)
+            else if (this.elapsedAttackTime > ATTACKDURATION)
             {
                 this.isAttacking = false;
                 this.elapsedAttackTime = 0;
-                this.attackCooldown = 0;
+                this.attackCD = 0;
                 return;
             }
             else if (this.elapsedAttackTime > 0.15 && !hitPlayer)
             {
+                var deltaLocation = playerLocation - location;
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                 Debug.Log("ATTACKING PLAYER");
                 this.hitPlayer = true;
@@ -131,18 +135,100 @@ namespace Mobs
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, EffectTypes type)
         {
             this.mobHealth -= damage;
-            if (this.mobHealth < 0)
+            this.death();
+            this.stunned = true;
+            this.status(type);
+            StopCoroutine("stunStatus");
+            StartCoroutine("stunStatus");
+        }
+
+        private void death()
+        {
+            if (this.mobHealth <= 0)
             {
+                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
                 Destroy(this.gameObject);
                 return;
             }
-            this.elapsedStun = 0;
+        }
+
+        private IEnumerator stunStatus()
+        {
+            if (!this.stunObject)
+            {
+                this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.5f));
+            }
             this.isAttacking = false;
+            this.animator.SetBool("Stun", true);
+            this.spriteDirection(this.playerObject.transform.position - this.transform.position);
+            this.spriteRenderer.flipY = false;
+            yield return new WaitForSeconds(stunDuration);
+            this.animator.SetBool("Stun", false);
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
             this.elapsedAttackTime = 0;
-            this.attackCooldown = 0;
+            this.stunned = false;
+            Destroy(this.stunObject);
+        }
+
+        private void status(EffectTypes type)
+        {
+            switch (type)
+            {
+                case EffectTypes.None:
+                    break;
+                case EffectTypes.Ablaze:
+                    if (!this.ablazeObject)
+                    {
+                        this.ablazeObject = this.statusEffects.Ablaze(this.transform, Vector2.one, Vector2.zero);
+                        this.isAblaze = true;
+                    }
+                    StopCoroutine("ablazeStatus");
+                    StartCoroutine("ablazeStatus");
+                    break;
+                case EffectTypes.Freeze:
+                    if (!this.freezeObject)
+                    {
+                        this.freezeObject = this.statusEffects.Freeze(this.transform, new Vector2(3, 1.5f), Vector2.zero);
+                        this.animator.SetBool("Freeze", true);
+                        this.isFreeze = true;
+                    }
+                    StopCoroutine("freezeStatus");
+                    StartCoroutine("freezeStatus");
+                    break;
+                case EffectTypes.Slow:
+                    StopCoroutine("slowStatus");
+                    StartCoroutine("slowStatus");
+                    break;
+            }
+        }
+        private IEnumerator ablazeStatus()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                yield return new WaitForSeconds(this.statusEffects.GetAblazeDuration() / 4);
+                this.mobHealth -= this.statusEffects.GetAblazeDamage();
+                this.death();
+            }
+            this.isAblaze = false;
+            Destroy(this.ablazeObject);
+        }
+
+        private IEnumerator freezeStatus()
+        {
+            yield return new WaitForSeconds(this.statusEffects.GetFreezeDuration());
+            this.isFreeze = false;
+            this.animator.SetBool("Freeze", false);
+            Destroy(this.freezeObject);
+        }
+
+        private IEnumerator slowStatus()
+        {
+            this.speedModifier = this.statusEffects.GetSlowModifier();
+            yield return new WaitForSeconds(this.statusEffects.GetSlowDuration());
+            this.speedModifier = 1.0f;
         }
     }
 }
