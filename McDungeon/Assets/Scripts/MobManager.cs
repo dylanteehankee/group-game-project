@@ -15,6 +15,8 @@ namespace Mobs{
         private GameObject gNomePrefab;
         [SerializeField]
         private GameObject magePrefab;
+        [SerializeField]
+        private GameObject knightPrefab;
         private List<GameObject> mobsList = new List<GameObject>();
         private GameObject player;
 
@@ -55,7 +57,13 @@ namespace Mobs{
 
         public void SpawnKnights(GameObject knight, Vector2[] locations)
         {
-            return;
+            foreach (Vector2 location in locations)
+            {
+                var newKnight = (GameObject)Instantiate(this.knightPrefab, this.gameObject.transform);
+                this.Subscribe(newKnight);
+                newKnight.transform.position = location;
+            }
+            this.Notify();
         }
 
         private GameObject getMobPrefab(MobTypes type)
