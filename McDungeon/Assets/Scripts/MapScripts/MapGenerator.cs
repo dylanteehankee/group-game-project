@@ -43,11 +43,11 @@ public class MapGenerator : MonoBehaviour
     {0,0,0,0,0,6}
     };
     private int[,] map2 = new int[6,6] { 
-    {1,2,0,4,0,0},
+    {0,2,1,0,0,0},
     {0,4,5,4,4,0},
     {0,0,4,0,0,0},
-    {0,4,5,3,0,0},
-    {0,0,0,4,5,4},
+    {4,4,5,3,0,0},
+    {3,0,0,4,5,4},
     {0,0,0,0,0,6}
     };
     private int[,] map3 = new int[6,6] { 
@@ -80,7 +80,8 @@ public class MapGenerator : MonoBehaviour
         Debug.Log("ShopRooms: " + shopRooms.Length + " found");
 
         assignList();
-        map = PickMap();
+        //map = PickMap();
+        map = GetComponent<DrunkardWalk>().GenerateMatrix();
         assignRoom(map);
         assignPortal(map);
 
@@ -293,5 +294,17 @@ public class MapGenerator : MonoBehaviour
             }
         }
         return new Vector2Int(-1, -1);
+    }
+
+    //Reset all global variables
+    void resetAll(){
+        combatRoomList.Clear();
+        puzzleRoomList.Clear();
+        shopRoomList.Clear();
+        roomDictionary.Clear();
+        currentRoomCoordinates = new Vector2Int(-1, -1);
+
+        //Instiate all again
+        Start();
     }
 }

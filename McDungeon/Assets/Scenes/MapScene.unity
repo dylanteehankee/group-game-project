@@ -23428,7 +23428,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!19719996 &1121912504
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -41685,6 +41685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1926970899}
   - component: {fileID: 1926970900}
+  - component: {fileID: 1926970901}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -41738,6 +41739,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   miniRoom: {fileID: 2164413984706799964, guid: b07e722c27b36b849932dd4b5353711f, type: 3}
   miniMap: {fileID: 3833822}
+--- !u!114 &1926970901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926970898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a994111b09fb5cd4b916c23ce0b7d005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1942525693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8005653836801457382, guid: 92f18fa0d65e39b41b2e34efe4c8686a, type: 3}

@@ -143,11 +143,29 @@ public class LinkTeleporter : MonoBehaviour
         }
     }
 
-    /* void OnTriggerExit2D(Collider2D other)
-    {
-        if(other.CompareTag("Player"))
-        {
-            Teleported = false;
-        }
-    } */
+    //Reset all global variables
+    //TODO: reset all variables in the room
+    void resetAll(){
+        GameObject parentTarget = TargetRoom.transform.parent.gameObject;
+
+        GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;
+        GameObject Portal2 = parentTarget.transform.GetChild(2).gameObject;
+        GameObject Portal3 = parentTarget.transform.GetChild(3).gameObject;
+        GameObject Portal4 = parentTarget.transform.GetChild(4).gameObject;
+
+        Portal1.GetComponent<LinkTeleporter>().isInside = false;
+        Portal2.GetComponent<LinkTeleporter>().isInside = false;
+        Portal3.GetComponent<LinkTeleporter>().isInside = false;
+        Portal4.GetComponent<LinkTeleporter>().isInside = false;
+
+        Teleported = false;
+        isInside = false;
+        beenDisabled = false;
+        RoomCompleted = false;
+        closeDoor = false;
+        onWallTile = false;
+
+        //Instatiate all again
+        Start();
+    }
 }
