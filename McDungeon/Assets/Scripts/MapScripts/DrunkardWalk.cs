@@ -8,8 +8,9 @@ public class DrunkardWalk : MonoBehaviour
     private static int maxCombatRooms = 8;
     private static int maxPuzzleRooms = 3;
     private static int maxShopRooms = 2;
+    
     private Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-    private int matrixLength = 7;
+    private int matrixLength = 9;
     private int numberOfRooms = 16;
     private int maxSteps = 100;
 
@@ -20,7 +21,7 @@ public class DrunkardWalk : MonoBehaviour
     private Vector2Int[] rooms;
     private int roomIndex = 0;
     private int stepIndex = 0;
-    private int shopRoomCount, puzzleRoomCount, combatRoomCount;
+    private int shopRoomCount, puzzleRoomCount, combatRoomCount, endRoomCount;
     
 
     private enum RoomType
@@ -33,13 +34,13 @@ public class DrunkardWalk : MonoBehaviour
         CombatRoom, // prints 4 in matrix, total of 8
         PuzzleRoom, // prints 5 in matrix, total of 3, cannot be adjacent to another PuzzleRoom
         EndRoom, // prints 6 in matrix, only one, last room
+        TempRoom // placeholder for room that is being generated
     }
-
-    private List<RoomType> roomProbabilities = new List<RoomType>();
 
     //keep track of current room, previous room, and next room
     public int[,] GenerateMatrix(){
         ResetValues();
+
         // Set StartRoom Start at first row, random column
         currentRoom = new Vector2Int(0, Random.Range(0, matrixLength));
         previousRoom = currentRoom;
@@ -53,14 +54,8 @@ public class DrunkardWalk : MonoBehaviour
         // Walk through the matrix, randomly choosing a direction to go to
         // keep walking until the number of rooms is reached
         // do not adda a room if it is out of bounds or if it is already a room
-        while(roomIndex <= numberOfRooms){
+        while(roomIndex <= numberOfRooms - 1){
             //if the number of steps is greater than the max steps, regenerate the matrix
-
-            if (stepIndex > maxSteps){
-                ResetValues();
-                GenerateMatrix();
-                break;
-            }
 
             //choose a random direction
             int randomDirection = Random.Range(0, 4);
@@ -69,18 +64,30 @@ public class DrunkardWalk : MonoBehaviour
 
             stepIndex++;
 
-            // if nextRoom is adjacent to startRoom, choose another direction
+            if(roomIndex ==  numberOfRooms - 1)
+            {
+                break;
+            }
+
+            if (stepIndex > maxSteps){
+                ResetValues();
+                GenerateMatrix();
+                break;
+            }
+
+            //if nextRoom is adjacent to startRoom, choose another direction
             if (nextRoom == rooms[0] + Vector2Int.up || nextRoom == rooms[0] + Vector2Int.down || nextRoom == rooms[0] + Vector2Int.left || nextRoom == rooms[0] + Vector2Int.right){
                 continue;
             }
-            // if nextRoom is out of bounds, choose another direction
+            //if nextRoom is out of bounds, choose another direction
             if (nextRoom.x < 0 || nextRoom.x >= matrixLength || nextRoom.y < 0 || nextRoom.y >= matrixLength){
                 continue;
             }
-
+            
             // if nextRoom is already a room, choose another direction or go back to previous room
-            if (matrix[nextRoom.x, nextRoom.y] != (int)RoomType.None){
-                var choose = Random.Range(0, 3);
+            if (matrix[nextRoom.x, nextRoom.y] != (int)RoomType.None)
+            {
+                var choose = Random.Range(0, 2);
 
                 switch (choose)
                 {
@@ -95,69 +102,24 @@ public class DrunkardWalk : MonoBehaviour
                 }   
             }
 
-            if (roomIndex == numberOfRooms - 1){
-                // if there are no more rooms to add, add the end room and break out of the loop
-                matrix[nextRoom.x, nextRoom.y] = (int)RoomType.EndRoom;
-                roomIndex++;
-                break;
-            }
-            
-            if(roomProbabilities.Count != 0){
-                // 8 combat rooms, 3 puzzle rooms, 2 shop rooms = 13 rooms
-                int randomRoom = Random.Range(0, 13);
-                if (randomRoom < 8){
-                    if (roomProbabilities.Contains(RoomType.CombatRoom)){
-                        matrix[nextRoom.x, nextRoom.y] = (int)RoomType.CombatRoom;
-                        combatRoomCount++;
-                        if (combatRoomCount == maxCombatRooms){
-                            roomProbabilities.Remove(RoomType.CombatRoom);
-                        }
-                        roomIndex++;
-                    }
-                    else{
-                        continue;
-                    }
-                }
-                else if (randomRoom < 11){
-                    if(roomProbabilities.Contains(RoomType.PuzzleRoom)){
-                        //if mext room's adjacent room is a puzzleRoom, choose another room
-                        if(CheckAdjacency(nextRoom, RoomType.PuzzleRoom)){
-                            continue;
-                        }
-                        matrix[nextRoom.x, nextRoom.y] = (int)RoomType.PuzzleRoom;
-                        puzzleRoomCount++;
-                        if (puzzleRoomCount == maxPuzzleRooms){
-                            roomProbabilities.Remove(RoomType.PuzzleRoom);
-                        }
-                        roomIndex++;
-                    }
-                    else{
-                        continue;
-                    }
-                }
-                else if (randomRoom < 13){
-                    if(roomProbabilities.Contains(RoomType.ShopRoom)){
-                        //if next room's adjacent room is a shopRoom, choose another room
-                        if(CheckAdjacency(nextRoom, RoomType.ShopRoom)){
-                            continue;
-                        }
-                        matrix[nextRoom.x, nextRoom.y] = (int)RoomType.ShopRoom;
-                        shopRoomCount++;
-                        if (shopRoomCount == maxShopRooms){
-                            roomProbabilities.Remove(RoomType.ShopRoom);
-                        }
-                        roomIndex++;
-                    }
-                    else{
-                        continue;
-                    }
-                }
-            } 
+            //assign the nextRoom as a placeholder room
+            matrix[nextRoom.x, nextRoom.y] = (int)RoomType.TempRoom;
+            roomIndex++;
 
+            //set the currentRoom to the nextRoom
             rooms[roomIndex] = nextRoom;
             previousRoom = currentRoom;
             currentRoom = nextRoom;
         }
+
+        //generate the shop layer
+        GenerateShopLayer();
+        //generate the puzzle layer
+        GeneratePuzzleLayer();
+        //generate the combat layer
+        GenerateCombatLayer();
+        //set the end room
+        GenerateEndRoom();
 
         // // check if the end room is adjacent to the start room or tutorial room, if it is regenerate the matrix
         // if (rooms[roomIndex - 1] == rooms[1] || rooms[roomIndex - 1] == rooms[2]){
@@ -166,37 +128,9 @@ public class DrunkardWalk : MonoBehaviour
         //     GenerateMatrix();
         // }
 
-        //only make sure the end room has only one room adjacent to it, also check if the next room is not out of bounds
-        //if the end room has more than one room adjacent to it, regenerate the matrix
-        int endRoomAdjacencyCount = 0;
-        
-        if (nextRoom.x - 1 > -1 &&  matrix[nextRoom.x - 1, nextRoom.y]!= (int)RoomType.None){
-            endRoomAdjacencyCount++;
-        }
-        if (nextRoom.x + 1 < matrixLength &&  matrix[nextRoom.x + 1, nextRoom.y]!= (int)RoomType.None){
-            endRoomAdjacencyCount++;
-        }
-        if (nextRoom.y - 1 > -1 &&  matrix[nextRoom.x, nextRoom.y - 1]!= (int)RoomType.None){
-            endRoomAdjacencyCount++;
-        }
-        if (nextRoom.y + 1 < matrixLength &&  matrix[nextRoom.x, nextRoom.y + 1]!= (int)RoomType.None){
-            endRoomAdjacencyCount++;
-        }
-        if (endRoomAdjacencyCount > 1){
-            Debug.Log("End room has more than one room adjacent to it");
-            ResetValues();
-            GenerateMatrix();
-        }
-        
         PrintMatrix();
-        return matrix;
-    }
 
-    //checks all adjacent rooms to see if they are the same type
-    //should be kept in matrix bounds
-    private bool CheckAdjacency(Vector2Int roomCheck, RoomType roomType){
-        //TODO: 
-        return false;
+        return matrix;
     }
 
     private void GenerateTrainingRoom(){
@@ -245,6 +179,154 @@ public class DrunkardWalk : MonoBehaviour
         currentRoom = rooms[roomIndex - 1];
     }
 
+    private void GenerateShopLayer(){
+        //set random shop rooms, try to set them as far away from each other as possible
+        int shopRoomCount = 0;
+
+        List<Vector2Int> roomsShop = new List<Vector2Int>();
+
+        foreach (Vector2Int room in rooms){
+            if (matrix[room.x, room.y] == (int)RoomType.TempRoom){
+                roomsShop.Add(room);
+            }
+        }
+
+        while (shopRoomCount < maxShopRooms && roomsShop.Count > 0){
+
+            int randomIndex = Random.Range(0, roomsShop.Count);
+            Vector2Int randomRoom = roomsShop[randomIndex];
+
+            //check if randomRoom is adjacent to shopRoom, if it is remove it from the possible rooms
+            if(CheckDuplicateAdjacency(randomRoom, RoomType.ShopRoom)){
+                roomsShop.Remove(randomRoom);
+                continue;
+            }
+            
+            matrix[randomRoom.x, randomRoom.y] = (int)RoomType.ShopRoom;
+            roomsShop.Remove(randomRoom);
+            shopRoomCount++;
+        }
+    }
+
+    private void GeneratePuzzleLayer(){
+        //set random puzzle rooms, try to set them as far away from each other as possible
+        int puzzleRoomCount = 0;
+
+        List<Vector2Int> roomsPuzzle = new List<Vector2Int>();
+
+        foreach (Vector2Int room in rooms){
+            if (matrix[room.x, room.y] == (int)RoomType.TempRoom){
+                roomsPuzzle.Add(room);
+            }
+        }
+
+        while (puzzleRoomCount < maxPuzzleRooms && roomsPuzzle.Count > 0){
+            int randomIndex = Random.Range(0, roomsPuzzle.Count);
+            Vector2Int randomRoom = roomsPuzzle[randomIndex];
+
+            //check if adjacent to PuzzleRoom
+            if(CheckDuplicateAdjacency(randomRoom, RoomType.PuzzleRoom)){
+                roomsPuzzle.Remove(randomRoom);
+                continue;
+            }
+
+            matrix[randomRoom.x, randomRoom.y] = (int)RoomType.PuzzleRoom;
+            roomsPuzzle.Remove(randomRoom);
+            puzzleRoomCount++;
+        }
+    }
+
+    private void GenerateCombatLayer(){
+        //fill the rest of the rooms with combat rooms
+        for (int i = 0; i < matrixLength; i++){
+            for (int j = 0; j < matrixLength; j++){
+                if (matrix[i, j] == (int)RoomType.TempRoom){
+                    matrix[i, j] = (int)RoomType.CombatRoom;
+                }
+            }
+        }
+    }
+
+    private void GenerateEndRoom(){
+        //furthest room from start room
+        //should occupy a temp room
+        //should be adjacent to any other room
+        int maxDistance = 0;
+        Vector2Int endRoom = new Vector2Int(0, 0);
+
+        if (endRoomCount == 0){
+            for (int i = 0; i < matrixLength; i++){
+                for (int j = 0; j < matrixLength; j++){
+                    if (matrix[i, j] == (int)RoomType.None){
+                        int distance = Mathf.Abs(rooms[0].x - i) + Mathf.Abs(rooms[0].y - j);
+                        int checkNeighbors = CheckNeighbors(new Vector2Int(i, j));
+                        if(checkNeighbors > 0 && checkNeighbors < 3){
+                            if (distance > maxDistance){
+                                maxDistance = distance;
+                                endRoom = new Vector2Int(i, j);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            matrix[endRoom.x, endRoom.y] = (int)RoomType.EndRoom;
+            endRoomCount++;
+        }
+    }
+
+    private int CheckNeighbors(Vector2Int roomCheck){
+        int count = 0;
+        if (roomCheck.x - 1 >= 0){
+            if (matrix[roomCheck.x - 1, roomCheck.y] != (int)RoomType.None){
+                count++;
+            }
+        }
+        if (roomCheck.x + 1 < matrixLength){
+            if (matrix[roomCheck.x + 1, roomCheck.y] != (int)RoomType.None){
+                count++;
+            }
+        }
+        if (roomCheck.y - 1 >= 0){
+            if (matrix[roomCheck.x, roomCheck.y - 1] != (int)RoomType.None){
+                count++;
+            }
+        }
+        if (roomCheck.y + 1 < matrixLength){
+            if (matrix[roomCheck.x, roomCheck.y + 1] != (int)RoomType.None){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //checks all adjacent rooms to see if they are the same type
+    //should be kept in matrix bounds
+    private bool CheckDuplicateAdjacency(Vector2Int roomCheck, RoomType roomType){
+        if (roomCheck.x - 1 >= 0){
+            if (matrix[roomCheck.x - 1, roomCheck.y] == (int)roomType){
+                return true;
+            }
+        }
+        if (roomCheck.x + 1 < matrixLength){
+            if (matrix[roomCheck.x + 1, roomCheck.y] == (int)roomType){
+                return true;
+            }
+        }
+        if (roomCheck.y - 1 >= 0){
+            if (matrix[roomCheck.x, roomCheck.y - 1] == (int)roomType){
+                return true;
+            }
+        }
+        if (roomCheck.y + 1 < matrixLength){
+            if (matrix[roomCheck.x, roomCheck.y + 1] == (int)roomType){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
     private void ResetValues() {
         //reset all values
         rooms = new Vector2Int[numberOfRooms];
@@ -254,22 +336,22 @@ public class DrunkardWalk : MonoBehaviour
         combatRoomCount = 0;
         puzzleRoomCount = 0;
         shopRoomCount = 0;
-        roomProbabilities = new List<RoomType>
-        {
-            RoomType.CombatRoom,
-            RoomType.PuzzleRoom,
-            RoomType.ShopRoom
-        };
+        endRoomCount = 0;
     }
 
     private void PrintMatrix(){
         string matrixString = "";
+        int RoomCount = 0;
         for (int i = 0; i < matrixLength; i++){
             for (int j = 0; j < matrixLength; j++){
                 matrixString += matrix[i, j] + " ";
+                if (matrix[i, j] != (int)RoomType.None){
+                    RoomCount++;
+                }
             }
             matrixString += "\n";
         }
         Debug.Log(matrixString);
+        Debug.Log("Room Count: " + RoomCount);
     }
 }
