@@ -41,8 +41,8 @@ public class DrunkardWalk : MonoBehaviour
     public int[,] GenerateMatrix(){
         ResetValues();
 
-        // Set StartRoom Start at first row, random column
-        currentRoom = new Vector2Int(0, Random.Range(0, matrixLength));
+        // Set StartRoom Start at random row, random column
+        currentRoom = new Vector2Int(Random.Range(0, matrixLength), Random.Range(0, matrixLength));
         previousRoom = currentRoom;
         matrix[currentRoom.x, currentRoom.y] = (int)RoomType.StartRoom;
         rooms[roomIndex] = currentRoom;
@@ -91,13 +91,13 @@ public class DrunkardWalk : MonoBehaviour
 
                 switch (choose)
                 {
-                    case 0:
+                    case 0: // choose another direction
                         continue;
                     case 1:
-                        nextRoom = previousRoom;
+                        nextRoom = previousRoom; // go back to previous room
                         continue;
                     case 2:
-                        nextRoom = currentRoom;
+                        nextRoom = currentRoom; // go back to current room
                         continue;
                 }   
             }
@@ -249,7 +249,6 @@ public class DrunkardWalk : MonoBehaviour
 
     private void GenerateEndRoom(){
         //furthest room from start room
-        //should occupy a temp room
         //should be adjacent to any other room
         int maxDistance = 0;
         Vector2Int endRoom = new Vector2Int(0, 0);
