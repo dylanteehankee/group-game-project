@@ -4,16 +4,10 @@ using UnityEngine;
 
 namespace Mobs
 {
-    public class SlimeController : MonoBehaviour, IMobController
+    public class SlimeController : Mob
     {
         [SerializeField]
-        private GameObject playerObject;
-        [SerializeField]
-        private StatusEffects statusEffects;
-        [SerializeField]
-        private float mobHealth = 10.0f;
-        [SerializeField]
-        private float attackRange = 1.0f;
+        public int MobDamage = 1;
         [SerializeField]
         private float attackSpeed = 1.0f;
         private float attackCD = 0.0f;
@@ -21,21 +15,6 @@ namespace Mobs
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
-        [SerializeField]
-        public int MobDamage = 1;
-        [SerializeField]
-        private float moveSpeed = 1.0f;
-        private float speedModifier = 1.0f;
-        [SerializeField]
-        private float stunDuration = 1.0f;
-        private bool stunned = false;
-        private bool isAblaze = false;
-        private bool isFreeze = false;
-        private GameObject stunObject;
-        private GameObject ablazeObject;
-        private GameObject freezeObject;
-        private SpriteRenderer spriteRenderer;
-        private Animator animator;
 
         void Start()
         {
@@ -49,10 +28,14 @@ namespace Mobs
             {
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = this.playerObject.transform.position;
-                this.attackCD += Time.deltaTime;
+                if (this.attackCD < this.attackSpeed)
+                {
+                    this.attackCD += Time.deltaTime;
+                }
+                
                 if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCD > this.attackSpeed)) || isAttacking)
                 {
-                    this.attackPlayer(location, playerLocation);
+                    this.attackPlayer(playerLocation - location);
                 }
                 else
                 {
@@ -61,24 +44,7 @@ namespace Mobs
             }
         }
 
-        void OnDestroy()
-        {
-            this.transform.parent.gameObject.GetComponent<MobManager>().Unsubscribe(this.gameObject);
-        }
-
-        public void GetPlayer(GameObject player)
-        {
-            this.playerObject = player;
-        }
-
-        private void moveTowardPlayer(Vector2 deltaLocation)
-        {
-            deltaLocation.Normalize();
-            this.transform.Translate(deltaLocation * Time.deltaTime * moveSpeed);
-            this.spriteDirection(deltaLocation);
-        }
-
-        private void attackPlayer(Vector2 location, Vector2 playerLocation)
+        protected override void attackPlayer(Vector2 deltaLocation)
         {
             if (elapsedAttackTime == 0)
             {
@@ -97,15 +63,17 @@ namespace Mobs
             }
             else if (this.elapsedAttackTime > 0.15 && !hitPlayer)
             {
-                var deltaLocation = playerLocation - location;
+                Rigidbody2D playerRigidbody = this.playerObject.GetComponent<Rigidbody2D>();
+                playerRigidbody.isKinematic = false;
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
+                StartCoroutine(knockback(playerRigidbody));
                 Debug.Log("ATTACKING PLAYER");
                 this.hitPlayer = true;
             }
             this.elapsedAttackTime += Time.deltaTime;
         }
 
-        private void spriteDirection(Vector2 deltaLocation)
+        protected override void spriteControl(Vector2 deltaLocation)
         {
             if (Mathf.Abs(deltaLocation.x) > Mathf.Abs(deltaLocation.y))
             {
@@ -135,27 +103,7 @@ namespace Mobs
             }
         }
 
-        public void TakeDamage(float damage, EffectTypes type)
-        {
-            this.mobHealth -= damage;
-            this.death();
-            this.stunned = true;
-            this.status(type);
-            StopCoroutine("stunStatus");
-            StartCoroutine("stunStatus");
-        }
-
-        private void death()
-        {
-            if (this.mobHealth <= 0)
-            {
-                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
-                Destroy(this.gameObject);
-                return;
-            }
-        }
-
-        private IEnumerator stunStatus()
+        protected override IEnumerator stunStatus()
         {
             if (!this.stunObject)
             {
@@ -163,7 +111,7 @@ namespace Mobs
             }
             this.isAttacking = false;
             this.animator.SetBool("Stun", true);
-            this.spriteDirection(this.playerObject.transform.position - this.transform.position);
+            this.spriteControl(this.playerObject.transform.position - this.transform.position);
             this.spriteRenderer.flipY = false;
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
@@ -173,7 +121,7 @@ namespace Mobs
             Destroy(this.stunObject);
         }
 
-        private void status(EffectTypes type)
+        protected override void status(EffectTypes type)
         {
             switch (type)
             {
@@ -203,32 +151,6 @@ namespace Mobs
                     StartCoroutine("slowStatus");
                     break;
             }
-        }
-        private IEnumerator ablazeStatus()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                yield return new WaitForSeconds(this.statusEffects.GetAblazeDuration() / 4);
-                this.mobHealth -= this.statusEffects.GetAblazeDamage();
-                this.death();
-            }
-            this.isAblaze = false;
-            Destroy(this.ablazeObject);
-        }
-
-        private IEnumerator freezeStatus()
-        {
-            yield return new WaitForSeconds(this.statusEffects.GetFreezeDuration());
-            this.isFreeze = false;
-            this.animator.SetBool("Freeze", false);
-            Destroy(this.freezeObject);
-        }
-
-        private IEnumerator slowStatus()
-        {
-            this.speedModifier = this.statusEffects.GetSlowModifier();
-            yield return new WaitForSeconds(this.statusEffects.GetSlowDuration());
-            this.speedModifier = 1.0f;
         }
     }
 }
