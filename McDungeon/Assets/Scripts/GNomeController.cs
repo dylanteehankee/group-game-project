@@ -73,7 +73,6 @@ namespace Mobs
             }
             else if (this.elapsedThrowTime > 0.6 && hasKnife)
             {
-                deltaLocation.Normalize();
                 Vector2 location = this.transform.position;
                 var knife = (GameObject)Instantiate(this.knifePrefab);
                 knife.transform.position = location;

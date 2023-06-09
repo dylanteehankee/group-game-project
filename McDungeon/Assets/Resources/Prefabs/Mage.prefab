@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7860338662853793559}
   - component: {fileID: -4428384177947143298}
   - component: {fileID: 4202008653054338845}
-  - component: {fileID: 7781150057164011766}
   - component: {fileID: 3284429707353329542}
+  - component: {fileID: 746128496657333321}
+  - component: {fileID: 6416892344384850204}
   m_Layer: 7
   m_Name: Mage
   m_TagString: MobHitbox
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &-4428384177947143298
 SpriteRenderer:
@@ -76,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2747690628134850419, guid: 16037dbd798344f57a526d53d48f5ead, type: 3}
-  m_Color: {r: 0, g: 0.84033537, b: 1, a: 1}
+  m_Sprite: {fileID: 1031578270, guid: e952c4ffd65f54ccc93ae02370c33e67, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -114,8 +115,51 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &7781150057164011766
-CircleCollider2D:
+--- !u!114 &3284429707353329542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178146216519888684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ebe1efa904a4c27b976478fc5137d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 0}
+  statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
+  mobHealth: 10
+  attackRange: 6
+  moveSpeed: 1
+  stunDuration: 1
+  fireballPrefab: {fileID: 7838530794719727910, guid: 0ee6c838cb36b4357863ab12c3ce5931, type: 3}
+  frostboltPrefab: {fileID: 7838530794719727910, guid: dd10f3792674b4a788b94172bd479af6, type: 3}
+  castSpeed: 4
+  castTime: 1
+--- !u!95 &746128496657333321
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178146216519888684}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 379b88f18eb88467885773a3e1741eb3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &6416892344384850204
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -147,24 +191,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
---- !u!114 &3284429707353329542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7178146216519888684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29ebe1efa904a4c27b976478fc5137d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mobHealth: 10
-  attackRange: 3
-  castTime: 1
-  MobDamage: 1
-  moveSpeed: 1
-  hitStun: 0.25
-  potionDropPrefab: {fileID: 0}
+  m_Size: {x: 0.6, y: 0.9}
+  m_Direction: 0
