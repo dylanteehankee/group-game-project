@@ -10,7 +10,7 @@ public class DrunkardWalk : MonoBehaviour
     private static int maxShopRooms = 2;
     
     private Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-    private int matrixLength = 9;
+    private int matrixLength = 10;
     private int numberOfRooms = 16;
     private int maxSteps = 100;
 
@@ -134,32 +134,63 @@ public class DrunkardWalk : MonoBehaviour
     }
 
     private void GenerateTrainingRoom(){
-        //if currentRoom.y == matrixLength - 1, TutorialRoom can only be at the left or down of StartRoom
-        if (currentRoom.y == 0){
+        // check all corners and edges, don't have to check the top corners
+        // tutorial room can only be at the right, left, or down of start room
+
+        //if currentRoom is bottom left corner, TutorialRoom can only be at the right of StartRoom
+        if (currentRoom.x == matrixLength - 1 && currentRoom.y == 0){
+            Debug.Log("bottom left corner");
+            matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
+            rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
+        }
+        //if currentRoom is bottom right corner, TutorialRoom can only be at the left of StartRoom
+        else if (currentRoom.x == matrixLength - 1 && currentRoom.y == matrixLength - 1){
+            Debug.Log("bottom right corner");
+            matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
+            rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
+        }
+        //if currentRoom is at the right edge, TutorialRoom can only be at the left or down of StartRoom
+        else if (currentRoom.y == matrixLength - 1){
+            Debug.Log("right edge");
+            //choose between left or down
+            int randomDirection = Random.Range(0, 2);
+            if (randomDirection == 0){
+                matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
+                rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
+            } else {
+                matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
+                rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
+            }
+        }
+        //if currentRoom is at the left edge, TutorialRoom can only be at the right or down of StartRoom
+        else if (currentRoom.y == 0){
+            Debug.Log("left edge");
             //choose between right or down
             int randomDirection = Random.Range(0, 2);
             if (randomDirection == 0){
-                matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
-                rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
-            } else {
                 matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
+            } else {
+                matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
+                rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
             }
-        } 
-        //if currentRoom.y == matrixLength - 1, TutorialRoom can only be at the left or down of StartRoom
-        else if (currentRoom.y == matrixLength - 1){
-            //choose between left or down
+        }
+        //if currentRoom is at the bottom edge, TutorialRoom can only be at the left or right of StartRoom
+        else if (currentRoom.x == matrixLength - 1){
+            Debug.Log("bottom edge");
+            //choose between left or right
             int randomDirection = Random.Range(0, 2);
             if (randomDirection == 0){
                 matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
             } else {
-                matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
-                rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
+                matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
+                rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
             }
-        } 
+        }
         //otherwise can be either left, right, or down
         else {
+            Debug.Log("else");
             //choose between left, right, or down
             int randomDirection = Random.Range(0, 3);
             if (randomDirection == 0){
@@ -196,8 +227,8 @@ public class DrunkardWalk : MonoBehaviour
             int randomIndex = Random.Range(0, roomsShop.Count);
             Vector2Int randomRoom = roomsShop[randomIndex];
 
-            //check if randomRoom is adjacent to shopRoom, if it is remove it from the possible rooms
-            if(CheckDuplicateAdjacency(randomRoom, RoomType.ShopRoom)){
+            //check if randomRoom is adjacent to shopRoom or training room, if it is remove it from the possible rooms
+            if(CheckDuplicateAdjacency(randomRoom, RoomType.ShopRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom) ){
                 roomsShop.Remove(randomRoom);
                 continue;
             }
@@ -225,7 +256,7 @@ public class DrunkardWalk : MonoBehaviour
             Vector2Int randomRoom = roomsPuzzle[randomIndex];
 
             //check if adjacent to PuzzleRoom
-            if(CheckDuplicateAdjacency(randomRoom, RoomType.PuzzleRoom)){
+            if(CheckDuplicateAdjacency(randomRoom, RoomType.PuzzleRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom)){
                 roomsPuzzle.Remove(randomRoom);
                 continue;
             }
