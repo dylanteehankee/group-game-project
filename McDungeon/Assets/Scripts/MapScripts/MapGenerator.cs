@@ -42,21 +42,18 @@ public class MapGenerator : MonoBehaviour
     {0,0,0,4,5,4},
     {0,0,0,0,0,6}
     };
-    private int[,] map2 = new int[6,6] { 
-    {0,2,1,0,0,0},
-    {0,4,5,4,4,0},
-    {0,0,4,0,0,0},
-    {4,4,5,3,0,0},
-    {3,0,0,4,5,4},
-    {0,0,0,0,0,6}
-    };
-    private int[,] map3 = new int[6,6] { 
-    {1,2,0,4,0,0},
-    {0,4,5,4,4,0},
-    {0,0,4,0,0,0},
-    {0,4,5,3,0,0},
-    {0,0,0,4,5,4},
-    {0,0,0,0,0,6}
+
+    private int[,] mapAmogus = new int[9,9] { 
+    //amongus shaped map
+    {0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0},
+    {0,0,4,2,1,0,0,0,0}, 
+    {0,3,5,0,0,6,0,0,0},
+    {0,4,4,0,4,3,0,0,0},
+    {0,4,5,4,4,0,0,0,0},
+    {0,0,4,0,5,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0}
     };
 
     // Start is called before the first frame update
@@ -81,7 +78,17 @@ public class MapGenerator : MonoBehaviour
 
         assignList();
         //map = PickMap();
-        map = GetComponent<DrunkardWalk>().GenerateMatrix();
+
+        int RandomMap = Random.Range(0, 10);
+
+        // 80% chance of drunkard walk map, 20% chance of amongus map
+        if ((RandomMap + 1) % 5 == 0){
+            map = mapAmogus;
+        }
+        else{
+            map = GetComponent<DrunkardWalk>().GenerateMatrix();
+        }
+        
         assignRoom(map);
         assignPortal(map);
 
@@ -97,21 +104,6 @@ public class MapGenerator : MonoBehaviour
         }
         foreach (GameObject room in shopRooms){
             shopRoomList.Add(room);
-        }
-    }
-
-    private int[,] PickMap(){
-        chosenMap = Random.Range(1, 4);
-        switch (chosenMap)
-        {
-            case 1:
-                return map1;
-            case 2:
-                return map2;
-            case 3:
-                return map3;
-            default:
-                return map1;
         }
     }
 
