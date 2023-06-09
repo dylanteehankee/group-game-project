@@ -69,7 +69,7 @@ public class DrunkardWalk : MonoBehaviour
                 break;
             }
 
-            if (stepIndex > maxSteps){
+            if (stepIndex > maxSteps && roomIndex < numberOfRooms - 1){
                 ResetValues();
                 GenerateMatrix();
                 break;
