@@ -58,7 +58,17 @@ public class PuzzleCreator
         button.transform.localPosition = position;
         return (id, buttonModel, buttonController);
     }
-
+    public (string, WallStateModel, SinglyTriggeredSlidingWallController) CreateWall(GameObject wall, string id, string buttonTriggerID, PuzzleElementShapeLink shape,
+        Vector3 openPosition, Vector3 closedPosition, Vector3 wallScale, float transitionTime, float changePauseTime)
+    {
+        WallStateModel wallModel = new WallStateModel(puzzleController, id);
+        SinglyTriggeredSlidingWallController wallController = wall.GetComponent<SinglyTriggeredSlidingWallController>();
+        wallController.Init(id, puzzleController, wallModel, buttonTriggerID, wallSprites[shape],
+            openPosition, closedPosition, wallScale, transitionTime, changePauseTime);
+        wall.transform.localPosition = closedPosition;
+        return (id, wallModel, wallController);
+    }
+/*
     public (string, WallStateModel, WallController) CreateWall(GameObject wall, string id, string buttonTriggerID, PuzzleElementShapeLink shape,
         Vector3 openPosition, Vector3 closedPosition, Vector3 wallScale, float transitionTime, float changePauseTime)
     {
@@ -69,8 +79,19 @@ public class PuzzleCreator
         wall.transform.localPosition = closedPosition;
         return (id, wallModel, wallController);
     }
-
-    public (string, WallStateModel, DisappearWallController) CreateDisappearWall(GameObject wall, string id, string buttonTriggerID, 
+*/
+    public (string, WallStateModel, SinglyTriggeredDisappearWallController) CreateDisappearWall(GameObject wall, string id, string buttonTriggerID, 
+        PuzzleElementShapeLink shape, Vector3 wallScale, Vector3 position, float transitionTime, float changePauseTime)
+    {
+        WallStateModel wallModel = new WallStateModel(puzzleController, id);
+        SinglyTriggeredDisappearWallController wallController = wall.GetComponent<SinglyTriggeredDisappearWallController>();
+        wallController.Init(id, puzzleController, wallModel, buttonTriggerID, wallSprites[shape], 
+            wallScale, transitionTime, changePauseTime);
+        wall.transform.localPosition = position;
+        return (id, wallModel, wallController);
+    }
+    /*
+     public (string, WallStateModel, DisappearWallController) CreateDisappearWall(GameObject wall, string id, string buttonTriggerID, 
         PuzzleElementShapeLink shape, Vector3 wallScale, Vector3 position, float transitionTime, float changePauseTime)
     {
         WallStateModel wallModel = new WallStateModel(puzzleController, id);
@@ -80,7 +101,7 @@ public class PuzzleCreator
         wall.transform.localPosition = position;
         return (id, wallModel, wallController);
     }
-
+    */
     public (string, TorchStateModel, TorchController) CreateTorch(GameObject torch, string id, Vector3 position, bool expirable, float lightDuration)
     {
         TorchStateModel torchModel = new TorchStateModel(puzzleController, id);
