@@ -46,7 +46,7 @@ namespace Mobs
 
         protected override void attackPlayer(Vector2 deltaLocation)
         {
-            if (elapsedAttackTime == 0)
+            if (!isAttacking)
             {
                 this.spriteRenderer.flipY = false;
                 this.transform.Translate(Vector2.zero);

@@ -28,6 +28,19 @@ namespace Mobs
                 //     spawner[0].GetComponent<MobManager>().SpawnMobs((MobTypes)Random.Range(0, 5));
                 // }
             }
+            if (Input.GetButtonDown("Fire1"))
+            {
+                GameObject[] targets = GameObject.FindGameObjectsWithTag("MobHitbox");
+                if (targets.Length > 0)
+                {
+                    target = targets[0];
+                    if (target.GetComponent<KnightController>() != null)
+                    {
+                        target.GetComponent<KnightController>().ActivateKnight();
+                    }
+                    else { Debug.Log("Not Knight"); }
+                }
+            }
 
             movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
             gameObject.transform.Translate(movementDirection * Time.deltaTime * speed);

@@ -19,7 +19,6 @@ namespace Mobs
         protected float moveSpeed;
         protected float speedModifier = 1.0f;
         private float knockbackDuration = 1.0f;
-        [SerializeField]
         protected float stunDuration = 1.0f;
         protected bool stunned = false;
         protected bool isAblaze = false;
@@ -76,7 +75,7 @@ namespace Mobs
             }
         }
 
-        public void TakeDamage(float damage, EffectTypes type)
+        public virtual void TakeDamage(float damage, EffectTypes type)
         {
             this.mobHealth -= damage;
             this.death();
