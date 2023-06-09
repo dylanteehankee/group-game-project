@@ -8,6 +8,8 @@ public abstract class GameItem
     private string? itemID = null;
 
     private string name;
+    public string itemType = "Item type";
+    public string itemDesciption = "Some spicy item description";
 
     private ItemStatus status;
 
@@ -35,7 +37,10 @@ public abstract class GameItem
         return inventoryIcon;
     }
 
-    public abstract bool CanChangeStatus(ItemStatus toStatus);
+    public virtual bool CanChangeStatus(ItemStatus toStatus){
+        return true;
+    }
+
     public void ChangeStatus(ItemStatus toStatus)
     {
         if(this.CanChangeStatus(toStatus))

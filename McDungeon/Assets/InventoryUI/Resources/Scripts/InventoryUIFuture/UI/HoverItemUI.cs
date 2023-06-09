@@ -43,8 +43,8 @@ public class HoverItemUI : MonoBehaviour
         GameItem tokenItem = ItemManager.GetGameItem(itemIDs[0]);
 
         panel_itemNameText.GetComponent<Text>().text = tokenItem.GetName();
-        panel_itemTypeText.GetComponent<Text>().text = "Some item type";
-        panel_itemDescriptionText.GetComponent<Text>().text = "Some spicy item description";
+        panel_itemTypeText.GetComponent<Text>().text = tokenItem.itemType;
+        panel_itemDescriptionText.GetComponent<Text>().text = tokenItem.itemDesciption;
         
         panel_itemCount.SetActive(true);
         panel_itemCount.transform.GetChild(0).GetComponent<Text>().text = "Count: " + itemIDs.Count.ToString();
@@ -71,8 +71,8 @@ public class HoverItemUI : MonoBehaviour
         GameItem selectedItem = ItemManager.GetGameItem(itemID);
 
         panel_itemNameText.GetComponent<Text>().text = selectedItem.GetName();
-        panel_itemTypeText.GetComponent<Text>().text = "Some item type";
-        panel_itemDescriptionText.GetComponent<Text>().text = "Some spicy item description";
+        panel_itemTypeText.GetComponent<Text>().text = selectedItem.itemType;;
+        panel_itemDescriptionText.GetComponent<Text>().text = selectedItem.itemDesciption;;
         
         panel_itemCount.SetActive(false);
     }

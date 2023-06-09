@@ -279,7 +279,10 @@ public class InventoryController : MonoBehaviour
     public void UseItem()
     {
         // Have Item perform its effects
-
+        /*string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
+        ConsumableItem g = ItemManager.GetGameItem(idToRemove);
+        (ConsumableItem)
+        */
         // Remove the item.
         ConsumeSelectedItem();
 
