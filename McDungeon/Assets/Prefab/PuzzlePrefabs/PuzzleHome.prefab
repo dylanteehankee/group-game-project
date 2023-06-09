@@ -54,3 +54,4 @@ MonoBehaviour:
   buttonSwitchPrefab: {fileID: 8427407593103202324, guid: 9856402b656c3d74694ec7f568d7c450, type: 3}
   wallPrefab: {fileID: 8147305198550599334, guid: 4c2370b5c6bdf864cacde226ededdeab, type: 3}
   disappearWallPrefab: {fileID: 8147305198550599334, guid: 5f12d32a9150c3c469c8154261873257, type: 3}
+  staticWallPrefab: {fileID: 8147305198550599334, guid: e4824fd83e1662641ad14f5f4e4bec92, type: 3}

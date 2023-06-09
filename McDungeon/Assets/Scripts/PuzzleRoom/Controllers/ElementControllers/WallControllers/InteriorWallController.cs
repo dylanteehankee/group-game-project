@@ -15,7 +15,6 @@ public class InteriorWallController : MonoBehaviour
     {
         if(collision.name.Equals("FIreBall(Clone)"))
         {
-            //Debug.Log("Bang");
             Destroy(collision.gameObject);
         }
     }

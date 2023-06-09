@@ -14,14 +14,7 @@ public class StartButtonController : MonoBehaviour
             pc.StartPuzzleRoom();
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-
-        }
-    }
-
+    
     void Update()
     {
         

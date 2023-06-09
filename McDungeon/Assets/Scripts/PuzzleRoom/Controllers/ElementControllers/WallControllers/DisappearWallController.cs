@@ -8,7 +8,7 @@ public abstract class DisappearWallController : StaticWallController
     protected bool openWhenPress = false;
 
     protected float transitionTime;
-    protected float currentTransitionAmount; // 0 is closed, transitionTime is open
+    protected float currentTransitionAmount; 
 
     protected float delayTime;
     protected float currentDelayTime = 0.0f;
@@ -22,7 +22,7 @@ public abstract class DisappearWallController : StaticWallController
         this.delayTime = delayTime;
         currentTransitionAmount = 0.0f;
     }
-    public void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
+    protected void Init(string newElementID, PuzzleController pc, WallStateModel myModel, 
         Sprite blockSprite, Vector3 wallScale, float transitionTime, float delayTime)
     {
         base.Init(newElementID, pc, myModel, blockSprite, wallScale);
@@ -36,21 +36,27 @@ public abstract class DisappearWallController : StaticWallController
         // No specified response behavior yet. 
     }
 
+    /// <summary>
+    /// Change the transparency of the wall element, and all its supporting elements. 
+    /// </summary>
+    /// <param name="ratio"></param>
     protected void ChangeColorTransparency(float ratio)
     {
+        // Change wall transparency value. 
         Color oldColor = gameObject.GetComponent<SpriteRenderer>().color;
         if(oldColor.a == ratio)
             return;
         oldColor.a = ratio;
         gameObject.GetComponent<SpriteRenderer>().color = oldColor;
-        // Change the main wall's controller to influence the blocks.
-
+        
+        // Change transparency of all the user facing blocks. 
         foreach(GameObject block in blockSprites)
         {
             block.GetComponent<SpriteRenderer>().color = oldColor;
         }
 
-        bool collisionActive = (ratio >= 0.1f); // Fade cutoff value for activity
+        // Cutoff of transition value to activate the collisions. 
+        bool collisionActive = (ratio >= 0.1f); 
         if(topWall.activeSelf != collisionActive)
         {
             topWall.SetActive(collisionActive);
@@ -61,18 +67,23 @@ public abstract class DisappearWallController : StaticWallController
             GetComponent<BoxCollider2D>().enabled = collisionActive;
         } 
     }
-
+    /// <summary>
+    /// Respond to change in state. 
+    /// </summary>
+    /// <param name="myState">Enum of the wall state. </param>
+    /// <param name="timeElapsed">Time elapsed since last call. </param>
     protected virtual void ReactToState(PuzzleWallState myState, float timeElapsed)
     {
         switch(myState)
         {
+            // If wall is open, set transparent. 
             case PuzzleWallState.Open: 
                 ChangeColorTransparency(0.0f);
-                //gameObject.GetComponent<Renderer>().enabled = false;
                 break;
+            // If wall is opening, increase transition amount by timeElapsed.
             case PuzzleWallState.Opening:
-                //gameObject.GetComponent<Renderer>().enabled = true;
                 currentTransitionAmount += timeElapsed;
+                // Check if should transition to Open. 
                 if(currentTransitionAmount > transitionTime)
                 {
                     currentTransitionAmount = transitionTime;
@@ -80,13 +91,14 @@ public abstract class DisappearWallController : StaticWallController
                 }
                 ChangeColorTransparency(1.0f - (currentTransitionAmount / transitionTime));
                 break;
+            // If wall is closed, set completely visible. 
             case PuzzleWallState.Closed: 
                 ChangeColorTransparency(1.0f);
-                //gameObject.GetComponent<Renderer>().enabled = true;
                 break;
+            // If wall is closing, decrease transition amount by timeElapsed.
             case PuzzleWallState.Closing:
-                //gameObject.GetComponent<Renderer>().enabled = true;
                 currentTransitionAmount -= timeElapsed;
+                // Check if should transition to Closed. 
                 if(currentTransitionAmount < 0)
                 {
                     currentTransitionAmount = 0;

@@ -34,6 +34,7 @@ public class PuzzleController : MonoBehaviour
     [SerializeField] public GameObject buttonSwitchPrefab;  
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject disappearWallPrefab;
+    [SerializeField] public GameObject staticWallPrefab;
 
     private Dictionary<string, PuzzleElementShapeLink> stringToPuzzleElementShape; 
 
@@ -234,7 +235,7 @@ public class PuzzleController : MonoBehaviour
             {
                 case "PushButton":
                     AddObjectToPuzzle(puzzleCreator
-                        .CreateButton(
+                        .CreatePushButton(
                             button: Instantiate(buttonPrefab, gameObject.transform), 
                             id: split[1],
                             position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
@@ -272,7 +273,7 @@ public class PuzzleController : MonoBehaviour
                     break;
                 case "SlidingWall":
                      AddObjectToPuzzle(puzzleCreator
-                        .CreateWall(
+                        .CreateSlidingWall(
                             wall: Instantiate(wallPrefab, gameObject.transform), 
                             id: split[1], 
                             buttonTriggerID: split[2],
@@ -291,15 +292,12 @@ public class PuzzleController : MonoBehaviour
                     break;
                 case "StaticWall": 
                     AddObjectToPuzzle(puzzleCreator
-                        .CreateDisappearWall(
-                            wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                        .CreateStaticWall(
+                            wall: Instantiate(staticWallPrefab, gameObject.transform), 
                             id: split[1], 
-                            buttonTriggerID: null,
                             shape: stringToPuzzleElementShape[split[2]],
                             wallScale: new Vector3(float.Parse(split[3]), float.Parse(split[4]), 1),
-                            position: new Vector3(float.Parse(split[5]), float.Parse(split[6]), 0),
-                            transitionTime: 0f,
-                            changePauseTime: 0f
+                            position: new Vector3(float.Parse(split[5]), float.Parse(split[6]), 0)
                         )
                     );
                     break;
@@ -326,7 +324,7 @@ public class PuzzleController : MonoBehaviour
     public void InitPuzzle3()
     {
         AddObjectToPuzzle(puzzleCreator
-            .CreateButton(
+            .CreatePushButton(
                 button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "1",
                 position: new Vector3(5.0f, 19.0f, 0),
@@ -335,7 +333,7 @@ public class PuzzleController : MonoBehaviour
         );
 
         AddObjectToPuzzle(puzzleCreator
-            .CreateButton(
+            .CreatePushButton(
                 button: Instantiate(buttonPrefab, gameObject.transform), 
                 id: "2",
                 position: new Vector3(13.0f, 7.0f, 0),
