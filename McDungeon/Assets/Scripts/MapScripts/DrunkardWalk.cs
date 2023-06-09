@@ -50,11 +50,16 @@ public class DrunkardWalk : MonoBehaviour
         // Set TutorialRoom, can only be adjacent at the left or right or down of StartRoom, also depends on the column of StartRoom (if it's at the edge)
         //if currentRoom.y == 0, TutorialRoom can only be at the right or down of StartRoom
         GenerateTrainingRoom();
-
+        // current roomIndex = 2
         // Walk through the matrix, randomly choosing a direction to go to
         // keep walking until the number of rooms is reached
         // do not adda a room if it is out of bounds or if it is already a room
         while(roomIndex <= numberOfRooms - 1){
+            if(roomIndex ==  numberOfRooms - 1)
+            {
+                break;
+            }
+
             //if the number of steps is greater than the max steps, regenerate the matrix
 
             //choose a random direction
@@ -63,11 +68,6 @@ public class DrunkardWalk : MonoBehaviour
             nextRoom = currentRoom + directions[randomDirection];
 
             stepIndex++;
-
-            if(roomIndex ==  numberOfRooms - 1)
-            {
-                break;
-            }
 
             if (stepIndex > maxSteps && roomIndex < numberOfRooms - 1){
                 ResetValues();
@@ -104,12 +104,14 @@ public class DrunkardWalk : MonoBehaviour
 
             //assign the nextRoom as a placeholder room
             matrix[nextRoom.x, nextRoom.y] = (int)RoomType.TempRoom;
-            roomIndex++;
+            
 
             //set the currentRoom to the nextRoom
             rooms[roomIndex] = nextRoom;
             previousRoom = currentRoom;
             currentRoom = nextRoom;
+
+            roomIndex++;
         }
 
         //generate the shop layer
