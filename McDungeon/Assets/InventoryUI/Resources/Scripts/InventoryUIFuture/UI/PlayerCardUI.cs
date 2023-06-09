@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Inventory;
 using System;
 
@@ -8,6 +9,8 @@ public class PlayerCardUI : MonoBehaviour
 {
     public InventorySlot weaponSlot;
     public InventorySlot armorSlot;
+
+    public GameObject coinText;
 
     // Add List<int> selectedIndices
     public void LoadItems(string weapon, string armor, string itemSelected, bool isHovered, Action<InventorySlot> onClick, Action<InventorySlot, bool> onHover)
@@ -56,6 +59,11 @@ public class PlayerCardUI : MonoBehaviour
                 break;
         }
         
+    }
+
+    public void LoadCoinAmount(int amount)
+    {
+        coinText.GetComponent<Text>().text = amount.ToString();
     }
 
 }

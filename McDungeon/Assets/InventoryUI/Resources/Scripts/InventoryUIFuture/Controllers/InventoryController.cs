@@ -136,6 +136,8 @@ public class InventoryController : MonoBehaviour
             this.EquippedInventorySlotHovered
         );
         
+        playerCardUI.LoadCoinAmount(gameObject.GetComponent<UIManager>().coinAmount);
+        
     }
 
     private void RefreshInventoryGridUI()

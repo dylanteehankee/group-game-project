@@ -5,6 +5,8 @@ public class UIManager : MonoBehaviour
 {
     public GameObject speechBubblePrefab;
 
+    [SerializeField] public int coinAmount = 0;
+
     void Start()
     {
         
