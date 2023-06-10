@@ -10,6 +10,11 @@ enum Effect
     Burn
 }
 
+public enum GameMode
+{
+    Normal,
+    Hard
+}
 namespace McDungeon
 {
     public class PlayerController : MonoBehaviour
@@ -18,6 +23,7 @@ namespace McDungeon
         [SerializeField] private GameObject Weapon;
         [SerializeField] private CRWeaponController closeRangeWeapon;
         [SerializeField] private float speed;
+        [SerializeField] private BoxCollider2D bodyColloder;
         private float hitTakenInterverl;
         private float hitTimer;
         private bool readyForAction = true;
@@ -50,6 +56,13 @@ namespace McDungeon
         private float spellCastTimer = 0f;
         private bool castingSpell = false;
 
+
+        private bool usingPortal = false;
+        private bool reachedFront = false;
+        private bool reachedInside = false;
+        private Vector3 mirrorPos;
+        private GameMode mode = GameMode.Normal;
+
         void Start()
         {
             spellHome = GameObject.Find("SpellMakerHome");
@@ -65,16 +78,26 @@ namespace McDungeon
             closeRangeWeapon.Config(10f, 10f, 120f, 1f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
+
+            bodyColloder = this.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>();
         }
 
         void Update()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // move player
-            Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
-            direction = direction.normalized;
 
-            this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+            if (!usingPortal)
+            {
+                Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+                direction = direction.normalized;
+
+                this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+            }
+            else
+            {
+                UsePortal();
+            }
 
             // Reduce all coll down count.
             UpdateCoolDowns();
@@ -157,8 +180,8 @@ namespace McDungeon
                     // Might change player color
                 }
             }
-        }
 
+        }
 
         void OnCollisionEnter2D(Collision2D collision)
         {
@@ -249,7 +272,7 @@ namespace McDungeon
 
                 if (Input.GetKeyUp(KeyCode.Q))
                 {
-                    if (spellCastTimer  <= 0f)
+                    if (spellCastTimer <= 0f)
                     {
                         spell_Q.Execute(this.transform.position, mousePos);
                         actionCoolDown = 0.1f;
@@ -300,5 +323,76 @@ namespace McDungeon
                 }
             }
         }
+
+        void UsePortal()
+        {
+            if (!reachedFront)
+            {
+                Vector3 direction = mirrorPos - this.gameObject.transform.position + new Vector3(0f, -0.5f, 0f);
+                direction.z = 0f;
+                if (direction.magnitude < 0.1f)
+                {
+                    this.gameObject.transform.position = mirrorPos + new Vector3(0f, -0.5f, 0f);
+                    reachedFront = true;
+                    Debug.Log("Done reached front");
+                }
+                else
+                {
+                    this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+                }
+            }
+            else if (!reachedInside)
+            {
+                Vector3 direction = mirrorPos - this.gameObject.transform.position + new Vector3(0f, 0.5f, 0f);
+                direction.z = 0f;
+                if (direction.magnitude < 0.1f)
+                {
+                    this.gameObject.transform.position = mirrorPos + new Vector3(0f, 0.5f, 0f);
+                    reachedInside = true;
+                    Debug.Log("Done reached inside");
+                }
+                else
+                {
+                    this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+                }
+            }
+            else
+            {
+                Vector3 direction = mirrorPos - this.gameObject.transform.position + new Vector3(0f, -2f, 0f);
+                direction.z = 0f;
+                if (direction.magnitude < 0.1f)
+                {
+                    this.gameObject.transform.position = mirrorPos + new Vector3(0f, -2f, 0f);
+                    
+                    bodyColloder.isTrigger = false;
+                    actionCoolDown = 0f;
+                    usingPortal = false;
+                    effectSlowRate = 1f;
+                    Debug.Log("Done use Portal");
+                }
+                else
+                {
+                    this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+                }
+
+            }
+
+        }
+
+        public void StartUsePortal(Vector3 mirrorPos, GameMode mode = GameMode.Normal)
+        {
+            this.mirrorPos = mirrorPos;
+            this.mode = mode;
+            bodyColloder.isTrigger = true;
+
+
+            actionCoolDown = 100f;
+            usingPortal = true;
+            reachedFront = false;
+            reachedInside = false;
+            effectSlowRate = 0.7f;
+        }
+
+
     }
 }

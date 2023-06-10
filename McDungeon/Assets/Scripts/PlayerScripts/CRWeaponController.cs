@@ -93,7 +93,6 @@ namespace McDungeon
             float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
             weaponDir = angle;
             this.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            Debug.Log("dir changed" + angle);
         }
 
         private void Attack()
