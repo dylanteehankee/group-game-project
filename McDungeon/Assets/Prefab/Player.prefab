@@ -4912,9 +4912,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellHome: {fileID: 0}
-  Weapon: {fileID: 4723683637459498705}
+  weapon: {fileID: 4723683637459498705}
   closeRangeWeapon: {fileID: 0}
   speed: 2.5
+  bodyCollider: {fileID: 0}
 --- !u!50 &6336733152612059913
 Rigidbody2D:
   serializedVersion: 4

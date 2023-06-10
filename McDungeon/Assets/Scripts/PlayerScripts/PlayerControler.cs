@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 enum Effect
 {
@@ -13,17 +14,18 @@ enum Effect
 public enum GameMode
 {
     Normal,
-    Hard
+    Hard,
+    Unchange
 }
 namespace McDungeon
 {
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private GameObject spellHome;
-        [SerializeField] private GameObject Weapon;
+        [SerializeField] private GameObject weapon;
         [SerializeField] private CRWeaponController closeRangeWeapon;
         [SerializeField] private float speed;
-        [SerializeField] private BoxCollider2D bodyColloder;
+        [SerializeField] private BoxCollider2D bodyCollider;
         private float hitTakenInterverl;
         private float hitTimer;
         private bool readyForAction = true;
@@ -60,8 +62,13 @@ namespace McDungeon
         private bool usingPortal = false;
         private bool reachedFront = false;
         private bool reachedInside = false;
+        private float oldIntensity = 0.1f;
+        private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
+
+        private Light2D globalLight;
+        private Light2D torchLight;
 
         void Start()
         {
@@ -74,12 +81,15 @@ namespace McDungeon
             spell_Q = spell_water;
             spell_E = spell_lightning;
 
-            closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
+            closeRangeWeapon = weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
             closeRangeWeapon.Config(10f, 10f, 120f, 1f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
 
-            bodyColloder = this.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>();
+            bodyCollider = this.transform.GetChild(0).gameObject.GetComponent<BoxCollider2D>();
+
+            globalLight = GameObject.Find("GlobalLight2D").GetComponent<Light2D>();
+            torchLight = this.transform.GetChild(0).gameObject.GetComponent<Light2D>();
         }
 
         void Update()
@@ -349,11 +359,15 @@ namespace McDungeon
                 {
                     this.gameObject.transform.position = mirrorPos + new Vector3(0f, 0.5f, 0f);
                     reachedInside = true;
+                    globalLight.intensity = 0f;
+                    torchLight.intensity = 0f;
                     Debug.Log("Done reached inside");
                 }
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+                    globalLight.intensity = globalLight.intensity - speed * effectSlowRate  * Time.deltaTime * oldIntensity;
+                    torchLight.intensity = torchLight.intensity - speed * effectSlowRate * Time.deltaTime * 0.5f;
                 }
             }
             else
@@ -363,16 +377,30 @@ namespace McDungeon
                 if (direction.magnitude < 0.1f)
                 {
                     this.gameObject.transform.position = mirrorPos + new Vector3(0f, -2f, 0f);
-                    
-                    bodyColloder.isTrigger = false;
+
+                    bodyCollider.isTrigger = false;
                     actionCoolDown = 0f;
                     usingPortal = false;
                     effectSlowRate = 1f;
+                    globalLight.intensity = lightIntensity;
+                    torchLight.intensity = 0.5f;
                     Debug.Log("Done use Portal");
                 }
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * effectSlowRate * Time.deltaTime;
+                    globalLight.intensity = globalLight.intensity + speed * effectSlowRate * Time.deltaTime * lightIntensity / 2.5f;
+                    torchLight.intensity = torchLight.intensity + speed * effectSlowRate * Time.deltaTime * 0.5f / 2.5f;
+
+                    if (globalLight.intensity > lightIntensity)
+                    {
+                        globalLight.intensity = lightIntensity;
+                    }
+
+                    if (torchLight.intensity > 0.5f)
+                    {
+                        torchLight.intensity = 0.5f;
+                    }
                 }
 
             }
@@ -383,8 +411,22 @@ namespace McDungeon
         {
             this.mirrorPos = mirrorPos;
             this.mode = mode;
-            bodyColloder.isTrigger = true;
+            bodyCollider.isTrigger = true;
 
+            if (mode == GameMode.Unchange)
+            {
+                lightIntensity = lightIntensity;
+            }
+            else if (mode == GameMode.Normal)
+            {
+                lightIntensity = 0.1f;
+            }
+            else
+            {
+                lightIntensity = 0f;
+            }
+
+            oldIntensity = globalLight.intensity;
 
             actionCoolDown = 100f;
             usingPortal = true;
