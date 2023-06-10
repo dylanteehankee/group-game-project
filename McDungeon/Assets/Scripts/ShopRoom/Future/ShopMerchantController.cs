@@ -34,6 +34,7 @@ public class ShopMerchantController : MonoBehaviour
         itemPrices.Add(20);
 
         crates = GetComponentsInChildren<ShopCrateController>();
+        RestockItems();
     }
 
     public void BuyItem(int listID)
