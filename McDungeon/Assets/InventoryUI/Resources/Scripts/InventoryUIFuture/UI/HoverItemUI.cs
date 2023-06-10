@@ -23,7 +23,7 @@ public class HoverItemUI : MonoBehaviour
 
     [SerializeField] public float hoverPanelWidth = 170.0f;
     [SerializeField] public float hoverPanelHeight = 150.0f;
-    [SerializeField] public float hoverPanelOffset = -0.5f;
+    [SerializeField] public float hoverPanelOffset = -5f;
 
     [SerializeField] public float leftCoefficient = -0.0083f;
 
@@ -44,7 +44,7 @@ public class HoverItemUI : MonoBehaviour
 
         panel_itemNameText.GetComponent<Text>().text = tokenItem.GetName();
         panel_itemTypeText.GetComponent<Text>().text = tokenItem.itemType;
-        panel_itemDescriptionText.GetComponent<Text>().text = tokenItem.itemDesciption;
+        panel_itemDescriptionText.GetComponent<Text>().text = tokenItem.itemDescription;
         
         panel_itemCount.SetActive(true);
         panel_itemCount.transform.GetChild(0).GetComponent<Text>().text = "Count: " + itemIDs.Count.ToString();
@@ -72,7 +72,7 @@ public class HoverItemUI : MonoBehaviour
 
         panel_itemNameText.GetComponent<Text>().text = selectedItem.GetName();
         panel_itemTypeText.GetComponent<Text>().text = selectedItem.itemType;;
-        panel_itemDescriptionText.GetComponent<Text>().text = selectedItem.itemDesciption;;
+        panel_itemDescriptionText.GetComponent<Text>().text = selectedItem.itemDescription;;
         
         panel_itemCount.SetActive(false);
     }

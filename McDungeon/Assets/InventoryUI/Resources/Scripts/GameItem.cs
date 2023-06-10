@@ -9,7 +9,7 @@ public abstract class GameItem
 
     private string name;
     public string itemType = "Item type";
-    public string itemDesciption = "Some spicy item description";
+    public string itemDescription = "Some spicy item description";
 
     private ItemStatus status;
 
