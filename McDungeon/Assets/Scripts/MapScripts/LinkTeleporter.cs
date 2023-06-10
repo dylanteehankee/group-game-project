@@ -70,6 +70,8 @@ public class LinkTeleporter : MonoBehaviour
                     }
                     else {
                         Debug.Log ("Puzzle completed");
+                        GetComponent<SpriteRenderer>().enabled = true;
+                        GetComponent<Animator>().enabled = true;
                         closeDoor = false;
                         RoomCompleted = true;
                     }
@@ -112,13 +114,13 @@ public class LinkTeleporter : MonoBehaviour
                 //transform position of player to a unit in front of the target room
                 //check target rotation and teleport in front of the door
                 if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0)){
-                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y - 2);
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y - 2.5f);
                 }
                 else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90)){
                     other.transform.position = new Vector2(TargetRoom.transform.position.x + 2, TargetRoom.transform.position.y);
                 }
                 else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180)){
-                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y + 2);
+                    other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y + 2.5f);
                 }
                 else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90)){
                     other.transform.position = new Vector2(TargetRoom.transform.position.x - 2, TargetRoom.transform.position.y);
@@ -136,7 +138,7 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
-                grandparent.GetComponent<MapGenerator>().updateMiniMap(parentTarget);
+                grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
             //}
             }
@@ -145,7 +147,7 @@ public class LinkTeleporter : MonoBehaviour
 
     //Reset all global variables
     //TODO: reset all variables in the room
-    void resetAll(){
+    void ResetAll(){
         GameObject parentTarget = TargetRoom.transform.parent.gameObject;
 
         GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;
@@ -157,6 +159,8 @@ public class LinkTeleporter : MonoBehaviour
         Portal2.GetComponent<LinkTeleporter>().isInside = false;
         Portal3.GetComponent<LinkTeleporter>().isInside = false;
         Portal4.GetComponent<LinkTeleporter>().isInside = false;
+
+        TargetRoom = null;
 
         Teleported = false;
         isInside = false;

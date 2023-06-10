@@ -83,13 +83,13 @@ public class TileUpdate : MonoBehaviour
                     }
                 }
 
-                tileRotation(teleporter);
+                TileRotation(teleporter);
             }
         }
     }
 
     //Tile rotation 
-    void tileRotation (GameObject teleporter){
+    void TileRotation (GameObject teleporter){
         //rotate tiles according to rotation of teleporter
         if (teleporter.transform.localRotation == Quaternion.Euler(0,0,90)){
             replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,90), Vector3.one));
@@ -109,7 +109,34 @@ public class TileUpdate : MonoBehaviour
     }
 
     // Reset tiles to original state
-    void resetAll(){
-        //TODO: reset all tiles to original state
+    void ResetAll(){
+        foreach (GameObject teleporter in teleporterList){
+            // Get current tile teleporter is on.
+            currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);
+
+            // Get adjacent tiles based on rotation of teleporter.
+            if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 0)){
+                    adjacent1 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
+                    adjacent2 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
+            }
+            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+                adjacent1 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
+                adjacent2 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
+            }
+            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+                adjacent1 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
+                adjacent2 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
+            }
+            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+                adjacent1 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
+                adjacent2 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
+            }
+
+            replaceTileMap.SetTile(adjacent1, leftGateTile);
+            replaceTileMap.SetTile(adjacent2, rightGateTile);
+            replaceTileMap.SetTile(currentCell, middleGateTile);
+
+            TileRotation(teleporter);
+        }
     }
 }

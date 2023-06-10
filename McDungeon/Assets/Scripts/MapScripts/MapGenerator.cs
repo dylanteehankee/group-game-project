@@ -9,6 +9,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private GameObject miniRoom;
     [SerializeField] private GameObject miniMap;
+    [SerializeField] private Sprite endRoomSprite;
 
     private int chosenMap;
 
@@ -76,7 +77,7 @@ public class MapGenerator : MonoBehaviour
         shopRooms = GameObject.FindGameObjectsWithTag("ShopRoom");
         Debug.Log("ShopRooms: " + shopRooms.Length + " found");
 
-        assignList();
+        AssignList();
         //map = PickMap();
 
         int RandomMap = Random.Range(0, 10);
@@ -89,13 +90,13 @@ public class MapGenerator : MonoBehaviour
             map = GetComponent<DrunkardWalk>().GenerateMatrix();
         }
         
-        assignRoom(map);
-        assignPortal(map);
+        AssignRoom(map);
+        AssignPortal(map);
 
-        drawMiniMap();
+        DrawMiniMap();
     }
 
-    private void assignList(){
+    private void AssignList(){
         foreach (GameObject room in combatRooms){
             combatRoomList.Add(room);
         }
@@ -137,7 +138,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void assignRoom(int[,] map){
+    private void AssignRoom(int[,] map){
         //assigns the room to the current position in the map
         for (int i = 0; i < map.GetLength(0); i++){
             for (int j = 0; j < map.GetLength(1); j ++){
@@ -156,7 +157,7 @@ public class MapGenerator : MonoBehaviour
     //and prevRoom to the room at the previous position
     //also assigns and checks if there are rooms above, below, left and right of the current room
     //if any of these rooms are the previous room, it will not make a portal to that room
-    private void assignPortal(int[,] map){
+    private void AssignPortal(int[,] map){
 
         for (int i = 0; i < map.GetLength(0); i++){
             for (int j = 0; j < map.GetLength(1); j ++){
@@ -200,7 +201,7 @@ public class MapGenerator : MonoBehaviour
 
     //Draw mini map based on the map matrix
     // this creates a minimap gameobject and initializes miniRoom for each room as a child of minimap
-    private void drawMiniMap(){
+    private void DrawMiniMap(){
         //create squares for each room
         for (int i = 0; i < map.GetLength(0); i++){
             for (int j = 0; j < map.GetLength(1); j ++){
@@ -209,6 +210,10 @@ public class MapGenerator : MonoBehaviour
                 //sets the position of the miniRoom according to the position in the map, relative to the minimap
                 miniRoomPrefab.transform.localPosition = new Vector3(j, -i, 0);
                 //make all of them in layer 3
+                //if matrix value is 6, change sprite to end room sprite
+                if (map[i,j] == 6){
+                    miniRoomPrefab.GetComponent<SpriteRenderer>().sprite = endRoomSprite;
+                }
                 miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 3;
                 //set all rooms to transparent
                 miniRoomPrefab.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
@@ -221,10 +226,10 @@ public class MapGenerator : MonoBehaviour
         startMiniRoom.GetComponent<SpriteRenderer>().color = Color.white;
 
         //update adjacent rooms
-        updateAdjacent(currentRoomCoordinates);
+        UpdateAdjacent(currentRoomCoordinates);
     }
     //Update minimap based on current room
-    public void updateMiniMap(GameObject currentRoom){
+    public void UpdateMiniMap(GameObject currentRoom){
         //set previous room to white
         GameObject prevRoom = miniMap.transform.GetChild(currentRoomCoordinates.x * map.GetLength(1) + currentRoomCoordinates.y).gameObject;
         prevRoom.GetComponent<SpriteRenderer>().color = Color.grey;
@@ -237,18 +242,17 @@ public class MapGenerator : MonoBehaviour
         miniRoom.GetComponent<SpriteRenderer>().color = Color.white;
 
         //update adjacent rooms
-        updateAdjacent(currentRoomCoordinates);
+        UpdateAdjacent(currentRoomCoordinates);
     }
 
     // Check Adjacent Rooms
-    private void updateAdjacent(Vector2Int currentRoomCoordinates){
+    private void UpdateAdjacent(Vector2Int currentRoomCoordinates){
         //set adjacent rooms up, down, left, and right that are transparent to orange
         if (currentRoomCoordinates.x + 1 < map.GetLength(0)){
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x + 1, currentRoomCoordinates.y);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             //check if the color is transparent
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                Debug.Log("adjacent exists to the right");
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
             }
         }
@@ -256,7 +260,6 @@ public class MapGenerator : MonoBehaviour
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x - 1, currentRoomCoordinates.y);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                Debug.Log("adjacent exists to the left");
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
             }
         }
@@ -264,7 +267,6 @@ public class MapGenerator : MonoBehaviour
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y + 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                Debug.Log("adjacent exists to the up");
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
             }
         }
@@ -272,7 +274,6 @@ public class MapGenerator : MonoBehaviour
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y - 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                Debug.Log("adjacent exists to the down");
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
             }
         }
@@ -288,14 +289,24 @@ public class MapGenerator : MonoBehaviour
         return new Vector2Int(-1, -1);
     }
 
+    public void destroyMiniMap(){
+        //destroy minimap child objects
+        foreach (Transform child in miniMap.transform){
+            Destroy(child.gameObject);
+        }
+    }
+
     //Reset all global variables
-    void resetAll(){
+    void ResetAll(){
         combatRoomList.Clear();
         puzzleRoomList.Clear();
         shopRoomList.Clear();
         roomDictionary.Clear();
         currentRoomCoordinates = new Vector2Int(-1, -1);
 
+        //destroy minimap child objects
+        destroyMiniMap();
+        
         //Instiate all again
         Start();
     }
