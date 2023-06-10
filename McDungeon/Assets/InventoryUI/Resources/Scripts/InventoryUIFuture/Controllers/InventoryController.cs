@@ -541,6 +541,15 @@ public class InventoryController : MonoBehaviour
         uiCanvas.SetActive(inventoryUIModel.isActive);
     }
 
+    public void ShopItemAdded()
+    {
+        if(inventoryUIModel.isActive)
+        {
+            this.RefreshInventoryGridUI();
+            this.RefreshPlayerCardUI();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
