@@ -34,13 +34,13 @@ namespace Mobs{
             }
         }
 
-        public void SpawnMobs(MobTypes type, int amount = 4)
+        public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 4)
         {
             var mobPrefab = this.getMobPrefab(type);
             for (int i = 0; i < amount; i++) {
                 var newMob = (GameObject)Instantiate(mobPrefab, this.gameObject.transform);
                 this.Subscribe(newMob);
-                newMob.transform.position = new Vector2(Random.Range(-10,10), Random.Range(-10, 10));
+                newMob.transform.position = new Vector2(Random.Range(topLeft.x, bottomRight.x), Random.Range(topLeft.y, bottomRight.y));
             }
             this.Notify();
         }
@@ -105,11 +105,6 @@ namespace Mobs{
         public List<GameObject> GetMobs()
         {
             return this.mobsList;
-        }
-
-        public void moveSpawner(Vector2 destination)
-        {
-            this.transform.position = destination;
         }
     }
 }
