@@ -37,6 +37,11 @@ namespace McDungeon
             {
                 WeaponUpdate();
             }
+            else
+            {
+                // change weapon direction
+                ChangeWeaponDirection();
+            }
         }
 
         public void Config(float attackDamage, float attackSpeed, float attackAngle, float knockBack, bool active, float attackSpeedFactor = 0.4f)
@@ -88,6 +93,7 @@ namespace McDungeon
             float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg - 90f;
             weaponDir = angle;
             this.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            Debug.Log("dir changed" + angle);
         }
 
         private void Attack()
