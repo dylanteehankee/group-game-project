@@ -87,7 +87,7 @@ public class InventorySlot : MonoBehaviour
 
     public void SetSelectedSlot()
     {
-        myButton.GetComponent<Image>().color = new Color32(148,255,131,250);
+        myButton.GetComponent<Image>().color = new Color32(127,255,107,250);
     }
 
     public void SetEquippedSlot()
@@ -98,6 +98,6 @@ public class InventorySlot : MonoBehaviour
 
      public void SetHoveredSlot()
     {
-        myButton.GetComponent<Image>().color = new Color32(148,255,131,100);
+        myButton.GetComponent<Image>().color = new Color32(217,255,211,255);
     }
 }
