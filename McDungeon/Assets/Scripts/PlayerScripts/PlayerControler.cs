@@ -21,6 +21,7 @@ namespace McDungeon
         [SerializeField] private CRWeaponController closeRangeWeapon;
         [SerializeField] private float speed;
         [SerializeField] private CapsuleCollider2D bodyCollider;
+        [SerializeField] private StartRoomLightController roomLightControl;
         private float hitTakenInterverl;
         private float hitTimer;
         private bool readyForAction = true;
@@ -58,6 +59,7 @@ namespace McDungeon
 
         private Light2D globalLight;
         private Light2D torchLight;
+        private float roomLightIntensity = 1f;
 
         private bool stunned = false;
         private bool isAblaze = false;
@@ -101,6 +103,7 @@ namespace McDungeon
             
             globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
             torchLight = this.transform.GetChild(0).gameObject.GetComponent<Light2D>();
+            roomLightControl = GameObject.Find("StartingRoom").GetComponent<StartRoomLightController>();
         }
 
         void Update()
@@ -390,7 +393,8 @@ namespace McDungeon
                     reachedInside = true;
                     globalLight.intensity = 0f;
                     torchLight.intensity = 0f;
-                    Debug.Log("Done reached inside");
+                    roomLightIntensity = 0f;
+                    roomLightControl.UpdateLight(roomLightIntensity);
                 }
                 else
                 {
@@ -399,6 +403,8 @@ namespace McDungeon
 
                     globalLight.intensity = globalLight.intensity - speed * speedModifier * Time.deltaTime * oldIntensity;
                     torchLight.intensity = torchLight.intensity - speed * speedModifier * Time.deltaTime * 0.5f;
+                    roomLightIntensity = roomLightIntensity - speed * speedModifier * Time.deltaTime * 1f;
+                    roomLightControl.UpdateLight(roomLightIntensity);
                 }
             }
             else
@@ -415,15 +421,18 @@ namespace McDungeon
                     speedModifier = 1f;
                     globalLight.intensity = lightIntensity;
                     torchLight.intensity = 0.5f;
-                    Debug.Log("Done use Portal");
+                    roomLightIntensity = 1f;
+                    roomLightControl.UpdateLight(roomLightIntensity);
                 }
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
                     this.spriteController(direction);
-                    
+
                     globalLight.intensity = globalLight.intensity + speed * speedModifier * Time.deltaTime * lightIntensity / 2.5f;
                     torchLight.intensity = torchLight.intensity + speed * speedModifier * Time.deltaTime * 0.5f / 2.5f;
+                    roomLightIntensity = roomLightIntensity + speed * speedModifier * Time.deltaTime * 1f / 2.5f;
+                    roomLightControl.UpdateLight(roomLightIntensity);
 
                     if (globalLight.intensity > lightIntensity)
                     {
@@ -433,6 +442,12 @@ namespace McDungeon
                     if (torchLight.intensity > 0.5f)
                     {
                         torchLight.intensity = 0.5f;
+                    }
+
+                    if (roomLightIntensity > 1f)
+                    {
+                        roomLightIntensity = 1f;
+                        roomLightControl.UpdateLight(roomLightIntensity);
                     }
                 }
 
