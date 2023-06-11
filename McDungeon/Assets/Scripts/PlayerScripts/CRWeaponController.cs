@@ -7,16 +7,17 @@ namespace McDungeon
     public class CRWeaponController : MonoBehaviour
     {
         [SerializeField] private GameObject player;
+        [SerializeField] private float attackDamage;
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackSpeedFactor;
         [SerializeField] private float attackAngle;
+        [SerializeField] private float knockBack;
         [SerializeField] private bool active;
         private SpriteRenderer hitBoxRender;
         private CapsuleCollider2D hitBoxCllider;
         private float weaponDir;   // angle
         private bool attacking;
         private float atkProgress; // 0 - 1
-        private float knockbackDuration = 1.0f;
 
         void Start()
         {
@@ -24,6 +25,7 @@ namespace McDungeon
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
 
             attackSpeedFactor = 0.4f;
+            knockBack = 0f;
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
@@ -35,12 +37,18 @@ namespace McDungeon
             {
                 WeaponUpdate();
             }
+            else
+            {
+                // change weapon direction
+                ChangeWeaponDirection();
+            }
         }
 
-        public void Config(float attackSpeed, float attackAngle, bool active, float attackSpeedFactor = 0.4f)
+        public void Config(float attackDamage, float attackSpeed, float attackAngle, float knockBack, bool active, float attackSpeedFactor = 0.4f)
         {
             this.attackSpeed = attackSpeed;
             this.attackAngle = attackAngle;
+            this.knockBack = knockBack;
             this.active = active;
             this.attackSpeedFactor = attackSpeedFactor;
             Debug.Log("configed weapon");
@@ -67,7 +75,6 @@ namespace McDungeon
             if (Input.GetButtonUp("Fire1"))
             {
                 attacking = true;
-                player.GetComponent<Animator>().SetBool("Attack", true);
                 hitBoxRender.enabled = true;
                 hitBoxCllider.enabled = true;
             }
@@ -102,11 +109,11 @@ namespace McDungeon
             if (atkProgress == 1f)
             {
                 attacking = false;
-                player.GetComponent<Animator>().SetBool("Attack", false);
                 hitBoxRender.enabled = false;
                 hitBoxCllider.enabled = false;
                 atkProgress = 0f;
                 this.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                active = false;
             }
             else
             {
@@ -118,12 +125,5 @@ namespace McDungeon
         {
             // Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
         }
-
-        protected IEnumerator knockback(Rigidbody2D mob)
-        {
-            yield return new WaitForSeconds(knockbackDuration);
-            mob.isKinematic = true;
-        }
-
     }
 }

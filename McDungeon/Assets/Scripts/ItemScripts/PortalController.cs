@@ -8,6 +8,7 @@ namespace McDungeon
         [SerializeField] private GameObject portal;
         [SerializeField] private GameObject face;
         [SerializeField] private GameObject cover;
+        [SerializeField] private GameMode mode;
         [SerializeField] private bool special;
         [SerializeField] private bool unlocked;
 
@@ -49,6 +50,7 @@ namespace McDungeon
 
                     // Non-special or unlocked.
                     Debug.Log("Activated Portal");
+                    playerControl.StartUsePortal(this.gameObject.transform.position, mode);
 
                 }
             }

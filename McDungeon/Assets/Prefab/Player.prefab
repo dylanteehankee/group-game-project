@@ -56,7 +56,7 @@ MonoBehaviour:
   Weapon: {fileID: 4723683637459498705}
   closeRangeWeapon: {fileID: 0}
   speed: 2.5
-  prefab_fireball: {fileID: 7838530794719727910, guid: ee6705bbdaf457445b810e99a8b03448, type: 3}
+  bodyCollider: {fileID: 0}
 --- !u!50 &6336733152612059913
 Rigidbody2D:
   serializedVersion: 4
@@ -234,7 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 349113253981357344}
   - component: {fileID: 1785203113457867007}
-  - component: {fileID: 7185735729612658709}
+  - component: {fileID: 8852486022325722681}
   m_Layer: 0
   m_Name: Body
   m_TagString: Player
@@ -336,8 +336,8 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!70 &7185735729612658709
-CapsuleCollider2D:
+--- !u!58 &8852486022325722681
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -365,12 +365,12 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.4, y: 0.9}
-  m_Direction: 0
+  m_Offset: {x: 0, y: -0.25}
+  serializedVersion: 2
+  m_Radius: 0.05
 --- !u!1 &8676221486625866190
 GameObject:
   m_ObjectHideFlags: 0
