@@ -6492,7 +6492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechBubblePrefab: {fileID: 2067549744756201972, guid: 146198c7a7b456f48b159dd69d42b8c9, type: 3}
-  coinAmount: 0
+  coinAmount: 200
 --- !u!1001 &148874670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8267,6 +8267,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1.6
       objectReference: {fileID: 0}
+    - target: {fileID: 3136922456320363033, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
+      propertyPath: myIcon
+      value: 
+      objectReference: {fileID: 867282360, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
     - target: {fileID: 5793234831407644687, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.74
@@ -75916,7 +75920,7 @@ MonoBehaviour:
   unequipItemButton: {fileID: 6871914664266188470}
   hoverPanelWidth: 300
   hoverPanelHeight: 150
-  hoverPanelOffset: -0.5
+  hoverPanelOffset: -0.6
   leftCoefficient: -0.01
 --- !u!114 &6871914664083074801
 MonoBehaviour:
@@ -77263,6 +77267,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.07
       objectReference: {fileID: 0}
+    - target: {fileID: 3136922456320363033, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
+      propertyPath: myIcon
+      value: 
+      objectReference: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
     - target: {fileID: 5793234831407644687, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.255
