@@ -98,7 +98,7 @@ namespace McDungeon
             );
 
             bodyCollider = this.gameObject.GetComponent<CapsuleCollider2D>();
-
+            
             globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
             torchLight = this.transform.GetChild(0).gameObject.GetComponent<Light2D>();
         }
@@ -113,7 +113,7 @@ namespace McDungeon
                 Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
                 direction = direction.normalized;
 
-                this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
+                this.gameObject.transform.Translate(direction * speed * speedModifier * Time.deltaTime);
                 this.spriteController(direction);
             }
             else
