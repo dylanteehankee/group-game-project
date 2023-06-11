@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs
+namespace McDungeon
 {
     [CreateAssetMenu]
     public class StatusEffects : ScriptableObject
