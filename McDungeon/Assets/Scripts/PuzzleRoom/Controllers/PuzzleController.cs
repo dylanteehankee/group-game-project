@@ -124,6 +124,15 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("2", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("3", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("4", ((int)PuzzleTorchState.Lit, false));
+                    GameObject.Find("GameManager").GetComponent<UIManager>().GenerateTextBubble(
+                        this.gameObject.transform,
+                        text:  "Light up all the torches with fireballs to progress. \n"
+                            + "Do this quickly and you will be rewarded! Too slow and there will be consequences...",
+                        dimensions: new Vector3(10, 2, 0), 
+                        offset: new Vector3(7, 10, 0), 
+                        fontSize: 4f,
+                        duration: 15.0f      
+                    );
                     break;
                 case 1:
                 {

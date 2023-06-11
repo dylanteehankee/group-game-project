@@ -12,6 +12,9 @@ public class PuzzleTimeController : MonoBehaviour
     public GameObject text_rewardTime;
     public GameObject text_failTime;
 
+    public GameObject goldChest;
+    public GameObject bronzeChest; 
+
     private Color32 white;
     private Color32 red;
     private Color32 green; 
@@ -41,14 +44,20 @@ public class PuzzleTimeController : MonoBehaviour
         {
             text_rewardTime.GetComponent<Text>().color = green;
             text_failTime.GetComponent<Text>().color = white;
+            goldChest.GetComponent<Image>().color = white;
+            bronzeChest.GetComponent<Image>().color = white;
         }
         else if(timeElapsed < knightCutoff)
         {
             text_rewardTime.GetComponent<Text>().color = grey;
             text_failTime.GetComponent<Text>().color = green;
+            goldChest.GetComponent<Image>().color = grey;
+            bronzeChest.GetComponent<Image>().color = white;
         }
         else{
             text_rewardTime.GetComponent<Text>().color = grey;
+            goldChest.GetComponent<Image>().color = grey;
+            bronzeChest.GetComponent<Image>().color = grey;
             text_puzzleTime.GetComponent<Text>().color = red;
         }
         int displayTime = (knightCutoff - (int)timeElapsed);
