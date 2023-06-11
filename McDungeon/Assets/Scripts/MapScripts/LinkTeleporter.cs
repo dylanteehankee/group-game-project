@@ -9,15 +9,19 @@ public class LinkTeleporter : MonoBehaviour
     public bool isInside {get; set;} = false;
     private GameObject parent, grandparent;
     public bool beenDisabled = false;
+    private bool combatStarted = false;
     private bool RoomCompleted = false;
     private bool closeDoor = false; 
     private PuzzleStateModel puzzleState;
     public bool onWallTile {get; set;} = false;
+    private GameObject mobSpawner;
     private Animator animator;
 
     private PuzzleController puzzleController;
 
     void Start(){
+        //look for gameobject with tag "MobSpawner"
+        mobSpawner = GameObject.FindWithTag("MobSpawner");
         animator = GetComponent<Animator>();
         parent = transform.parent.gameObject;
         if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
@@ -40,6 +44,10 @@ public class LinkTeleporter : MonoBehaviour
         if (TargetRoom && isInside && !RoomCompleted){
             //if player already picked in startRoom, open door
             if (parent.CompareTag("StartRoom")){
+                if(!combatStarted){
+
+                    combatStarted = true;
+                }
                 /*if (enemyCount == 0){
                     closeDoor = false;
                 }
