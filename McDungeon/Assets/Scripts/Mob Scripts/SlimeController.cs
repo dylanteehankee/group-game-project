@@ -67,7 +67,6 @@ namespace Mobs
                 Rigidbody2D playerRigidbody = this.playerObject.GetComponent<Rigidbody2D>();
                 playerRigidbody.isKinematic = false;
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                StartCoroutine(knockback(playerRigidbody));
                 Debug.Log("ATTACKING PLAYER");
                 this.hitPlayer = true;
             }

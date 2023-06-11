@@ -28,7 +28,6 @@ namespace Mobs
                 var deltaLocation = playerLocation - location;
                 deltaLocation.Normalize();
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
-                StartCoroutine(knockback(playerRigidbody));
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
@@ -44,12 +43,6 @@ namespace Mobs
                 }
                 Destroy(this.gameObject);
             }
-        }
-
-        private IEnumerator knockback(Rigidbody2D player)
-        {
-            yield return new WaitForSeconds(knockbackDuration);
-            player.isKinematic = true;
         }
 
         public void Throw(Vector2 playerLocation, GameObject skeleton)

@@ -22,17 +22,10 @@ namespace Mobs
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 playerRigidbody.AddForce(deltaLocation * knifeSpeed);
-                StartCoroutine(knockback(playerRigidbody));
                 Destroy(this.gameObject);
             }
         }
 
-        private IEnumerator knockback(Rigidbody2D player)
-        {
-            yield return new WaitForSeconds(knockbackDuration);
-            player.isKinematic = true;
-        }
-        
         public void Throw(Vector2 playerLocation)
         {
             Vector2 location = this.transform.position;

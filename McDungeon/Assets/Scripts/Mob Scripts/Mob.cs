@@ -86,12 +86,6 @@ namespace Mobs
             StartCoroutine(stunStatus());
         }
 
-        protected IEnumerator knockback(Rigidbody2D player)
-        {
-            yield return new WaitForSeconds(knockbackDuration);
-            player.isKinematic = true;
-        }
-
         protected void death()
         {
             if (this.mobHealth <= 0)
