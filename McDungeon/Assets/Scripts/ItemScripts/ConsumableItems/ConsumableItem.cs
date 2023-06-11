@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public abstract class ConsumableItem : GameItem
 {
-    private int sellCost = 0;
+    public int sellCost = 0;
     public ConsumableItem(string name, int sellCost, string itemType, string itemDescription) : base(name)
     {
         this.sellCost = sellCost;

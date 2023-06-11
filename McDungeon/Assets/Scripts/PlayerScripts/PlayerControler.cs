@@ -106,23 +106,26 @@ namespace McDungeon
             roomLightControl = GameObject.Find("StartingRoom").GetComponent<StartRoomLightController>();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // move player
-
             if (!usingPortal)
             {
                 Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
                 direction = direction.normalized;
 
-                this.gameObject.transform.Translate(direction * speed * speedModifier * Time.deltaTime);
+                this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
                 this.spriteController(direction);
             }
             else
             {
                 usePortal();
             }
+        }
+
+        void Update()
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // move player
 
             // Reduce all coll down count.
             updateCoolDowns();
