@@ -46,7 +46,7 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: myIcon,
                     damage: 5,
                     range: 2,
-                    attackSpeed: 1.5f
+                    attackSpeed: 0.8f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -59,11 +59,24 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: myIcon,
                     damage: 2,
                     range: 1,
-                    attackSpeed: 0.4f
+                    attackSpeed: 0.2f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
                 itemPrices.Add(150);
+
+                toAdd = new Weapon(
+                    name: "Heavy greatsword",
+                    itemType: "Weapon",
+                    sellCost: 30,
+                    inventoryIcon: myIcon,
+                    damage: 5,
+                    range: 2,
+                    attackSpeed: 1.5f
+                );
+                ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
+                itemsToSell.Add(toAdd.GetItemID());
+                itemPrices.Add(60);
                 break;
             default:
                 break;
