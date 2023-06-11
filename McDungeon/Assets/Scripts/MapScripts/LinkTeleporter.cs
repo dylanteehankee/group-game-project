@@ -146,7 +146,7 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
-                if(parentTarget.CompareTag("CombatRoom")){
+                if(parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted){
                     GameObject grid = parentTarget.transform.GetChild(0).gameObject;
                     GameObject candle1 = grid.transform.GetChild(2).gameObject;
                     GameObject candle2 = grid.transform.GetChild(5).gameObject;
