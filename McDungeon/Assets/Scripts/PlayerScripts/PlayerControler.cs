@@ -115,7 +115,6 @@ namespace McDungeon
 
                 this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
                 this.spriteController(direction);
-                Debug.Log("??");
             }
             else
             {
