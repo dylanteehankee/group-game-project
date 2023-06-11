@@ -38,7 +38,6 @@ namespace Mobs
                     
                 }
                 else if(type == ItemTypes.Consumable){
-                    Debug.Log("Changing status of my ID " + myItem.GetItemID());
                     ItemManager.ChangeItemStatus(myItem.GetItemID(), ItemStatus.ItemInventory);
                 }
                 GameObject.Find("GameManager").GetComponent<InventoryController>().ShopItemAdded();

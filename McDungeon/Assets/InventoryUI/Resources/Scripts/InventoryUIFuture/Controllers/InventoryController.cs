@@ -284,7 +284,6 @@ public class InventoryController : MonoBehaviour
     {
         // Have Item perform its effects
         string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
-        Debug.Log("Using item " + idToRemove);
         // This should always be true. If not likely, dummy item is likely. 
         if(ItemManager.GetGameItem(idToRemove) is ConsumableItem)
         {
