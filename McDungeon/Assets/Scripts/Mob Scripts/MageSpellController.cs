@@ -23,17 +23,9 @@ namespace Mobs
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 playerRigidbody.AddForce(deltaLocation * spellSpeed);
-                StartCoroutine(knockback(playerRigidbody));
                 Destroy(this.gameObject);
             }
         }
-
-        private IEnumerator knockback(Rigidbody2D player)
-        {
-            yield return new WaitForSeconds(knockbackDuration);
-            player.isKinematic = true;
-        }
-
 
         public void Cast(Vector2 playerLocation, EffectTypes type)
         {
