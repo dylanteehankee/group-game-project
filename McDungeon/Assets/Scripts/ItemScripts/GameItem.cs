@@ -5,19 +5,21 @@ using UnityEngine.UI;
 
 public abstract class GameItem
 {
-    private string? itemID = null;
+    protected string? itemID = null;
 
-    private string name;
+    protected string name;
     public string itemType = "Item type";
     public string itemDescription = "Some spicy item description";
 
-    private ItemStatus status;
-
-    private float timeAcquired;
-
-    private float timeCreated;
+    protected ItemStatus status;
 
     public Sprite inventoryIcon;
+
+    //private float timeAcquired;
+
+    //private float timeCreated;
+
+    
 
     public GameItem(string name)
     {

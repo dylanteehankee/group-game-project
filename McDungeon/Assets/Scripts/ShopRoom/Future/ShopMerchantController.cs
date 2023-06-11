@@ -23,12 +23,12 @@ public class ShopMerchantController : MonoBehaviour
 
         itemsToSell = new List<string>();
         itemPrices = new List<int>();
-        HealthPotion toAdd = new HealthPotion(myIcon, "Stealth Potion");
+        DummyHealthPotion toAdd = new DummyHealthPotion(myIcon, "Stealth Potion");
         ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
         itemsToSell.Add(toAdd.GetItemID());
         itemPrices.Add(10);
 
-        toAdd = new HealthPotion(myIcon, "Wealth Potion");
+        toAdd = new DummyHealthPotion(myIcon, "Wealth Potion");
         ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
         itemsToSell.Add(toAdd.GetItemID());
         itemPrices.Add(20);
