@@ -135,6 +135,13 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
+                 case 5:
+                    InitPuzzleItems("PuzzleRoom_5.csv");
+                    winCondition = new Dictionary<string, (int state, bool satisfied)>();
+                    winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
+                    break;
                 default:
                     break;
             }
