@@ -44173,7 +44173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   miniRoom: {fileID: 2164413984706799964, guid: b07e722c27b36b849932dd4b5353711f, type: 3}
   miniMap: {fileID: 3833822}
-  endRoomSprite: {fileID: 0}
+  endRoomSprite: {fileID: 21300000, guid: 37a084fc98a0a3e4d996a38880c0d197, type: 3}
 --- !u!114 &1926970901
 MonoBehaviour:
   m_ObjectHideFlags: 0
