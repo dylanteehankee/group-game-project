@@ -240,6 +240,11 @@ public class PuzzleController : MonoBehaviour
     private void WinPuzzleRoom()
     {
         EndPuzzleRoom();
+        List<GameObject> knights = mobManager.GetMobs();
+        foreach(GameObject knight in knights)
+        {
+            knight.GetComponent<KnightController>().DestroyKnight();
+        }
         if((int)timeSinceStarted <= rewardCutoffs[0])
         {
             // Grant some big rewards. 
