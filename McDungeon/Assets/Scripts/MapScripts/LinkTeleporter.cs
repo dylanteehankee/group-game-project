@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mobs;
 
 public class LinkTeleporter : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class LinkTeleporter : MonoBehaviour
     private bool combatStarted = false;
     private bool RoomCompleted = false;
     private bool closeDoor = false; 
+    private Vector2 candlePos1, candlePos2;
     private PuzzleStateModel puzzleState;
     public bool onWallTile {get; set;} = false;
     private GameObject mobSpawner;
@@ -24,6 +26,7 @@ public class LinkTeleporter : MonoBehaviour
         mobSpawner = GameObject.FindWithTag("MobSpawner");
         animator = GetComponent<Animator>();
         parent = transform.parent.gameObject;
+        //if parent is a puzzle room, get puzzle controller
         if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
             puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
@@ -44,10 +47,6 @@ public class LinkTeleporter : MonoBehaviour
         if (TargetRoom && isInside && !RoomCompleted){
             //if player already picked in startRoom, open door
             if (parent.CompareTag("StartRoom")){
-                if(!combatStarted){
-
-                    combatStarted = true;
-                }
                 /*if (enemyCount == 0){
                     closeDoor = false;
                 }
@@ -57,12 +56,13 @@ public class LinkTeleporter : MonoBehaviour
             }
             //if no enemies in room, set hasEnemies to false
             else if (parent.CompareTag("CombatRoom")){
-                /*if (enemyCount == 0){
+                if (mobSpawner.GetComponent<MobManager>().GetMobs().Count == 0){
                     closeDoor = false;
+                    RoomCompleted = true;
                 }
                 else{
                     closeDoor = true;
-                }*/
+                }
             }
             //if no puzzle in room, set hasPuzzle to false
             else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
@@ -146,6 +146,17 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
+                if(parentTarget.CompareTag("CombatRoom")){
+                    GameObject grid = parentTarget.transform.GetChild(0).gameObject;
+                    GameObject candle1 = grid.transform.GetChild(2).gameObject;
+                    GameObject candle2 = grid.transform.GetChild(5).gameObject;
+                    candlePos1 = candle1.transform.position;
+                    candlePos2 = candle2.transform.position;
+
+                    var RandomMob = Random.Range(0, 4);
+
+                    mobSpawner.GetComponent<MobManager>().SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
+                }
                 grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
             //}
