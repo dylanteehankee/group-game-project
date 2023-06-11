@@ -45,8 +45,6 @@ namespace Mobs
         {
             if (this.attackCD > this.attackSpeed)
             {
-                Rigidbody2D playerRigidbody = this.playerObject.GetComponent<Rigidbody2D>();
-                playerRigidbody.isKinematic = false;
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                 Debug.Log("HIT PLAYER");
                 this.attackCD = 0;

@@ -64,8 +64,6 @@ namespace Mobs
             }
             else if (this.elapsedAttackTime > 0.15 && !hitPlayer)
             {
-                Rigidbody2D playerRigidbody = this.playerObject.GetComponent<Rigidbody2D>();
-                playerRigidbody.isKinematic = false;
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                 Debug.Log("ATTACKING PLAYER");
                 this.hitPlayer = true;

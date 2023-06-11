@@ -13,6 +13,9 @@ public class InventoryController : MonoBehaviour
     private PlayerCardUI playerCardUI;
     public GameObject uiCanvas;
 
+    //Change to public and assign;
+    //private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -281,12 +284,15 @@ public class InventoryController : MonoBehaviour
     public void UseItem()
     {
         // Have Item perform its effects
-        /*string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
-        ConsumableItem g = ItemManager.GetGameItem(idToRemove);
-        (ConsumableItem)
-        */
+        string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
+        // This should always be true. If not likely, dummy item is likely. 
+        GameObject player = null;
+        if(ItemManager.GetGameItem(idToRemove) is ConsumableItem)
+        {
+            ((ConsumableItem) ItemManager.GetGameItem(idToRemove)).UseItem(player.GetComponent<PlayerController>());
+        }
         // Remove the item.
-        ConsumeSelectedItem();
+        ConsumeSelectedItem(); 
 
     }
    
@@ -561,40 +567,30 @@ public class InventoryController : MonoBehaviour
         if(inventoryUIModel.isActive){
             if(Input.GetKeyDown(KeyCode.B))
             {
-                HealthPotion toAdd = new HealthPotion(Resources.Load<Sprite>("Sprites/Health"));
+                DummyHealthPotion toAdd = new DummyHealthPotion(Resources.Load<Sprite>("Sprites/Health"));
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.EquipmentInventory);
                 this.RefreshInventoryGridUI();
             }
 
             if(Input.GetKeyDown(KeyCode.C))
             {
-                HealthPotion toAdd = new HealthPotion(Resources.Load<Sprite>("Sprites/Fire Rate"));
+                DummyHealthPotion toAdd = new DummyHealthPotion(Resources.Load<Sprite>("Sprites/Fire Rate"));
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.EquipmentInventory);
                 this.RefreshInventoryGridUI();
             }
 
             if(Input.GetKeyDown(KeyCode.G))
             {
-                HealthPotion toAdd = new HealthPotion(Resources.Load<Sprite>("Sprites/Health"), "Stealth Potion");
+                DummyHealthPotion toAdd = new DummyHealthPotion(Resources.Load<Sprite>("Sprites/Health"), "Stealth Potion");
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.ItemInventory);
                 this.RefreshInventoryGridUI();
             }
 
-            if(Input.GetKeyDown(KeyCode.D))
+            if(Input.GetKeyDown(KeyCode.F))
             {
-                HealthPotion toAdd = new HealthPotion(Resources.Load<Sprite>("Sprites/Fire Rate"), "Wealth Potion");
+                DummyHealthPotion toAdd = new DummyHealthPotion(Resources.Load<Sprite>("Sprites/Fire Rate"), "Wealth Potion");
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.ItemInventory);
                 this.RefreshInventoryGridUI();
-            }
-
-            if(Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                this.NextPage();
-            }
-
-            if(Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                this.PrevPage();
             }
         }
     }

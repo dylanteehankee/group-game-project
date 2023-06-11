@@ -8774,15 +8774,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2017731471295407042, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 2017731471295407042, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 2017731471295407042, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 2017731471295407042, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8822,6 +8822,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2017731471295407042, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6336733152612059913, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7896933798663111265, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
@@ -12365,6 +12369,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4605183751566092213, guid: 02bea7e192d1d1448824a3c2bef92e7a, type: 3}
       propertyPath: m_Tiles.Array.data[27].second.m_TileSpriteIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5216366945178934610, guid: 02bea7e192d1d1448824a3c2bef92e7a, type: 3}
+      propertyPath: m_BodyType
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
