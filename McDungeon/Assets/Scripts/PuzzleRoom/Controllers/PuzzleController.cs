@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
-using Mobs;
+using McDungeon;
 /// <summary>
 /// The PuzzleController should be an object directly under the puzzle room object. 
 /// It should be positioned in the bototm left corner of the puzzle room. 

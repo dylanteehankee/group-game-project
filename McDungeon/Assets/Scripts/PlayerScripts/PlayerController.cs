@@ -22,6 +22,7 @@ namespace McDungeon
         [SerializeField] private float speed;
         [SerializeField] private CapsuleCollider2D bodyCollider;
         [SerializeField] private StartRoomLightController roomLightControl;
+        [SerializeField] private int health = 10;
         private float hitTakenInterverl;
         private float hitTimer;
         private bool readyForAction = true;
@@ -39,12 +40,12 @@ namespace McDungeon
         private float actionCoolDown = 0f;
         private float atkCoolDown = 0.5f;
 
-        private float spellQCoolDown = 5f;
+        private float spellQCoolDown = 3f;
         private float spellQCoolDowntimer = 0f;
-        private float spellECoolDown = 5f;
+        private float spellECoolDown = 3f;
         private float spellECoolDowntimer = 0f;
 
-        private float spellCastDuration = 1f;
+        private float spellCastDuration = 0.5f;
         private float spellCastTimer = 0f;
         private bool castingSpell = false;
 
@@ -110,11 +111,14 @@ namespace McDungeon
         {
             if (!usingPortal)
             {
-                Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
-                direction = direction.normalized;
+                if (!stunned && !isFreeze)
+                {
+                    Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+                    direction = direction.normalized;
 
-                this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
-                this.spriteController(direction);
+                    this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
+                    this.spriteController(direction);
+                }
             }
             else
             {
@@ -182,10 +186,11 @@ namespace McDungeon
             // Perform actions or logic when the collision occurs
         }
 
-        public void TakeDamage(float damage, EffectTypes type)
+        public void TakeDamage(int damage, EffectTypes type)
         {
             if (hitTimer > hitTakenInterverl)
             {
+                this.health -= damage;
                 this.status(type);
                 hitTimer = 0f;
             }
@@ -229,7 +234,7 @@ namespace McDungeon
                 case EffectTypes.Ablaze:
                     if (!this.ablazeObject)
                     {
-                        this.ablazeObject = this.statusEffects.Ablaze(this.transform, Vector2.one, Vector2.zero);
+                        this.ablazeObject = this.statusEffects.Ablaze(this.transform, new Vector2(1, 3), new Vector2(0, 1.75f));
                         this.isAblaze = true;
                     }
                     StopCoroutine("ablazeStatus");
@@ -257,7 +262,7 @@ namespace McDungeon
             for (int i = 0; i < 4; i++)
             {
                 yield return new WaitForSeconds(this.statusEffects.GetAblazeDuration() / 4);
-                // this.health -= this.statusEffects.GetAblazeDamage();
+                this.health -= (int)this.statusEffects.GetAblazeDamage();
             }
             this.isAblaze = false;
             Destroy(this.ablazeObject);

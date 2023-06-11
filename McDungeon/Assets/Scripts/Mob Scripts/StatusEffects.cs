@@ -41,7 +41,7 @@ namespace McDungeon
         public GameObject Ablaze(Transform mobTransform, Vector2 size, Vector2 displacement)
         {
             var ablaze = Instantiate(this.ablazePrefab, mobTransform);
-            ablaze.transform.position = mobTransform.position + Vector3.back;
+            ablaze.transform.position = mobTransform.position + Vector3.back + (Vector3)displacement;
             ablaze.transform.localScale = size;
             return ablaze;
         }

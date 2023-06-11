@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs{
+namespace McDungeon
+{
     public class MobManager : MonoBehaviour
     {
         [SerializeField]

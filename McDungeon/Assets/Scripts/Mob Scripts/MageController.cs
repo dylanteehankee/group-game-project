@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using McDungeon;
 
-namespace Mobs
+namespace McDungeon
 {
     public class MageController : Mob
     {
@@ -18,7 +17,7 @@ namespace Mobs
         private float castTime = 2.0f;
         private float elapsedCastTime = 0.0f;
         private bool isCasting = false;
-        private int spellType = 0;
+        private EffectTypes spellType = EffectTypes.None;
 
         void Start()
         {
@@ -57,12 +56,12 @@ namespace Mobs
                 if (Random.Range(0, 2) == 1)
                 {
                     this.animator.SetTrigger("CastFire");
-                    this.spellType = 0;
+                    this.spellType = EffectTypes.Ablaze;
                 }
                 else
                 {
                     this.animator.SetTrigger("CastFrost");
-                    this.spellType = 1;
+                    this.spellType = EffectTypes.Freeze;
                 }
                 isCasting = true;
             }
@@ -72,10 +71,10 @@ namespace Mobs
                 GameObject spell;
                 switch (this.spellType)
                 {
-                    case 0:
+                    case EffectTypes.Ablaze:
                         spell = (GameObject)Instantiate(this.fireballPrefab);
                         break;
-                    case 1:
+                    case EffectTypes.Freeze:
                         spell = (GameObject)Instantiate(this.frostboltPrefab);
                         break;
                     default:
@@ -83,7 +82,7 @@ namespace Mobs
                         break;
                 }
                 spell.transform.position = location;
-                spell.GetComponent<MageSpellController>().Cast(this.playerObject.transform.position, (EffectTypes)this.spellType);
+                spell.GetComponent<MageSpellController>().Cast(this.playerObject.transform.position, this.spellType);
                 this.isCasting = false;
                 this.elapsedCastTime = 0;
                 this.castCD = 0;

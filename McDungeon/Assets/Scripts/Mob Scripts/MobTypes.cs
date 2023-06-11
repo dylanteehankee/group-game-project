@@ -1,4 +1,4 @@
-namespace Mobs
+namespace McDungeon
 {
     public enum MobTypes
     {

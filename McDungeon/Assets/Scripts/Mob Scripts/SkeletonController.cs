@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using McDungeon;
 
-namespace Mobs
+namespace McDungeon
 {
     public class SkeletonController : Mob
     {
