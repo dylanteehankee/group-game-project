@@ -48,9 +48,7 @@ public class PuzzleController : MonoBehaviour
 
     void Start()
     {
-        rewardCutoffs = new List<int>();
-        rewardCutoffs.Add(45);
-        knightCutoff = 60;
+  
         Init();
     }
 
@@ -69,7 +67,15 @@ public class PuzzleController : MonoBehaviour
         // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
-        startButton.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight, 0f);
+        // Sad Quickfix. 
+        if(puzzleID == 5)
+        {
+            startButton.transform.localPosition = new Vector3(puzzleGridWidth - 2, puzzleGridHeight + 2, 0f);
+        }
+        else
+        {
+            startButton.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight, 0f);
+        }
 
         // Create invisible bouncy walls for the fireball. 
         GameObject topWall = Instantiate(bouncyWallPrefab, gameObject.transform);
@@ -108,8 +114,7 @@ public class PuzzleController : MonoBehaviour
     public void StartPuzzleRoom()
     {
         if(puzzleState.roomState == PuzzleRoomState.NotStarted)
-        {
-            puzzleState.roomState = PuzzleRoomState.InProgress;
+        {      
             switch(puzzleID)
             {
                 case 1:
@@ -161,6 +166,8 @@ public class PuzzleController : MonoBehaviour
             }
         }
         startButton.SetActive(false);
+        
+        puzzleState.roomState = PuzzleRoomState.InProgress;
     }
 
 
@@ -257,7 +264,7 @@ public class PuzzleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(puzzleState.roomState == PuzzleRoomState.InProgress)
+        if(puzzleState.roomState == PuzzleRoomState.InProgress && rewardCutoffs != null)
         {
             timeSinceStarted += Time.deltaTime;
             uiManager.DisplayPuzzleTime(timeSinceStarted, rewardCutoffs, knightCutoff);
@@ -374,6 +381,15 @@ public class PuzzleController : MonoBehaviour
                     break;
                 case "Knight":
                     locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
+                    break;
+                case "RewardTime":
+                Debug.Log("found reward times");
+                    rewardCutoffs = new List<int>();
+                    rewardCutoffs.Add(int.Parse(split[1]));
+                    break;
+                case "TotalTime":
+                Debug.Log("total time");
+                    knightCutoff = int.Parse(split[1]);
                     break;
                 default:
                     break;
