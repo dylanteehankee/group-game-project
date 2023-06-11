@@ -109,7 +109,7 @@ public class TileUpdate : MonoBehaviour
     }
 
     // Reset tiles to original state
-    void ResetAll(){
+    public void ResetAll(){
         foreach (GameObject teleporter in teleporterList){
             // Get current tile teleporter is on.
             currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);

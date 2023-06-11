@@ -35,11 +35,12 @@ namespace Mobs
                 //DummyHealthPotion toAdd = new DummyHealthPotion(Resources.Load<Sprite>("Sprites/Health"));
                 if(type == ItemTypes.Equipable){
                     ItemManager.ChangeItemStatus(myItem.GetItemID(), ItemStatus.EquipmentInventory);
+                    
                 }
                 else if(type == ItemTypes.Consumable){
                     ItemManager.ChangeItemStatus(myItem.GetItemID(), ItemStatus.ItemInventory);
                 }
-                
+                GameObject.Find("GameManager").GetComponent<InventoryController>().ShopItemAdded();
                 Destroy(this.gameObject);
             }
         }

@@ -166,7 +166,7 @@ public class LinkTeleporter : MonoBehaviour
 
     //Reset all global variables
     //TODO: reset all variables in the room
-    void ResetAll(){
+    public void ResetAll(){
         GameObject parentTarget = TargetRoom.transform.parent.gameObject;
 
         GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;

@@ -3,3 +3,7 @@ Torch,1,13.8,3,TRUE,15
 Torch,2,0.2,5,TRUE,15
 Torch,3,13.8,7,TRUE,15
 Torch,4,0.2,9,TRUE,15
+,,,,,
+Times,Time(s),,,,
+RewardTime,30,,,,
+TotalTime,60,,,,

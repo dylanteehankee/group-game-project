@@ -304,6 +304,14 @@ public class MapGenerator : MonoBehaviour
         roomDictionary.Clear();
         currentRoomCoordinates = new Vector2Int(-1, -1);
 
+        foreach (GameObject teleporter in GameObject.FindGameObjectsWithTag("Teleporter")){
+            teleporter.GetComponent<LinkTeleporter>().ResetAll();
+        }
+
+        foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall")){
+            wall.GetComponent<TileUpdate>().ResetAll();
+        }
+
         //destroy minimap child objects
         destroyMiniMap();
         
