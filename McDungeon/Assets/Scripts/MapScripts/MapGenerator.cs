@@ -62,11 +62,11 @@ public class MapGenerator : MonoBehaviour
     {
         //will switch to FindGameObjectsWithTag later
         //look for startRoom gameobject
-        startRoom = GameObject.Find("StartRoom");
+        startRoom = GameObject.FindWithTag("StartRoom");
         //look for tutorialRoom gameobject
-        tutorialRoom = GameObject.Find("TutorialRoom");
+        tutorialRoom = GameObject.FindWithTag("TutorialRoom");
         //look for endRoom gameobject
-        endRoom = GameObject.Find("EndRoom");
+        endRoom = GameObject.FindWithTag("EndRoom");
         //look for combatRoom gameobjects
         combatRooms = GameObject.FindGameObjectsWithTag("CombatRoom");
         Debug.Log("Combat rooms: " + combatRooms.Length + " found");
