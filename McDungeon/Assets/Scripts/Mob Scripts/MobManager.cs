@@ -34,7 +34,7 @@ namespace Mobs{
             }
         }
 
-        public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 4)
+        public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 6)
         {
             var mobPrefab = this.getMobPrefab(type);
             for (int i = 0; i < amount; i++) {
