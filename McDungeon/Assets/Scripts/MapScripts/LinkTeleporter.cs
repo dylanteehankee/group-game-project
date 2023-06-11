@@ -107,7 +107,7 @@ public class LinkTeleporter : MonoBehaviour
         }
 
         if (TargetRoom != null){
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("PlayerHitbox"))
             {
                 //if (!Teleported){
                 //TargetRoom.GetComponent<LinkTeleporter>().Teleported = true;
