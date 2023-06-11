@@ -82,7 +82,7 @@ namespace McDungeon
             spell_water = spellHome.GetComponent<WaterSurgeMaker>();
             spell_lightning = spellHome.GetComponent<ThunderdMaker>();
 
-            spell_Q = spell_water;
+            spell_Q = spell_fire;
             spell_E = spell_lightning;
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();

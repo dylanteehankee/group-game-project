@@ -5,11 +5,15 @@ public class UIManager : MonoBehaviour
 {
     public GameObject speechBubblePrefab;
 
+    public GameObject puzzleTimeUI;
+    private PuzzleTimeController ptc;
+
     [SerializeField] public int coinAmount = 0;
 
     void Start()
     {
-        
+        puzzleTimeUI.SetActive(false);
+        ptc = puzzleTimeUI.GetComponent<PuzzleTimeController>();
     }
 
     public void GenerateTextBubble(Transform parent, string text, Vector3 dimensions, Vector3 offset, float fontSize, float duration)
@@ -26,9 +30,24 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void DisplayPuzzleTime(float timeElapsed, List<int> rewardCutoff, int knightCutoff)
+    {
+        puzzleTimeUI.SetActive(true);
+        ptc.DisplayPuzzleTime(timeElapsed, rewardCutoff, knightCutoff);
+    }
+
+    public void HidePuzzleTime()
+    {
+        Invoke("HidePuzzleTimeCanvas", 2);
+    }
+    private void HidePuzzleTimeCanvas()
+    {
+        puzzleTimeUI.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

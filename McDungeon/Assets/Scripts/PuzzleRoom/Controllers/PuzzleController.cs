@@ -10,6 +10,8 @@ using System.IO;
 /// </summary>
 public class PuzzleController : MonoBehaviour
 {
+    public UIManager uiManager;
+
     private Dictionary<string, PuzzleElementController> elementControllers;
 
     private Dictionary<string, List<string>> elementTriggers; 
@@ -21,6 +23,10 @@ public class PuzzleController : MonoBehaviour
     private Dictionary<string, (int state, bool satisfied)> winCondition;
 
     private GameObject startButton;
+
+    private float timeSinceStarted;
+    private List<int> rewardCutoffs;
+    private int knightCutoff; 
 
     [SerializeField] public int puzzleID;
     [SerializeField] public int puzzleGridWidth;
@@ -36,11 +42,15 @@ public class PuzzleController : MonoBehaviour
     [SerializeField] public GameObject disappearWallPrefab;
     [SerializeField] public GameObject staticWallPrefab;
 
+    
     private Dictionary<string, PuzzleElementShapeLink> stringToPuzzleElementShape; 
 
     void Start()
     {
-       Init();
+        rewardCutoffs = new List<int>();
+        rewardCutoffs.Add(45);
+        knightCutoff = 60;
+        Init();
     }
 
     /// <summary>
@@ -53,7 +63,7 @@ public class PuzzleController : MonoBehaviour
         elementTriggers = new Dictionary<string, List<string>>();
         puzzleState = new PuzzleStateModel();
         puzzleCreator = new PuzzleCreator(this);
-        
+        timeSinceStarted = 0.0f;
 
         // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
@@ -84,6 +94,8 @@ public class PuzzleController : MonoBehaviour
         botWall.GetComponent<SpriteRenderer>().enabled = false;
         rightWall.GetComponent<SpriteRenderer>().enabled = false;
         leftWall.GetComponent<SpriteRenderer>().enabled = false;
+
+        uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
     }
 
     public PuzzleRoomState GetPuzzleRoomState()
@@ -155,6 +167,7 @@ public class PuzzleController : MonoBehaviour
     {
         if(puzzleState.roomState == PuzzleRoomState.InProgress)
         {
+            uiManager.HidePuzzleTime();
             puzzleState.roomState = PuzzleRoomState.Completed;
             foreach(KeyValuePair<string, PuzzleElementController> kvp in elementControllers)
             {
@@ -205,7 +218,7 @@ public class PuzzleController : MonoBehaviour
                 }
                 if(wonGame)
                 {
-                    EndPuzzleRoom();
+                    WinPuzzleRoom();
                 }
             }
             else
@@ -215,10 +228,37 @@ public class PuzzleController : MonoBehaviour
         }
     }
 
+    private void WinPuzzleRoom()
+    {
+        EndPuzzleRoom();
+        if((int)timeSinceStarted <= rewardCutoffs[0])
+        {
+            // Grant some big rewards. 
+        }
+        else{
+            // Grant some smaller rewards. 
+        }
+        // Winning sequence.
+    }
+
+    private void LosePuzzleRoom()
+    {   
+        EndPuzzleRoom();
+        // Losing sequence, start the knights
+    }
+
     // Update is called once per frame
     void Update()
     {
-     
+        if(puzzleState.roomState == PuzzleRoomState.InProgress)
+        {
+            timeSinceStarted += Time.deltaTime;
+            uiManager.DisplayPuzzleTime(timeSinceStarted, rewardCutoffs, knightCutoff);
+            if((int)timeSinceStarted >= knightCutoff)
+            {    
+                LosePuzzleRoom();
+            }
+        }
     }   
 
     

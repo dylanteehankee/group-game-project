@@ -15,8 +15,8 @@ public class TorchController : PuzzleElementController
     private SpriteRenderer myRenderer;
 
     // Torch flickering when its close to expiring. 
-    private float flickerTimeCutoff = 4f;
-    private float flickerFrequency = 0.5f;
+    private float flickerTimeCutoff = 5f;
+    private float flickerFrequency = 0.25f;
 
     // Keeps track of time since lit for expiring.   
     private float timeSinceLit = 0.0f;
