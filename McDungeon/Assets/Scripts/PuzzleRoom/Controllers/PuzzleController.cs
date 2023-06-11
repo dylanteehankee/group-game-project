@@ -68,7 +68,7 @@ public class PuzzleController : MonoBehaviour
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
         // Sad Quickfix. 
-        if(puzzleID == 5)
+        if(puzzleID == 4)
         {
             startButton.transform.localPosition = new Vector3(puzzleGridWidth - 2, puzzleGridHeight + 2, 0f);
         }

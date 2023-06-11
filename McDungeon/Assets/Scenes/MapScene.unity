@@ -15002,7 +15002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleID
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleGridWidth
@@ -35346,7 +35346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleID
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleGridWidth
@@ -36183,7 +36183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleID
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4726039117560533926, guid: d153f2604acc6964dab85570b220a292, type: 3}
       propertyPath: puzzleGridWidth
@@ -80908,7 +80908,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 20
+  m_SortingOrder: 25
   m_TargetDisplay: 0
 --- !u!114 &6871914664083074766
 MonoBehaviour:
@@ -82769,6 +82769,10 @@ PrefabInstance:
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[4].Array.data[25].Y
       value: -40000000
       objectReference: {fileID: 0}
+    - target: {fileID: 8213006937829710057, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
+      propertyPath: myIcon
+      value: 
+      objectReference: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
     - target: {fileID: 8354456153302700139, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.26
