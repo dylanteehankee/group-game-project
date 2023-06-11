@@ -1,0 +1,5 @@
+﻿Torches,ID,PosX,PosY,Expirable,LightDuration(sec)
+Torch,1,13.8,3,TRUE,15
+Torch,2,0.2,5,TRUE,15
+Torch,3,13.8,7,TRUE,15
+Torch,4,0.2,9,TRUE,15
