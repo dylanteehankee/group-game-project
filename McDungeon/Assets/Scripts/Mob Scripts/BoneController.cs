@@ -21,8 +21,6 @@ namespace Mobs
         {
             if (this.active && collision.gameObject.tag == "PlayerHitbox")
             {
-                Rigidbody2D playerRigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
-                playerRigidbody.isKinematic = false;
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
