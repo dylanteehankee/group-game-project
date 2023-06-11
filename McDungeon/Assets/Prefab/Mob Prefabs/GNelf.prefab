@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: -1044237600, guid: e76c74b28062240be92b7ed751b8c12f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -166,10 +166,9 @@ MonoBehaviour:
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   mobHealth: 4
   attackRange: 1
+  moveSpeed: 2
   attackSpeed: 1
   MobDamage: 1
-  moveSpeed: 2
-  stunDuration: 1
 --- !u!95 &6889405568441182925
 Animator:
   serializedVersion: 5

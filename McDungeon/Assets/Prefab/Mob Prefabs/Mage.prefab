@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: 1031578270, guid: e952c4ffd65f54ccc93ae02370c33e67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -132,7 +132,6 @@ MonoBehaviour:
   mobHealth: 10
   attackRange: 6
   moveSpeed: 1
-  stunDuration: 1
   fireballPrefab: {fileID: 7838530794719727910, guid: 0ee6c838cb36b4357863ab12c3ce5931, type: 3}
   frostboltPrefab: {fileID: 7838530794719727910, guid: dd10f3792674b4a788b94172bd479af6, type: 3}
   castSpeed: 4

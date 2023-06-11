@@ -16,6 +16,7 @@ namespace McDungeon
         private float weaponDir;   // angle
         private bool attacking;
         private float atkProgress; // 0 - 1
+        private float knockbackDuration = 1.0f;
 
         void Start()
         {
@@ -66,6 +67,7 @@ namespace McDungeon
             if (Input.GetButtonUp("Fire1"))
             {
                 attacking = true;
+                player.GetComponent<Animator>().SetBool("Attack", true);
                 hitBoxRender.enabled = true;
                 hitBoxCllider.enabled = true;
             }
@@ -100,6 +102,7 @@ namespace McDungeon
             if (atkProgress == 1f)
             {
                 attacking = false;
+                player.GetComponent<Animator>().SetBool("Attack", false);
                 hitBoxRender.enabled = false;
                 hitBoxCllider.enabled = false;
                 atkProgress = 0f;
@@ -115,5 +118,12 @@ namespace McDungeon
         {
             // Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
         }
+
+        protected IEnumerator knockback(Rigidbody2D mob)
+        {
+            yield return new WaitForSeconds(knockbackDuration);
+            mob.isKinematic = true;
+        }
+
     }
 }

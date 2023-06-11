@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 11
   m_Sprite: {fileID: -1128076420, guid: 9753d0f515d234fce830abc0db7104e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -129,12 +129,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
-  bonePrefab: {fileID: 2743265911000779979, guid: 3bf04d539ad554ba2a470bb680b1c746, type: 3}
   mobHealth: 15
   attackRange: 5
-  attackSpeed: 1
   moveSpeed: 1
-  stunDuration: 0.5
+  bonePrefab: {fileID: 2743265911000779979, guid: 3bf04d539ad554ba2a470bb680b1c746, type: 3}
+  attackSpeed: 1
 --- !u!95 &942053016471472941
 Animator:
   serializedVersion: 5
