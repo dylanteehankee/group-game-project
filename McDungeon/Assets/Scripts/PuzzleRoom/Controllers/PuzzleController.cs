@@ -129,13 +129,11 @@ public class PuzzleController : MonoBehaviour
                 {
                     InitPuzzleItems("PuzzleRoom_1.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
-                    winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
-                    winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
                 }
                 case 2:
