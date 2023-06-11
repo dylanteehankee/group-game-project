@@ -90,7 +90,7 @@ namespace McDungeon
             closeRangeWeapon.Config(10f, 10f, 120f, 1f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
-
+            /*
             GameObject.Find("GameManager").GetComponent<UIManager>().GenerateTextBubble(
                 this.gameObject.transform,
                 text:  "Lots of random text, this has gotta suck if this does not wrap around. Light up all the torches to win.",
@@ -99,7 +99,7 @@ namespace McDungeon
                 fontSize: 3.5f,
                 duration: 10.0f      
             );
-
+            */
             bodyCollider = this.gameObject.GetComponent<CapsuleCollider2D>();
             
             globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
