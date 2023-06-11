@@ -30,7 +30,7 @@ namespace McDungeon
             // Instantiate spell
             Vector3 spellDir = (mousePos - posistion).normalized;
             GameObject fireBall = Instantiate(prefab_fireball, posistion, Quaternion.identity);
-            fireBall.GetComponent<FireBallController>().Config(5f, 15f, 3, spellDir);
+            fireBall.GetComponent<FireBallController>().Config(3f, 10f, 3, spellDir);
 
             // Debug.Log("spellDir: " + spellDir);
 
