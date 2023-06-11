@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mobs;
 
 namespace McDungeon
 {
@@ -81,6 +82,11 @@ namespace McDungeon
 
             if (other.gameObject.tag == "BouncyWall")
             {
+            }
+            else if (other.gameObject.tag == "MobHitbox")
+            {
+                IMobController mobControl = other.gameObject.GetComponent<IMobController>();
+                mobControl.TakeDamage(2f, EffectTypes.Slow);
             }
         }
     }

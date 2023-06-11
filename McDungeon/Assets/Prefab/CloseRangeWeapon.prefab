@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1316256945206427470}
   - component: {fileID: 4672343565158071578}
   - component: {fileID: 6879170915068100776}
+  - component: {fileID: 3829944835086375360}
   m_Layer: 0
   m_Name: Hitbox
   m_TagString: PlayerWeapon
@@ -120,6 +121,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2.0000002}
   m_Direction: 0
+--- !u!114 &3829944835086375360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2952813169260870162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d468866540e65e4986a8155d5d36385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4976272328420472201
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1521379300989172074, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+  attackDamage: 0
   attackSpeed: 5
   attackSpeedFactor: 0.4
   attackAngle: 90
+  knockBack: 0
   active: 0

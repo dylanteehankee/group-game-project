@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mobs;
 
 namespace McDungeon
 {
@@ -15,6 +16,7 @@ namespace McDungeon
         [SerializeField] private bool active;
         private SpriteRenderer hitBoxRender;
         private CapsuleCollider2D hitBoxCllider;
+        private CRWweaponHitBox hitBoxController;
         private float weaponDir;   // angle
         private bool attacking;
         private float atkProgress; // 0 - 1
@@ -23,6 +25,7 @@ namespace McDungeon
         {
             hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
+            hitBoxController = this.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
 
             attackSpeedFactor = 0.4f;
             knockBack = 0f;
@@ -46,6 +49,8 @@ namespace McDungeon
 
         public void Config(float attackDamage, float attackSpeed, float attackAngle, float knockBack, bool active, float attackSpeedFactor = 0.4f)
         {
+            this.attackDamage = attackDamage;
+            hitBoxController.setDamage(attackDamage, knockBack);
             this.attackSpeed = attackSpeed;
             this.attackAngle = attackAngle;
             this.knockBack = knockBack;
@@ -119,11 +124,6 @@ namespace McDungeon
             {
                 atkProgress += attackSpeed * attackSpeedFactor * Time.deltaTime;
             }
-        }
-
-        void OnCollisionEnter2D(Collision2D collision)
-        {
-            // Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
         }
     }
 }

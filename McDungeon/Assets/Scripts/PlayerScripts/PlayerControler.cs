@@ -86,7 +86,7 @@ namespace McDungeon
             spell_E = spell_lightning;
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
-            closeRangeWeapon.Config(10f, 10f, 120f, 1f, true);
+            closeRangeWeapon.Config(3f, 10f, 120f, 800f, true);
 
             hitTakenInterverl = 0.2f; // 0.2 sec
 
@@ -110,6 +110,7 @@ namespace McDungeon
         {
             if (!usingPortal)
             {
+                // move player
                 Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
                 direction = direction.normalized;
 
@@ -125,8 +126,6 @@ namespace McDungeon
         void Update()
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // move player
-
             // Reduce all coll down count.
             updateCoolDowns();
 

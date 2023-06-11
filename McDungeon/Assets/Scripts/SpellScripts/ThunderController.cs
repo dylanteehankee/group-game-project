@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mobs;
 
 namespace McDungeon
 {
@@ -60,6 +61,9 @@ namespace McDungeon
                 {
 
                     // Damage Mob ========================================================
+                    IMobController mobControl = targetMob.gameObject.GetComponent<IMobController>();
+                    mobControl.TakeDamage(2f, EffectTypes.Slow);
+
 
                     strikeTimer = -10f; // Will never triger again.
                 }
