@@ -139,8 +139,10 @@ public class PuzzleController : MonoBehaviour
                 case 2:
                 
                     //    InitPuzzle3();
-                    InitPuzzleItems("PuzzleRoom_4.csv");
+                    InitPuzzleItems("PuzzleRoom_2.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
+                    winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("14", ((int)PuzzleTorchState.Lit, false));
                     break;
@@ -153,7 +155,7 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
                  case 4:
-                    InitPuzzleItems("PuzzleRoom_5.csv");
+                    InitPuzzleItems("PuzzleRoom_4.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
