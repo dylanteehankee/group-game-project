@@ -10,6 +10,8 @@ namespace McDungeon
         [SerializeField] private GameObject cover;
         [SerializeField] private bool special;
         [SerializeField] private bool unlocked;
+
+        [SerializeField] private PlayerController playerControl;
         
         private bool active;
 
@@ -20,6 +22,9 @@ namespace McDungeon
             unlocked = false;
             portal.SetActive(false);
             face.SetActive(false);
+
+
+            this.playerControl = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
         }
 
         void Update()
