@@ -241,10 +241,7 @@ MonoBehaviour:
   portal: {fileID: 2511585191617355211}
   face: {fileID: 985514852794739515}
   cover: {fileID: 8804532565224054331}
-  mode: 1
   special: 0
-  unlocked: 0
-  playerControl: {fileID: 0}
 --- !u!1 &8804532565224054331
 GameObject:
   m_ObjectHideFlags: 0

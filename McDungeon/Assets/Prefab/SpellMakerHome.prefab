@@ -348,8 +348,6 @@ GameObject:
   - component: {fileID: 7569560946940625492}
   - component: {fileID: 3460509137628829643}
   - component: {fileID: 7638036362150655180}
-  - component: {fileID: 3466059527313909771}
-  - component: {fileID: 2114983911483067827}
   m_Layer: 0
   m_Name: SpellMakerHome
   m_TagString: Untagged
@@ -372,7 +370,7 @@ Transform:
   - {fileID: 57603394050379347}
   - {fileID: 4921748490697161778}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3460509137628829643
 MonoBehaviour:
@@ -401,35 +399,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab_blizzard: {fileID: 26100195978765874, guid: d225ebde49655e04fa5e14ee00881a9b, type: 3}
   blizzardPosIndicator: {fileID: 8309686686079751521}
---- !u!114 &3466059527313909771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573927753783751022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88f97ce0df7a4b148a1ed2d417818666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab_thunder: {fileID: 8761671727041401696, guid: a38a72f1b7248514988bf7d93ee13ab7, type: 3}
-  player: {fileID: 0}
-  mobManager: {fileID: 0}
-  amount: 3
---- !u!114 &2114983911483067827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2573927753783751022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 423e93fc557e5ab46987d391eec804c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab_waterSurge: {fileID: 7894216594431531082, guid: a0b6d5e48e9fb2a4c8859c27a98dc825, type: 3}
 --- !u!1 &3771360409347217959
 GameObject:
   m_ObjectHideFlags: 0

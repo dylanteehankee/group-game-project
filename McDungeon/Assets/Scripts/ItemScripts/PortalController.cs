@@ -8,11 +8,8 @@ namespace McDungeon
         [SerializeField] private GameObject portal;
         [SerializeField] private GameObject face;
         [SerializeField] private GameObject cover;
-        [SerializeField] private GameMode mode;
         [SerializeField] private bool special;
         [SerializeField] private bool unlocked;
-
-        [SerializeField] private PlayerController playerControl;
         
         private bool active;
 
@@ -23,9 +20,6 @@ namespace McDungeon
             unlocked = false;
             portal.SetActive(false);
             face.SetActive(false);
-
-
-            this.playerControl = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
         }
 
         void Update()
@@ -50,7 +44,6 @@ namespace McDungeon
 
                     // Non-special or unlocked.
                     Debug.Log("Activated Portal");
-                    playerControl.StartUsePortal(this.gameObject.transform.position, mode);
 
                 }
             }
