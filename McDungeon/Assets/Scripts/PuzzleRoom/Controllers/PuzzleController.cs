@@ -70,7 +70,7 @@ public class PuzzleController : MonoBehaviour
         // Sad Quickfix. 
         if(puzzleID == 4)
         {
-            startButton.transform.localPosition = new Vector3(puzzleGridWidth - 2, puzzleGridHeight + 2, 0f);
+            startButton.transform.localPosition = new Vector3(puzzleGridWidth - 8, puzzleGridHeight + 2, 0f);
         }
         else
         {

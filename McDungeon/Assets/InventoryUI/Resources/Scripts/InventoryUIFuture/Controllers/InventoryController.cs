@@ -275,7 +275,22 @@ public class InventoryController : MonoBehaviour
     public void SellItem()
     {
         // Refund gold amount.
-
+        string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
+        // This should always be true. If not likely, dummy item is likely. 
+        if(ItemManager.GetGameItem(idToRemove) is ConsumableItem)
+        {
+            int sellAmt = ((ConsumableItem) ItemManager.GetGameItem(idToRemove)).sellCost;
+            gameObject.GetComponent<UIManager>().coinAmount += sellAmt;
+        }
+        else if(ItemManager.GetGameItem(idToRemove) is EquipmentItem)
+        {
+            int sellAmt = ((EquipmentItem) ItemManager.GetGameItem(idToRemove)).sellCost;
+            gameObject.GetComponent<UIManager>().coinAmount += sellAmt;
+        }
+        else
+        {
+            Debug.Log("This should not happen");
+        }
         // Remove the item.
         ConsumeSelectedItem();
     }

@@ -20,19 +20,41 @@ public class PlayerInventory : ItemCollection
         return weapon; 
     }
 
+    public Weapon GetWeaponItem()
+    {
+        if(weapon == null)
+            return null;
+        return (Weapon)(ItemManager.GetGameItem(weapon));
+    }
+
+    public Armor GetArmorItem()
+    {
+        if(armor == null)
+            return null;
+        return (Armor)(ItemManager.GetGameItem(armor));
+    }
+
     public void AddItem(string itemID)
     {
         if(!CanAddItem(itemID))
         {
             return;
         }
-        if(weapon == null)
+        GameItem g = ItemManager.GetGameItem(itemID);
+        if(g is Weapon)
         {
-            weapon = itemID;
+            if(weapon == null)
+            {
+                weapon = itemID;
+            }
         }
-        else if(armor == null)
+        else if(g is Armor)
         {
-            armor = itemID;
+            if(armor == null)
+            {
+                  armor = itemID;
+            }
+          
         }
     }
 
@@ -54,12 +76,33 @@ public class PlayerInventory : ItemCollection
 
     public bool CanAddItem(string itemID)
     {
-        if(weapon != null && armor != null)
+        GameItem g = ItemManager.GetGameItem(itemID);
+        if(g is Weapon)
         {
-            return false; 
+            if(weapon == null)
+            {
+                return true; 
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        return true;
+        else if(g is Armor)
+        {
+            if(armor == null)
+            {
+                return true; 
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool CanRemoveItem(string itemID)
