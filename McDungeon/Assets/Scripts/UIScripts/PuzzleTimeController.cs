@@ -48,6 +48,7 @@ public class PuzzleTimeController : MonoBehaviour
             text_failTime.GetComponent<Text>().color = green;
         }
         else{
+            text_rewardTime.GetComponent<Text>().color = grey;
             text_puzzleTime.GetComponent<Text>().color = red;
         }
         int displayTime = (knightCutoff - (int)timeElapsed);

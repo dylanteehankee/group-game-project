@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
-
+using Mobs;
 /// <summary>
 /// The PuzzleController should be an object directly under the puzzle room object. 
 /// It should be positioned in the bototm left corner of the puzzle room. 
@@ -11,6 +11,7 @@ using System.IO;
 public class PuzzleController : MonoBehaviour
 {
     public UIManager uiManager;
+    public MobManager mobManager;
 
     private Dictionary<string, PuzzleElementController> elementControllers;
 
@@ -96,6 +97,7 @@ public class PuzzleController : MonoBehaviour
         leftWall.GetComponent<SpriteRenderer>().enabled = false;
 
         uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
+        mobManager = GameObject.Find("MobSpawner").GetComponent<MobManager>(); 
     }
 
     public PuzzleRoomState GetPuzzleRoomState()
@@ -245,6 +247,11 @@ public class PuzzleController : MonoBehaviour
     {   
         EndPuzzleRoom();
         // Losing sequence, start the knights
+        List<GameObject> knights = mobManager.GetMobs(); // Should only be knights. 
+        foreach(GameObject knight in knights)
+        {
+            knight.GetComponent<KnightController>().ActivateKnight();
+        }
     }
 
     // Update is called once per frame
@@ -269,6 +276,11 @@ public class PuzzleController : MonoBehaviour
         stringToPuzzleElementShape.Add("Square", PuzzleElementShapeLink.Square);
         stringToPuzzleElementShape.Add("None", PuzzleElementShapeLink.None);
         
+        // Initiate Knights for Testing
+        
+        Vector3 basePosition = this.gameObject.transform.position;
+        List<Vector2> locations = new List<Vector2>();
+
         string filePath = "Assets/Resources/PuzzleRoomData/" + puzzlePath;
         //FileInfo openFile = new FileInfo("Assets/Resources/PuzzleRoomData/DemoTest.txt");
 
@@ -360,11 +372,15 @@ public class PuzzleController : MonoBehaviour
                         )
                     );
                     break;
+                case "Knight":
+                    locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
+                    break;
                 default:
                     break;
             }
             line = fileReader.ReadLine();
         }
+        mobManager.SpawnKnights(locations.ToArray());
         fileReader.Close();
     }
 

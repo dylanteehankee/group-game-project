@@ -55,7 +55,7 @@ namespace Mobs{
             this.Notify();
         }
 
-        public void SpawnKnights(GameObject knight, Vector2[] locations)
+        public void SpawnKnights(Vector2[] locations)
         {
             foreach (Vector2 location in locations)
             {
