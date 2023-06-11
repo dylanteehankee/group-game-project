@@ -142,6 +142,7 @@ MonoBehaviour:
   face: {fileID: 3710865567781597267}
   cover: {fileID: 2850421868470389575}
   special: 0
+  unlocked: 0
 --- !u!1 &2850421868470389575
 GameObject:
   m_ObjectHideFlags: 0

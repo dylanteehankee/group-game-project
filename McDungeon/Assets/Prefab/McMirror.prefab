@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 8
   m_Sprite: {fileID: -1292170773, guid: 5c89d89f07baced4f8aa4fcc8acac9be, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -325,8 +325,10 @@ MonoBehaviour:
   portal: {fileID: 686631129782628063}
   face: {fileID: 5256577815567126938}
   cover: {fileID: 6487877584983169148}
+  mode: 2
   special: 1
   unlocked: 0
+  playerControl: {fileID: 0}
 --- !u!1001 &6394315494721756467
 PrefabInstance:
   m_ObjectHideFlags: 0

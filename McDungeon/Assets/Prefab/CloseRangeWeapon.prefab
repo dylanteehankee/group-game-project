@@ -372,7 +372,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1521379300989172074, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+  attackDamage: 0
   attackSpeed: 5
   attackSpeedFactor: 0.4
   attackAngle: 90
+  knockBack: 0
   active: 0

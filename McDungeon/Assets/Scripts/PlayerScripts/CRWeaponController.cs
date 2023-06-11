@@ -7,9 +7,11 @@ namespace McDungeon
     public class CRWeaponController : MonoBehaviour
     {
         [SerializeField] private GameObject player;
+        [SerializeField] private float attackDamage;
         [SerializeField] private float attackSpeed;
         [SerializeField] private float attackSpeedFactor;
         [SerializeField] private float attackAngle;
+        [SerializeField] private float knockBack;
         [SerializeField] private bool active;
         private SpriteRenderer hitBoxRender;
         private CapsuleCollider2D hitBoxCllider;
@@ -23,6 +25,7 @@ namespace McDungeon
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
 
             attackSpeedFactor = 0.4f;
+            knockBack = 0f;
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
@@ -34,12 +37,18 @@ namespace McDungeon
             {
                 WeaponUpdate();
             }
+            else
+            {
+                // change weapon direction
+                ChangeWeaponDirection();
+            }
         }
 
-        public void Config(float attackSpeed, float attackAngle, bool active, float attackSpeedFactor = 0.4f)
+        public void Config(float attackDamage, float attackSpeed, float attackAngle, float knockBack, bool active, float attackSpeedFactor = 0.4f)
         {
             this.attackSpeed = attackSpeed;
             this.attackAngle = attackAngle;
+            this.knockBack = knockBack;
             this.active = active;
             this.attackSpeedFactor = attackSpeedFactor;
             Debug.Log("configed weapon");
@@ -104,6 +113,7 @@ namespace McDungeon
                 hitBoxCllider.enabled = false;
                 atkProgress = 0f;
                 this.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                active = false;
             }
             else
             {
