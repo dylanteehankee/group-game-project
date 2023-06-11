@@ -13,8 +13,7 @@ public class InventoryController : MonoBehaviour
     private PlayerCardUI playerCardUI;
     public GameObject uiCanvas;
 
-    //Change to public and assign;
-    //private GameObject player;
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -276,7 +275,22 @@ public class InventoryController : MonoBehaviour
     public void SellItem()
     {
         // Refund gold amount.
-
+        string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
+        // This should always be true. If not likely, dummy item is likely. 
+        if(ItemManager.GetGameItem(idToRemove) is ConsumableItem)
+        {
+            int sellAmt = ((ConsumableItem) ItemManager.GetGameItem(idToRemove)).sellCost;
+            gameObject.GetComponent<UIManager>().coinAmount += sellAmt;
+        }
+        else if(ItemManager.GetGameItem(idToRemove) is EquipmentItem)
+        {
+            int sellAmt = ((EquipmentItem) ItemManager.GetGameItem(idToRemove)).sellCost;
+            gameObject.GetComponent<UIManager>().coinAmount += sellAmt;
+        }
+        else
+        {
+            Debug.Log("This should not happen");
+        }
         // Remove the item.
         ConsumeSelectedItem();
     }
@@ -286,7 +300,6 @@ public class InventoryController : MonoBehaviour
         // Have Item perform its effects
         string idToRemove = inventoryUIModel.selectedGameItemIDs[0];
         // This should always be true. If not likely, dummy item is likely. 
-        GameObject player = null;
         if(ItemManager.GetGameItem(idToRemove) is ConsumableItem)
         {
             ((ConsumableItem) ItemManager.GetGameItem(idToRemove)).UseItem(player.GetComponent<PlayerController>());

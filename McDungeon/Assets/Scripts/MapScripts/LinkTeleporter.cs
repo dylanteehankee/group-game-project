@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mobs;
+using McDungeon;
 
 public class LinkTeleporter : MonoBehaviour
 {
@@ -146,7 +146,7 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
-                if(parentTarget.CompareTag("CombatRoom")){
+                if(parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted){
                     GameObject grid = parentTarget.transform.GetChild(0).gameObject;
                     GameObject candle1 = grid.transform.GetChild(2).gameObject;
                     GameObject candle2 = grid.transform.GetChild(5).gameObject;
@@ -166,7 +166,7 @@ public class LinkTeleporter : MonoBehaviour
 
     //Reset all global variables
     //TODO: reset all variables in the room
-    void ResetAll(){
+    public void ResetAll(){
         GameObject parentTarget = TargetRoom.transform.parent.gameObject;
 
         GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;

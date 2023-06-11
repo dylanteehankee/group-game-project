@@ -22,6 +22,7 @@ TagManager:
   - MobSpawner
   - Throwable
   - Effect
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX
@@ -67,4 +68,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Effect
+    uniqueID: 365825393
     locked: 0

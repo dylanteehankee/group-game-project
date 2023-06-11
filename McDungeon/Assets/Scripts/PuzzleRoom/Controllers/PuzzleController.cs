@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
-
+using McDungeon;
 /// <summary>
 /// The PuzzleController should be an object directly under the puzzle room object. 
 /// It should be positioned in the bototm left corner of the puzzle room. 
@@ -11,6 +11,7 @@ using System.IO;
 public class PuzzleController : MonoBehaviour
 {
     public UIManager uiManager;
+    public MobManager mobManager;
 
     private Dictionary<string, PuzzleElementController> elementControllers;
 
@@ -47,9 +48,7 @@ public class PuzzleController : MonoBehaviour
 
     void Start()
     {
-        rewardCutoffs = new List<int>();
-        rewardCutoffs.Add(45);
-        knightCutoff = 60;
+  
         Init();
     }
 
@@ -68,7 +67,15 @@ public class PuzzleController : MonoBehaviour
         // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
-        startButton.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight, 0f);
+        // Sad Quickfix. 
+        if(puzzleID == 4)
+        {
+            startButton.transform.localPosition = new Vector3(puzzleGridWidth - 8, puzzleGridHeight + 2, 0f);
+        }
+        else
+        {
+            startButton.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight, 0f);
+        }
 
         // Create invisible bouncy walls for the fireball. 
         GameObject topWall = Instantiate(bouncyWallPrefab, gameObject.transform);
@@ -96,6 +103,7 @@ public class PuzzleController : MonoBehaviour
         leftWall.GetComponent<SpriteRenderer>().enabled = false;
 
         uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
+        mobManager = GameObject.Find("MobSpawner").GetComponent<MobManager>(); 
     }
 
     public PuzzleRoomState GetPuzzleRoomState()
@@ -106,40 +114,48 @@ public class PuzzleController : MonoBehaviour
     public void StartPuzzleRoom()
     {
         if(puzzleState.roomState == PuzzleRoomState.NotStarted)
-        {
-            puzzleState.roomState = PuzzleRoomState.InProgress;
+        {      
             switch(puzzleID)
             {
-                case 1:
+                case 0:
                     InitPuzzleItems("PuzzleRoom_Tutorial.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("1", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("2", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("3", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("4", ((int)PuzzleTorchState.Lit, false));
+                    GameObject.Find("GameManager").GetComponent<UIManager>().GenerateTextBubble(
+                        this.gameObject.transform,
+                        text:  "Light up all the torches with fireballs to progress. \n"
+                            + "Do this quickly and you will be rewarded! Too slow and there will be consequences...",
+                        dimensions: new Vector3(10, 2, 0), 
+                        offset: new Vector3(7, 10, 0), 
+                        fontSize: 4f,
+                        duration: 15.0f      
+                    );
                     break;
-                case 2:
+                case 1:
                 {
                     InitPuzzleItems("PuzzleRoom_1.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
-                    winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
-                    winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
                 }
-                case 3:
+                case 2:
                 
                     //    InitPuzzle3();
-                    InitPuzzleItems("PuzzleRoom_4.csv");
+                    InitPuzzleItems("PuzzleRoom_2.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
+                    winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
+                    winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("14", ((int)PuzzleTorchState.Lit, false));
                     break;
-                case 4:
+                case 3:
                     InitPuzzleItems("PuzzleRoom_3.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
@@ -147,8 +163,8 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
-                 case 5:
-                    InitPuzzleItems("PuzzleRoom_5.csv");
+                 case 4:
+                    InitPuzzleItems("PuzzleRoom_4.csv");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
@@ -159,6 +175,8 @@ public class PuzzleController : MonoBehaviour
             }
         }
         startButton.SetActive(false);
+        
+        puzzleState.roomState = PuzzleRoomState.InProgress;
     }
 
 
@@ -231,6 +249,11 @@ public class PuzzleController : MonoBehaviour
     private void WinPuzzleRoom()
     {
         EndPuzzleRoom();
+        List<GameObject> knights = mobManager.GetMobs();
+        foreach(GameObject knight in knights)
+        {
+            knight.GetComponent<KnightController>().DestroyKnight();
+        }
         if((int)timeSinceStarted <= rewardCutoffs[0])
         {
             // Grant some big rewards. 
@@ -245,12 +268,17 @@ public class PuzzleController : MonoBehaviour
     {   
         EndPuzzleRoom();
         // Losing sequence, start the knights
+        List<GameObject> knights = mobManager.GetMobs(); // Should only be knights. 
+        foreach(GameObject knight in knights)
+        {
+            knight.GetComponent<KnightController>().ActivateKnight();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(puzzleState.roomState == PuzzleRoomState.InProgress)
+        if(puzzleState.roomState == PuzzleRoomState.InProgress && rewardCutoffs != null)
         {
             timeSinceStarted += Time.deltaTime;
             uiManager.DisplayPuzzleTime(timeSinceStarted, rewardCutoffs, knightCutoff);
@@ -269,6 +297,11 @@ public class PuzzleController : MonoBehaviour
         stringToPuzzleElementShape.Add("Square", PuzzleElementShapeLink.Square);
         stringToPuzzleElementShape.Add("None", PuzzleElementShapeLink.None);
         
+        // Initiate Knights for Testing
+        
+        Vector3 basePosition = this.gameObject.transform.position;
+        List<Vector2> locations = new List<Vector2>();
+
         string filePath = "Assets/Resources/PuzzleRoomData/" + puzzlePath;
         //FileInfo openFile = new FileInfo("Assets/Resources/PuzzleRoomData/DemoTest.txt");
 
@@ -360,11 +393,24 @@ public class PuzzleController : MonoBehaviour
                         )
                     );
                     break;
+                case "Knight":
+                    locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
+                    break;
+                case "RewardTime":
+                Debug.Log("found reward times");
+                    rewardCutoffs = new List<int>();
+                    rewardCutoffs.Add(int.Parse(split[1]));
+                    break;
+                case "TotalTime":
+                Debug.Log("total time");
+                    knightCutoff = int.Parse(split[1]);
+                    break;
                 default:
                     break;
             }
             line = fileReader.ReadLine();
         }
+        mobManager.SpawnKnights(locations.ToArray());
         fileReader.Close();
     }
 

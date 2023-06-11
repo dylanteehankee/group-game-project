@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using McDungeon;
 
-namespace Mobs
+namespace McDungeon
 {
     public class KnightController : Mob
     {
         [SerializeField]
         private GameObject shieldPrefab;
         [SerializeField]
-        public int MobDamage = 2;
+        private int damage = 2;
         [SerializeField]
         private float attackSpeed = 3.0f;
         private float attackCD = 0.0f;
@@ -72,7 +71,7 @@ namespace Mobs
             else if (this.elapsedAttackTime > ATTACKDURATION / 2 && !hitPlayer)
             {
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                Debug.Log("ATTACKING PLAYER");
+                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
                 this.hitPlayer = true;
             }
             this.elapsedAttackTime += Time.deltaTime;
@@ -150,6 +149,7 @@ namespace Mobs
         public void ActivateKnight()
         {
             this.active = true;
+            this.GetComponent<Rigidbody2D>().isKinematic = false;
             this.animator.SetBool("Active", true);
         }
 

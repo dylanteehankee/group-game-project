@@ -11,6 +11,7 @@ public abstract class ConsumableItem : GameItem
         this.sellCost = sellCost;
         this.itemType = itemType;
         this.itemDescription = itemDescription;
+        this.itemDescription += "\nSellCost: " + sellCost;
     }
     public override bool CanChangeStatus(ItemStatus ic)
     {

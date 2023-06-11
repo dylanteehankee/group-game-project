@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using McDungeon;
 
-namespace Mobs
+namespace McDungeon
 {
     public class SlimeController : Mob
     {
         [SerializeField]
-        public int MobDamage = 1;
+        private int damage = 1;
         [SerializeField]
         private float attackSpeed = 1.0f;
         private float attackCD = 0.0f;
@@ -64,8 +63,9 @@ namespace Mobs
             }
             else if (this.elapsedAttackTime > 0.15 && !hitPlayer)
             {
+                deltaLocation.Normalize();
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                Debug.Log("ATTACKING PLAYER");
+                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.Slow);
                 this.hitPlayer = true;
             }
             this.elapsedAttackTime += Time.deltaTime;

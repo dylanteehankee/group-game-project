@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs{
+namespace McDungeon
+{
     public class MobManager : MonoBehaviour
     {
         [SerializeField]
@@ -55,7 +56,7 @@ namespace Mobs{
             this.Notify();
         }
 
-        public void SpawnKnights(GameObject knight, Vector2[] locations)
+        public void SpawnKnights(Vector2[] locations)
         {
             foreach (Vector2 location in locations)
             {

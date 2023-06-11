@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using McDungeon;
 
-namespace Mobs
+namespace McDungeon
 {
     public class GNelfController : Mob
     {
@@ -11,7 +10,7 @@ namespace Mobs
         private float attackSpeed = 1.0f;
         private float attackCD = 0.0f;
         [SerializeField]
-        public int MobDamage = 1;
+        private int damage = 1;
 
         void Start()
         {
@@ -46,7 +45,7 @@ namespace Mobs
             if (this.attackCD > this.attackSpeed)
             {
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                Debug.Log("HIT PLAYER");
+                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
                 this.attackCD = 0;
             }
         }

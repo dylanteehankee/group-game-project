@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs
+namespace McDungeon
 {
     public class KnifeController : MonoBehaviour
     {
         [SerializeField]
-        private int knifeSpeed = 1000;
+        private int knifeSpeed = 800;
         [SerializeField]
         private int damage = 1;
         private float knockbackDuration = 1.0f;
@@ -20,8 +20,9 @@ namespace Mobs
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed);
-                Destroy(this.gameObject);
+                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
             }
+            Destroy(this.gameObject);
         }
 
         public void Throw(Vector2 playerLocation)

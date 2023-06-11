@@ -101,7 +101,7 @@ public class TileUpdate : MonoBehaviour
             replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,180), Vector3.one));
             replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,180), Vector3.one));
         }
-        else if(teleporter.transform.localRotation == Quaternion.Euler(0,0,270)){
+        else if(teleporter.transform.localRotation == Quaternion.Euler(0,0,-90)){
             replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
             replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
             replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
@@ -109,7 +109,7 @@ public class TileUpdate : MonoBehaviour
     }
 
     // Reset tiles to original state
-    void ResetAll(){
+    public void ResetAll(){
         foreach (GameObject teleporter in teleporterList){
             // Get current tile teleporter is on.
             currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);

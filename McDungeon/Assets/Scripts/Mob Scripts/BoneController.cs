@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs
+namespace McDungeon
 {
     public class BoneController : MonoBehaviour
     {
         [SerializeField]
-        private int boneSpeed = 1000;
+        private int boneSpeed = 600;
         [SerializeField]
         private int damage = 2;
         private float knockbackDuration = 1.0f;
@@ -27,6 +27,7 @@ namespace Mobs
                 deltaLocation.Normalize();
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
             }
