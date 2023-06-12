@@ -11092,17 +11092,21 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.a
       value: 0.7294118
       objectReference: {fileID: 0}
+    - target: {fileID: 4151671687273739500, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: SizeModule.curve.maxCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4936189330011100568, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_LocalScale.z
@@ -11138,7 +11142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_MaxParticleSize
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_RenderAlignment
@@ -82086,6 +82090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfa2fe9cb4cee304aa3533c913f5e7fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
 --- !u!114 &6871914664626205600
 MonoBehaviour:
   m_ObjectHideFlags: 0
