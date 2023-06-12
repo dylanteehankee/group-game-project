@@ -126,10 +126,19 @@ public class LinkTeleporter : MonoBehaviour
                 GetComponent<BoxCollider2D>().enabled = false;
             }
             else{
-                animator.SetBool("CloseDoor", false);
-                GetComponent<BoxCollider2D>().enabled = true;
+                StartCoroutine(waitToOpenDoor());
             }
         }
+    }
+
+    IEnumerator waitToOpenDoor(){
+        yield return new WaitForSeconds(1);
+        openDoorAnimation();
+    }
+
+    void openDoorAnimation(){
+        animator.SetBool("CloseDoor", false);
+        GetComponent<BoxCollider2D>().enabled = true;
     }
 
     void OnTriggerEnter2D(Collider2D other)

@@ -17,8 +17,8 @@ public class VentDetector : MonoBehaviour
         }
     }
     void OnTriggerExit2D(Collider2D other){
-        if (other.CompareTag("Player")){
-            animator.SetBool("PlayerHitbox", false);
+        if (other.CompareTag("PlayerHitbox")){
+            animator.SetBool("VentOpen", false);
         }
     }
 }
