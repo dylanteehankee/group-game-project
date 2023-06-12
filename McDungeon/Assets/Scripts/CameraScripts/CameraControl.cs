@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace McDungeon
 {
-    enum CameraMode
+    public enum CameraMode
     {
         LockOnPlayer,
         LockOnRoom
@@ -54,7 +54,7 @@ namespace McDungeon
             }
         }
 
-        void changeCameraMode(CameraMode mode, Vector2 center)
+        public  changeCameraMode(CameraMode mode, Vector2 center)
         {
             cameraMode = mode;
             roomCenter = new Vector3(center.x, center.y, managedCamera.transform.position.z);
