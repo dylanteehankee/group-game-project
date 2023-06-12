@@ -35,7 +35,16 @@ namespace McDungeon
 
         void Update()
         {
-            Vector3 distance = targetMob.transform.position - this.transform.position;
+            Vector3 distance;
+            if (targetMob != null && !targetMob.Equals(null))
+            {
+                distance = targetMob.transform.position - this.transform.position;
+            }
+            else
+            {
+                distance = new Vector3(0f, 0f, 0f);
+            }
+
             if (hasTarget)
             {
                 direction = distance.normalized;
@@ -53,7 +62,7 @@ namespace McDungeon
                 animation.SetActive(true);
             }
 
-            if (reached)
+            if (reached && targetMob != null && !targetMob.Equals(null))
             {
                 this.transform.position = targetMob.transform.position;
                 strikeTimer -= Time.deltaTime;
