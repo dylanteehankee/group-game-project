@@ -96,11 +96,6 @@ public class PlayerHealthController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
-        {
-            //ChangeMaxHealth(Random.Range(2, 10));
-            ChangeMaxHealth(10);
-            SetNewHealth(Random.Range(0.0f, 10.0f));
-        }
+    
     }
 }
