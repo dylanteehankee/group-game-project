@@ -102,8 +102,10 @@ public class LinkTeleporter : MonoBehaviour
                         }
                         GetComponent<SpriteRenderer>().enabled = true;
                         GetComponent<Animator>().enabled = true;
-                        closeDoor = false;
-                        RoomCompleted = true;
+                        if(mobManager.GetMobs().Count == 0){
+                            closeDoor = false;
+                            RoomCompleted = true;
+                        }
                     }
                 }
             }
