@@ -50,6 +50,9 @@ namespace McDungeon
         private float spellCastDuration = 0.5f;
         private float spellCastTimer = 0f;
         private bool castingSpell = false;
+        private bool spellReady = false;
+        private ParticleSystem spellChargeIndicator;
+        private ParticleSystem spellReadyIndicator;
 
 
         private bool usingPortal = false;
@@ -88,6 +91,14 @@ namespace McDungeon
 
             spell_Q = spell_fire;
             spell_E = spell_lightning;
+            spellChargeIndicator = this.transform.GetChild(3).GetComponent<ParticleSystem>();
+            spellReadyIndicator = this.transform.GetChild(4).GetComponent<ParticleSystem>();
+            spellReady = false;
+
+            spellChargeIndicator.Stop();
+            spellChargeIndicator.Clear();
+            spellReadyIndicator.Stop();
+            spellReadyIndicator.Clear();
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
             closeRangeWeapon.Config(3f, 10f, 120f, 800f, true);
@@ -157,6 +168,7 @@ namespace McDungeon
                     spellCastTimer = spellCastDuration;
                     actionCoolDown = 100f;
                     spell = 'Q';
+                    spellChargeIndicator.Play();
                 }
                 else if (Input.GetKey(KeyCode.E) && spellECoolDowntimer <= 0f)
                 {
@@ -338,7 +350,14 @@ namespace McDungeon
                 if (spellCastTimer <= 0f)
                 {
                     // Show ready
-                    Debug.Log("Spell Q ready");
+                    if (!spellReady)
+                    {
+                        spellChargeIndicator.Stop();
+                        spellChargeIndicator.Clear();
+                        spellReadyIndicator.Play();
+                        Debug.Log("Spell Q ready");
+                        spellReady = true;
+                    }
                 }
 
                 if (Input.GetKeyUp(KeyCode.Q))
@@ -348,11 +367,17 @@ namespace McDungeon
                         spell_Q.Execute(this.transform.position, mousePos);
                         actionCoolDown = 0.1f;
                         spellQCoolDowntimer = spellQCoolDown;
+                        spellReadyIndicator.Stop();
+                        spellReadyIndicator.Clear();
+                        spellReady = false;
                         Debug.Log("Spell Q Casted");
                     }
                     else
                     {
                         actionCoolDown = 0.1f;
+                        spellChargeIndicator.Stop();
+                        spellChargeIndicator.Clear();
+                        spellReady = false;
                         Debug.Log("Spell Q Cancelled");
                     }
 
