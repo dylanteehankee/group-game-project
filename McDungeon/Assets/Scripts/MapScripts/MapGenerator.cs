@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -94,6 +95,15 @@ public class MapGenerator : MonoBehaviour
         AssignPortal(map);
 
         DrawMiniMap();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //reset when r is pressed
+        if (Input.GetKeyDown(KeyCode.R)){
+            ResetAll();
+        }   
     }
 
     private void AssignList(){
@@ -290,32 +300,45 @@ public class MapGenerator : MonoBehaviour
     }
 
     public void destroyMiniMap(){
-        //destroy minimap child objects
-        foreach (Transform child in miniMap.transform){
-            Destroy(child.gameObject);
+        //destroy minimap child objects under minimap
+        for(int i = 0; i < miniMap.transform.childCount; i++){
+            Destroy(miniMap.transform.GetChild(i).gameObject);
         }
     }
 
     //Reset all global variables
     void ResetAll(){
-        combatRoomList.Clear();
-        puzzleRoomList.Clear();
-        shopRoomList.Clear();
-        roomDictionary.Clear();
-        currentRoomCoordinates = new Vector2Int(-1, -1);
+        //reset scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-        foreach (GameObject teleporter in GameObject.FindGameObjectsWithTag("Teleporter")){
-            teleporter.GetComponent<LinkTeleporter>().ResetAll();
-        }
-
-        foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall")){
-            wall.GetComponent<TileUpdate>().ResetAll();
-        }
-
-        //destroy minimap child objects
-        destroyMiniMap();
+        // combatRoomList.Clear();
+        // puzzleRoomList.Clear();
+        // shopRoomList.Clear();
+        // roomDictionary.Clear();
         
-        //Instiate all again
-        Start();
+        // currentRoomCoordinates = new Vector2Int(-1, -1);
+
+        // foreach (GameObject teleporter in GameObject.FindGameObjectsWithTag("Teleporter")){
+        //     teleporter.GetComponent<LinkTeleporter>().ResetAll();
+        // }
+
+        // foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall")){
+        //     wall.GetComponent<TileUpdate>().ResetAll();
+        // }
+
+        // //destroy minimap child objects
+        // destroyMiniMap();
+
+        // //Teleport player to 0 0
+        // var player = GameObject.FindGameObjectWithTag("PlayerHitbox");
+        // player.transform.position = new Vector2(0 , 0);
+
+        // //kill all mobs
+        // foreach (GameObject mob in GameObject.FindGameObjectsWithTag("MobHitbox")){
+        //     Destroy(mob);
+        // }
+        
+        // //Instiate all again
+        // Start();
     }
 }

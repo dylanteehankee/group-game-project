@@ -109,34 +109,35 @@ public class TileUpdate : MonoBehaviour
     }
 
     // Reset tiles to original state
-    public void ResetAll(){
-        foreach (GameObject teleporter in teleporterList){
-            // Get current tile teleporter is on.
-            currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);
+    // public void ResetAll(){
+        
+    //     foreach (GameObject teleporter in teleporterList){
+    //         // Get current tile teleporter is on.
+    //         currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);
 
-            // Get adjacent tiles based on rotation of teleporter.
-            if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 0)){
-                    adjacent1 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
-                    adjacent2 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
-            }
-            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90)){
-                adjacent1 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
-                adjacent2 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
-            }
-            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180)){
-                adjacent1 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
-                adjacent2 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
-            }
-            else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90)){
-                adjacent1 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
-                adjacent2 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
-            }
+    //         // Get adjacent tiles based on rotation of teleporter.
+    //         if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 0)){
+    //                 adjacent1 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
+    //                 adjacent2 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
+    //         }
+    //         else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+    //             adjacent1 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
+    //             adjacent2 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
+    //         }
+    //         else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+    //             adjacent1 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
+    //             adjacent2 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
+    //         }
+    //         else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+    //             adjacent1 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
+    //             adjacent2 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
+    //         }
 
-            replaceTileMap.SetTile(adjacent1, leftGateTile);
-            replaceTileMap.SetTile(adjacent2, rightGateTile);
-            replaceTileMap.SetTile(currentCell, middleGateTile);
+    //         replaceTileMap.SetTile(adjacent1, leftGateTile);
+    //         replaceTileMap.SetTile(adjacent2, rightGateTile);
+    //         replaceTileMap.SetTile(currentCell, middleGateTile);
 
-            TileRotation(teleporter);
-        }
-    }
+    //         TileRotation(teleporter);
+    //     }
+    // }
 }
