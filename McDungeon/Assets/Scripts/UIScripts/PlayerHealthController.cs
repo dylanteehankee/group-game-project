@@ -9,7 +9,7 @@ public class PlayerHealthController : MonoBehaviour
     public float curHealth;
     public int healthPerHeart = 1;
 
-    private List<GameObject> hearts;
+    private List<GameObject> hearts = new List<GameObject>();
     public GameObject healthPrefab;
 
     public Sprite heartFull;
@@ -20,10 +20,10 @@ public class PlayerHealthController : MonoBehaviour
 
     void Start()
     {   
-        hearts = new List<GameObject>();
+        //hearts = new List<GameObject>();
         healthPerHeart = 2;
-        ChangeMaxHealth(10);
-        SetNewHealth(10f);
+        //ChangeMaxHealth(10);
+        //SetNewHealth(10f);
     }
     
     public void ChangeMaxHealth(int newMax)

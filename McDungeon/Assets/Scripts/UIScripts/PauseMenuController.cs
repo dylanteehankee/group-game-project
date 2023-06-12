@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
+
+    public bool isPaused = false;
     void Start()
     {   
 
@@ -20,7 +22,23 @@ public class PauseMenuController : MonoBehaviour
 
     void Update()
     {
-       
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            RestartGame();
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            if(Time.timeScale == 0)
+            {
+                Time.timeScale = 1;
+                isPaused = false;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                isPaused = true; 
+            }
+        }
     }
 }
 
