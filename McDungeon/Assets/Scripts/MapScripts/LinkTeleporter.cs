@@ -116,7 +116,7 @@ public class LinkTeleporter : MonoBehaviour
             }
             //if player already is in endRoom, keep door closed
             else if (parent.CompareTag("EndRoom")){
-                closeDoor = true;
+                closeDoor = false;
                 RoomCompleted = true;
             }
             
