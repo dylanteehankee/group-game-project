@@ -16,14 +16,19 @@ public class LinkTeleporter : MonoBehaviour
     private Vector2 candlePos1, candlePos2;
     private PuzzleStateModel puzzleState;
     public bool onWallTile {get; set;} = false;
-    private GameObject mobSpawner;
     private Animator animator;
-
+    private MobManager mobManager;
+    private PositionLockCamera positionLockCamera;
+    private bool updateCameraLock;
     private PuzzleController puzzleController;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
-        mobSpawner = GameObject.FindWithTag("MobSpawner");
+        var CameraController = GameObject.FindWithTag("MainCamera");
+        positionLockCamera = CameraController.GetComponent<PositionLockCamera>();
+
+        var mobSpawner = GameObject.FindWithTag("MobSpawner");
+        mobManager = mobSpawner.GetComponent<MobManager>();
         animator = GetComponent<Animator>();
         parent = transform.parent.gameObject;
         //if parent is a puzzle room, get puzzle controller
@@ -56,7 +61,7 @@ public class LinkTeleporter : MonoBehaviour
             }
             //if no enemies in room, set hasEnemies to false
             else if (parent.CompareTag("CombatRoom")){
-                if (mobSpawner.GetComponent<MobManager>().GetMobs().Count == 0){
+                if (mobManager.GetMobs().Count == 0){
                     closeDoor = false;
                     RoomCompleted = true;
                 }
@@ -68,6 +73,18 @@ public class LinkTeleporter : MonoBehaviour
             else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
                 if (puzzleController != null){
                     if (puzzleController.GetPuzzleRoomState() != PuzzleRoomState.Completed){
+                        //do this once
+                        if (!updateCameraLock){
+                            //set position lock to center of room
+                            var tele1 = parent.transform.GetChild(1).gameObject;
+                            var tele2 = parent.transform.GetChild(2).gameObject;
+                            //center is in the middle of tele1 and tele2
+                            var centerX = (tele1.transform.position.x + tele2.transform.position.x) / 2;
+                            var centerY = (tele1.transform.position.y + tele2.transform.position.y) / 2;
+                            var center = new Vector2Int((int)centerX, (int)centerY);
+                            positionLockCamera.changeCameraMode(CameraMode.LockOnRoom, center);
+                            updateCameraLock = true;
+                        }
                         closeDoor = true;
                         if(puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
                            GetComponent<SpriteRenderer>().enabled = false;
@@ -78,6 +95,11 @@ public class LinkTeleporter : MonoBehaviour
                     }
                     else {
                         Debug.Log ("Puzzle completed");
+                        if(updateCameraLock){
+                            //set position lock to player
+                            positionLockCamera.changeCameraMode(CameraMode.LockOnPlayer, new Vector2Int(0, 0));
+                            updateCameraLock = false;
+                        }
                         GetComponent<SpriteRenderer>().enabled = true;
                         GetComponent<Animator>().enabled = true;
                         closeDoor = false;
@@ -146,7 +168,13 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
-                if(parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted){
+                if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
+                {
+                    positionLockCamera.LockOnPlayer();
+                }
+
+                if (parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted)
+                {
                     GameObject grid = parentTarget.transform.GetChild(0).gameObject;
                     GameObject candle1 = grid.transform.GetChild(2).gameObject;
                     GameObject candle2 = grid.transform.GetChild(5).gameObject;
@@ -155,7 +183,7 @@ public class LinkTeleporter : MonoBehaviour
 
                     var RandomMob = Random.Range(0, 4);
 
-                    mobSpawner.GetComponent<MobManager>().SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
+                    mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
                 grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
