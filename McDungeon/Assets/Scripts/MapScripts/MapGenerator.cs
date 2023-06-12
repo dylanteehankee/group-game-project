@@ -12,13 +12,11 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject miniMap;
     [SerializeField] private Sprite endRoomSprite;
 
-    private int chosenMap;
-
     private GameObject[] combatRooms, puzzleRooms, shopRooms;
     private List<GameObject> combatRoomList = new List<GameObject>();
     private List<GameObject> puzzleRoomList = new List<GameObject>();
     private List<GameObject> shopRoomList = new List<GameObject>();
-    private GameObject startRoom, tutorialRoom, endRoom, currentRoom;
+    private GameObject startRoom, tutorialRoom, endRoom;
     private Vector2Int currentRoomCoordinates;
     private Dictionary<Vector2Int, GameObject> roomDictionary = new Dictionary<Vector2Int, GameObject>();
 
@@ -36,14 +34,6 @@ public class MapGenerator : MonoBehaviour
 
     //Map - nxn matrix of rooms
     //16 rooms, 8 combat, 3 puzzle, 2 shop, 1 boss, 1 start, 1 tutorial
-    private int[,] map1 = new int[6,6] { 
-    {1,2,0,4,0,0}, 
-    {0,4,5,4,4,3},
-    {0,0,4,0,0,0},
-    {0,3,5,4,0,0},
-    {0,0,0,4,5,4},
-    {0,0,0,0,0,6}
-    };
 
     private int[,] mapAmogus = new int[9,9] { 
     //amongus shaped map
@@ -81,10 +71,10 @@ public class MapGenerator : MonoBehaviour
         AssignList();
         //map = PickMap();
 
-        int RandomMap = Random.Range(0, 10);
+        int RandomMap = Random.Range(0, 20);
 
-        // 80% chance of drunkard walk map, 20% chance of amongus map
-        if ((RandomMap + 1) % 5 == 0){
+        // 75% chance of drunkard walk map, 25% chance of amongus map
+        if (RandomMap >= 15){
             map = mapAmogus;
         }
         else{
@@ -224,7 +214,7 @@ public class MapGenerator : MonoBehaviour
                 if (map[i,j] == 6){
                     miniRoomPrefab.GetComponent<SpriteRenderer>().sprite = endRoomSprite;
                 }
-                miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 3;
+                miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 10;
                 //set all rooms to transparent
                 miniRoomPrefab.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             }
