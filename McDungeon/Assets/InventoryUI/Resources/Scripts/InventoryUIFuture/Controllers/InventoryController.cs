@@ -55,9 +55,9 @@ public class InventoryController : MonoBehaviour
             itemType: "Weapon",
             sellCost: 5,
             inventoryIcon: startingWeaponSprite,
-            damage: 20,
+            damage: 2,
             range: 2,
-            attackSpeed: 0.5f
+            attackSpeed: 1f
         );
         ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Equipped);
     }
