@@ -8,6 +8,8 @@ public class Weapon : EquipmentItem
     public int damage = 0;
     public int range = 1;
     public float attackSpeed = 1.5f;
+    public float knockBack = 8f;
+    public float attackAngle = 120f;
     public Weapon(string name, string itemType, int sellCost, Sprite inventoryIcon, 
         int damage, int range, float attackSpeed) : base(
             name: name,
@@ -25,7 +27,7 @@ public class Weapon : EquipmentItem
         itemDescription += "Attack Speed: " + attackSpeed;
         itemDescription += "\n";
         itemDescription += "Range: " + range;
-        itemDescription += "\nSellCost: " + sellCost;
+        itemDescription += "\nSell: +" + sellCost;
 
         this.itemDescription = itemDescription; 
     }

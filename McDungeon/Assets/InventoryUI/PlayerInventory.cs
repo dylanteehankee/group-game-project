@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Inventory;
+using McDungeon;
 
 public class PlayerInventory : ItemCollection
 {
 
+    private PlayerController playerController;
+    public PlayerInventory(PlayerController pc)
+    {
+        this.playerController = pc;
+    }
     private string armor = null;
 
     private string weapon = null;
@@ -46,6 +52,7 @@ public class PlayerInventory : ItemCollection
             if(weapon == null)
             {
                 weapon = itemID;
+                playerController.SyncWeaponWithInventory();
             }
         }
         else if(g is Armor)
@@ -67,6 +74,7 @@ public class PlayerInventory : ItemCollection
         if(weapon == itemID)
         {
             weapon = null;
+            playerController.SyncWeaponWithInventory();
         }
         else if(armor == itemID)
         {

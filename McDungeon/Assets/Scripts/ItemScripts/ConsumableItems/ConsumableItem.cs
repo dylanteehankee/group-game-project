@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using McDungeon;
 public abstract class ConsumableItem : GameItem
 {
     public int sellCost = 0;

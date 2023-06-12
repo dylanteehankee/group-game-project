@@ -31,15 +31,22 @@ public class PauseMenuController : MonoBehaviour
             if(Time.timeScale == 0)
             {
                 Time.timeScale = 1;
-                isPaused = false;
+                GlobalStates.isPaused = false;
+                this.isPaused = false;
             }
             else
             {
                 Time.timeScale = 0;
-                isPaused = true; 
+                GlobalStates.isPaused = true; 
+                this.isPaused = true; 
             }
         }
     }
+}
+
+public static class GlobalStates
+{
+    public static bool isPaused = false;
 }
 
 

@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Inventory;
-
+using McDungeon;
 public class InventoryController : MonoBehaviour
 {    
     private CollectionsModel collectionsModel;
     private InventoryUIModel inventoryUIModel;
+
+    public Sprite startingWeaponSprite;
 
     private InventoryGridUI inventoryGridUI;
     private HoverItemUI hoverItemUI;
@@ -35,12 +37,29 @@ public class InventoryController : MonoBehaviour
         ItemManager.RegisterItemCollectionWithStatus(ItemStatus.ItemInventory, consumables);
         collectionsModel.itemCollections.Add(ItemCollectionName.StackableItems, consumables);
 
-        PlayerInventory playerInventory = new PlayerInventory();
+        PlayerInventory playerInventory = player.GetComponent<PlayerController>().GetPlayerInventory();
         ItemManager.RegisterItemCollectionWithStatus(ItemStatus.Equipped, playerInventory);
         collectionsModel.itemCollections.Add(ItemCollectionName.PlayerInventory, playerInventory);
 
+        // Give Starting Weapon
+        CreateStartingWeapon();
+
         ToggleInventory();
         ToggleInventory();
+    }
+
+    public void CreateStartingWeapon()
+    {
+         Weapon toAdd = new Weapon(
+            name: "Rusty Sword",
+            itemType: "Weapon",
+            sellCost: 5,
+            inventoryIcon: startingWeaponSprite,
+            damage: 20,
+            range: 2,
+            attackSpeed: 0.5f
+        );
+        ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Equipped);
     }
 
     public void NextPage()
@@ -572,7 +591,8 @@ public class InventoryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(GlobalStates.isPaused)
+            return;
         if(Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();

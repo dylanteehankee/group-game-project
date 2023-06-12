@@ -118,7 +118,7 @@ public class PuzzleController : MonoBehaviour
             switch(puzzleID)
             {
                 case 0:
-                    InitPuzzleItems("PuzzleRoom_Tutorial.csv");
+                    InitPuzzleItems("PuzzleRoom_Tutorial");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("1", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("2", ((int)PuzzleTorchState.Lit, false));
@@ -136,7 +136,7 @@ public class PuzzleController : MonoBehaviour
                     break;
                 case 1:
                 {
-                    InitPuzzleItems("PuzzleRoom_1.csv");
+                    InitPuzzleItems("PuzzleRoom_1");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("9", ((int)PuzzleTorchState.Lit, false));
@@ -148,7 +148,7 @@ public class PuzzleController : MonoBehaviour
                 case 2:
                 
                     //    InitPuzzle3();
-                    InitPuzzleItems("PuzzleRoom_2.csv");
+                    InitPuzzleItems("PuzzleRoom_2");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("12", ((int)PuzzleTorchState.Lit, false));
@@ -156,7 +156,7 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("14", ((int)PuzzleTorchState.Lit, false));
                     break;
                 case 3:
-                    InitPuzzleItems("PuzzleRoom_3.csv");
+                    InitPuzzleItems("PuzzleRoom_3");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("10", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("11", ((int)PuzzleTorchState.Lit, false));
@@ -164,7 +164,7 @@ public class PuzzleController : MonoBehaviour
                     winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
                     break;
                  case 4:
-                    InitPuzzleItems("PuzzleRoom_4.csv");
+                    InitPuzzleItems("PuzzleRoom_4");
                     winCondition = new Dictionary<string, (int state, bool satisfied)>();
                     winCondition.Add("7", ((int)PuzzleTorchState.Lit, false));
                     winCondition.Add("8", ((int)PuzzleTorchState.Lit, false));
@@ -302,10 +302,116 @@ public class PuzzleController : MonoBehaviour
         Vector3 basePosition = this.gameObject.transform.position;
         List<Vector2> locations = new List<Vector2>();
 
-        string filePath = "Assets/Resources/PuzzleRoomData/" + puzzlePath;
+        string filePath = "PuzzleRoomData/" + puzzlePath;
         //FileInfo openFile = new FileInfo("Assets/Resources/PuzzleRoomData/DemoTest.txt");
-
         // Read in Puzzle Room data as a CSV. 
+        string text = Resources.Load<TextAsset>(filePath).text;
+        string[] lines = text.Split('\n');
+        for(int i = 0 ; i < lines.Length ; i++)
+        {
+            Debug.Log(lines[i]);
+            string[] split = lines[i].Split(',');;
+            switch(split[0])
+            {
+                case "PushButton":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreatePushButton(
+                            button: Instantiate(buttonPrefab, gameObject.transform), 
+                            id: split[1],
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            shape: stringToPuzzleElementShape[split[4]]
+                        )
+                    );
+                    break;
+                case "SwitchButton":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateSwitchButton(
+                            button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
+                            id: split[1],
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            shape: stringToPuzzleElementShape[split[4]]
+                        )
+                    );
+                    break;
+                case "DisappearWall":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateDisappearWall(
+                            wall: Instantiate(disappearWallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            buttonTriggerID: split[2],
+                            shape: stringToPuzzleElementShape[split[3]],
+                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
+                            position: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
+                            transitionTime: float.Parse(split[8]),
+                            changePauseTime: float.Parse(split[9])
+                        )
+                    );
+                    AddItemTrigger(
+                        responderID: split[1], 
+                        triggerID: split[2]
+                    );
+                    break;
+                case "SlidingWall":
+                     AddObjectToPuzzle(puzzleCreator
+                        .CreateSlidingWall(
+                            wall: Instantiate(wallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            buttonTriggerID: split[2],
+                            shape: stringToPuzzleElementShape[split[3]],
+                            openPosition: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
+                            closedPosition: new Vector3(float.Parse(split[8]), float.Parse(split[9]), 0),
+                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
+                            transitionTime: float.Parse(split[10]),
+                            changePauseTime: float.Parse(split[11])
+                        )
+                    );
+                    AddItemTrigger(
+                        responderID: split[1], 
+                        triggerID: split[2]
+                    );
+                    break;
+                case "StaticWall": 
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateStaticWall(
+                            wall: Instantiate(staticWallPrefab, gameObject.transform), 
+                            id: split[1], 
+                            shape: stringToPuzzleElementShape[split[2]],
+                            wallScale: new Vector3(float.Parse(split[3]), float.Parse(split[4]), 1),
+                            position: new Vector3(float.Parse(split[5]), float.Parse(split[6]), 0)
+                        )
+                    );
+                    break;
+                case "Torch":
+                    AddObjectToPuzzle(puzzleCreator
+                        .CreateTorch(
+                            torch: Instantiate(torchPrefab, gameObject.transform), 
+                            id: split[1], 
+                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
+                            //expirable: bool.Parse(split[4]), 
+                            expirable: true, 
+                            lightDuration: float.Parse(split[5])
+                        )
+                    );
+                    break;
+                case "Knight":
+                    locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
+                    break;
+                case "RewardTime":
+                Debug.Log("found reward times");
+                    rewardCutoffs = new List<int>();
+                    rewardCutoffs.Add(int.Parse(split[1]));
+                    break;
+                case "TotalTime":
+                Debug.Log("total time");
+                    knightCutoff = int.Parse(split[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        
+        /*
         StreamReader fileReader = new StreamReader(File.OpenRead(filePath));
         string line = fileReader.ReadLine();
         
@@ -410,8 +516,9 @@ public class PuzzleController : MonoBehaviour
             }
             line = fileReader.ReadLine();
         }
+        */
         mobManager.SpawnKnights(locations.ToArray());
-        fileReader.Close();
+        //fileReader.Close();
     }
 
     public void InitPuzzle3()

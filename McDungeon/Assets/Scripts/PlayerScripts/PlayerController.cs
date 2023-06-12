@@ -16,6 +16,7 @@ namespace McDungeon
     {
         [SerializeField]
         protected StatusEffects statusEffects;
+        private PlayerInventory playerInventory;
         [SerializeField] private GameObject spellHome;
         [SerializeField] private GameObject Weapon;
         [SerializeField] private CRWeaponController closeRangeWeapon;
@@ -77,8 +78,15 @@ namespace McDungeon
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
+        void Awake()
+        {
+            playerInventory = new PlayerInventory(this);
+        }
+
         void Start()
         {
+           
+            
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -146,8 +154,35 @@ namespace McDungeon
             }
         }
 
+        public void SyncWeaponWithInventory()
+        {   
+            Weapon myWeapon = playerInventory.GetWeaponItem();
+            if(myWeapon != null)
+            {
+                closeRangeWeapon.Config(
+                    attackDamage: myWeapon.damage, 
+                    attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly?
+                    attackAngle: myWeapon.attackAngle,
+                    knockBack: myWeapon.knockBack * 100f,
+                    true
+                );
+            }
+            /*
+            closeRangeWeapon.Config(
+                attackDamage:3f, 
+                attackSpeed:10f, 
+                attackAngle: 120f,
+                knockBack: 800f,
+                true
+            );
+            */
+        }
         void Update()
         {
+            if(GlobalStates.isPaused)
+            {
+                return;
+            }
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // Reduce all coll down count.
             updateCoolDowns();
@@ -226,6 +261,11 @@ namespace McDungeon
                 // Dead
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one);
             }
+        }
+
+        public PlayerInventory GetPlayerInventory()
+        {
+            return playerInventory;
         }
 
         private void spriteController(Vector2 direction)
