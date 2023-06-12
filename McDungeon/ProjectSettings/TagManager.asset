@@ -34,7 +34,7 @@ TagManager:
   - MobHitbox
   - Effects
   - 
-  - 
+  - Walls
   - 
   - 
   - 
@@ -71,4 +71,7 @@ TagManager:
     locked: 0
   - name: Effect
     uniqueID: 365825393
+    locked: 0
+  - name: Walls
+    uniqueID: 1228758821
     locked: 0

@@ -8,7 +8,7 @@ public class BossTeleport : MonoBehaviour
     [SerializeField] GameObject ventExit;
 
     void OnTriggerEnter2D(Collider2D other){
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("PlayerHitbox")){
             other.transform.position = ventExit.transform.position;
         }
     }

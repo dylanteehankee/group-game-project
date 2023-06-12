@@ -10,12 +10,12 @@ public class BossEntranceDetector : MonoBehaviour
     }
     //If player is on collider2d, SlideOpen is true
     void OnTriggerEnter2D(Collider2D other){
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("PlayerHitbox")){
             animator.SetBool("SlideOpen", true);
         }
     }
     void OnTriggerExit2D(Collider2D other){
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("PlayerHitbox")){
             animator.SetBool("SlideOpen", false);
         }
     }
