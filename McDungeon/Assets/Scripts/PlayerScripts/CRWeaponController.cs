@@ -21,12 +21,11 @@ namespace McDungeon
         private bool attacking;
         private float atkProgress; // 0 - 1
 
-        void Start()
+        void Awake()
         {
             hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
             hitBoxController = this.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
-
             attackSpeedFactor = 0.4f;
             knockBack = 0f;
             attacking = false;

@@ -68,7 +68,6 @@ public class PlayerHealthController : MonoBehaviour
         {
             numHalfHearts = 0;
         }
-        Debug.Log(newHealth + " leads to " + numHalfHearts);
         for(int i = 0 ; i < hearts.Count ; i++)
         {
             // 4 half hearts, i = 0 is full, i = 1 is full, i = 2 is empty

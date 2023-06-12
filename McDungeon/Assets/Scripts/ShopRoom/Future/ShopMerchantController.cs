@@ -114,7 +114,6 @@ public class ShopMerchantController : MonoBehaviour
 
     public void RestockItems()
     {
-        Debug.Log("loading items " + itemsToSell.Count);
         for(int i = 0 ; i < crates.Length; i++)
         {
             if(i < itemsToSell.Count && itemsToSell[i] != null)
@@ -139,14 +138,12 @@ public class ShopMerchantController : MonoBehaviour
 
     public void SelectItem(int id)
     {  
-        Debug.Log("You selected this");
         shopUIManager.LoadShopItem(this, itemPrices[id], ItemManager.GetGameItem(itemsToSell[id]), id);
 
     }
 
     public void UnselectItem()
     {
-        Debug.Log("You unselected this");
         shopUIManager.CloseShop();
     }
 }
