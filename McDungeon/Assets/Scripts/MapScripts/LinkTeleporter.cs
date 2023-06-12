@@ -166,29 +166,28 @@ public class LinkTeleporter : MonoBehaviour
 
     //Reset all global variables
     //TODO: reset all variables in the room
-    public void ResetAll(){
-        GameObject parentTarget = TargetRoom.transform.parent.gameObject;
+    // public void ResetAll(){
+    //     //reset all variables
+    //     TargetRoom = null;
+    //     Teleported = false;
+    //     isInside = false;
+    //     beenDisabled = false;
+    //     RoomCompleted = false;
+    //     closeDoor = false;
+    //     onWallTile = false;
+    //     candlePos1 = Vector3.zero;
+    //     candlePos2 = Vector3.zero;
+    //     grandparent = null;
+    //     parent = null;
+    //     mobSpawner = null;
+    //     puzzleController = null;
+    //     animator = null;
 
-        GameObject Portal1 = parentTarget.transform.GetChild(1).gameObject;
-        GameObject Portal2 = parentTarget.transform.GetChild(2).gameObject;
-        GameObject Portal3 = parentTarget.transform.GetChild(3).gameObject;
-        GameObject Portal4 = parentTarget.transform.GetChild(4).gameObject;
+    //     //set animator to true
+    //     GetComponent<SpriteRenderer>().enabled = true;
+    //     GetComponent<Animator>().enabled = true;
 
-        Portal1.GetComponent<LinkTeleporter>().isInside = false;
-        Portal2.GetComponent<LinkTeleporter>().isInside = false;
-        Portal3.GetComponent<LinkTeleporter>().isInside = false;
-        Portal4.GetComponent<LinkTeleporter>().isInside = false;
-
-        TargetRoom = null;
-
-        Teleported = false;
-        isInside = false;
-        beenDisabled = false;
-        RoomCompleted = false;
-        closeDoor = false;
-        onWallTile = false;
-
-        //Instatiate all again
-        Start();
-    }
+    //     //Instatiate all again
+    //     Start();
+    // }
 }
