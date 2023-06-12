@@ -54,7 +54,7 @@ namespace McDungeon
             }
         }
 
-        public  changeCameraMode(CameraMode mode, Vector2 center)
+        public void changeCameraMode(CameraMode mode, Vector2 center)
         {
             cameraMode = mode;
             roomCenter = new Vector3(center.x, center.y, managedCamera.transform.position.z);
