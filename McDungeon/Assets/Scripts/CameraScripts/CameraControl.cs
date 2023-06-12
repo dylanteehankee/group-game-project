@@ -23,7 +23,7 @@ namespace McDungeon
         private void Awake()
         {
             managedCamera = gameObject.GetComponent<Camera>();
-            returnSpeed = 6f;
+            returnSpeed = 10f;
             justSwitchBack = false;
         }
 
@@ -65,6 +65,16 @@ namespace McDungeon
             {
                 justSwitchBack = true;
             }
+        }
+
+        public void LockOnPlayer()
+        {
+            cameraMode = CameraMode.LockOnPlayer;
+            var targetPosition = this.Target.transform.position;
+            var cameraPosition = managedCamera.transform.position;
+            
+            cameraPosition = new Vector3(targetPosition.x, targetPosition.y, cameraPosition.z);
+            justSwitchBack = false;
         }
     }
 }
