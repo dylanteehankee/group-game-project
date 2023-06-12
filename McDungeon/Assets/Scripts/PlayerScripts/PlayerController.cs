@@ -22,7 +22,9 @@ namespace McDungeon
         [SerializeField] private float speed;
         [SerializeField] private CapsuleCollider2D bodyCollider;
         [SerializeField] private StartRoomLightController roomLightControl;
-        [SerializeField] private int health = 10;
+        [SerializeField] protected int playerMaxHealth;
+        [SerializeField] protected float playerHealth;
+        private PlayerHealthController healthController;
         private float hitTakenInterverl;
         private float hitTimer;
         private bool readyForAction = true;
@@ -72,12 +74,13 @@ namespace McDungeon
         private SpriteRenderer spriteRenderer;
         private Animator animator;
 
-       void Start()
+        void Start()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
             spellHome = GameObject.Find("SpellMakerHome");
+            healthController = GameObject.Find("PlayerHealth").GetComponent<PlayerHealthController>();
             spell_fire = spellHome.GetComponent<FireBallMaker>();
             spell_ice = spellHome.GetComponent<BlizzardMaker>();
             spell_water = spellHome.GetComponent<WaterSurgeMaker>();
@@ -101,10 +104,15 @@ namespace McDungeon
             );
             */
             bodyCollider = this.gameObject.GetComponent<CapsuleCollider2D>();
-            
+
             globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
             torchLight = this.transform.GetChild(0).gameObject.GetComponent<Light2D>();
             roomLightControl = GameObject.Find("StartingRoom").GetComponent<StartRoomLightController>();
+
+            playerMaxHealth = 10;
+            playerHealth = 10f;
+            healthController.ChangeMaxHealth(playerMaxHealth);
+            healthController.SetNewHealth(playerHealth);
         }
 
         void FixedUpdate()
@@ -189,9 +197,22 @@ namespace McDungeon
         {
             if (hitTimer > hitTakenInterverl)
             {
-                this.health -= damage;
+                this.playerHealth -= damage;
                 this.status(type);
+                healthController.SetNewHealth(this.playerHealth);
+
                 hitTimer = 0f;
+            }
+
+            checkDeath();
+        }
+
+        public void checkDeath()
+        {
+            if (playerHealth < 0f)
+            {
+                // Dead
+                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
             }
         }
 
@@ -261,7 +282,9 @@ namespace McDungeon
             for (int i = 0; i < 4; i++)
             {
                 yield return new WaitForSeconds(this.statusEffects.GetAblazeDuration() / 4);
-                this.health -= (int)this.statusEffects.GetAblazeDamage();
+                this.playerHealth -= (float)this.statusEffects.GetAblazeDamage();
+                healthController.SetNewHealth(this.playerHealth);
+                checkDeath();
             }
             this.isAblaze = false;
             Destroy(this.ablazeObject);

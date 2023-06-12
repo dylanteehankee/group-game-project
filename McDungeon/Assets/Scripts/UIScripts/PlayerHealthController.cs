@@ -23,7 +23,7 @@ public class PlayerHealthController : MonoBehaviour
         hearts = new List<GameObject>();
         healthPerHeart = 2;
         ChangeMaxHealth(10);
-        SetNewHealth(Random.Range(0.0f, 10.0f));
+        SetNewHealth(10f);
     }
     
     public void ChangeMaxHealth(int newMax)
