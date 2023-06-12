@@ -7,6 +7,7 @@ public class ShopMerchantController : MonoBehaviour
     public GameObject gameManager;
     public GameObject shopInfoUI;
     private ShopUIManager shopUIManager;
+    private ItemFactory itemFactory;
     private ShopCrateController[] crates;
 
     // For resting puproses
@@ -21,6 +22,7 @@ public class ShopMerchantController : MonoBehaviour
         shopInfoUI = GameObject.Find("ShopRoomUI");
         shopUIManager = shopInfoUI.GetComponent<ShopUIManager>();
         gameManager = GameObject.Find("GameManager");
+        itemFactory = gameManager.GetComponent<ItemFactory>();
 
         itemsToSell = new List<string>();
         itemPrices = new List<int>();
@@ -43,10 +45,10 @@ public class ShopMerchantController : MonoBehaviour
                     name: "King's Sword",
                     itemType: "Weapon",
                     sellCost: 80,
-                    inventoryIcon: myIcon,
+                    inventoryIcon: itemFactory.weapon1,
                     damage: 5,
                     range: 2,
-                    attackSpeed: 0.8f
+                    attackSpeed: 1.2f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -56,10 +58,10 @@ public class ShopMerchantController : MonoBehaviour
                     name: "Madman's Dagger",
                     itemType: "Weapon",
                     sellCost: 100,
-                    inventoryIcon: myIcon,
+                    inventoryIcon: itemFactory.weapon6,
                     damage: 2,
                     range: 1,
-                    attackSpeed: 0.2f
+                    attackSpeed: 3.0f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -69,14 +71,54 @@ public class ShopMerchantController : MonoBehaviour
                     name: "Heavy greatsword",
                     itemType: "Weapon",
                     sellCost: 30,
-                    inventoryIcon: myIcon,
-                    damage: 5,
+                    inventoryIcon: itemFactory.weapon2,
+                    damage: 7,
                     range: 2,
-                    attackSpeed: 1.5f
+                    attackSpeed: 0.5f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
                 itemPrices.Add(60);
+                break;
+            case 2:
+                toAdd = new Weapon(
+                    name: "Demonic Sword",
+                    itemType: "Weapon",
+                    sellCost: 150,
+                    inventoryIcon: itemFactory.weapon1,
+                    damage: 8,
+                    range: 2,
+                    attackSpeed: 0.9f
+                );
+                ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
+                itemsToSell.Add(toAdd.GetItemID());
+                itemPrices.Add(200);
+
+                toAdd = new Weapon(
+                    name: "Scimitar",
+                    itemType: "Weapon",
+                    sellCost: 100,
+                    inventoryIcon: itemFactory.weapon4,
+                    damage: 4,
+                    range: 3,
+                    attackSpeed: 2f
+                );
+                ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
+                itemsToSell.Add(toAdd.GetItemID());
+                itemPrices.Add(150);
+
+                toAdd = new Weapon(
+                    name: "Lost Training Sword",
+                    itemType: "Weapon",
+                    sellCost: 20,
+                    inventoryIcon: itemFactory.weapon0,
+                    damage: 3,
+                    range: 2,
+                    attackSpeed: 0.9f
+                );
+                ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
+                itemsToSell.Add(toAdd.GetItemID());
+                itemPrices.Add(40);
                 break;
             default:
                 break;

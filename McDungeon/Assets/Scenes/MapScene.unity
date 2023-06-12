@@ -7090,7 +7090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speechBubblePrefab: {fileID: 2067549744756201972, guid: 146198c7a7b456f48b159dd69d42b8c9, type: 3}
   puzzleTimeUI: {fileID: 1267788356}
-  coinAmount: 200
+  coinAmount: 1000
 --- !u!1001 &148874670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10461,7 +10461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8213006937829710057, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
       propertyPath: shopID
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8354456153302700139, guid: b33d2fa66f17e15419aa2725cb5379c5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -82555,6 +82555,7 @@ GameObject:
   - component: {fileID: 6871914664611438705}
   - component: {fileID: 127318316}
   - component: {fileID: 6871914664611438707}
+  - component: {fileID: 6871914664611438708}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -82574,6 +82575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c80c600f50cbe44b2ec0d167cce6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingWeaponSprite: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
   uiCanvas: {fileID: 6871914664083074760}
   player: {fileID: 430374778}
 --- !u!4 &6871914664611438706
@@ -82604,6 +82606,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+--- !u!114 &6871914664611438708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6871914664611438668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff1cc6c8d80324c4888ade46d9fd518d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon0: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon1: {fileID: 938450118, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon2: {fileID: -623868671, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon3: {fileID: 1993517771, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon4: {fileID: -1131988994, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon5: {fileID: 1176711874, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon6: {fileID: 867282360, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon7: {fileID: 16503949, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weaponSprites: []
 --- !u!114 &6871914664626205600
 MonoBehaviour:
   m_ObjectHideFlags: 0
