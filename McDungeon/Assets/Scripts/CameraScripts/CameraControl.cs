@@ -36,7 +36,7 @@ namespace McDungeon
 
                 Vector3 distance = targetPosition - cameraPosition;
                 distance.z = 0f;
-                if ((distance).magnitude > 0.5f)
+                if ((distance).magnitude > 0.2f)
                 {
                     // Just switch back to position lock Cam, move camera twords player.
                     Vector3 direction = distance.normalized;
