@@ -599,6 +599,7 @@ public class InventoryController : MonoBehaviour
         {
             ToggleInventory();
         }
+        /*
         if(inventoryUIModel.isActive){
             if(Input.GetKeyDown(KeyCode.B))
             {
@@ -628,5 +629,6 @@ public class InventoryController : MonoBehaviour
                 this.RefreshInventoryGridUI();
             }
         }
+        */
     }
 }
