@@ -17,12 +17,14 @@ namespace McDungeon
         [SerializeField] protected float returnSpeed;
         [SerializeField] protected CameraMode cameraMode;
         [SerializeField] protected Vector3 roomCenter;
+        [SerializeField] protected bool justSwitchBack;
 
 
         private void Awake()
         {
             managedCamera = gameObject.GetComponent<Camera>();
             returnSpeed = 6f;
+            justSwitchBack = false;
         }
 
         //Use the LateUpdate message to avoid setting the camera's position before
@@ -36,7 +38,7 @@ namespace McDungeon
 
                 Vector3 distance = targetPosition - cameraPosition;
                 distance.z = 0f;
-                if ((distance).magnitude > 0.2f)
+                if ((distance).magnitude > 0.2f && justSwitchBack)
                 {
                     // Just switch back to position lock Cam, move camera twords player.
                     Vector3 direction = distance.normalized;
@@ -46,6 +48,7 @@ namespace McDungeon
                 {
                     cameraPosition = new Vector3(targetPosition.x, targetPosition.y, cameraPosition.z);
                     managedCamera.transform.position = cameraPosition;
+                    justSwitchBack = false;
                 }
             }
             else
@@ -58,6 +61,10 @@ namespace McDungeon
         {
             cameraMode = mode;
             roomCenter = new Vector3(center.x, center.y, managedCamera.transform.position.z);
+            if (mode == CameraMode.LockOnPlayer)
+            {
+                justSwitchBack = true;
+            }
         }
     }
 }
