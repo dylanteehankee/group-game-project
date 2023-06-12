@@ -14,7 +14,7 @@ namespace McDungeon
     {
         private Camera managedCamera;
         [SerializeField] protected GameObject Target;
-        [SerializeField] protected float returnSpeed;
+        [SerializeField] protected float returnSpeed = 10f;
         [SerializeField] protected CameraMode cameraMode;
         [SerializeField] protected Vector3 roomCenter;
         [SerializeField] protected bool justSwitchBack;
@@ -72,7 +72,7 @@ namespace McDungeon
             cameraMode = CameraMode.LockOnPlayer;
             var targetPosition = this.Target.transform.position;
             var cameraPosition = managedCamera.transform.position;
-            
+
             cameraPosition = new Vector3(targetPosition.x, targetPosition.y, cameraPosition.z);
             justSwitchBack = false;
         }
