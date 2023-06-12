@@ -12,13 +12,13 @@ public class VentDetector : MonoBehaviour
     }
     //If player is on collider2d, SlideOpen is true
     void OnTriggerEnter2D(Collider2D other){
-        if (other.CompareTag("Player")){
+        if (other.CompareTag("PlayerHitbox")){
             animator.SetBool("VentOpen", true);
         }
     }
     void OnTriggerExit2D(Collider2D other){
         if (other.CompareTag("Player")){
-            animator.SetBool("VentOpen", false);
+            animator.SetBool("PlayerHitbox", false);
         }
     }
 }
