@@ -11088,9 +11088,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4151671687273739500, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.7294118
+      objectReference: {fileID: 0}
     - target: {fileID: 4936189330011100568, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5841818750858112232, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6336733152612059913, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_BodyType
@@ -11099,6 +11115,34 @@ PrefabInstance:
     - target: {fileID: 6566275481285683242, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_SortMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_SortingOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784931533199548677, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
+      propertyPath: m_RenderAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7896933798663111265, guid: 49dff8ea84b125340a111eff13caf426, type: 3}
       propertyPath: m_SortingOrder
