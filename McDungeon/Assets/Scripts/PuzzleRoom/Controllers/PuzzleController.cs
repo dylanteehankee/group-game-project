@@ -95,18 +95,19 @@ public class PuzzleController : MonoBehaviour
         GameObject rightWall = Instantiate(bouncyWallPrefab, gameObject.transform);
         GameObject leftWall = Instantiate(bouncyWallPrefab, gameObject.transform);
 
-        topWall.transform.localPosition = new Vector3(puzzleGridWidth, puzzleGridHeight * 2, 0);
-        topWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.1f, 1);
+        // Add extra height to top wall collider
+        topWall.transform.localPosition = new Vector3(puzzleGridWidth, (puzzleGridHeight * 2) + 0.25f, 0);
+        topWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.5f, 1);
 
-        botWall.transform.localPosition = new Vector3(puzzleGridWidth, 0, 0);
-        botWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.1f, 1);
+        botWall.transform.localPosition = new Vector3(puzzleGridWidth, 0 - 0.25f, 0);
+        botWall.transform.localScale = new Vector3(puzzleGridWidth * 2, 0.5f, 1);
 
-        leftWall.transform.localPosition = new Vector3(0, puzzleGridHeight, 0);
-        leftWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.1f, 1);
+        leftWall.transform.localPosition = new Vector3(0 - 0.25f, puzzleGridHeight, 0);
+        leftWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.5f, 1);
         leftWall.transform.localRotation = Quaternion.Euler(0, 0, 90);
 
-        rightWall.transform.localPosition = new Vector3(puzzleGridWidth * 2, puzzleGridHeight, 0);
-        rightWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.1f, 1);
+        rightWall.transform.localPosition = new Vector3((puzzleGridWidth * 2) + 0.25f, puzzleGridHeight, 0);
+        rightWall.transform.localScale = new Vector3(puzzleGridHeight * 2, 0.5f, 1);
         rightWall.transform.localRotation = Quaternion.Euler(0, 0, 90);
 
         topWall.GetComponent<SpriteRenderer>().enabled = false;

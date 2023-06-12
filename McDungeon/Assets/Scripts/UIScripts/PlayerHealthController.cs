@@ -7,7 +7,7 @@ public class PlayerHealthController : MonoBehaviour
 {
     public int maxHealth;
     public float curHealth;
-    public int healthPerHeart = 1;
+    public int healthPerHeart = 2;
 
     private List<GameObject> hearts = new List<GameObject>();
     public GameObject healthPrefab;
@@ -18,7 +18,7 @@ public class PlayerHealthController : MonoBehaviour
 
     public float heartMargin = 25.0f;
 
-    void Start()
+    void Awake()
     {   
         //hearts = new List<GameObject>();
         healthPerHeart = 2;
@@ -34,6 +34,7 @@ public class PlayerHealthController : MonoBehaviour
         }
         if(maxHealth < newMax)
         {
+            
             int numHearts = (int) (newMax / healthPerHeart); 
             while(hearts.Count < numHearts)
             {

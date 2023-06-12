@@ -154,29 +154,6 @@ namespace McDungeon
             }
         }
 
-        public void SyncWeaponWithInventory()
-        {   
-            Weapon myWeapon = playerInventory.GetWeaponItem();
-            if(myWeapon != null)
-            {
-                closeRangeWeapon.Config(
-                    attackDamage: myWeapon.damage, 
-                    attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly?
-                    attackAngle: myWeapon.attackAngle,
-                    knockBack: myWeapon.knockBack * 100f,
-                    true
-                );
-            }
-            /*
-            closeRangeWeapon.Config(
-                attackDamage:3f, 
-                attackSpeed:10f, 
-                attackAngle: 120f,
-                knockBack: 800f,
-                true
-            );
-            */
-        }
         void Update()
         {
             if(GlobalStates.isPaused)
@@ -225,6 +202,36 @@ namespace McDungeon
             {
                 hitTimer += Time.deltaTime;
             }
+        }
+
+        public void RestoreHealth(float hpToRestore)
+        {
+            playerHealth = Mathf.Min(hpToRestore + playerHealth, playerMaxHealth);
+            healthController.SetNewHealth(playerHealth);
+        }
+
+        public void SyncWeaponWithInventory()
+        {   
+            Weapon myWeapon = playerInventory.GetWeaponItem();
+            if(myWeapon != null)
+            {
+                closeRangeWeapon.Config(
+                    attackDamage: myWeapon.damage, 
+                    attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly?
+                    attackAngle: myWeapon.attackAngle,
+                    knockBack: myWeapon.knockBack * 100f,
+                    true
+                );
+            }
+            /*
+            closeRangeWeapon.Config(
+                attackDamage:3f, 
+                attackSpeed:10f, 
+                attackAngle: 120f,
+                knockBack: 800f,
+                true
+            );
+            */
         }
 
         void OnCollisionEnter2D(Collision2D collision)
