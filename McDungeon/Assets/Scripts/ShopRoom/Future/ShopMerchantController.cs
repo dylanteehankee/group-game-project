@@ -48,7 +48,8 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon1,
                     damage: 5,
                     range: 2,
-                    attackSpeed: 1.2f
+                    attackSpeed: 1.2f,
+                    knockBack: 10f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -61,7 +62,9 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon6,
                     damage: 2,
                     range: 1,
-                    attackSpeed: 3.0f
+                    attackSpeed: 3.0f,
+                    knockBack: 0.5f,
+                    attackAngle: 45f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -74,7 +77,8 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon2,
                     damage: 7,
                     range: 2,
-                    attackSpeed: 0.5f
+                    attackSpeed: 0.5f,
+                    knockBack: 24f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -88,7 +92,8 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon1,
                     damage: 8,
                     range: 2,
-                    attackSpeed: 0.9f
+                    attackSpeed: 0.9f,
+                    knockBack: 5f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -101,7 +106,8 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon4,
                     damage: 4,
                     range: 3,
-                    attackSpeed: 2f
+                    attackSpeed: 2f,
+                    knockBack: 12f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -114,7 +120,8 @@ public class ShopMerchantController : MonoBehaviour
                     inventoryIcon: itemFactory.weapon0,
                     damage: 3,
                     range: 2,
-                    attackSpeed: 0.9f
+                    attackSpeed: 0.9f,
+                    knockBack: 6f
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());

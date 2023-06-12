@@ -57,7 +57,9 @@ public class InventoryController : MonoBehaviour
             inventoryIcon: startingWeaponSprite,
             damage: 2,
             range: 2,
-            attackSpeed: 0.8f
+            attackSpeed: 0.8f,
+            knockBack: 5f,
+            attackAngle: 80f
         );
         ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Equipped);
     }

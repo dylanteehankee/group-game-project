@@ -10,9 +10,14 @@ public class StartButtonController : MonoBehaviour
     private float timeSincePush = 0.0f;
 
     public Sprite pushed;
-    public float startDelay = 1.0f;
+    public float startDelay = 10f;
 
     private bool started = false;
+
+    void Awake()
+    {
+        startDelay = 0.2f;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

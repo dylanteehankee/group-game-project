@@ -49,15 +49,17 @@ public class PlayerInventory : ItemCollection
         GameItem g = ItemManager.GetGameItem(itemID);
         if(g is Weapon)
         {
-            if(weapon == null)
+            //if(weapon == null)
             {
+                if(weapon != null)
+                    ItemManager.ChangeItemStatus(weapon, ItemStatus.EquipmentInventory);
                 weapon = itemID;
                 playerController.SyncWeaponWithInventory();
             }
         }
         else if(g is Armor)
         {
-            if(armor == null)
+            //if(armor == null)
             {
                   armor = itemID;
             }
@@ -87,6 +89,7 @@ public class PlayerInventory : ItemCollection
         GameItem g = ItemManager.GetGameItem(itemID);
         if(g is Weapon)
         {
+            /*
             if(weapon == null)
             {
                 return true; 
@@ -95,9 +98,12 @@ public class PlayerInventory : ItemCollection
             {
                 return false;
             }
+            */
+            return true;
         }
         else if(g is Armor)
         {
+            /*
             if(armor == null)
             {
                 return true; 
@@ -106,6 +112,8 @@ public class PlayerInventory : ItemCollection
             {
                 return false;
             }
+            */
+            return true;
         }
         else
         {

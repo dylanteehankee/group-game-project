@@ -67,6 +67,18 @@ public class PuzzleController : MonoBehaviour
         // Create start button at room center. 
         startButton = Instantiate(startButtonPrefab, gameObject.transform);
         startButton.GetComponent<StartButtonController>().pc = this;
+
+        // Another sad quickfix. 
+        if(puzzleID == 3)
+        {
+            startButton.GetComponent<StartButtonController>().startDelay = 0.1f;
+        }
+        else
+        {
+            startButton.GetComponent<StartButtonController>().startDelay = 0.8f;
+        }
+
+       
         // Sad Quickfix. 
         if(puzzleID == 4)
         {
