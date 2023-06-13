@@ -25,6 +25,8 @@ TagManager:
   - PlayerWeapon
   - RoomSoundManager
   - BGSoundManager
+  - BossHand
+  - BossButton
   layers:
   - Default
   - TransparentFX
