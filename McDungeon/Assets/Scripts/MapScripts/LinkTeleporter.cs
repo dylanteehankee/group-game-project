@@ -22,7 +22,7 @@ public class LinkTeleporter : MonoBehaviour
     private bool updateCameraLock;
     private PuzzleController puzzleController;
     private AudioSource[] audioSource;
-    private AudioSource bgAudioSource;
+    private AudioSource[] bgAudioSource;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
@@ -33,7 +33,7 @@ public class LinkTeleporter : MonoBehaviour
         var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
         audioSource = roomSoundManager.GetComponents<AudioSource>();
         var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
-        bgAudioSource = backgroundSoundManager.GetComponent<AudioSource>();
+        bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
 
         var mobSpawner = GameObject.FindWithTag("MobSpawner");
         mobManager = mobSpawner.GetComponent<MobManager>();
@@ -206,13 +206,13 @@ public class LinkTeleporter : MonoBehaviour
 
                 if (parentTarget.CompareTag("EndRoom")){
                     //pause background music
-                    bgAudioSource.Pause();
+                    bgAudioSource[0].Pause();
                 }
                 else
                 {
                     //play background music if not
-                    if (!bgAudioSource.isPlaying){
-                        bgAudioSource.Play();
+                    if (!bgAudioSource[0].isPlaying){
+                        bgAudioSource[0].Play();
                     }
                 }
 
