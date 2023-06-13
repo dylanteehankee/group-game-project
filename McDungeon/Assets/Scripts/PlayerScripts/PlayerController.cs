@@ -95,14 +95,9 @@ namespace McDungeon
         private AudioSource[] bgAudioSource;
         private bool playerDead = false;
 
-
-        void Awake()
-        {
-            playerInventory = new PlayerInventory(this);
-        }
-
         void Start()
-        {
+        { 
+            playerInventory = new PlayerInventory(this);
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -215,6 +210,7 @@ namespace McDungeon
         {
             if (GlobalStates.isPaused)
             {
+                Debug.Log("I'm paused");
                 return;
             }
 
@@ -233,6 +229,7 @@ namespace McDungeon
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
                 {
+                    Debug.Log("Firing and attacking");
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
                 }
@@ -324,7 +321,7 @@ namespace McDungeon
                     knockBack: myWeapon.knockBack * 100f,
                     true
                 );
-                //closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
+                closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
             }
             /*
             closeRangeWeapon.Config(

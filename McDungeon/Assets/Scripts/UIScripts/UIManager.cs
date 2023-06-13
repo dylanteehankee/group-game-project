@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         pmc = gameObject.GetComponent<PauseMenuController>();
+        GlobalStates.isPaused = false;
         menus.SetActive(false);
         puzzleTimeUI.SetActive(false);
         ptc = puzzleTimeUI.GetComponent<PuzzleTimeController>();
