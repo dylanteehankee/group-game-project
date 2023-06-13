@@ -96,6 +96,9 @@ namespace McDungeon
         private AudioSource[] bgAudioSource;
         private bool playerDead = false;
 
+        private SpriteRenderer[] spellReadyIcon;
+
+
         void Awake()
         {
             playerInventory = new PlayerInventory(this);
@@ -160,6 +163,12 @@ namespace McDungeon
             audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
+
+            spellReadyIcon = new SpriteRenderer[4];
+            spellReadyIcon[0] = GameObject.Find("CoolDownReady").transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[1] = GameObject.Find("CoolDownReady").transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
         }
 
         void FixedUpdate()
@@ -512,7 +521,6 @@ namespace McDungeon
             {
                 fireCoolDowntimer -= Time.deltaTime;
             }
-
             if (waterCoolDown > 0f)
             {
                 waterCoolDowntimer -= Time.deltaTime;
@@ -526,6 +534,27 @@ namespace McDungeon
             if (lightningCoolDown > 0f)
             {
                 lightningCoolDowntimer -= Time.deltaTime;
+            }
+
+            // Show ready if is ready.
+            if (fireCoolDowntimer <= 0f && !spellReadyIcon[0].enabled)
+            {
+                spellReadyIcon[0].enabled = true;
+            }
+
+            if (waterCoolDowntimer <= 0f && !spellReadyIcon[1].enabled)
+            {
+                spellReadyIcon[1].enabled = true;
+            }
+
+            if (iceCoolDowntimer <= 0f && !spellReadyIcon[2].enabled)
+            {
+                spellReadyIcon[2].enabled = true;
+            }
+            
+            if (lightningCoolDowntimer <= 0f && !spellReadyIcon[3].enabled)
+            {
+                spellReadyIcon[3].enabled = true;
             }
 
         }
@@ -663,15 +692,19 @@ namespace McDungeon
             {
                 case 'F':
                     fireCoolDowntimer = fireCoolDown;
+                    spellReadyIcon[0].enabled = false;
                     break;
                 case 'W':
                     waterCoolDowntimer = waterCoolDown;
+                    spellReadyIcon[1].enabled = false;
                     break;
                 case 'I':
                     iceCoolDowntimer = iceCoolDown;
+                    spellReadyIcon[2].enabled = false;
                     break;
                 case 'L':
                     lightningCoolDowntimer = lightningCoolDown;
+                    spellReadyIcon[3].enabled = false;
                     break;
             }
 
