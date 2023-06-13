@@ -91,6 +91,9 @@ namespace McDungeon
         private bool resetedCamera = false;
         private float unlockMcMirrorTimer = 5f;
 
+        private AudioSource[] bgAudioSource;
+
+
         void Awake()
         {
             playerInventory = new PlayerInventory(this);
@@ -151,6 +154,9 @@ namespace McDungeon
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
 
             closeRangeWeapon.ChangeWeapon(0);
+
+            var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
+            bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
         }
 
         void FixedUpdate()
@@ -724,14 +730,34 @@ namespace McDungeon
             if (mode == GameMode.Unchange)
             {
                 lightIntensity = lightIntensity;
+                if (!bgAudioSource[2].isPlaying)
+                {
+                    bgAudioSource[2].enabled = true;
+                    bgAudioSource[0].enabled = false;
+                    bgAudioSource[2].Play();
+                }
             }
             else if (mode == GameMode.Normal)
             {
                 lightIntensity = 0.1f;
+
+                if (!bgAudioSource[0].isPlaying)
+                {
+                    bgAudioSource[0].enabled = true;
+                    bgAudioSource[2].enabled = false;
+                    bgAudioSource[0].Play();
+                }
             }
             else
             {
                 lightIntensity = 0f;
+
+                if (!bgAudioSource[0].isPlaying)
+                {
+                    bgAudioSource[0].enabled = true;
+                    bgAudioSource[2].enabled = false;
+                    bgAudioSource[0].Play();
+                }
             }
 
             oldIntensity = globalLight.intensity;
@@ -746,7 +772,7 @@ namespace McDungeon
         public void UnlockingMcMirror()
         {
             unlockingMcMirror = true;
-            
+
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
     }
