@@ -29,6 +29,8 @@ public class TorchController : PuzzleElementController
     private Color32 litColor = new Color32(255,255,255,255);
     private Color32 unlitColor = new Color32(150,150,150,255);
 
+    private AudioSource[] audioSource;
+
     /// <summary>
     /// Initialize torch. 
     /// </summary>
@@ -45,6 +47,9 @@ public class TorchController : PuzzleElementController
         myRenderer = gameObject.GetComponent<SpriteRenderer>();
         this.lightDuration = lightDuration;
         this.lightExpires = expirable;
+
+        var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
+        audioSource = roomSoundManager.GetComponents<AudioSource>();
     }
 
     public override void RespondTo(PuzzleStateModel puzzleState, string invoker)
@@ -58,6 +63,7 @@ public class TorchController : PuzzleElementController
     public void OnFireballTouch()
     {
         myStateModel.SetState((int)PuzzleTorchState.Lit);
+        audioSource[8].Play();
         if(lightExpires == true)
         {
             timeSinceLit = 0.0f;
