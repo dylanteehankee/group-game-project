@@ -1,8 +1,8 @@
 ﻿Torches,ID,PosX,PosY,Expirable,LightDuration(sec)
-Torch,1,13.8,3,TRUE,15
-Torch,2,0.2,5,TRUE,15
-Torch,3,13.8,7,TRUE,15
-Torch,4,0.2,9,TRUE,15
+Torch,1,17.8,2,TRUE,20
+Torch,2,0.2,4,TRUE,20
+Torch,3,17.8,6,TRUE,20
+Torch,4,0.2,8,TRUE,20
 ,,,,,
 Times,Time(s),,,,
 RewardTime,50,,,,

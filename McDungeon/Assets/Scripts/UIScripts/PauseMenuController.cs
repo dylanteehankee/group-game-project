@@ -6,40 +6,61 @@ using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
-
+    private UIManager uiManager;
     public bool isPaused = false;
     void Start()
     {   
-
-
-
+        Time.timeScale = 1;
+        uiManager = gameObject.GetComponent<UIManager>();
     }
    
     public void RestartGame()
     {
-        SceneManager.LoadScene( SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
+        //SceneManager.LoadScene( SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        GlobalStates.isPaused = true; 
+        this.isPaused = true; 
+        uiManager.OpenPauseGameUI();
+    }
+
+    public void UnpauseGame()
+    {
+        Time.timeScale = 1;
+            GlobalStates.isPaused = false;
+            this.isPaused = false;
+        uiManager.ClosePauseGameUI();
+    }
+
+    public void TogglePause()
+    {
+        if(Time.timeScale == 0)
+        {
+            UnpauseGame();
+            
+        }
+        else
+        {
+            PauseGame();
+  
+        }
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            RestartGame();
+        //RestartGame();
         }
-        if(Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            if(Time.timeScale == 0)
-            {
-                Time.timeScale = 1;
-                GlobalStates.isPaused = false;
-                this.isPaused = false;
-            }
-            else
-            {
-                Time.timeScale = 0;
-                GlobalStates.isPaused = true; 
-                this.isPaused = true; 
-            }
+            TogglePause();
         }
     }
 }
