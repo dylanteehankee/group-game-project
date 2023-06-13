@@ -11,6 +11,7 @@ using McDungeon;
 public class PuzzleController : MonoBehaviour
 {
     public UIManager uiManager;
+    public ItemFactory itemFactory;
     public MobManager mobManager;
 
     private Dictionary<string, PuzzleElementController> elementControllers;
@@ -116,6 +117,7 @@ public class PuzzleController : MonoBehaviour
         leftWall.GetComponent<SpriteRenderer>().enabled = false;
 
         uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
+        itemFactory = GameObject.Find("GameManager").GetComponent<ItemFactory>();
         mobManager = GameObject.Find("MobSpawner").GetComponent<MobManager>(); 
     }
 
@@ -203,10 +205,6 @@ public class PuzzleController : MonoBehaviour
             foreach(KeyValuePair<string, PuzzleElementController> kvp in elementControllers)
             {
                 Destroy(kvp.Value.gameObject);
-                // Don't reset puzzle state.
-                //elementControllers = null;
-                //elementTriggers = null;
-                //winCondition = null;
             }
         }
     }
@@ -267,13 +265,32 @@ public class PuzzleController : MonoBehaviour
         {
             knight.GetComponent<KnightController>().DestroyKnight();
         }
-        if((int)timeSinceStarted <= rewardCutoffs[0])
+        if(puzzleID == 0)
         {
-            // Grant some big rewards. 
+            //Special case for tutorial room
+            if((int)timeSinceStarted <= rewardCutoffs[0])
+            {
+                // Grant rewards
+                itemFactory.DropHealthPotions(gameObject.transform, 5, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+            }
+            else{
+                // Grant some smaller rewards. 
+                itemFactory.DropHealthPotions(gameObject.transform, 3, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+            }
         }
-        else{
-            // Grant some smaller rewards. 
+        else
+        {
+            if((int)timeSinceStarted <= rewardCutoffs[0])
+            {
+                // Grant rewards
+                itemFactory.DropHealthPotions(gameObject.transform, 5, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+            }
+            else{
+                // Grant some smaller rewards. 
+                itemFactory.DropHealthPotions(gameObject.transform, 3, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+            }
         }
+       
         // Winning sequence.
     }
 
@@ -322,7 +339,6 @@ public class PuzzleController : MonoBehaviour
         string[] lines = text.Split('\n');
         for(int i = 0 ; i < lines.Length ; i++)
         {
-            Debug.Log(lines[i]);
             string[] split = lines[i].Split(',');;
             switch(split[0])
             {
@@ -410,331 +426,16 @@ public class PuzzleController : MonoBehaviour
                     locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
                     break;
                 case "RewardTime":
-                Debug.Log("found reward times");
                     rewardCutoffs = new List<int>();
                     rewardCutoffs.Add(int.Parse(split[1]));
                     break;
                 case "TotalTime":
-                Debug.Log("total time");
                     knightCutoff = int.Parse(split[1]);
                     break;
                 default:
                     break;
             }
         }
-        
-        
-        /*
-        StreamReader fileReader = new StreamReader(File.OpenRead(filePath));
-        string line = fileReader.ReadLine();
-        
-        while(line != null){
-            string[] split = line.Split(',');
-            switch(split[0])
-            {
-                case "PushButton":
-                    AddObjectToPuzzle(puzzleCreator
-                        .CreatePushButton(
-                            button: Instantiate(buttonPrefab, gameObject.transform), 
-                            id: split[1],
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            shape: stringToPuzzleElementShape[split[4]]
-                        )
-                    );
-                    break;
-                case "SwitchButton":
-                    AddObjectToPuzzle(puzzleCreator
-                        .CreateSwitchButton(
-                            button: Instantiate(buttonSwitchPrefab, gameObject.transform), 
-                            id: split[1],
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            shape: stringToPuzzleElementShape[split[4]]
-                        )
-                    );
-                    break;
-                case "DisappearWall":
-                    AddObjectToPuzzle(puzzleCreator
-                        .CreateDisappearWall(
-                            wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                            id: split[1], 
-                            buttonTriggerID: split[2],
-                            shape: stringToPuzzleElementShape[split[3]],
-                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
-                            position: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
-                            transitionTime: float.Parse(split[8]),
-                            changePauseTime: float.Parse(split[9])
-                        )
-                    );
-                    AddItemTrigger(
-                        responderID: split[1], 
-                        triggerID: split[2]
-                    );
-                    break;
-                case "SlidingWall":
-                     AddObjectToPuzzle(puzzleCreator
-                        .CreateSlidingWall(
-                            wall: Instantiate(wallPrefab, gameObject.transform), 
-                            id: split[1], 
-                            buttonTriggerID: split[2],
-                            shape: stringToPuzzleElementShape[split[3]],
-                            openPosition: new Vector3(float.Parse(split[6]), float.Parse(split[7]), 0),
-                            closedPosition: new Vector3(float.Parse(split[8]), float.Parse(split[9]), 0),
-                            wallScale: new Vector3(float.Parse(split[4]), float.Parse(split[5]), 1),
-                            transitionTime: float.Parse(split[10]),
-                            changePauseTime: float.Parse(split[11])
-                        )
-                    );
-                    AddItemTrigger(
-                        responderID: split[1], 
-                        triggerID: split[2]
-                    );
-                    break;
-                case "StaticWall": 
-                    AddObjectToPuzzle(puzzleCreator
-                        .CreateStaticWall(
-                            wall: Instantiate(staticWallPrefab, gameObject.transform), 
-                            id: split[1], 
-                            shape: stringToPuzzleElementShape[split[2]],
-                            wallScale: new Vector3(float.Parse(split[3]), float.Parse(split[4]), 1),
-                            position: new Vector3(float.Parse(split[5]), float.Parse(split[6]), 0)
-                        )
-                    );
-                    break;
-                case "Torch":
-                    AddObjectToPuzzle(puzzleCreator
-                        .CreateTorch(
-                            torch: Instantiate(torchPrefab, gameObject.transform), 
-                            id: split[1], 
-                            position: new Vector3(float.Parse(split[2]), float.Parse(split[3]), 0),
-                            //expirable: bool.Parse(split[4]), 
-                            expirable: true, 
-                            lightDuration: float.Parse(split[5])
-                        )
-                    );
-                    break;
-                case "Knight":
-                    locations.Add(new Vector2(basePosition.x + float.Parse(split[1]), basePosition.y + float.Parse(split[2]))); 
-                    break;
-                case "RewardTime":
-                Debug.Log("found reward times");
-                    rewardCutoffs = new List<int>();
-                    rewardCutoffs.Add(int.Parse(split[1]));
-                    break;
-                case "TotalTime":
-                Debug.Log("total time");
-                    knightCutoff = int.Parse(split[1]);
-                    break;
-                default:
-                    break;
-            }
-            line = fileReader.ReadLine();
-        }
-        */
         mobManager.SpawnKnights(locations.ToArray());
-        //fileReader.Close();
-    }
-
-    public void InitPuzzle3()
-    {
-        AddObjectToPuzzle(puzzleCreator
-            .CreatePushButton(
-                button: Instantiate(buttonPrefab, gameObject.transform), 
-                id: "1",
-                position: new Vector3(5.0f, 19.0f, 0),
-                shape: PuzzleElementShapeLink.Square
-            )
-        );
-
-        AddObjectToPuzzle(puzzleCreator
-            .CreatePushButton(
-                button: Instantiate(buttonPrefab, gameObject.transform), 
-                id: "2",
-                position: new Vector3(13.0f, 7.0f, 0),
-                shape: PuzzleElementShapeLink.Circle
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "3", 
-                buttonTriggerID: "1",
-                shape: PuzzleElementShapeLink.Square,
-                wallScale: new Vector3(6.0f, 6.0f, 1),
-                position: new Vector3(13.0f, 21.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "4", 
-                buttonTriggerID: "2",
-                shape: PuzzleElementShapeLink.Circle,
-                wallScale: new Vector3(6.0f, 6.0f, 1),
-                position: new Vector3(5.0f, 5.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "5", 
-                buttonTriggerID: "1",
-                shape: PuzzleElementShapeLink.Square,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(1.0f, 7.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "6", 
-                buttonTriggerID: "2",
-                shape: PuzzleElementShapeLink.Circle,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(9.0f, 19.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "7", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(6.0f, 2.0f, 1),
-                position: new Vector3(5.0f, 21.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "8", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(3.0f, 19.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "9", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(7.0f, 19.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "10", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(6.0f, 2.0f, 1),
-                position: new Vector3(13.0f, 5.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "11", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(11.0f, 7.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateDisappearWall(
-                wall: Instantiate(disappearWallPrefab, gameObject.transform), 
-                id: "12", 
-                buttonTriggerID: null,
-                shape: PuzzleElementShapeLink.None,
-                wallScale: new Vector3(2.0f, 2.0f, 1),
-                position: new Vector3(15.0f, 7.0f, 0),
-                transitionTime: 1.0f,
-                changePauseTime: 0.2f
-            )
-        );
-
-        AddItemTrigger(
-            responderID: "3", 
-            triggerID: "1"
-        );
-        AddItemTrigger(
-            responderID: "4", 
-            triggerID: "2"
-        );
-        AddItemTrigger(
-            responderID: "5", 
-            triggerID: "1"
-        );
-        AddItemTrigger(
-            responderID: "6", 
-            triggerID: "2"
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateTorch(
-                torch: Instantiate(torchPrefab, gameObject.transform), 
-                id: "13", 
-                position: new Vector3(9.0f, 25.8f, 0),
-                expirable: true, 
-                lightDuration: 15.0f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateTorch(
-                torch: Instantiate(torchPrefab, gameObject.transform), 
-                id: "14", 
-                position: new Vector3(17.0f, 25.8f, 0),
-                expirable: true, 
-                lightDuration: 15.0f
-            )
-        );
-        AddObjectToPuzzle(puzzleCreator
-            .CreateTorch(
-                torch: Instantiate(torchPrefab, gameObject.transform), 
-                id: "15", 
-                position: new Vector3(7.0f, 0.2f, 0),
-                expirable: true, 
-                lightDuration: 15.0f
-            )
-        );
-
-        AddObjectToPuzzle(puzzleCreator
-            .CreateTorch(
-                torch: Instantiate(torchPrefab, gameObject.transform), 
-                id: "16", 
-                position: new Vector3(0.2f, 3.0f, 0),
-                expirable: true, 
-                lightDuration: 20.0f
-            )
-        );
-        
-        winCondition = new Dictionary<string, (int state, bool satisfied)>();
-       
-        winCondition.Add("13", ((int)PuzzleTorchState.Lit, false));
-        winCondition.Add("14", ((int)PuzzleTorchState.Lit, false));
-        winCondition.Add("15", ((int)PuzzleTorchState.Lit, false));
-        winCondition.Add("16", ((int)PuzzleTorchState.Lit, false));
     }
 }

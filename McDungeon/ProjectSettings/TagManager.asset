@@ -23,6 +23,8 @@ TagManager:
   - Throwable
   - Effect
   - PlayerWeapon
+  - RoomSoundManager
+  - BGSoundManager
   layers:
   - Default
   - TransparentFX

@@ -207,8 +207,10 @@ public class MapGenerator : MonoBehaviour
             for (int j = 0; j < map.GetLength(1); j ++){
                 //instatiates a miniRoom prefab per room the same position as the room in the map
                 GameObject miniRoomPrefab = Instantiate(miniRoom, miniMap.transform);
+                //set the scale of the miniRoom to half the size of the room
+                miniRoomPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 //sets the position of the miniRoom according to the position in the map, relative to the minimap
-                miniRoomPrefab.transform.localPosition = new Vector3(j, -i, 0);
+                miniRoomPrefab.transform.localPosition = new Vector3(j*0.75f, -i*0.75f, 0);
                 //make all of them in layer 3
                 //if matrix value is 6, change sprite to end room sprite
                 if (map[i,j] == 6){

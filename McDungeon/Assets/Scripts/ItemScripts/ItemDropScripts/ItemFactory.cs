@@ -16,6 +16,55 @@ public class ItemFactory : MonoBehaviour
     public Sprite weapon6;
     public Sprite weapon7;
 
-    public Sprite[] weaponSprites;
-    
+    public GameObject healthPotionDrop;
+    public GameObject weaponDrop;
+
+    public GameObject armorDrop;
+
+    void Start()
+    {
+
+    }
+    void Update()
+    {
+
+    }
+
+    public void DropHealthPotions(Transform parent, int count, Vector3 position, float variance)
+    {
+        for(int i = 0 ; i < count ; i++)
+        {
+            GameObject hpDrop = Instantiate(healthPotionDrop, parent);
+            hpDrop.transform.localPosition = position + new Vector3(Random.Range(variance * -1, variance), Random.Range(variance * -1, variance), 0);
+        }
+    }
+
+    public void DropBigPuzzleRewards(Transform parent, float position, float variance)
+    {
+
+    }
+    public void DropSmallPuzzleRewards(Transform parent, float position, float variance)
+    {
+
+    }
+
+    public EquipmentItem GetTierItem(int tier)
+    {
+        /*
+        switch(tier) Random.Range(variance * -1, variance)
+        {
+            case 1:
+
+            case 2:
+
+            default:
+
+        }*/
+        return null;
+    }
+
+    private EquipmentItem GetTier1Item()
+    {
+        return null;
+    }
 }
