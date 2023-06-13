@@ -21,6 +21,8 @@ namespace McDungeon
         private float steps_interval = 0.5f;
         private float timer = 0.5f;
         private Light2D carpetLight;
+        private Light2D[] elementLight;
+        private float[] elementLightIntensity = new float[] { 1.5f, 3f, 3f, 3f };
 
         void Awake()
         {
@@ -30,6 +32,7 @@ namespace McDungeon
             codeParts = new GameObject[6];
             elementParts = new GameObject[4];
             elementParts_compeleted = new GameObject[4];
+            elementLight = new Light2D[4];
 
             for (int i = 0; i < 6; i++)
             {
@@ -39,11 +42,8 @@ namespace McDungeon
             for (int i = 0; i < 4; i++)
             {
                 elementParts[i] = this.transform.GetChild(i + 6).gameObject;
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
                 elementParts_compeleted[i] = this.transform.GetChild(i + 10).gameObject;
+                elementLight[i] = elementParts_compeleted[i].GetComponent<Light2D>();
             }
 
             carpet_compeleted = this.transform.GetChild(14).gameObject;
@@ -59,6 +59,7 @@ namespace McDungeon
                 {
                     active = true;
                     progress = 0;
+                    carpetLight.enabled = true;
                     Debug.Log("Konami Code activated");
                 }
             }
@@ -125,7 +126,7 @@ namespace McDungeon
 
         private void showInput(char input)
         {
-            for (int i =0; i <4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 elementParts[i].SetActive(false);
             }
@@ -146,18 +147,22 @@ namespace McDungeon
                     break;
 
             }
-            
+
         }
 
         private void falseInput()
         {
-            while (progress > 0)
+            int count = 5;
+            while (count >= 0)
             {
-                progress--;
-                codeParts[progress].SetActive(false);
+                codeParts[count].SetActive(false);
+                count--;
             }
+
+            progress = 0;
             showInput('$');
             active = false;
+            carpetLight.enabled = false;
             Debug.Log("Konami Code failed");
         }
 
@@ -170,7 +175,7 @@ namespace McDungeon
                     elementParts[progress].SetActive(true);
                     break;
                 case 1:
-                    elementParts[progress-1].SetActive(false);
+                    elementParts[progress - 1].SetActive(false);
                     elementParts[progress].SetActive(true);
                     break;
                 case 2:
@@ -223,6 +228,17 @@ namespace McDungeon
             animationFinished = true;
         }
 
+        public void ChangeLight(float ratio)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                elementLight[i].intensity = elementLightIntensity[i] * ratio;
+            }
+            carpetLight.intensity = 0.2f * ratio;
+            Debug.Log("Code light ratio: " + ratio);
+
+        }
+
         void OnTriggerEnter2D(Collider2D other)
         {
 
@@ -231,8 +247,11 @@ namespace McDungeon
                 Debug.Log("Player Enter");
                 entered = true;
                 active = false;
-                progress = 0;
-                carpetLight.enabled = true;
+                
+                if (!compeleted)
+                {
+                    progress = 0;
+                }
             }
         }
 
@@ -244,11 +263,11 @@ namespace McDungeon
                 Debug.Log("Player Exit");
                 entered = false;
                 active = false;
-                progress = 0;
 
                 if (!compeleted)
                 {
-                    carpetLight.enabled = false;
+                    falseInput();
+                    progress = 0;
                 }
             }
         }
