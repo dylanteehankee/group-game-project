@@ -59,10 +59,10 @@ namespace McDungeon
         public void Unlock()
         {
             unlocked = true;
-            if (special)
-            {
-                cover.SetActive(false);
-            }
+            active = true;
+            button.SetActive(true);
+            portal.SetActive(true);
+            face.SetActive(true);
         }
 
         void OnTriggerEnter2D(Collider2D other)

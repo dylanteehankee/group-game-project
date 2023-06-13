@@ -70,6 +70,7 @@ namespace McDungeon
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
+        private bool isMcMode = false;
 
         private Light2D globalLight;
         private Light2D torchLight;
@@ -90,6 +91,9 @@ namespace McDungeon
         private bool unlockedMcCurtain = false;
         private bool resetedCamera = false;
         private float unlockMcMirrorTimer = 5f;
+
+        private AudioSource[] bgAudioSource;
+
 
         void Awake()
         {
@@ -149,6 +153,11 @@ namespace McDungeon
             spellColor[1] = new Color(86f / 255f, 126f / 255f, 210f / 255f, 116f / 255f);
             spellColor[2] = new Color(0.678f, 0.847f, 0.902f, 116f / 255f);
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
+
+            closeRangeWeapon.ChangeWeapon(0);
+
+            var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
+            bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
         }
 
         void FixedUpdate()
@@ -157,7 +166,7 @@ namespace McDungeon
             {
                 usePortal();
             }
-            if (unlockingMcMirror)
+            else if (unlockingMcMirror)
             {
                 // Time the effect
                 if (unlockMcMirrorTimer > 0f)
@@ -318,9 +327,6 @@ namespace McDungeon
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log("Collision Enter: " + collision.gameObject.name);
-
-
             if (collision.gameObject.tag == "None")
             {
                 Debug.Log("Collision Enter: " + collision.gameObject.name);
@@ -653,6 +659,7 @@ namespace McDungeon
                     roomLightIntensity = 0f;
                     roomLightControl.UpdateLight(roomLightIntensity);
                     carpetLightControl.ChangeLight(roomLightIntensity);
+                    changeBGMusic();
                 }
                 else
                 {
@@ -716,6 +723,29 @@ namespace McDungeon
 
         }
 
+        private void changeBGMusic()
+        {
+            // Change Back Ground sound
+            if (isMcMode)
+            {
+                bgAudioSource[2].enabled = true;
+                bgAudioSource[0].enabled = false;
+                if (!bgAudioSource[2].isPlaying)
+                {
+                    bgAudioSource[2].Play();
+                }
+            }
+            else
+            {
+                bgAudioSource[0].enabled = true;
+                bgAudioSource[2].enabled = false;
+                if (!bgAudioSource[0].isPlaying)
+                {
+                    bgAudioSource[0].Play();
+                }
+            }
+        }
+
         public void StartUsePortal(Vector3 mirrorPos, GameMode mode = GameMode.Normal)
         {
             this.mirrorPos = mirrorPos;
@@ -725,6 +755,7 @@ namespace McDungeon
             if (mode == GameMode.Unchange)
             {
                 lightIntensity = lightIntensity;
+                isMcMode = !isMcMode;
             }
             else if (mode == GameMode.Normal)
             {
@@ -747,8 +778,10 @@ namespace McDungeon
         public void UnlockingMcMirror()
         {
             unlockingMcMirror = true;
-            
+
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
+    
+    
     }
 }

@@ -11,7 +11,7 @@ public class LinkTeleporter : MonoBehaviour
     private GameObject parent, grandparent;
     public bool beenDisabled = false;
     private bool combatStarted = false;
-    private bool RoomCompleted = false;
+    public bool RoomCompleted {get; set;} = false;
     private bool closeDoor = false; 
     private Vector2 candlePos1, candlePos2;
     private PuzzleStateModel puzzleState;
@@ -22,7 +22,7 @@ public class LinkTeleporter : MonoBehaviour
     private bool updateCameraLock;
     private PuzzleController puzzleController;
     private AudioSource[] audioSource;
-    private AudioSource bgAudioSource;
+    private AudioSource[] bgAudioSource;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
@@ -33,7 +33,7 @@ public class LinkTeleporter : MonoBehaviour
         var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
         audioSource = roomSoundManager.GetComponents<AudioSource>();
         var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
-        bgAudioSource = backgroundSoundManager.GetComponent<AudioSource>();
+        bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
 
         var mobSpawner = GameObject.FindWithTag("MobSpawner");
         mobManager = mobSpawner.GetComponent<MobManager>();
@@ -203,16 +203,25 @@ public class LinkTeleporter : MonoBehaviour
 
                     mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
-
+                //if player is in end room, pause background music, else play background music
+                //can only have 1 background music playing at a time
                 if (parentTarget.CompareTag("EndRoom")){
                     //pause background music
-                    bgAudioSource.Pause();
+                    if (bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
+                        bgAudioSource[0].Pause();
+                    }
+                    else if (bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
+                        bgAudioSource[2].Pause();
+                    }
                 }
                 else
                 {
                     //play background music if not
-                    if (!bgAudioSource.isPlaying){
-                        bgAudioSource.Play();
+                    if (!bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
+                        bgAudioSource[0].Play();
+                    }
+                    else if (!bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
+                        bgAudioSource[2].Play();
                     }
                 }
 

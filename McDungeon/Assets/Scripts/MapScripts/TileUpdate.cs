@@ -40,7 +40,7 @@ public class TileUpdate : MonoBehaviour
 
         // TODO: Make this stop running after the room is completed.
         //check if teleporter game object and tile are at the same position
-        if (beenUpdated == false){
+        if (teleporterList != null && !teleporterList[0].GetComponent<LinkTeleporter>().RoomCompleted){
             foreach (GameObject teleporter in teleporterList){
                 // Get current tile teleporter is on.
                 currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);

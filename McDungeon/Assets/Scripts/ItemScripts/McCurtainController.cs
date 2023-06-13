@@ -15,6 +15,7 @@ namespace McDungeon
             renderer = this.gameObject.GetComponent<SpriteRenderer>();
 
         }
+        
         void Update()
         {
             if (unlocked)
