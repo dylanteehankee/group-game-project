@@ -93,6 +93,7 @@ namespace McDungeon
         private float unlockMcMirrorTimer = 5f;
 
         private AudioSource[] bgAudioSource;
+        private bool playerDead = false;
 
 
         void Awake()
@@ -162,6 +163,11 @@ namespace McDungeon
 
         void FixedUpdate()
         {
+            if (playerDead)
+            {
+                return;
+            }
+
             if (usingPortal)
             {
                 usePortal();
@@ -212,6 +218,12 @@ namespace McDungeon
             {
                 return;
             }
+
+            if (playerDead)
+            {
+                return;
+            }
+
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // Reduce all coll down count.
             updateCoolDowns();
@@ -355,7 +367,8 @@ namespace McDungeon
             if (playerHealth < 0f)
             {
                 // Dead
-                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
+                statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
+                playerDead = true;
             }
         }
 
@@ -785,7 +798,7 @@ namespace McDungeon
     
         public void ResetPlayer()
         {
-            
+
         }
     }
 }
