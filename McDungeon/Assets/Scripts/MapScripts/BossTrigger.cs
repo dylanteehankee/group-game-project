@@ -10,10 +10,13 @@ public class BossTrigger : MonoBehaviour
     private AudioSource[] bgAudioSource;
     // Start is called before the first frame update
     private bool isTriggered = false;
+    private MapGenerator mapGenerator;
     
     void Start()
     {
         var parent = transform.parent.gameObject;
+        var grandParent = parent.transform.parent.gameObject;
+        mapGenerator = grandParent.GetComponent<MapGenerator>();
         bossBlocker = parent.transform.GetChild(0).gameObject;
         var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
         bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
@@ -28,6 +31,7 @@ public class BossTrigger : MonoBehaviour
                 bossBlocker.GetComponent<BoxCollider2D>().enabled = true;
                 this.GetComponent<BoxCollider2D>().enabled = false;
                 isTriggered = true;
+                mapGenerator.DestroyMiniMap();
             }
         }
     }

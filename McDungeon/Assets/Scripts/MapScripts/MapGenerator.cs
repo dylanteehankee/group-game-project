@@ -279,11 +279,9 @@ public class MapGenerator : MonoBehaviour
         return new Vector2Int(-1, -1);
     }
 
-    public void destroyMiniMap(){
-        //destroy minimap child objects under minimap
-        for(int i = 0; i < miniMap.transform.childCount; i++){
-            Destroy(miniMap.transform.GetChild(i).gameObject);
-        }
+    public void DestroyMiniMap(){
+        //set minimap to inactive
+        miniMap.SetActive(false);
     }
 
 }
