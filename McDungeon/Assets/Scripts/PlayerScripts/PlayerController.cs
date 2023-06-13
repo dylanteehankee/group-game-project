@@ -157,7 +157,7 @@ namespace McDungeon
             {
                 usePortal();
             }
-            if (unlockingMcMirror)
+            else if (unlockingMcMirror)
             {
                 // Time the effect
                 if (unlockMcMirrorTimer > 0f)
@@ -318,9 +318,6 @@ namespace McDungeon
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            Debug.Log("Collision Enter: " + collision.gameObject.name);
-
-
             if (collision.gameObject.tag == "None")
             {
                 Debug.Log("Collision Enter: " + collision.gameObject.name);
