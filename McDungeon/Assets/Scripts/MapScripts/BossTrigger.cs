@@ -7,6 +7,7 @@ public class BossTrigger : MonoBehaviour
     private GameObject bossBlocker;
     private AudioSource[] bgAudioSource;
     // Start is called before the first frame update
+    private bool isTriggered = false;
     void Start()
     {
         var parent = transform.parent.gameObject;
@@ -17,9 +18,13 @@ public class BossTrigger : MonoBehaviour
 
     // On Trigger play audio 2 and enable boss blocker box collider 2d.
     void OnTriggerEnter2D(Collider2D other){
-        if (other.CompareTag("PlayerHitbox")){
-            bgAudioSource[1].Play();
-            bossBlocker.GetComponent<BoxCollider2D>().enabled = true;
+        if (!isTriggered){
+            if (other.CompareTag("PlayerHitbox")){
+                bgAudioSource[1].Play();
+                bossBlocker.GetComponent<BoxCollider2D>().enabled = true;
+                this.GetComponent<BoxCollider2D>().enabled = false;
+                isTriggered = true;
+            }
         }
     }
 }
