@@ -198,6 +198,9 @@ MonoBehaviour:
   carpetLightControl: {fileID: 0}
   playerMaxHealth: 0
   playerHealth: 0
+  gameManager: {fileID: 0}
+  playerController: {fileID: 0}
+  mcController: {fileID: 0}
 --- !u!1 &4723683637459498705
 GameObject:
   m_ObjectHideFlags: 0

@@ -70,7 +70,7 @@ namespace McDungeon
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
-        private bool isMcMode = false;
+        private bool isMcMode = true;
 
         private Light2D globalLight;
         private Light2D torchLight;
@@ -103,8 +103,14 @@ namespace McDungeon
         public GameObject gameManager;
 
         private bool finishedStart = false;
+
+
+        [SerializeField] public RuntimeAnimatorController playerController;
+        [SerializeField] public RuntimeAnimatorController mcController;
+        private Animator playerAnimator;
+
         void Start()
-        { 
+        {
             playerInventory = new PlayerInventory(this);
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
@@ -171,6 +177,8 @@ namespace McDungeon
             spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
             finishedStart = true;
+
+            playerAnimator = this.gameObject.GetComponent<Animator>();
         }
 
         void FixedUpdate()
@@ -235,7 +243,7 @@ namespace McDungeon
 
         void Update()
         {
-            if(!finishedStart)
+            if (!finishedStart)
                 return;
             if (GlobalStates.isPaused)
             {
@@ -560,7 +568,7 @@ namespace McDungeon
             {
                 spellReadyIcon[2].enabled = true;
             }
-            
+
             if (lightningCoolDowntimer <= 0f && !spellReadyIcon[3].enabled)
             {
                 spellReadyIcon[3].enabled = true;
@@ -846,6 +854,9 @@ namespace McDungeon
                 {
                     bgAudioSource[2].Play();
                 }
+
+                playerAnimator.runtimeAnimatorController = mcController;
+
             }
             else
             {
@@ -855,6 +866,8 @@ namespace McDungeon
                 {
                     bgAudioSource[0].Play();
                 }
+                
+                playerAnimator.runtimeAnimatorController = playerController;
             }
         }
 
@@ -893,15 +906,19 @@ namespace McDungeon
 
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
-    
+
         public void PlayerEnterPuzzle()
         {
-
+            fireCoolDown = 1f;
+            fireCoolDowntimer = 0f;
+            fireCastDuration = 0.2f;
         }
 
         public void PlayerLeavePuzzle()
         {
-
+            fireCoolDown = 3f;
+            fireCoolDowntimer = 0f;
+            fireCastDuration = 0.5f;
         }
     }
 }
