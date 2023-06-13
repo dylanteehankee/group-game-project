@@ -198,4 +198,9 @@ public class BossController : MonoBehaviour
         this.isAblaze = false;
         Destroy(this.ablazeObject);
     }
+
+    public float GetBossHealth()
+    {
+        return this.bossHealth;
+    }
 }
