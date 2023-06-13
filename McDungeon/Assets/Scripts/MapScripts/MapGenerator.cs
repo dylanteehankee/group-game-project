@@ -139,7 +139,6 @@ public class MapGenerator : MonoBehaviour
                     Vector2Int currentRoom = new Vector2Int(i, j);
                     GameObject room = PickRoom(currentRoomIndex);
                     roomDictionary.Add(currentRoom, room);
-                    Debug.Log("Room " + currentRoom + " assigned");
                 }
             }
         }
@@ -169,7 +168,6 @@ public class MapGenerator : MonoBehaviour
                             GameObject PortalA2 = adjacentRoom.transform.GetChild(1).gameObject;
                             PortalA1.GetComponent<LinkTeleporter>().TargetRoom = PortalA2;
                             PortalA2.GetComponent<LinkTeleporter>().TargetRoom = PortalA1;
-                            Debug.Log("Portal A1: " + PortalA1.name + " Portal A2: " + PortalA2.name);
                         }
                     }
 
@@ -183,7 +181,6 @@ public class MapGenerator : MonoBehaviour
                             GameObject PortalB2 = adjacentRoom.transform.GetChild(4).gameObject;
                             PortalB1.GetComponent<LinkTeleporter>().TargetRoom = PortalB2;
                             PortalB2.GetComponent<LinkTeleporter>().TargetRoom = PortalB1;
-                            Debug.Log("Portal B1: " + PortalB1.name + " Portal B2: " + PortalB2.name);
                         }
                     }
                 }

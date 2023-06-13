@@ -92,9 +92,9 @@ namespace McDungeon
         private bool resetedCamera = false;
         private float unlockMcMirrorTimer = 5f;
 
+        private AudioSource[] audioSource;
         private AudioSource[] bgAudioSource;
         private bool playerDead = false;
-
 
         void Awake()
         {
@@ -156,6 +156,8 @@ namespace McDungeon
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
 
 
+            var mobSoundManager = GameObject.FindWithTag("MobSoundManager");
+            audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
         }
@@ -235,6 +237,7 @@ namespace McDungeon
                 {
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
+                    audioSource[5].Play();
                 }
                 else if (Input.GetButtonDown("Fire2") && fireCoolDowntimer <= 0f)
                 {
@@ -249,6 +252,7 @@ namespace McDungeon
                     spell = 'F';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[6].Play();
                 }
                 else if (Input.GetKey(KeyCode.E) && waterCoolDowntimer <= 0f)
                 {
@@ -263,6 +267,7 @@ namespace McDungeon
                     spell = 'W';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[10].Play();
                 }
                 else if (Input.GetKey(KeyCode.Space) && iceCoolDowntimer <= 0f)
                 {
@@ -277,6 +282,7 @@ namespace McDungeon
                     spell = 'I';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[7].Play();
                 }
                 else if (Input.GetKey(KeyCode.Q) && lightningCoolDowntimer <= 0f)
                 {
@@ -291,6 +297,7 @@ namespace McDungeon
                     spell = 'L';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[11].Play();
                 }
             }
 
@@ -356,6 +363,7 @@ namespace McDungeon
                 healthController.SetNewHealth(this.playerHealth);
 
                 hitTimer = 0f;
+                audioSource[8].Play();
             }
 
             checkDeath();
@@ -368,6 +376,7 @@ namespace McDungeon
                 // Dead
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
                 playerDead = true;
+                audioSource[9].Play();
             }
         }
 
