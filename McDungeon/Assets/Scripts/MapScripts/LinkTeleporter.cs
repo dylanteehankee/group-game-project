@@ -21,11 +21,19 @@ public class LinkTeleporter : MonoBehaviour
     private PositionLockCamera positionLockCamera;
     private bool updateCameraLock;
     private PuzzleController puzzleController;
+    private AudioSource[] audioSource;
+    private AudioSource bgAudioSource;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
         var CameraController = GameObject.FindWithTag("MainCamera");
         positionLockCamera = CameraController.GetComponent<PositionLockCamera>();
+
+        //look for gameobject with tag "RoomSoundManager"
+        var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
+        audioSource = roomSoundManager.GetComponents<AudioSource>();
+        var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
+        bgAudioSource = backgroundSoundManager.GetComponent<AudioSource>();
 
         var mobSpawner = GameObject.FindWithTag("MobSpawner");
         mobManager = mobSpawner.GetComponent<MobManager>();
@@ -62,6 +70,8 @@ public class LinkTeleporter : MonoBehaviour
             //if no enemies in room, set hasEnemies to false
             else if (parent.CompareTag("CombatRoom")){
                 if (mobManager.GetMobs().Count == 0){
+                    //play sound at array index 0
+                    audioSource[0].Play();
                     closeDoor = false;
                     RoomCompleted = true;
                 }
@@ -133,11 +143,8 @@ public class LinkTeleporter : MonoBehaviour
 
     IEnumerator waitToOpenDoor(){
         yield return new WaitForSeconds(1);
-        openDoorAnimation();
-    }
-
-    void openDoorAnimation(){
         animator.SetBool("CloseDoor", false);
+        yield return new WaitForSeconds(1);
         GetComponent<BoxCollider2D>().enabled = true;
     }
 
@@ -196,6 +203,19 @@ public class LinkTeleporter : MonoBehaviour
 
                     mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
+
+                if (parentTarget.CompareTag("EndRoom")){
+                    //pause background music
+                    bgAudioSource.Pause();
+                }
+                else
+                {
+                    //play background music if not
+                    if (!bgAudioSource.isPlaying){
+                        bgAudioSource.Play();
+                    }
+                }
+
                 grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
             //}

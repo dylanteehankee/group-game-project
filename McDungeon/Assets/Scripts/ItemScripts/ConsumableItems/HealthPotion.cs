@@ -7,7 +7,7 @@ public class HealthPotion : ConsumableItem
 
     public HealthPotion(Sprite inventoryIcon) : base(
             name: "Health Potion", 
-            sellCost: 20,
+            sellCost: 10,
             itemType: "Potion",
             itemDescription: "Restores 4hp to the player"
         )

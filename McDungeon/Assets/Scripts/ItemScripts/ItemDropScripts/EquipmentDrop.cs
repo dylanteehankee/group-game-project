@@ -8,10 +8,10 @@ namespace Mobs
     {
 
 
-        void Init(EquipmentItem item, Sprite dropIcon)
+        public void Init(EquipmentItem item, Sprite dropIcon)
         {   
             GetComponent<SpriteRenderer>().sprite = dropIcon;
-            base.Init(item, ItemTypes.Consumable);
+            base.Init(item, ItemTypes.Equipable);
         }
     }
 }

@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class Weapon : EquipmentItem
 {
-    public int damage = 0;
+    public float damage = 0;
     public int range = 1;
     public float attackSpeed = 1.5f;
     public float knockBack = 8f;
     public float attackAngle = 120f;
     public Weapon(string name, string itemType, int sellCost, Sprite inventoryIcon, 
-        int damage, int range, float attackSpeed, float knockBack, float attackAngle = 120f) : base(
+        float damage, int range, float attackSpeed, float knockBack, float attackAngle = 120f) : base(
             name: name,
             sellCost: sellCost,
             itemType: itemType
