@@ -37,19 +37,25 @@ namespace McDungeon
         private ISpellMaker spell_ice;
         private ISpellMaker spell_water;
         private ISpellMaker spell_lightning;
-        private ISpellMaker spell_Q;
-        private ISpellMaker spell_E;
+        private ISpellMaker spell_special;
         private char spell;
 
         private float actionCoolDown = 0f;
         private float atkCoolDown = 0.5f;
 
-        private float spellQCoolDown = 3f;
-        private float spellQCoolDowntimer = 0f;
-        private float spellECoolDown = 3f;
-        private float spellECoolDowntimer = 0f;
+        private float fireCoolDown = 3f;
+        private float fireCoolDowntimer = 0f;
+        private float waterCoolDown = 3f;
+        private float waterCoolDowntimer = 0f;
+        private float iceCoolDown = 3f;
+        private float iceCoolDowntimer = 0f;
+        private float lightningCoolDown = 3f;
+        private float lightningCoolDowntimer = 0f;
 
-        private float spellCastDuration = 0.5f;
+        private float fireCastDuration = 0.5f;
+        private float waterCastDuration = 0.5f;
+        private float iceCastDuration = 0.5f;
+        private float lightningCastDuration = 0.5f;
         private float spellCastTimer = 0f;
         private bool castingSpell = false;
         private bool spellReady = false;
@@ -78,6 +84,7 @@ namespace McDungeon
 
         private SpriteRenderer spriteRenderer;
         private Animator animator;
+        private Color[] spellColor;
 
         void Awake()
         {
@@ -86,8 +93,6 @@ namespace McDungeon
 
         void Start()
         {
-           
-            
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -98,8 +103,7 @@ namespace McDungeon
             spell_water = spellHome.GetComponent<WaterSurgeMaker>();
             spell_lightning = spellHome.GetComponent<ThunderdMaker>();
 
-            spell_Q = spell_fire;
-            spell_E = spell_lightning;
+            spell_special = spell_fire;
             spellChargeIndicator = this.transform.GetChild(3).GetComponent<ParticleSystem>();
             spellReadyIndicator = this.transform.GetChild(4).GetComponent<ParticleSystem>();
             spellReady = false;
@@ -134,6 +138,12 @@ namespace McDungeon
             playerHealth = 10f;
             healthController.ChangeMaxHealth(playerMaxHealth);
             healthController.SetNewHealth(playerHealth);
+
+            spellColor = new Color[4];
+            spellColor[0] = new Color(243f / 255f, 119f / 255f, 61f / 255f, 116f / 255f);
+            spellColor[1] = new Color(86f / 255f, 126f / 255f, 210f / 255f, 116f / 255f);
+            spellColor[2] = new Color(0.678f, 0.847f, 0.902f, 116f / 255f);
+            spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
         }
 
         void FixedUpdate()
@@ -158,7 +168,7 @@ namespace McDungeon
 
         void Update()
         {
-            if(GlobalStates.isPaused)
+            if (GlobalStates.isPaused)
             {
                 return;
             }
@@ -175,22 +185,61 @@ namespace McDungeon
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
                 }
-                else if (Input.GetKey(KeyCode.Q) && spellQCoolDowntimer <= 0f)
+                else if (Input.GetButtonDown("Fire2") && fireCoolDowntimer <= 0f)
                 {
-                    spell_Q.Activate();
-                    castingSpell = true;
-                    spellCastTimer = spellCastDuration;
-                    actionCoolDown = 100f;
-                    spell = 'Q';
+                    spell_fire.Activate();
+                    spellCastTimer = fireCastDuration;
+                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
+                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
+                    chargeModule.startColor = spellColor[0];
+                    readyModule.startColor = spellColor[0];
                     spellChargeIndicator.Play();
-                }
-                else if (Input.GetKey(KeyCode.E) && spellECoolDowntimer <= 0f)
-                {
-                    spell_E.Activate();
+
+                    spell = 'F';
                     castingSpell = true;
-                    spellCastTimer = spellCastDuration;
-                    actionCoolDown = 100f;
-                    spell = 'E';
+                    actionCoolDown = 100f; // Prevent other action
+                }
+                else if (Input.GetKey(KeyCode.E) && waterCoolDowntimer <= 0f)
+                {
+                    spell_water.Activate();
+                    spellCastTimer = waterCastDuration;
+                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
+                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
+                    chargeModule.startColor = spellColor[1];
+                    readyModule.startColor = spellColor[1];
+                    spellChargeIndicator.Play();
+
+                    spell = 'W';
+                    castingSpell = true;
+                    actionCoolDown = 100f; // Prevent other action
+                }
+                else if (Input.GetKey(KeyCode.Space) && iceCoolDowntimer <= 0f)
+                {
+                    spell_ice.Activate();
+                    spellCastTimer = iceCastDuration;
+                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
+                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
+                    chargeModule.startColor = spellColor[2];
+                    readyModule.startColor = spellColor[2];
+                    spellChargeIndicator.Play();
+
+                    spell = 'I';
+                    castingSpell = true;
+                    actionCoolDown = 100f; // Prevent other action
+                }
+                else if (Input.GetKey(KeyCode.Q) && lightningCoolDowntimer <= 0f)
+                {
+                    spell_lightning.Activate();
+                    spellCastTimer = lightningCastDuration;
+                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
+                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
+                    chargeModule.startColor = spellColor[3];
+                    readyModule.startColor = spellColor[3];
+                    spellChargeIndicator.Play();
+
+                    spell = 'L';
+                    castingSpell = true;
+                    actionCoolDown = 100f; // Prevent other action
                 }
             }
 
@@ -213,12 +262,12 @@ namespace McDungeon
         }
 
         public void SyncWeaponWithInventory()
-        {   
+        {
             Weapon myWeapon = playerInventory.GetWeaponItem();
-            if(myWeapon != null)
+            if (myWeapon != null)
             {
                 closeRangeWeapon.Config(
-                    attackDamage: myWeapon.damage, 
+                    attackDamage: myWeapon.damage,
                     attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly?
                     attackAngle: myWeapon.attackAngle,
                     knockBack: myWeapon.knockBack * 100f,
@@ -373,27 +422,63 @@ namespace McDungeon
                 actionCoolDown -= Time.deltaTime;
             }
 
-            if (spellQCoolDowntimer > 0f)
+            if (fireCoolDown > 0f)
             {
-                spellQCoolDowntimer -= Time.deltaTime;
+                fireCoolDowntimer -= Time.deltaTime;
             }
 
-            if (spellECoolDowntimer > 0f)
+            if (waterCoolDown > 0f)
             {
-                spellECoolDowntimer -= Time.deltaTime;
+                waterCoolDowntimer -= Time.deltaTime;
             }
+
+            if (iceCoolDown > 0f)
+            {
+                iceCoolDowntimer -= Time.deltaTime;
+            }
+
+            if (lightningCoolDown > 0f)
+            {
+                lightningCoolDowntimer -= Time.deltaTime;
+            }
+
         }
 
         private void castSpell(Vector3 mousePos)
         {
-            if (spell == 'Q')
+            if (spell == 'W' || spell == 'I' || spell == 'L')
             {
-                // Spell Casting progress monitor.
-                if (Input.GetKey(KeyCode.Q) && spellCastTimer > 0f)
+                ISpellMaker currentSpell = spell_water;
+                KeyCode currentSpellKey = KeyCode.E;
+
+                switch (spell)
                 {
-                    spell_Q.ShowRange(this.transform.position, mousePos);
+                    case 'W':
+                        currentSpell = spell_water;
+                        currentSpellKey = KeyCode.E;
+                        break;
+                    case 'I':
+                        currentSpell = spell_ice;
+                        currentSpellKey = KeyCode.Space;
+                        break;
+                    case 'L':
+                        currentSpell = spell_lightning;
+                        currentSpellKey = KeyCode.Q;
+                        break;
+                }
+
+
+                // Spell Casting progress monitor.
+                if (Input.GetKey(currentSpellKey) && spellCastTimer > 0f)
+                {
+                    currentSpell.ShowRange(this.transform.position, mousePos);
                     spellCastTimer -= Time.deltaTime;
-                    Debug.Log("Spell Q casting");
+                    Debug.Log("Spell casting");
+                }
+                else if (Input.GetKey(currentSpellKey))
+                {
+                    // Still aiming
+                    currentSpell.ShowRange(this.transform.position, mousePos);
                 }
 
                 if (spellCastTimer <= 0f)
@@ -404,69 +489,106 @@ namespace McDungeon
                         spellChargeIndicator.Stop();
                         spellChargeIndicator.Clear();
                         spellReadyIndicator.Play();
-                        Debug.Log("Spell Q ready");
                         spellReady = true;
+                        Debug.Log("Spell ready");
                     }
                 }
 
-                if (Input.GetKeyUp(KeyCode.Q))
+                if (Input.GetKeyUp(currentSpellKey))
                 {
                     if (spellCastTimer <= 0f)
                     {
-                        spell_Q.Execute(this.transform.position, mousePos);
-                        actionCoolDown = 0.1f;
-                        spellQCoolDowntimer = spellQCoolDown;
-                        spellReadyIndicator.Stop();
-                        spellReadyIndicator.Clear();
-                        spellReady = false;
-                        Debug.Log("Spell Q Casted");
+                        currentSpell.Execute(this.transform.position, mousePos);
+                        setCD(spell);
+                        Debug.Log("Spell Casted");
                     }
                     else
                     {
-                        actionCoolDown = 0.1f;
-                        spellChargeIndicator.Stop();
-                        spellChargeIndicator.Clear();
-                        spellReady = false;
-                        Debug.Log("Spell Q Cancelled");
+                        Debug.Log("Spell Cancelled");
                     }
 
+                    spellChargeIndicator.Stop();
+                    spellChargeIndicator.Clear();
+                    spellReadyIndicator.Stop();
+                    spellReadyIndicator.Clear();
+
+                    spellReady = false;
+                    actionCoolDown = 0.1f;
                     castingSpell = false;
                 }
             }
-            else if (spell == 'E')
+            else
             {
                 // Spell Casting progress monitor.
-                if (Input.GetKey(KeyCode.E) && spellCastTimer > 0f)
+                if (Input.GetButton("Fire2") && spellCastTimer > 0f)
                 {
-                    spell_E.ShowRange(this.transform.position, mousePos);
+                    spell_special.ShowRange(this.transform.position, mousePos);
                     spellCastTimer -= Time.deltaTime;
-                    Debug.Log("Spell E casting");
+                    Debug.Log("Spell casting");
+                }
+                else if (Input.GetButton("Fire2"))
+                {
+                    // Still aiming
+                    spell_special.ShowRange(this.transform.position, mousePos);
                 }
 
                 if (spellCastTimer <= 0f)
                 {
                     // Show ready
-                    Debug.Log("Spell E ready");
+                    if (!spellReady)
+                    {
+                        spellChargeIndicator.Stop();
+                        spellChargeIndicator.Clear();
+                        spellReadyIndicator.Play();
+                        spellReady = true;
+                        Debug.Log("Spell ready");
+                    }
                 }
 
-                if (Input.GetKeyUp(KeyCode.E))
+                if (Input.GetButtonUp("Fire2"))
                 {
                     if (spellCastTimer <= 0f)
                     {
-                        spell_E.Execute(this.transform.position, mousePos);
-                        actionCoolDown = 0.1f;
-                        spellECoolDowntimer = spellECoolDown;
-                        Debug.Log("Spell E Casted");
+                        spell_special.Execute(this.transform.position, mousePos);
+                        setCD(spell);
+                        Debug.Log("Spell Casted");
                     }
                     else
                     {
-                        actionCoolDown = 0.1f;
-                        Debug.Log("Spell E Cancelled");
+                        Debug.Log("Spell Cancelled");
                     }
 
+                    spellChargeIndicator.Stop();
+                    spellChargeIndicator.Clear();
+                    spellReadyIndicator.Stop();
+                    spellReadyIndicator.Clear();
+
+                    spellReady = false;
+                    actionCoolDown = 0.1f;
                     castingSpell = false;
                 }
+
             }
+        }
+
+        private void setCD(char spell)
+        {
+            switch (spell)
+            {
+                case 'F':
+                    fireCoolDowntimer = fireCoolDown;
+                    break;
+                case 'W':
+                    waterCoolDowntimer = waterCoolDown;
+                    break;
+                case 'I':
+                    iceCoolDowntimer = iceCoolDown;
+                    break;
+                case 'L':
+                    lightningCoolDowntimer = lightningCoolDown;
+                    break;
+            }
+
         }
 
         private void usePortal()

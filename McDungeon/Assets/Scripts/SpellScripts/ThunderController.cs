@@ -62,7 +62,7 @@ namespace McDungeon
                 animation.SetActive(true);
             }
 
-            if (reached && targetMob != null && !targetMob.Equals(null))
+            if (reached && targetMob != null && !targetMob.Equals(null) && targetMob.gameObject.GetComponent<IMobController>() != null)
             {
                 this.transform.position = targetMob.transform.position;
                 strikeTimer -= Time.deltaTime;

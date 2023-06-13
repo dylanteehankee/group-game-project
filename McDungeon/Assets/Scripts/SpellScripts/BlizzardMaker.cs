@@ -8,6 +8,21 @@ namespace McDungeon
         [SerializeField] private GameObject blizzardPosIndicator;
         private float range = 4f;
         private Vector3 spellPos;
+        private float timer = 0.02f;
+
+        void Update()
+        {
+            if (timer > 0f)
+            {
+                timer -= Time.deltaTime;
+            }
+
+            if (timer < 0f)
+            {
+                blizzardPosIndicator.transform.position = new Vector3(0f, 0f, -30f);
+            }
+
+        }
 
 
         public void ChangeRange(float radius)
@@ -22,6 +37,7 @@ namespace McDungeon
 
         public void ShowRange(Vector3 posistion, Vector3 mousePos)
         {
+            timer = 0.02f; // Refreash Timer
             // Recalculate Spell position.
             Debug.Log("Spell Aiming");
             Vector3 distanceVec = (mousePos - posistion);

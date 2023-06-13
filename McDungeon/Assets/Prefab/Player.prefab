@@ -195,6 +195,7 @@ MonoBehaviour:
   speed: 4
   bodyCollider: {fileID: 0}
   roomLightControl: {fileID: 0}
+  carpetLightControl: {fileID: 0}
   playerMaxHealth: 0
   playerHealth: 0
 --- !u!1 &4723683637459498705
@@ -599,7 +600,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9528302, g: 0.46574932, b: 0.23820755, a: 0.46666667}
+      maxColor: {r: 0.9528302, g: 0.46574932, b: 0.23820755, a: 0.45490196}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
