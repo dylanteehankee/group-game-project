@@ -102,6 +102,7 @@ namespace McDungeon
 
         public GameObject gameManager;
 
+        private bool finishedStart = false;
         void Start()
         { 
             playerInventory = new PlayerInventory(this);
@@ -169,10 +170,13 @@ namespace McDungeon
             spellReadyIcon[1] = GameObject.Find("CoolDownReady").transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
+            finishedStart = true;
         }
 
         void FixedUpdate()
         {
+            if (!finishedStart)
+                return;
             if (playerDead)
             {
                 return;
@@ -231,6 +235,8 @@ namespace McDungeon
 
         void Update()
         {
+            if(!finishedStart)
+                return;
             if (GlobalStates.isPaused)
             {
                 Debug.Log("I'm paused");

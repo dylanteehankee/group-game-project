@@ -34,7 +34,7 @@ namespace McDungeon
         private int currentWeaponIdex = 0;
         private float weaponScaleRatio = 1f;
 
-        void Start()
+        void Awake()
         {
             hitbox = this.transform.GetChild(0).gameObject;
             hitBoxCllider = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
