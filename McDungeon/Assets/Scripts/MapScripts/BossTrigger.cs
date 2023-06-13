@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BossTrigger : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject boss;
     private GameObject bossBlocker;
     private AudioSource[] bgAudioSource;
     // Start is called before the first frame update
@@ -20,6 +22,7 @@ public class BossTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other){
         if (!isTriggered){
             if (other.CompareTag("PlayerHitbox")){
+                boss.SetActive(true);
                 bgAudioSource[1].Play();
                 bossBlocker.GetComponent<BoxCollider2D>().enabled = true;
                 this.GetComponent<BoxCollider2D>().enabled = false;
