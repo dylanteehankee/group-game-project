@@ -730,6 +730,7 @@ namespace McDungeon
             if (mode == GameMode.Unchange)
             {
                 lightIntensity = lightIntensity;
+                
                 if (!bgAudioSource[2].isPlaying)
                 {
                     bgAudioSource[2].enabled = true;
