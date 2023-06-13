@@ -21,16 +21,23 @@ namespace McDungeon
         private bool attacking;
         private float atkProgress; // 0 - 1
 
+        private Animator attackAnimator;
+        private GameObject hitbox;
+
         void Awake()
         {
-            hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
-            hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
-            hitBoxController = this.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
+            hitbox = this.transform.GetChild(0).gameObject;
+            hitBoxRender = this.hitbox.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            hitBoxCllider = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
+            hitBoxController = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
+            attackAnimator = this.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Animator>();
+
             attackSpeedFactor = 0.6f;
             knockBack = 0f;
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
+            Debug.Log("hitbox name: ===========[" + hitbox.name + "]=======================");
         }
 
         void LateUpdate()
@@ -81,6 +88,7 @@ namespace McDungeon
                 attacking = true;
                 hitBoxRender.enabled = true;
                 hitBoxCllider.enabled = true;
+                attackAnimator.Rebind();
             }
 
 
@@ -101,14 +109,8 @@ namespace McDungeon
 
         private void Attack()
         {
-            if (atkProgress > 1f)
-            {
-                atkProgress = 1f;
-            }
-
-
-            float angle = attackAngle / 2f - attackAngle * atkProgress + weaponDir;
-            this.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+            float angle = attackAngle / 2f - attackAngle * atkProgress;
+            this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
             if (atkProgress == 1f)
             {
@@ -116,12 +118,17 @@ namespace McDungeon
                 hitBoxRender.enabled = false;
                 hitBoxCllider.enabled = false;
                 atkProgress = 0f;
-                this.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+                this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 active = false;
             }
             else
             {
                 atkProgress += attackSpeed * attackSpeedFactor * Time.deltaTime;
+            }
+
+            if (atkProgress > 1f)
+            {
+                atkProgress = 1f;
             }
         }
     }
