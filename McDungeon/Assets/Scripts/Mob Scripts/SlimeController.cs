@@ -16,10 +16,15 @@ namespace McDungeon
         private bool isAttacking = false;
         private bool hitPlayer = false;
 
+        private AudioSource[] audioSource;
+
         void Start()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = GetComponent<Animator>();
+
+            var mobSoundManager = GameObject.FindWithTag("MobSoundManager");
+            audioSource = mobSoundManager.GetComponents<AudioSource>();
         }
 
         void Update()
@@ -53,6 +58,8 @@ namespace McDungeon
                 this.animator.SetTrigger("Attack");
                 this.isAttacking = true;
                 this.hitPlayer = false;
+
+                audioSource[4].Play();
             }
             else if (this.elapsedAttackTime > ATTACKDURATION)
             {

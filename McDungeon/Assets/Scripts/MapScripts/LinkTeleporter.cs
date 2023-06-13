@@ -104,7 +104,6 @@ public class LinkTeleporter : MonoBehaviour
                         }
                     }
                     else {
-                        Debug.Log ("Puzzle completed");
                         if(updateCameraLock){
                             //set position lock to player
                             positionLockCamera.changeCameraMode(CameraMode.LockOnPlayer, new Vector2Int(0, 0));
@@ -157,7 +156,6 @@ public class LinkTeleporter : MonoBehaviour
         if (TargetRoom != null){
             if (other.CompareTag("PlayerHitbox"))
             {
-                //if (!Teleported){
                 //TargetRoom.GetComponent<LinkTeleporter>().Teleported = true;
                 //transform position of player to a unit in front of the target room
                 //check target rotation and teleport in front of the door
@@ -232,8 +230,6 @@ public class LinkTeleporter : MonoBehaviour
                 }
 
                 grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
-                Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
-            //}
             }
         }
     }

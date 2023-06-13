@@ -541,7 +541,7 @@ MonoBehaviour:
   spellHome: {fileID: 0}
   Weapon: {fileID: 0}
   closeRangeWeapon: {fileID: 0}
-  speed: 0
+  speed: 2
   bodyCollider: {fileID: 0}
   roomLightControl: {fileID: 0}
   carpetLightControl: {fileID: 0}
@@ -991,6 +991,7 @@ MonoBehaviour:
   gNomePrefab: {fileID: 7178146216519888684, guid: 1335ee00bb6864b479799e79bfe66144, type: 3}
   magePrefab: {fileID: 7178146216519888684, guid: 8f3f86e1053ed4f72814b1aa5199ffe9, type: 3}
   knightPrefab: {fileID: 0}
+  player: {fileID: 0}
 --- !u!4 &1823448794
 Transform:
   m_ObjectHideFlags: 0
