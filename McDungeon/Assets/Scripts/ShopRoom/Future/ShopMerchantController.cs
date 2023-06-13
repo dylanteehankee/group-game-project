@@ -10,6 +10,8 @@ public class ShopMerchantController : MonoBehaviour
     private ItemFactory itemFactory;
     private ShopCrateController[] crates;
 
+    private AudioSource[] audioSource;
+
     // For resting puproses
     public Sprite myIcon;
 
@@ -23,6 +25,7 @@ public class ShopMerchantController : MonoBehaviour
         shopUIManager = shopInfoUI.GetComponent<ShopUIManager>();
         gameManager = GameObject.Find("GameManager");
         itemFactory = gameManager.GetComponent<ItemFactory>();
+        audioSource = GameObject.FindWithTag("RoomSoundManager").GetComponents<AudioSource>();
 
         itemsToSell = new List<string>();
         itemPrices = new List<int>();
@@ -49,7 +52,9 @@ public class ShopMerchantController : MonoBehaviour
                     damage: 5,
                     range: 2,
                     attackSpeed: 1.2f,
-                    knockBack: 10f
+                    knockBack: 10f,
+                    attackAngle: 80f,
+                    weaponSpriteID: 1
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -64,7 +69,8 @@ public class ShopMerchantController : MonoBehaviour
                     range: 1,
                     attackSpeed: 3.0f,
                     knockBack: 0.5f,
-                    attackAngle: 45f
+                    attackAngle: 45f,
+                    weaponSpriteID: 6
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -78,7 +84,8 @@ public class ShopMerchantController : MonoBehaviour
                     damage: 7,
                     range: 2,
                     attackSpeed: 0.5f,
-                    knockBack: 24f
+                    knockBack: 24f,
+                    weaponSpriteID: 2
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -89,11 +96,12 @@ public class ShopMerchantController : MonoBehaviour
                     name: "Demonic Sword",
                     itemType: "Weapon",
                     sellCost: 150,
-                    inventoryIcon: itemFactory.weapon1,
+                    inventoryIcon: itemFactory.weapon3,
                     damage: 8,
                     range: 2,
                     attackSpeed: 0.9f,
-                    knockBack: 5f
+                    knockBack: 5f,
+                    weaponSpriteID: 3
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -107,21 +115,23 @@ public class ShopMerchantController : MonoBehaviour
                     damage: 4,
                     range: 3,
                     attackSpeed: 2f,
-                    knockBack: 12f
+                    knockBack: 12f,
+                    weaponSpriteID: 4
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
                 itemPrices.Add(150);
 
                 toAdd = new Weapon(
-                    name: "Lost Training Sword",
+                    name: "Training Sword",
                     itemType: "Weapon",
                     sellCost: 20,
                     inventoryIcon: itemFactory.weapon0,
                     damage: 3,
                     range: 2,
                     attackSpeed: 0.9f,
-                    knockBack: 6f
+                    knockBack: 6f,
+                    weaponSpriteID: 0
                 );
                 ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Unowned);
                 itemsToSell.Add(toAdd.GetItemID());
@@ -176,23 +186,15 @@ public class ShopMerchantController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            RestockItems();
-        }
-    }
-
     public void SelectItem(int id)
     {  
         shopUIManager.LoadShopItem(this, itemPrices[id], ItemManager.GetGameItem(itemsToSell[id]), id);
-
+        audioSource[4].Play();
     }
 
     public void UnselectItem()
     {
         shopUIManager.CloseShop();
+        audioSource[7].Play();
     }
 }

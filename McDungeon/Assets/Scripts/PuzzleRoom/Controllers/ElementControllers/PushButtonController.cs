@@ -12,6 +12,8 @@ public class PushButtonController : PuzzleElementController
 
     protected Sprite unpressedSprite;
 
+    protected AudioSource[] audioSource;
+
     /// <summary>
     /// Initialize the button. 
     /// </summary>
@@ -27,6 +29,7 @@ public class PushButtonController : PuzzleElementController
         myStateModel = myModel;
         this.pressedSprite = pressedSprite;
         this.unpressedSprite = unpressedSprite;
+        this.audioSource = this.GetComponents<AudioSource>();
     }
 
     public override void RespondTo(PuzzleStateModel puzzleState, string invoker)
@@ -39,6 +42,7 @@ public class PushButtonController : PuzzleElementController
         if(collision.tag == "Player")
         {
             this.OnStep();
+            audioSource[0].Play();
         }
     }
 

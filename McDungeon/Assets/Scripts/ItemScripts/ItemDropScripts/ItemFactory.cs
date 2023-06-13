@@ -15,8 +15,22 @@ public class ItemFactory : MonoBehaviour
     public Sprite weapon5;
     public Sprite weapon6;
 
+    public Sprite[] weaponSprites;
+
     public GameObject healthPotionDrop;
     public GameObject equipmentDropPrefab;
+
+    void Awake()
+    {
+        weaponSprites = new Sprite[7];
+        weaponSprites[0] = weapon0;
+        weaponSprites[1] = weapon1;
+        weaponSprites[2] = weapon2;
+        weaponSprites[3] = weapon3;
+        weaponSprites[4] = weapon4;
+        weaponSprites[5] = weapon5;
+        weaponSprites[6] = weapon6;
+    }
 
     void Start()
     {
@@ -90,7 +104,8 @@ public class ItemFactory : MonoBehaviour
                     range: 2,
                     attackSpeed: RoundToTwoDigits(Random.Range(0.6f, 1.1f)),
                     knockBack: Random.Range(4, 7),
-                    attackAngle: 80f
+                    attackAngle: 80f,
+                    weaponSpriteID: 0
                 );
                 sprite = weapon0;
                 break;
@@ -104,7 +119,8 @@ public class ItemFactory : MonoBehaviour
                     range: 1,
                     attackSpeed: RoundToTwoDigits(Random.Range(1.5f, 2.2f)),
                     knockBack: Random.Range(2, 4),
-                    attackAngle: 60f
+                    attackAngle: 60f,
+                    weaponSpriteID: 6
                 );
                 sprite = weapon6;
                 break;
@@ -129,7 +145,8 @@ public class ItemFactory : MonoBehaviour
                     range: 2,
                     attackSpeed: RoundToTwoDigits(Random.Range(0.9f, 1.4f)),
                     knockBack: Random.Range(4, 7),
-                    attackAngle: 80f
+                    attackAngle: 80f,
+                    weaponSpriteID: 0
                 );
                 sprite = weapon0;
                 break;
@@ -143,7 +160,8 @@ public class ItemFactory : MonoBehaviour
                     range: 2,
                     attackSpeed: RoundToTwoDigits(Random.Range(0.6f, 1.1f)),
                     knockBack: Random.Range(4, 7),
-                    attackAngle: 80f
+                    attackAngle: 80f,
+                    weaponSpriteID: 2
                 );
                 sprite = weapon2;
                 break;
@@ -157,7 +175,8 @@ public class ItemFactory : MonoBehaviour
                     range: 1,
                     attackSpeed: RoundToTwoDigits(Random.Range(2f, 2.5f)),
                     knockBack: Random.Range(2, 4),
-                    attackAngle: 50f
+                    attackAngle: 50f,
+                    weaponSpriteID: 6
                 );
                 sprite = weapon6;
                 break;
@@ -171,7 +190,8 @@ public class ItemFactory : MonoBehaviour
                     range: 2,
                     attackSpeed: RoundToTwoDigits(Random.Range(1.5f, 2.1f)),
                     knockBack: Random.Range(7, 10),
-                    attackAngle: 60f
+                    attackAngle: 60f,
+                    weaponSpriteID: 3
                 );
                 sprite = weapon3;
                 break;
@@ -196,7 +216,8 @@ public class ItemFactory : MonoBehaviour
                     range: 2,
                     attackSpeed: RoundToTwoDigits(Random.Range(1.2f, 1.6f)),
                     knockBack: Random.Range(6, 9),
-                    attackAngle: 80f
+                    attackAngle: 80f,
+                    weaponSpriteID: 1
                 );
                 sprite = weapon1;
                 break;
@@ -210,7 +231,8 @@ public class ItemFactory : MonoBehaviour
                     range: 3,
                     attackSpeed: RoundToTwoDigits(Random.Range(0.6f, 0.8f)),
                     knockBack: Random.Range(12, 16),
-                    attackAngle: 80f
+                    attackAngle: 80f,
+                    weaponSpriteID: 4
                 );
                 sprite = weapon4;
                 break;
@@ -224,7 +246,8 @@ public class ItemFactory : MonoBehaviour
                     range: 1,
                     attackSpeed: RoundToTwoDigits(Random.Range(1.8f, 2.3f)),
                     knockBack: Random.Range(1, 2),
-                    attackAngle: 45f
+                    attackAngle: 45f,
+                    weaponSpriteID: 5
                 );
                 sprite = weapon5;
                 break;
