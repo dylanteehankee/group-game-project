@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     private GameObject startRoom, tutorialRoom, endRoom;
     private Vector2Int currentRoomCoordinates;
     private Dictionary<Vector2Int, GameObject> roomDictionary = new Dictionary<Vector2Int, GameObject>();
+    private float resetCounter = 5f;
 
     private int[,] map;
 
@@ -90,10 +91,17 @@ public class MapGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //reset when r is pressed
-        if (Input.GetKeyDown(KeyCode.R)){
-            ResetAll();
-        }   
+        //reset when r is pressed for 5 seconds
+
+        if (Input.GetKey(KeyCode.R)){
+            resetCounter -= Time.deltaTime;
+            if (resetCounter < 0){
+                ResetAll();
+            }
+        }
+        else{
+            resetCounter = 5f;
+        }
     }
 
     private void AssignList(){
