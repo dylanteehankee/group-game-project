@@ -796,7 +796,12 @@ namespace McDungeon
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
     
-        public void ResetPlayer()
+        public void PlayerEnterPuzzle()
+        {
+
+        }
+
+        public void PlayerLeavePuzzle()
         {
 
         }
