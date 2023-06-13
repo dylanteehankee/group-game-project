@@ -208,7 +208,14 @@ namespace McDungeon
                     direction = direction.normalized;
 
                     this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
                 }
             }
         }
@@ -685,7 +692,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
                 }
             }
             else if (!reachedInside)
@@ -706,7 +720,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
 
                     globalLight.intensity = globalLight.intensity - speed * speedModifier * Time.deltaTime * oldIntensity;
                     torchLight.intensity = torchLight.intensity - speed * speedModifier * Time.deltaTime * 0.5f;
@@ -736,7 +757,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
 
                     globalLight.intensity = globalLight.intensity + speed * speedModifier * Time.deltaTime * lightIntensity / 2.5f;
                     torchLight.intensity = torchLight.intensity + speed * speedModifier * Time.deltaTime * 0.5f / 2.5f;
