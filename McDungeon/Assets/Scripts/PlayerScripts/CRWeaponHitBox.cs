@@ -24,7 +24,6 @@ namespace McDungeon
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log("OnTriggerEnter2D damage");
             // Debug.Log("Collision Enter CRWeapon: " + collision.gameObject.name);
             if (other.gameObject.tag == "MobHitbox")
             {
