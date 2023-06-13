@@ -26,7 +26,7 @@ namespace McDungeon
             hitBoxRender = this.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
             hitBoxController = this.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
-            attackSpeedFactor = 0.4f;
+            attackSpeedFactor = 0.6f;
             knockBack = 0f;
             attacking = false;
             hitBoxRender.enabled = false;
@@ -55,7 +55,7 @@ namespace McDungeon
             this.knockBack = knockBack;
             this.active = active;
             this.attackSpeedFactor = attackSpeedFactor;
-            Debug.Log("configed weapon");
+            Debug.Log("configed weapon + " + attackAngle);
         }
 
         public void SetActive(bool setToState)
@@ -107,7 +107,7 @@ namespace McDungeon
             }
 
 
-            float angle = -attackAngle / 2f + attackAngle * atkProgress + weaponDir;
+            float angle = attackAngle / 2f - attackAngle * atkProgress + weaponDir;
             this.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
             if (atkProgress == 1f)
