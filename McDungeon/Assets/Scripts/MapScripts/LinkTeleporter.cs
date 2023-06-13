@@ -206,13 +206,21 @@ public class LinkTeleporter : MonoBehaviour
 
                 if (parentTarget.CompareTag("EndRoom")){
                     //pause background music
-                    bgAudioSource[0].Pause();
+                    if (bgAudioSource[0].isPlaying){
+                        bgAudioSource[0].Pause();
+                    }
+                    else if (bgAudioSource[2].isPlaying){
+                        bgAudioSource[2].Pause();
+                    }
                 }
                 else
                 {
                     //play background music if not
                     if (!bgAudioSource[0].isPlaying){
                         bgAudioSource[0].Play();
+                    }
+                    else if (!bgAudioSource[2].isPlaying){
+                        bgAudioSource[2].Play();
                     }
                 }
 
