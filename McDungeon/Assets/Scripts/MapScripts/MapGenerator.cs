@@ -19,7 +19,7 @@ public class MapGenerator : MonoBehaviour
     private GameObject startRoom, tutorialRoom, endRoom;
     private Vector2Int currentRoomCoordinates;
     private Dictionary<Vector2Int, GameObject> roomDictionary = new Dictionary<Vector2Int, GameObject>();
-    private float resetCounter = 5f;
+    private float resetCounter = 3f;
 
     private int[,] map;
 
@@ -86,22 +86,6 @@ public class MapGenerator : MonoBehaviour
         AssignPortal(map);
 
         DrawMiniMap();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //reset when r is pressed for 5 seconds
-
-        if (Input.GetKey(KeyCode.R)){
-            resetCounter -= Time.deltaTime;
-            if (resetCounter < 0){
-                ResetAll();
-            }
-        }
-        else{
-            resetCounter = 5f;
-        }
     }
 
     private void AssignList(){
@@ -306,39 +290,4 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    //Reset all global variables
-    void ResetAll(){
-        //reset scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        // combatRoomList.Clear();
-        // puzzleRoomList.Clear();
-        // shopRoomList.Clear();
-        // roomDictionary.Clear();
-        
-        // currentRoomCoordinates = new Vector2Int(-1, -1);
-
-        // foreach (GameObject teleporter in GameObject.FindGameObjectsWithTag("Teleporter")){
-        //     teleporter.GetComponent<LinkTeleporter>().ResetAll();
-        // }
-
-        // foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall")){
-        //     wall.GetComponent<TileUpdate>().ResetAll();
-        // }
-
-        // //destroy minimap child objects
-        // destroyMiniMap();
-
-        // //Teleport player to 0 0
-        // var player = GameObject.FindGameObjectWithTag("PlayerHitbox");
-        // player.transform.position = new Vector2(0 , 0);
-
-        // //kill all mobs
-        // foreach (GameObject mob in GameObject.FindGameObjectsWithTag("MobHitbox")){
-        //     Destroy(mob);
-        // }
-        
-        // //Instiate all again
-        // Start();
-    }
 }
