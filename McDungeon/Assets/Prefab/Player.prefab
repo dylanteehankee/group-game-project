@@ -10072,6 +10072,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5233482739103803592}
     m_Modifications:
+    - target: {fileID: 2833031770838565781, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 2952813169260870162, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
       propertyPath: m_TagString
       value: WeaponHitbox
@@ -10158,11 +10162,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9153624308336661894, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.32183826
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9153624308336661894, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34247512
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9153624308336661894, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
       propertyPath: m_LocalPosition.z
