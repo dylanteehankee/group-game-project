@@ -11,7 +11,7 @@ public class LinkTeleporter : MonoBehaviour
     private GameObject parent, grandparent;
     public bool beenDisabled = false;
     private bool combatStarted = false;
-    private bool RoomCompleted = false;
+    public bool RoomCompleted {get; set;} = false;
     private bool closeDoor = false; 
     private Vector2 candlePos1, candlePos2;
     private PuzzleStateModel puzzleState;
