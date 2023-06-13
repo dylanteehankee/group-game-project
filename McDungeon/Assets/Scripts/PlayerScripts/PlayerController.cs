@@ -149,6 +149,8 @@ namespace McDungeon
             spellColor[1] = new Color(86f / 255f, 126f / 255f, 210f / 255f, 116f / 255f);
             spellColor[2] = new Color(0.678f, 0.847f, 0.902f, 116f / 255f);
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
+
+            closeRangeWeapon.ChangeWeapon(0);
         }
 
         void FixedUpdate()

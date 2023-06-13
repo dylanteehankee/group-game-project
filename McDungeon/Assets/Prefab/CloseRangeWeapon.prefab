@@ -678,3 +678,9 @@ MonoBehaviour:
   attackAngle: 90
   knockBack: 0
   active: 0
+  weapon_0: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_1: {fileID: 938450118, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_2: {fileID: -623868671, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_3: {fileID: 1993517771, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_4: {fileID: -1131988994, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_5: {fileID: 1176711874, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
