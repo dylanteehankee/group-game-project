@@ -21,16 +21,14 @@ namespace McDungeon
         private bool attacking;
         private float atkProgress; // 0 - 1
 
-        private Animator attackAnimator;
         private GameObject hitbox;
 
         void Awake()
         {
             hitbox = this.transform.GetChild(0).gameObject;
-            hitBoxRender = this.hitbox.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCllider = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
             hitBoxController = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
-            attackAnimator = this.transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Animator>();
 
             attackSpeedFactor = 0.6f;
             knockBack = 0f;
@@ -88,7 +86,6 @@ namespace McDungeon
                 attacking = true;
                 hitBoxRender.enabled = true;
                 hitBoxCllider.enabled = true;
-                attackAnimator.Rebind();
             }
 
 
