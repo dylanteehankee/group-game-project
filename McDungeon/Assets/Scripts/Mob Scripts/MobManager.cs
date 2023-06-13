@@ -19,6 +19,7 @@ namespace McDungeon
         [SerializeField]
         private GameObject knightPrefab;
         private List<GameObject> mobsList = new List<GameObject>();
+        [SerializeField]
         private GameObject player;
 
         public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 6)

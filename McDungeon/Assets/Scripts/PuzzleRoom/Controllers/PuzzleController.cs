@@ -148,7 +148,7 @@ public class PuzzleController : MonoBehaviour
                         text:  "Light up all the torches with fireballs to progress. \n"
                             + "Do this quickly and you will be rewarded! Too slow and there will be consequences...",
                         dimensions: new Vector3(10, 2, 0), 
-                        offset: new Vector3(7, 10, 0), 
+                        offset: new Vector3(9, 8, 0), 
                         fontSize: 4f,
                         duration: 15.0f      
                     );
