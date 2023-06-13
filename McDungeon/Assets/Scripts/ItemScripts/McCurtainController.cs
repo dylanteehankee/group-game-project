@@ -50,6 +50,7 @@ namespace McDungeon
             unlocked = true;
             timer = 10f;
             this.gameObject.GetComponent<Animator>().enabled = true;
+            this.transform.parent.GetComponent<PortalController>().Unlock();
         }
 
         private void ChangeTransparency()
