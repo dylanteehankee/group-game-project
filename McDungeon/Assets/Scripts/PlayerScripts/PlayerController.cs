@@ -659,7 +659,7 @@ namespace McDungeon
                     roomLightIntensity = 0f;
                     roomLightControl.UpdateLight(roomLightIntensity);
                     carpetLightControl.ChangeLight(roomLightIntensity);
-                    changeBGMusic();
+                    changeToMcMode();
                 }
                 else
                 {
@@ -723,7 +723,7 @@ namespace McDungeon
 
         }
 
-        private void changeBGMusic()
+        private void changeToMcMode()
         {
             // Change Back Ground sound
             if (isMcMode)
@@ -782,6 +782,9 @@ namespace McDungeon
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
     
-    
+        public void ResetPlayer()
+        {
+            
+        }
     }
 }
