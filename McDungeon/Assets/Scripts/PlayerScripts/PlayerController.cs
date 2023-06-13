@@ -70,6 +70,7 @@ namespace McDungeon
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
+        private bool isMcMode = false;
 
         private Light2D globalLight;
         private Light2D torchLight;
@@ -658,6 +659,7 @@ namespace McDungeon
                     roomLightIntensity = 0f;
                     roomLightControl.UpdateLight(roomLightIntensity);
                     carpetLightControl.ChangeLight(roomLightIntensity);
+                    changeBGMusic();
                 }
                 else
                 {
@@ -721,6 +723,29 @@ namespace McDungeon
 
         }
 
+        private void changeBGMusic()
+        {
+            // Change Back Ground sound
+            if (isMcMode)
+            {
+                bgAudioSource[2].enabled = true;
+                bgAudioSource[0].enabled = false;
+                if (!bgAudioSource[2].isPlaying)
+                {
+                    bgAudioSource[2].Play();
+                }
+            }
+            else
+            {
+                bgAudioSource[0].enabled = true;
+                bgAudioSource[2].enabled = false;
+                if (!bgAudioSource[0].isPlaying)
+                {
+                    bgAudioSource[0].Play();
+                }
+            }
+        }
+
         public void StartUsePortal(Vector3 mirrorPos, GameMode mode = GameMode.Normal)
         {
             this.mirrorPos = mirrorPos;
@@ -730,35 +755,15 @@ namespace McDungeon
             if (mode == GameMode.Unchange)
             {
                 lightIntensity = lightIntensity;
-
-                bgAudioSource[2].enabled = true;
-                bgAudioSource[0].enabled = false;
-                if (!bgAudioSource[2].isPlaying)
-                {
-                    bgAudioSource[2].Play();
-                }
+                isMcMode = !isMcMode;
             }
             else if (mode == GameMode.Normal)
             {
                 lightIntensity = 0.1f;
-
-                bgAudioSource[0].enabled = true;
-                bgAudioSource[2].enabled = false;
-                if (!bgAudioSource[0].isPlaying)
-                {
-                    bgAudioSource[0].Play();
-                }
             }
             else
             {
                 lightIntensity = 0f;
-
-                bgAudioSource[0].enabled = true;
-                bgAudioSource[2].enabled = false;
-                if (!bgAudioSource[0].isPlaying)
-                {
-                    bgAudioSource[0].Play();
-                }
             }
 
             oldIntensity = globalLight.intensity;
@@ -776,5 +781,7 @@ namespace McDungeon
 
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
+    
+    
     }
 }
