@@ -51,7 +51,7 @@ public class InventoryController : MonoBehaviour
     public void CreateStartingWeapon()
     {
          Weapon toAdd = new Weapon(
-            name: "Rusty Sword",
+            name: "Wooden Sword",
             itemType: "Weapon",
             sellCost: 5,
             inventoryIcon: startingWeaponSprite,

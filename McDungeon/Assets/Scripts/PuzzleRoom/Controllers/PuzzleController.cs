@@ -271,11 +271,12 @@ public class PuzzleController : MonoBehaviour
             if((int)timeSinceStarted <= rewardCutoffs[0])
             {
                 // Grant rewards
-                itemFactory.DropHealthPotions(gameObject.transform, 5, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropSmallPuzzleRewards(gameObject.transform, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropHealthPotions(gameObject.transform, 2, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
             }
             else{
                 // Grant some smaller rewards. 
-                itemFactory.DropHealthPotions(gameObject.transform, 3, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropHealthPotions(gameObject.transform, 2, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
             }
         }
         else
@@ -283,11 +284,13 @@ public class PuzzleController : MonoBehaviour
             if((int)timeSinceStarted <= rewardCutoffs[0])
             {
                 // Grant rewards
-                itemFactory.DropHealthPotions(gameObject.transform, 5, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropBigPuzzleRewards(gameObject.transform, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropHealthPotions(gameObject.transform, 2, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
             }
             else{
                 // Grant some smaller rewards. 
-                itemFactory.DropHealthPotions(gameObject.transform, 3, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropSmallPuzzleRewards(gameObject.transform, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
+                itemFactory.DropHealthPotions(gameObject.transform, 2, new Vector3(puzzleGridWidth, puzzleGridHeight, 0), 1.0f);
             }
         }
        
