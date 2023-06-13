@@ -299,7 +299,7 @@ namespace McDungeon
             {
                 closeRangeWeapon.Config(
                     attackDamage: myWeapon.damage,
-                    attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly?
+                    attackSpeed: myWeapon.attackSpeed * 10f, // How does this scale exactly? // == I made base attackspeed = 10f as "normal" and fair speed, 20f will be 2 times faster, 5f will be slower
                     attackAngle: myWeapon.attackAngle,
                     knockBack: myWeapon.knockBack * 100f,
                     true
