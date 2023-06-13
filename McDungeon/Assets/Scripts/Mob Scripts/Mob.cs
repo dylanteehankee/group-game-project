@@ -91,7 +91,6 @@ namespace McDungeon
             {
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one);
                 Destroy(this.gameObject);
-                return;
             }
         }
 
