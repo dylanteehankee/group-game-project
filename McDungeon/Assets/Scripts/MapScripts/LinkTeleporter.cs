@@ -186,9 +186,15 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
 
+                if (parentTarget.CompareTag("TutorialRoom") || parentTarget.CompareTag("PuzzleRoom"))
+                {
+                    other.GetComponent<PlayerController>().PlayerEnterPuzzle();
+                }
+
                 if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
                 {
                     positionLockCamera.LockOnPlayer();
+                    other.GetComponent<PlayerController>().PlayerLeavePuzzle();
                 }
 
                 if (parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted)

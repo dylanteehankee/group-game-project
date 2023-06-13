@@ -72,15 +72,18 @@ namespace McDungeon
                 switch (this.spellType)
                 {
                     case EffectTypes.Ablaze:
+                        Debug.Log("Fireball");
                         spell = (GameObject)Instantiate(this.fireballPrefab);
                         break;
                     case EffectTypes.Freeze:
+                        Debug.Log("FrostBolt");
                         spell = (GameObject)Instantiate(this.frostboltPrefab);
                         break;
                     default:
                         spell = (GameObject)Instantiate(this.fireballPrefab);
                         break;
                 }
+                Debug.Log("CASTING");
                 spell.transform.position = location;
                 spell.GetComponent<MageSpellController>().Cast(this.playerObject.transform.position, this.spellType);
                 this.isCasting = false;

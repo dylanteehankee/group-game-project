@@ -133,7 +133,7 @@ MonoBehaviour:
   attackRange: 5
   moveSpeed: 1
   bonePrefab: {fileID: 2743265911000779979, guid: 3bf04d539ad554ba2a470bb680b1c746, type: 3}
-  attackSpeed: 1
+  attackSpeed: 1.5
 --- !u!95 &942053016471472941
 Animator:
   serializedVersion: 5

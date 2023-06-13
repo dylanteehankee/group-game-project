@@ -93,6 +93,7 @@ namespace McDungeon
         private float unlockMcMirrorTimer = 5f;
 
         private AudioSource[] bgAudioSource;
+        private bool playerDead = false;
 
 
         void Awake()
@@ -161,6 +162,11 @@ namespace McDungeon
 
         void FixedUpdate()
         {
+            if (playerDead)
+            {
+                return;
+            }
+
             if (usingPortal)
             {
                 usePortal();
@@ -211,6 +217,12 @@ namespace McDungeon
             {
                 return;
             }
+
+            if (playerDead)
+            {
+                return;
+            }
+
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // Reduce all coll down count.
             updateCoolDowns();
@@ -354,7 +366,8 @@ namespace McDungeon
             if (playerHealth < 0f)
             {
                 // Dead
-                statusEffects.Death(this.gameObject.transform.position, Vector2.one);
+                statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
+                playerDead = true;
             }
         }
 
@@ -659,7 +672,7 @@ namespace McDungeon
                     roomLightIntensity = 0f;
                     roomLightControl.UpdateLight(roomLightIntensity);
                     carpetLightControl.ChangeLight(roomLightIntensity);
-                    changeBGMusic();
+                    changeToMcMode();
                 }
                 else
                 {
@@ -723,7 +736,7 @@ namespace McDungeon
 
         }
 
-        private void changeBGMusic()
+        private void changeToMcMode()
         {
             // Change Back Ground sound
             if (isMcMode)
@@ -782,6 +795,14 @@ namespace McDungeon
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
     
-    
+        public void PlayerEnterPuzzle()
+        {
+
+        }
+
+        public void PlayerLeavePuzzle()
+        {
+
+        }
     }
 }
