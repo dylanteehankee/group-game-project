@@ -63,7 +63,8 @@ public class InventoryController : MonoBehaviour
             range: 2,
             attackSpeed: 0.8f,
             knockBack: 5f,
-            attackAngle: 80f
+            attackAngle: 80f,
+            weaponSpriteID: 0
         );
         ItemManager.ChangeItemStatus(toAdd.GetItemID(), ItemStatus.Equipped);
     }

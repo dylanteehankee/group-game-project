@@ -10,8 +10,9 @@ public class Weapon : EquipmentItem
     public float attackSpeed = 1.5f;
     public float knockBack = 8f;
     public float attackAngle = 120f;
+    public int weaponSpriteID;
     public Weapon(string name, string itemType, int sellCost, Sprite inventoryIcon, 
-        float damage, int range, float attackSpeed, float knockBack, float attackAngle = 120f) : base(
+        float damage, int range, float attackSpeed, float knockBack, int weaponSpriteID, float attackAngle = 120f) : base(
             name: name,
             sellCost: sellCost,
             itemType: itemType
@@ -23,6 +24,7 @@ public class Weapon : EquipmentItem
         this.attackSpeed = attackSpeed;
         this.knockBack = knockBack;
         this.attackAngle = attackAngle;
+        this.weaponSpriteID = weaponSpriteID;
         // Set item description based on stats. 
         string itemDescription = "Damage: " + damage;
         itemDescription += "\n";

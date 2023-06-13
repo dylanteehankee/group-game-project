@@ -313,6 +313,7 @@ namespace McDungeon
                     knockBack: myWeapon.knockBack * 100f,
                     true
                 );
+                closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
             }
             /*
             closeRangeWeapon.Config(
