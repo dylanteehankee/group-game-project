@@ -21,20 +21,6 @@ namespace McDungeon
         private List<GameObject> mobsList = new List<GameObject>();
         private GameObject player;
 
-        void Start()
-        {
-            GameObject[] playerObjects;
-            playerObjects = GameObject.FindGameObjectsWithTag("PlayerHitbox");
-            if (playerObjects.Length == 0)
-            {
-                Debug.Log("Player not found.");
-            }
-            else
-            {
-                this.player = playerObjects[0];
-            }
-        }
-
         public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 6)
         {
             var mobPrefab = this.getMobPrefab(type);

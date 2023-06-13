@@ -11,14 +11,15 @@ GameObject:
   - component: {fileID: 831000376455935151}
   - component: {fileID: 552496743697986657}
   - component: {fileID: 664960945049969247}
+  - component: {fileID: 6018009838028565644}
   - component: {fileID: 3572405350499367139}
   - component: {fileID: 4248495413979150592}
   - component: {fileID: 8289816827253901556}
   - component: {fileID: 5318216764600341730}
-  - component: {fileID: 7533550299602262207}
-  - component: {fileID: 3204203265721265606}
+  - component: {fileID: -7838374189976845100}
+  - component: {fileID: 1501748273899886608}
   m_Layer: 6
-  m_Name: Fireball
+  m_Name: FIreBall
   m_TagString: Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +33,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7838530794719727910}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.702, y: -0.412, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -106,7 +107,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -126,6 +127,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &6018009838028565644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838530794719727910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a1d9f19e0ba934dbd3034cbbfa5f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  lifeTime: 10
+  maxBounce: 3
+  direction: {x: 0, y: 0, z: 0}
 --- !u!199 &3572405350499367139
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5041,7 +5058,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7838530794719727910}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
@@ -5113,21 +5130,7 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!114 &7533550299602262207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7838530794719727910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8999c3c49eac4cd18b206f753b2daf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spellSpeed: 500
-  type: 3
---- !u!50 &3204203265721265606
+--- !u!50 &-7838374189976845100
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -5146,11 +5149,25 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
+--- !u!114 &1501748273899886608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838530794719727910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8999c3c49eac4cd18b206f753b2daf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellSpeed: 500
+  type: 3
