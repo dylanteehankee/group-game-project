@@ -183,5 +183,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebcfb48e58f9e4a8e8b51a2893f2238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneSpeed: 1000
+  boneSpeed: 500
   damage: 2
