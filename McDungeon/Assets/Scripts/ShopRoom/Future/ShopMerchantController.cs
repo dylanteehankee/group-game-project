@@ -10,6 +10,8 @@ public class ShopMerchantController : MonoBehaviour
     private ItemFactory itemFactory;
     private ShopCrateController[] crates;
 
+    private AudioSource[] audioSource;
+
     // For resting puproses
     public Sprite myIcon;
 
@@ -23,6 +25,7 @@ public class ShopMerchantController : MonoBehaviour
         shopUIManager = shopInfoUI.GetComponent<ShopUIManager>();
         gameManager = GameObject.Find("GameManager");
         itemFactory = gameManager.GetComponent<ItemFactory>();
+        audioSource = GameObject.FindWithTag("RoomSoundManager").GetComponents<AudioSource>();
 
         itemsToSell = new List<string>();
         itemPrices = new List<int>();
@@ -176,23 +179,15 @@ public class ShopMerchantController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            RestockItems();
-        }
-    }
-
     public void SelectItem(int id)
     {  
         shopUIManager.LoadShopItem(this, itemPrices[id], ItemManager.GetGameItem(itemsToSell[id]), id);
-
+        audioSource[4].Play();
     }
 
     public void UnselectItem()
     {
         shopUIManager.CloseShop();
+        audioSource[7].Play();
     }
 }

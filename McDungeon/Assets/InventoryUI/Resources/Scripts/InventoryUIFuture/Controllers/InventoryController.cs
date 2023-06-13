@@ -8,6 +8,8 @@ public class InventoryController : MonoBehaviour
     private CollectionsModel collectionsModel;
     private InventoryUIModel inventoryUIModel;
 
+    private AudioSource[] audioSource;
+
     public Sprite startingWeaponSprite;
 
     private InventoryGridUI inventoryGridUI;
@@ -46,6 +48,8 @@ public class InventoryController : MonoBehaviour
 
         ToggleInventory();
         ToggleInventory();
+        
+        audioSource = GameObject.FindWithTag("RoomSoundManager").GetComponents<AudioSource>();
     }
 
     public void CreateStartingWeapon()
@@ -573,10 +577,18 @@ public class InventoryController : MonoBehaviour
             RefreshInventoryGridUI();
             RefreshHoverItemUI();
             RefreshPlayerCardUI();
+            if(audioSource != null)
+            {
+                audioSource[4].Play();
+            }
         }
         else
         {
             inventoryUIModel.isActive = false;
+            if(audioSource != null)
+            {
+                audioSource[7].Play();
+            }
         }
         uiCanvas.SetActive(inventoryUIModel.isActive);
     }
