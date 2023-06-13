@@ -100,6 +100,8 @@ namespace McDungeon
 
         private UIManager uiManager;
 
+        public GameObject gameManager;
+
         void Start()
         { 
             playerInventory = new PlayerInventory(this);
@@ -160,7 +162,7 @@ namespace McDungeon
             audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
-            uiManager = GameObject.FindWithTag("GameManager").GetComponent<UIManager>();
+            uiManager = gameManager.GetComponent<UIManager>();
 
             spellReadyIcon = new SpriteRenderer[4];
             spellReadyIcon[0] = GameObject.Find("CoolDownReady").transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
