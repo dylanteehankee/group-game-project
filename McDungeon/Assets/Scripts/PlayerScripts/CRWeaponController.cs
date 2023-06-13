@@ -30,6 +30,7 @@ namespace McDungeon
         [SerializeField] private Sprite weapon_3;
         [SerializeField] private Sprite weapon_4;
         [SerializeField] private Sprite weapon_5;
+        [SerializeField] private Sprite weapon_6;
         private int currentWeaponIdex = 0;
         private float weaponScaleRatio = 1f;
 
@@ -208,6 +209,11 @@ namespace McDungeon
                     hitBoxRender.sprite = weapon_5;
                     followerWeaponRender.sprite = weapon_5;
                     hitBoxCounterweightRender.sprite = weapon_5;
+                    break;
+                case 6:
+                    hitBoxRender.sprite = weapon_6;
+                    followerWeaponRender.sprite = weapon_6;
+                    hitBoxCounterweightRender.sprite = weapon_6;
                     break;
             }
 

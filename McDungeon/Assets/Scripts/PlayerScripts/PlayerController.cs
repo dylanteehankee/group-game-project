@@ -92,8 +92,11 @@ namespace McDungeon
         private bool resetedCamera = false;
         private float unlockMcMirrorTimer = 5f;
 
+        private AudioSource[] audioSource;
         private AudioSource[] bgAudioSource;
         private bool playerDead = false;
+
+        private SpriteRenderer[] spellReadyIcon;
 
         void Start()
         { 
@@ -151,8 +154,16 @@ namespace McDungeon
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
 
 
+            var mobSoundManager = GameObject.FindWithTag("MobSoundManager");
+            audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
+
+            spellReadyIcon = new SpriteRenderer[4];
+            spellReadyIcon[0] = GameObject.Find("CoolDownReady").transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[1] = GameObject.Find("CoolDownReady").transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
+            spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
         }
 
         void FixedUpdate()
@@ -201,7 +212,14 @@ namespace McDungeon
                     direction = direction.normalized;
 
                     this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
                 }
             }
         }
@@ -232,6 +250,7 @@ namespace McDungeon
                     Debug.Log("Firing and attacking");
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
+                    audioSource[5].Play();
                 }
                 else if (Input.GetButtonDown("Fire2") && fireCoolDowntimer <= 0f)
                 {
@@ -246,6 +265,7 @@ namespace McDungeon
                     spell = 'F';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[6].Play();
                 }
                 else if (Input.GetKey(KeyCode.E) && waterCoolDowntimer <= 0f)
                 {
@@ -260,6 +280,7 @@ namespace McDungeon
                     spell = 'W';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[10].Play();
                 }
                 else if (Input.GetKey(KeyCode.Space) && iceCoolDowntimer <= 0f)
                 {
@@ -274,6 +295,7 @@ namespace McDungeon
                     spell = 'I';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[7].Play();
                 }
                 else if (Input.GetKey(KeyCode.Q) && lightningCoolDowntimer <= 0f)
                 {
@@ -288,6 +310,7 @@ namespace McDungeon
                     spell = 'L';
                     castingSpell = true;
                     actionCoolDown = 100f; // Prevent other action
+                    audioSource[11].Play();
                 }
             }
 
@@ -353,6 +376,7 @@ namespace McDungeon
                 healthController.SetNewHealth(this.playerHealth);
 
                 hitTimer = 0f;
+                audioSource[8].Play();
             }
 
             checkDeath();
@@ -365,6 +389,7 @@ namespace McDungeon
                 // Dead
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
                 playerDead = true;
+                audioSource[9].Play();
             }
         }
 
@@ -395,6 +420,26 @@ namespace McDungeon
             else if (direction.y > 0)
             {
                 this.animator.SetInteger("Direction", 1);
+            }
+            else
+            {
+                this.animator.SetBool("Idle", true);
+            }
+        }
+
+        private void mcSpriteController(Vector2 direction)
+        {
+            if (direction != Vector2.zero)
+            {
+                this.animator.SetBool("Idle", false);
+                if (direction.x < 0)
+                {
+                    this.spriteRenderer.flipX = true;
+                }
+                else
+                {
+                    this.spriteRenderer.flipX = false;
+                }
             }
             else
             {
@@ -473,7 +518,6 @@ namespace McDungeon
             {
                 fireCoolDowntimer -= Time.deltaTime;
             }
-
             if (waterCoolDown > 0f)
             {
                 waterCoolDowntimer -= Time.deltaTime;
@@ -487,6 +531,27 @@ namespace McDungeon
             if (lightningCoolDown > 0f)
             {
                 lightningCoolDowntimer -= Time.deltaTime;
+            }
+
+            // Show ready if is ready.
+            if (fireCoolDowntimer <= 0f && !spellReadyIcon[0].enabled)
+            {
+                spellReadyIcon[0].enabled = true;
+            }
+
+            if (waterCoolDowntimer <= 0f && !spellReadyIcon[1].enabled)
+            {
+                spellReadyIcon[1].enabled = true;
+            }
+
+            if (iceCoolDowntimer <= 0f && !spellReadyIcon[2].enabled)
+            {
+                spellReadyIcon[2].enabled = true;
+            }
+            
+            if (lightningCoolDowntimer <= 0f && !spellReadyIcon[3].enabled)
+            {
+                spellReadyIcon[3].enabled = true;
             }
 
         }
@@ -624,15 +689,19 @@ namespace McDungeon
             {
                 case 'F':
                     fireCoolDowntimer = fireCoolDown;
+                    spellReadyIcon[0].enabled = false;
                     break;
                 case 'W':
                     waterCoolDowntimer = waterCoolDown;
+                    spellReadyIcon[1].enabled = false;
                     break;
                 case 'I':
                     iceCoolDowntimer = iceCoolDown;
+                    spellReadyIcon[2].enabled = false;
                     break;
                 case 'L':
                     lightningCoolDowntimer = lightningCoolDown;
+                    spellReadyIcon[3].enabled = false;
                     break;
             }
 
@@ -653,7 +722,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
                 }
             }
             else if (!reachedInside)
@@ -674,7 +750,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
 
                     globalLight.intensity = globalLight.intensity - speed * speedModifier * Time.deltaTime * oldIntensity;
                     torchLight.intensity = torchLight.intensity - speed * speedModifier * Time.deltaTime * 0.5f;
@@ -704,7 +787,14 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    this.spriteController(direction);
+                    if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+                    else
+                    {
+                        this.spriteController(direction);
+                    }
 
                     globalLight.intensity = globalLight.intensity + speed * speedModifier * Time.deltaTime * lightIntensity / 2.5f;
                     torchLight.intensity = torchLight.intensity + speed * speedModifier * Time.deltaTime * 0.5f / 2.5f;
