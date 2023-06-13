@@ -23,6 +23,7 @@ namespace McDungeon
         [SerializeField] private float speed;
         [SerializeField] private CapsuleCollider2D bodyCollider;
         [SerializeField] private StartRoomLightController roomLightControl;
+        [SerializeField] private CarpetKonamiController carpetLightControl;
         [SerializeField] protected int playerMaxHealth;
         [SerializeField] protected float playerHealth;
         private PlayerHealthController healthController;
@@ -127,6 +128,7 @@ namespace McDungeon
             globalLight = GameObject.Find("Global Light 2D").GetComponent<Light2D>();
             torchLight = this.transform.GetChild(0).gameObject.GetComponent<Light2D>();
             roomLightControl = GameObject.Find("StartingRoom").GetComponent<StartRoomLightController>();
+            carpetLightControl = GameObject.Find("Carpet").GetComponent<CarpetKonamiController>();
 
             playerMaxHealth = 10;
             playerHealth = 10f;
@@ -497,6 +499,7 @@ namespace McDungeon
                     torchLight.intensity = 0f;
                     roomLightIntensity = 0f;
                     roomLightControl.UpdateLight(roomLightIntensity);
+                    carpetLightControl.ChangeLight(roomLightIntensity);
                 }
                 else
                 {
@@ -507,6 +510,7 @@ namespace McDungeon
                     torchLight.intensity = torchLight.intensity - speed * speedModifier * Time.deltaTime * 0.5f;
                     roomLightIntensity = roomLightIntensity - speed * speedModifier * Time.deltaTime * 1f;
                     roomLightControl.UpdateLight(roomLightIntensity);
+                    carpetLightControl.ChangeLight(roomLightIntensity);
                 }
             }
             else
@@ -525,6 +529,7 @@ namespace McDungeon
                     torchLight.intensity = 0.5f;
                     roomLightIntensity = 1f;
                     roomLightControl.UpdateLight(roomLightIntensity);
+                    carpetLightControl.ChangeLight(roomLightIntensity);
                 }
                 else
                 {
@@ -535,6 +540,7 @@ namespace McDungeon
                     torchLight.intensity = torchLight.intensity + speed * speedModifier * Time.deltaTime * 0.5f / 2.5f;
                     roomLightIntensity = roomLightIntensity + speed * speedModifier * Time.deltaTime * 1f / 2.5f;
                     roomLightControl.UpdateLight(roomLightIntensity);
+                    carpetLightControl.ChangeLight(roomLightIntensity);
 
                     if (globalLight.intensity > lightIntensity)
                     {

@@ -207,14 +207,16 @@ public class MapGenerator : MonoBehaviour
             for (int j = 0; j < map.GetLength(1); j ++){
                 //instatiates a miniRoom prefab per room the same position as the room in the map
                 GameObject miniRoomPrefab = Instantiate(miniRoom, miniMap.transform);
+                //set the scale of the miniRoom to half the size of the room
+                miniRoomPrefab.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 //sets the position of the miniRoom according to the position in the map, relative to the minimap
-                miniRoomPrefab.transform.localPosition = new Vector3(j, -i, 0);
+                miniRoomPrefab.transform.localPosition = new Vector3(j*0.75f, -i*0.75f, 0);
                 //make all of them in layer 3
                 //if matrix value is 6, change sprite to end room sprite
                 if (map[i,j] == 6){
                     miniRoomPrefab.GetComponent<SpriteRenderer>().sprite = endRoomSprite;
                 }
-                miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 10;
+                miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 40;
                 //set all rooms to transparent
                 miniRoomPrefab.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             }
@@ -253,28 +255,28 @@ public class MapGenerator : MonoBehaviour
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             //check if the color is transparent
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
         if (currentRoomCoordinates.x - 1 >= 0){
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x - 1, currentRoomCoordinates.y);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
         if (currentRoomCoordinates.y + 1 < map.GetLength(1)){
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y + 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
         if (currentRoomCoordinates.y - 1 >= 0){
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y - 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
-                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = Color.blue;
+                adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
     }
