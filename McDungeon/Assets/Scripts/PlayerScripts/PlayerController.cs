@@ -155,7 +155,6 @@ namespace McDungeon
             spellColor[2] = new Color(0.678f, 0.847f, 0.902f, 116f / 255f);
             spellColor[3] = new Color(166f / 255f, 50f / 255f, 215f / 255f, 116f / 255f);
 
-            closeRangeWeapon.ChangeWeapon(0);
 
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
@@ -325,7 +324,7 @@ namespace McDungeon
                     knockBack: myWeapon.knockBack * 100f,
                     true
                 );
-                closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
+                //closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
             }
             /*
             closeRangeWeapon.Config(

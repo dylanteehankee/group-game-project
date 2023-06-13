@@ -48,6 +48,7 @@ namespace McDungeon
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
             Debug.Log("hitbox name: ===========[" + hitbox.name + "]=======================");
+            Debug.Log("Awake hitbox render: ===========[" + hitBoxRender + "]=======================");
         }
 
         void LateUpdate()
@@ -150,6 +151,10 @@ namespace McDungeon
             Vector3 scale = new Vector3(1.7f, 1.7f, 1f);
             scale = scale * weaponScaleRatio;
 
+            if(hitbox == null) return;
+            hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
+            Debug.Log("hitboxRender name: ===========[" + hitBoxRender + "]=======================");
+            Debug.Log("hitboxRender color: ===========[" + hitBoxRender.color + "]=======================");
             hitBoxRender.transform.localScale = scale;
             hitBoxCounterweightRender.transform.localScale = scale;
 
