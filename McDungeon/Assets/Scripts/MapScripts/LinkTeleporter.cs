@@ -203,23 +203,24 @@ public class LinkTeleporter : MonoBehaviour
 
                     mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
-
+                //if player is in end room, pause background music, else play background music
+                //can only have 1 background music playing at a time
                 if (parentTarget.CompareTag("EndRoom")){
                     //pause background music
-                    if (bgAudioSource[0].isPlaying){
+                    if (bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
                         bgAudioSource[0].Pause();
                     }
-                    else if (bgAudioSource[2].isPlaying){
+                    else if (bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
                         bgAudioSource[2].Pause();
                     }
                 }
                 else
                 {
                     //play background music if not
-                    if (!bgAudioSource[0].isPlaying){
+                    if (!bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
                         bgAudioSource[0].Play();
                     }
-                    else if (!bgAudioSource[2].isPlaying){
+                    else if (!bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
                         bgAudioSource[2].Play();
                     }
                 }
