@@ -12,10 +12,6 @@ namespace McDungeon
         private GameObject[] elementParts_compeleted;
         private GameObject carpet_compeleted;
         private GameObject carpet_animation;
-        private bool entered = false;
-        private bool active = false;
-        private bool compeleted = false;
-        private bool animationFinished = false;
         private bool hasInput = false;
         private int progress;
         private float steps_interval = 0.5f;
@@ -24,7 +20,13 @@ namespace McDungeon
         private Light2D[] elementLight;
         private float[] elementLightIntensity = new float[] { 1.5f, 3f, 3f, 3f };
 
-        void Awake()
+        private bool entered = false;
+        private bool active = false;
+        private bool compeleted = false;
+        private bool animationFinished = false;
+        private bool allDone = false;
+
+        void Start()
         {
             entered = false;
             active = false;
@@ -49,6 +51,8 @@ namespace McDungeon
             carpet_compeleted = this.transform.GetChild(14).gameObject;
             carpet_animation = this.transform.GetChild(15).gameObject;
             carpetLight = this.gameObject.GetComponent<Light2D>();
+
+            player = GameObject.Find("Player");
         }
 
         void Update()
@@ -122,6 +126,13 @@ namespace McDungeon
                     timer = steps_interval;
                 }
             }
+        
+            if (animationFinished && !allDone)
+            {
+                player.GetComponent<PlayerController>().UnlockingMcMirror();
+                allDone = true;
+            }
+
         }
 
         private void showInput(char input)

@@ -44,18 +44,18 @@ namespace McDungeon
         private float atkCoolDown = 0.5f;
 
         private float fireCoolDown = 3f;
+        private float waterCoolDown = 6f;
+        private float iceCoolDown = 6f;
+        private float lightningCoolDown = 6f;
         private float fireCoolDowntimer = 0f;
-        private float waterCoolDown = 3f;
         private float waterCoolDowntimer = 0f;
-        private float iceCoolDown = 3f;
         private float iceCoolDowntimer = 0f;
-        private float lightningCoolDown = 3f;
         private float lightningCoolDowntimer = 0f;
 
         private float fireCastDuration = 0.5f;
-        private float waterCastDuration = 0.5f;
-        private float iceCastDuration = 0.5f;
-        private float lightningCastDuration = 0.5f;
+        private float waterCastDuration = 1f;
+        private float iceCastDuration = 1f;
+        private float lightningCastDuration = 1f;
         private float spellCastTimer = 0f;
         private bool castingSpell = false;
         private bool spellReady = false;
@@ -85,6 +85,11 @@ namespace McDungeon
         private SpriteRenderer spriteRenderer;
         private Animator animator;
         private Color[] spellColor;
+
+        private bool unlockingMcMirror = false;
+        private bool unlockedMcCurtain = false;
+        private bool resetedCamera = false;
+        private float unlockMcMirrorTimer = 5f;
 
         void Awake()
         {
@@ -148,7 +153,37 @@ namespace McDungeon
 
         void FixedUpdate()
         {
-            if (!usingPortal)
+            if (usingPortal)
+            {
+                usePortal();
+            }
+            if (unlockingMcMirror)
+            {
+                // Time the effect
+                if (unlockMcMirrorTimer > 0f)
+                {
+                    unlockMcMirrorTimer -= Time.deltaTime;
+                }
+
+                if (unlockMcMirrorTimer <= 3f && !unlockedMcCurtain)
+                {
+                    GameObject.Find("McMirror").transform.GetChild(2).GetComponent<McCurtainController>().Unlock();
+                    unlockedMcCurtain = true;
+                }
+
+                if (unlockMcMirrorTimer <= 1f && !resetedCamera)
+                {
+                    GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.LockOnPlayer, new Vector2(0f, 0f));
+                    resetedCamera = true;
+                }
+
+                if (unlockMcMirrorTimer <= 0f)
+                {
+                    GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().LockOnPlayer();
+                    unlockingMcMirror = false;
+                }
+            }
+            else
             {
                 // move player
                 if (!stunned && !isFreeze)
@@ -159,10 +194,6 @@ namespace McDungeon
                     this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
                     this.spriteController(direction);
                 }
-            }
-            else
-            {
-                usePortal();
             }
         }
 
@@ -711,6 +742,13 @@ namespace McDungeon
             reachedFront = false;
             reachedInside = false;
             speedModifier = 0.7f;
+        }
+
+        public void UnlockingMcMirror()
+        {
+            unlockingMcMirror = true;
+            
+            GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
     }
 }

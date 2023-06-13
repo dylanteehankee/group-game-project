@@ -78,7 +78,6 @@ namespace McDungeon
             }
         }
 
-
         void OnTriggerExit2D(Collider2D other)
         {
             Debug.Log("Item collision Exit: " + other.gameObject.name);

@@ -7,23 +7,28 @@ namespace McDungeon
     public enum CameraMode
     {
         LockOnPlayer,
-        LockOnRoom
+        LockOnRoom,
+        MoveToTarget
     }
 
+    // The name of Camera didn't changed due to other script depended on the name to find it
+    // is muti-functional camera controller than just PositionLock
     public class PositionLockCamera : MonoBehaviour
     {
         private Camera managedCamera;
         [SerializeField] protected GameObject Target;
         [SerializeField] protected float returnSpeed = 10f;
+        [SerializeField] protected float moveToSpeed = 6f;
         [SerializeField] protected CameraMode cameraMode;
         [SerializeField] protected Vector3 roomCenter;
+        [SerializeField] protected Vector3 targetPos; // Use another variable for clarity
         [SerializeField] protected bool justSwitchBack;
 
 
         private void Awake()
         {
+            Target = GameObject.Find("Player");
             managedCamera = gameObject.GetComponent<Camera>();
-            returnSpeed = 10f;
             justSwitchBack = false;
         }
 
@@ -51,16 +56,35 @@ namespace McDungeon
                     justSwitchBack = false;
                 }
             }
+            else if (cameraMode == CameraMode.MoveToTarget)
+            {
+                var cameraPosition = managedCamera.transform.position;
+                Vector3 distance = targetPos - cameraPosition;
+                distance.z = 0f;
+
+                if ((distance).magnitude > 0.2f)
+                {
+                    Vector3 direction = distance.normalized;
+                    managedCamera.transform.Translate(direction * moveToSpeed * Time.fixedDeltaTime);
+                }
+                else if (targetPos.y != cameraPosition.y || targetPos.x != cameraPosition.x)
+                {
+                    cameraPosition = new Vector3(targetPos.x, targetPos.y, cameraPosition.z);
+                    managedCamera.transform.position = cameraPosition;
+                }
+
+            }
             else
             {
                 managedCamera.transform.position = roomCenter;
             }
         }
 
-        public void changeCameraMode(CameraMode mode, Vector2 center)
+        public void changeCameraMode(CameraMode mode, Vector2 position)
         {
             cameraMode = mode;
-            roomCenter = new Vector3(center.x, center.y, managedCamera.transform.position.z);
+            roomCenter = new Vector3(position.x, position.y, managedCamera.transform.position.z);
+            targetPos = new Vector3(position.x, position.y, managedCamera.transform.position.z);
             if (mode == CameraMode.LockOnPlayer)
             {
                 justSwitchBack = true;
