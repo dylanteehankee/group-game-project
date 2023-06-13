@@ -142,7 +142,7 @@ Weapons and armor were created as a way for the player to have some kind of cust
 | ![Ablaze](https://piskel-imgstore-b.appspot.com/img/305e0f75-09c2-11ee-92c1-c98958b07512.gif) | ![Frozen](https://piskel-imgstore-b.appspot.com/img/47ba868c-09c2-11ee-8a6f-c98958b07512.gif) | ![Stun](https://piskel-imgstore-b.appspot.com/img/66113b1e-09c2-11ee-9194-c98958b07512.gif) | ![Death Poof](https://piskel-imgstore-b.appspot.com/img/80011954-09c2-11ee-9901-c98958b07512.gif) |
 
 ### Merchant
-The concept for the Merchant was to set him up to be a potential boss. However due to time constraints, he is not a boss, but his concpet remains. The merchant is a retired [Mage](Insert link to mage section) that has now devoted his life to selling junk. Although he seems very homeless, he is extremely rich. 
+The concept for the Merchant was to set him up to be a potential boss. However due to time constraints, he is not a boss, but his concpet remains. The merchant is a retired [Mage](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#mage) that has now devoted his life to selling junk. Although he seems very homeless, he is extremely rich. 
 
 His design is almost identical to that of the Mage with a recolor and some cloth patches to emphasis his homelessnes. Since a merchant like him would want to hide his richness, it is protrayed subtly through the gold buttons on the merchant UI panel.
 
@@ -237,7 +237,7 @@ Therefore, we should be allowed to use this in our game.
 
 ### Sound Effects
 
-[`Whoosh Sounds Effects HD (No Copyright)`](https://www.youtube.com/watch?v=TitDsqWGtxs&ab_channel=YouTubeSoundEffects) by *YouTube Sound Effects* - Sword whoosh for both the [Player]() and [Knight]().
+[`Whoosh Sounds Effects HD (No Copyright)`](https://www.youtube.com/watch?v=TitDsqWGtxs&ab_channel=YouTubeSoundEffects) by *YouTube Sound Effects* - Sword whoosh for both the [Player](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#the-player) and [Knight](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#knight).
 
 All other sound effects are created by me using [BeepBox](https://www.beepbox.co/#9n31s0k0l00e03t2ma7g0fj07r1i0o432T7v1u41f0q011d08H_RJSIrsAArrrrrh0IaE0T1v1u62f0qwx10s811d08A0F0B0Q00adPfe39E4b761862863bT0v1u12f10s4q00d03w2h2E0T2v1u15f10w4qw02d03w0E0b4h400000000h4g000000014h000000004h400000000p16000000) to emulate each sound as best as I could in the 8-bit style. 
 
