@@ -21,8 +21,13 @@ namespace McDungeon
                 var deltaLocation = playerLocation - location;
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * spellSpeed);
                 collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, this.type);
+                Destroy(this.gameObject);
             }
-            Destroy(this.gameObject);
+            if (collision.gameObject.tag != "Throwable")
+            {
+                Destroy(this.gameObject);
+            }
+            
 
         }
 
