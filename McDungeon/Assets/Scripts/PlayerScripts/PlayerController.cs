@@ -405,6 +405,26 @@ namespace McDungeon
             }
         }
 
+        private void mcSpriteController(Vector2 direction)
+        {
+            if (direction != Vector2.zero)
+            {
+                this.animator.SetBool("Idle", false);
+                if (direction.x < 0)
+                {
+                    this.spriteRenderer.flipX = true;
+                }
+                else
+                {
+                    this.spriteRenderer.flipX = false;
+                }
+            }
+            else
+            {
+                this.animator.SetBool("Idle", true);
+            }
+        }
+
         private void status(EffectTypes type)
         {
             switch (type)

@@ -18,7 +18,12 @@ public class TAController : MonoBehaviour
 
     void Start()
     {
-        this.mobList = spawner.GetComponent<MobManager>().GetMobs();
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("MobSpawner");
+        if (targets.Length > 0)
+        {
+            spawner = targets[0];
+            this.mobList = spawner.GetComponent<MobManager>().GetMobs();
+        }
     }
 
     void FixedUpdate()
