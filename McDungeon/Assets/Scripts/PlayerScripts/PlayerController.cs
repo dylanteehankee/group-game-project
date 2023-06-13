@@ -730,11 +730,11 @@ namespace McDungeon
             if (mode == GameMode.Unchange)
             {
                 lightIntensity = lightIntensity;
-                
+
+                bgAudioSource[2].enabled = true;
+                bgAudioSource[0].enabled = false;
                 if (!bgAudioSource[2].isPlaying)
                 {
-                    bgAudioSource[2].enabled = true;
-                    bgAudioSource[0].enabled = false;
                     bgAudioSource[2].Play();
                 }
             }
@@ -742,10 +742,10 @@ namespace McDungeon
             {
                 lightIntensity = 0.1f;
 
+                bgAudioSource[0].enabled = true;
+                bgAudioSource[2].enabled = false;
                 if (!bgAudioSource[0].isPlaying)
                 {
-                    bgAudioSource[0].enabled = true;
-                    bgAudioSource[2].enabled = false;
                     bgAudioSource[0].Play();
                 }
             }
@@ -753,10 +753,10 @@ namespace McDungeon
             {
                 lightIntensity = 0f;
 
+                bgAudioSource[0].enabled = true;
+                bgAudioSource[2].enabled = false;
                 if (!bgAudioSource[0].isPlaying)
                 {
-                    bgAudioSource[0].enabled = true;
-                    bgAudioSource[2].enabled = false;
                     bgAudioSource[0].Play();
                 }
             }
