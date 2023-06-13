@@ -98,14 +98,14 @@ namespace McDungeon
 
         private SpriteRenderer[] spellReadyIcon;
 
+        private UIManager uiManager;
 
-        void Awake()
-        {
-            playerInventory = new PlayerInventory(this);
-        }
+        public GameObject gameManager;
 
+        private bool finishedStart = false;
         void Start()
-        {
+        { 
+            playerInventory = new PlayerInventory(this);
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -163,16 +163,20 @@ namespace McDungeon
             audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
+            uiManager = gameManager.GetComponent<UIManager>();
 
             spellReadyIcon = new SpriteRenderer[4];
             spellReadyIcon[0] = GameObject.Find("CoolDownReady").transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[1] = GameObject.Find("CoolDownReady").transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
+            finishedStart = true;
         }
 
         void FixedUpdate()
         {
+            if (!finishedStart)
+                return;
             if (playerDead)
             {
                 return;
@@ -231,8 +235,11 @@ namespace McDungeon
 
         void Update()
         {
+            if(!finishedStart)
+                return;
             if (GlobalStates.isPaused)
             {
+                Debug.Log("I'm paused");
                 return;
             }
 
@@ -251,6 +258,7 @@ namespace McDungeon
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
                 {
+                    Debug.Log("Firing and attacking");
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
                     audioSource[5].Play();
@@ -347,7 +355,7 @@ namespace McDungeon
                     knockBack: myWeapon.knockBack * 100f,
                     true
                 );
-                //closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
+                closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
             }
             /*
             closeRangeWeapon.Config(
@@ -393,6 +401,7 @@ namespace McDungeon
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
                 playerDead = true;
                 audioSource[9].Play();
+                uiManager.GameOver();
             }
         }
 

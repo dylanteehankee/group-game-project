@@ -19,7 +19,6 @@ public class MapGenerator : MonoBehaviour
     private GameObject startRoom, tutorialRoom, endRoom;
     private Vector2Int currentRoomCoordinates;
     private Dictionary<Vector2Int, GameObject> roomDictionary = new Dictionary<Vector2Int, GameObject>();
-    private float resetCounter = 3f;
 
     private int[,] map;
 
