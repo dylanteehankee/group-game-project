@@ -18,11 +18,16 @@ namespace McDungeon
         private float elapsedCastTime = 0.0f;
         private bool isCasting = false;
         private EffectTypes spellType = EffectTypes.None;
+        
+        private AudioSource[] audioSource;
 
         void Start()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
+
+            var mobSoundManager = GameObject.FindWithTag("MobSoundManager");
+            audioSource = mobSoundManager.GetComponents<AudioSource>();
         }
 
         void Update()
@@ -53,15 +58,18 @@ namespace McDungeon
             {
                 Debug.Log("CASTING");
                 this.animator.SetBool("Cast", true);
+                audioSource[1].Play();
                 if (Random.Range(0, 2) == 1)
                 {
                     this.animator.SetTrigger("CastFire");
                     this.spellType = EffectTypes.Ablaze;
+                    audioSource[6].Play();
                 }
                 else
                 {
                     this.animator.SetTrigger("CastFrost");
                     this.spellType = EffectTypes.Freeze;
+                    audioSource[7].Play();
                 }
                 isCasting = true;
             }

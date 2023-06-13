@@ -238,10 +238,11 @@ Therefore, we should be allowed to use this in our game.
 ### Sound Effects
 
 [`Whoosh Sounds Effects HD (No Copyright)`](https://www.youtube.com/watch?v=TitDsqWGtxs&ab_channel=YouTubeSoundEffects) by *YouTube Sound Effects* - Sword whoosh for both the [Player](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#the-player) and [Knight](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#knight).
+[`Flash Fire Ignite-Sound Effect (HD)`](https://www.youtube.com/watch?v=I2_DotYhuAA&ab_channel=FameFX) by *Fame FX* - Torch Igniting.
 
 All other sound effects are created by me using [BeepBox](https://www.beepbox.co/#9n31s0k0l00e03t2ma7g0fj07r1i0o432T7v1u41f0q011d08H_RJSIrsAArrrrrh0IaE0T1v1u62f0qwx10s811d08A0F0B0Q00adPfe39E4b761862863bT0v1u12f10s4q00d03w2h2E0T2v1u15f10w4qw02d03w0E0b4h400000000h4g000000014h000000004h400000000p16000000) to emulate each sound as best as I could in the 8-bit style. 
 
-I made sure to create sound for most attacks to that the Player could distingush the sound of being hit or the sound of an attack from an enemy. I also made sounds to indicate opening the inventory so that opening is not just a visual queue. 
+I made sure to create sound for most attacks to that the Player could distingush the sound of being hit or the sound of an attack from an enemy. I also made sounds to indicate actions like spells or opening the inventory, so that actions would not just result in visual queues and so that these actions are more satisfying to the player. 
 
 ## Gameplay Testing
 
