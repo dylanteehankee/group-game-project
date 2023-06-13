@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,54 +103,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Windows Store Apps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -159,9 +111,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 600
+        y: 768
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,8 +121,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4a9d367d3e5240c5899d5366107b257
-      internalID: 42649493
+      spriteID: 6ce91d18dfca9e94f946e8bace33f4c8
+      internalID: -1002648764
       vertices: []
       indices: 
       edges: []
@@ -180,9 +132,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 180
-        y: 600
+        y: 768
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -190,8 +142,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1363aa0caa431473fa9c8177503fbfd2
-      internalID: -533875599
+      spriteID: 0a47e9464552ba04ab225beae54f3f56
+      internalID: -300566632
       vertices: []
       indices: 
       edges: []
@@ -201,9 +153,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 360
-        y: 600
+        y: 768
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -211,8 +163,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 279ad5062f8d346bea2fea41855414d6
-      internalID: -1127118170
+      spriteID: 874d0b3738bec3944913b177e3a74013
+      internalID: -699281167
       vertices: []
       indices: 
       edges: []
@@ -222,9 +174,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 540
-        y: 600
+        y: 768
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -232,8 +184,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8ee6b6068de042c184aa08cdee254d1
-      internalID: 879147373
+      spriteID: 3dfc37f3dbbb45148bc306c4b8fd5cb9
+      internalID: 2064014585
       vertices: []
       indices: 
       edges: []
@@ -242,10 +194,10 @@ TextureImporter:
       name: Laser_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 720
+        y: 768
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -253,8 +205,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 61862ae8aeeb6433f8c8e526552a5025
-      internalID: 579589178
+      spriteID: 5dc7cb5d424832d438d3046a64bc0cf7
+      internalID: 864451084
       vertices: []
       indices: 
       edges: []
@@ -263,10 +215,10 @@ TextureImporter:
       name: Laser_5
       rect:
         serializedVersion: 2
-        x: 180
+        x: 0
         y: 0
         width: 180
-        height: 600
+        height: 768
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -274,8 +226,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fa2581a733bb43c994339da5b1bdd7b
-      internalID: 299664355
+      spriteID: 7f2fb8511b9774647b8613a30f60a89a
+      internalID: -976728207
       vertices: []
       indices: 
       edges: []
@@ -291,12 +243,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Laser_0: 42649493
-      Laser_1: -533875599
-      Laser_2: -1127118170
-      Laser_3: 879147373
-      Laser_4: 579589178
-      Laser_5: 299664355
+      Laser_0: -1002648764
+      Laser_1: -300566632
+      Laser_2: -699281167
+      Laser_3: 2064014585
+      Laser_4: 864451084
+      Laser_5: -976728207
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
