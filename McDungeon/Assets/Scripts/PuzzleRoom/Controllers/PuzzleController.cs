@@ -30,6 +30,8 @@ public class PuzzleController : MonoBehaviour
     private List<int> rewardCutoffs;
     private int knightCutoff; 
 
+    private AudioSource[] audioSource;
+
     [SerializeField] public int puzzleID;
     [SerializeField] public int puzzleGridWidth;
     [SerializeField] public int puzzleGridHeight;
@@ -43,14 +45,16 @@ public class PuzzleController : MonoBehaviour
     [SerializeField] public GameObject wallPrefab;
     [SerializeField] public GameObject disappearWallPrefab;
     [SerializeField] public GameObject staticWallPrefab;
-
     
     private Dictionary<string, PuzzleElementShapeLink> stringToPuzzleElementShape; 
 
     void Start()
     {
-  
         Init();
+        
+        // Initializing Sounds
+        var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
+        audioSource = roomSoundManager.GetComponents<AudioSource>();
     }
 
     /// <summary>
@@ -260,6 +264,8 @@ public class PuzzleController : MonoBehaviour
     private void WinPuzzleRoom()
     {
         EndPuzzleRoom();
+        // Play Puzzle Complete sound
+        audioSource[2].Play();
         List<GameObject> knights = mobManager.GetMobs();
         foreach(GameObject knight in knights)
         {
@@ -300,6 +306,8 @@ public class PuzzleController : MonoBehaviour
     private void LosePuzzleRoom()
     {   
         EndPuzzleRoom();
+        // Play Puzzle Fail sound
+        audioSource[3].Play();
         // Losing sequence, start the knights
         List<GameObject> knights = mobManager.GetMobs(); // Should only be knights. 
         foreach(GameObject knight in knights)

@@ -14,9 +14,13 @@ public class StartButtonController : MonoBehaviour
 
     private bool started = false;
 
+    private AudioSource[] audioSource;
+
     void Awake()
     {
         startDelay = 0.2f;
+        var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
+        audioSource = roomSoundManager.GetComponents<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,6 +29,7 @@ public class StartButtonController : MonoBehaviour
         {
             started = true;
             GetComponent<SpriteRenderer>().sprite = pushed;
+            audioSource[1].Play();
         }
     }
     

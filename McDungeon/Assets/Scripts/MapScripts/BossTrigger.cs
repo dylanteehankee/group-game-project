@@ -10,6 +10,7 @@ public class BossTrigger : MonoBehaviour
     private AudioSource[] bgAudioSource;
     // Start is called before the first frame update
     private bool isTriggered = false;
+    
     void Start()
     {
         var parent = transform.parent.gameObject;

@@ -24,10 +24,13 @@ namespace McDungeon
         [SerializeField]
         private GameObject swordDropPrefab;
 
+        private AudioSource[] audioSource;
+
         void Start()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
+            this.audioSource = this.GetComponents<AudioSource>();
         }
 
         void Update()
@@ -60,6 +63,8 @@ namespace McDungeon
                 this.animator.SetTrigger("Attack");
                 this.isAttacking = true;
                 this.hitPlayer = false;
+
+                audioSource[0].Play();
             }
             else if (this.elapsedAttackTime > ATTACKDURATION)
             {
