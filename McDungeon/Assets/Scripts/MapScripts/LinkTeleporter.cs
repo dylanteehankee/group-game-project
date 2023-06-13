@@ -22,6 +22,7 @@ public class LinkTeleporter : MonoBehaviour
     private bool updateCameraLock;
     private PuzzleController puzzleController;
     private AudioSource[] audioSource;
+    private AudioSource bgAudioSource;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
@@ -31,6 +32,8 @@ public class LinkTeleporter : MonoBehaviour
         //look for gameobject with tag "RoomSoundManager"
         var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
         audioSource = roomSoundManager.GetComponents<AudioSource>();
+        var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
+        bgAudioSource = backgroundSoundManager.GetComponent<AudioSource>();
 
         var mobSpawner = GameObject.FindWithTag("MobSpawner");
         mobManager = mobSpawner.GetComponent<MobManager>();
@@ -200,6 +203,19 @@ public class LinkTeleporter : MonoBehaviour
 
                     mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
+
+                if (parentTarget.CompareTag("EndRoom")){
+                    //pause background music
+                    bgAudioSource.Pause();
+                }
+                else
+                {
+                    //play background music if not
+                    if (!bgAudioSource.isPlaying){
+                        bgAudioSource.Play();
+                    }
+                }
+
                 grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
                 Debug.Log("Teleported to " + parentTarget.name + " at " + TargetRoom.transform.position);
             //}
