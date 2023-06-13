@@ -110,9 +110,9 @@ public class UIManager : MonoBehaviour
                 pmc.PauseGame();
             }
         }
-        if(Input.GetKeyDown(KeyCode.L))
+        /*if(Input.GetKeyDown(KeyCode.L))
         {
             GameOver();
-        }
+        }*/
     }
 }
