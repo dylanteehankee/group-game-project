@@ -8,6 +8,7 @@ public class BossHandController : MonoBehaviour
     Vector2 playerLocation;
     private float attackTime;
     private Animator animator;
+    private int damage = 2;
     private bool isAttack = false;
     private bool hitPlayer = false;
 
@@ -25,7 +26,7 @@ public class BossHandController : MonoBehaviour
         }
     }
 
-    public void attack(GameObject playerObject)
+    public void Attack(GameObject playerObject)
     {
         this.animator.SetBool("Attack", true);
         this.isAttack = true;

@@ -79,7 +79,11 @@ public class BossController : MonoBehaviour
 
     private IEnumerator damageEffect()
     {
-        //flash when taking damage
+        for (int i = 0; i < 6; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            // Change color
+        }
     }
     private void death()
     {
