@@ -18,7 +18,7 @@ public class BossController : MonoBehaviour
     private GameObject laserObject;
     [SerializeField]
     private float bossHealth = 100.0f;
-    private float moveSpeed = 0.5f;
+    private float moveSpeed = 2f;
     private float laserDamage = 2.0f;
     private float attackSpeed = 5.0f;
     private float attackCD = 0.0f;

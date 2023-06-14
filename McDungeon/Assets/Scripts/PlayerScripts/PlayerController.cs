@@ -70,7 +70,7 @@ namespace McDungeon
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
-        private bool isMcMode = true;
+        [SerializeField] private bool isMcMode = false;
 
         private Light2D globalLight;
         private Light2D torchLight;
@@ -181,6 +181,8 @@ namespace McDungeon
             finishedStart = true;
 
             playerAnimator = this.gameObject.GetComponent<Animator>();
+
+            isMcMode = false;
         }
 
         void FixedUpdate()
@@ -405,7 +407,7 @@ namespace McDungeon
 
         public void checkDeath()
         {
-            if (playerHealth < 0f)
+            if (playerHealth <= 0f)
             {
                 // Dead
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
