@@ -938,6 +938,11 @@ namespace McDungeon
             fireCoolDown = 1f;
             fireCoolDowntimer = 0f;
             fireCastDuration = 0.2f;
+
+            if ( globalLight.intensity == 0f)
+            {
+                globalLight.intensity = 0.1f;
+            }
         }
 
         public void PlayerLeavePuzzle()
@@ -945,6 +950,8 @@ namespace McDungeon
             fireCoolDown = 3f;
             fireCoolDowntimer = 0f;
             fireCastDuration = 0.5f;
+
+            globalLight.intensity = lightIntensity;
         }
     }
 }
