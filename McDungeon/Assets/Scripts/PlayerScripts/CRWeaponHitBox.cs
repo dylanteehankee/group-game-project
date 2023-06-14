@@ -40,10 +40,6 @@ namespace McDungeon
             {
                 BossController mobControl = other.gameObject.GetComponent<BossController>();
                 mobControl.TakeDamage(attackDamage, EffectTypes.None);
-
-                Vector3 direction = other.gameObject.transform.position - center.transform.position;
-                Vector2 dir2D = new Vector2(direction.x, direction.y);
-                dir2D = dir2D.normalized;
             }
         }
     }
