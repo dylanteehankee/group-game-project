@@ -14,7 +14,7 @@ public class TAController : MonoBehaviour
     private float elapsedTime = 0.0f;
     private float blackHoleEffect = 2.0f;
     private bool isSpinning = false;
-    private const float SPINDURATION = 1.0f;
+    private const float SPINDURATION = 2.0f;
 
     void Start()
     {
@@ -51,7 +51,7 @@ public class TAController : MonoBehaviour
     {
         this.GetComponent<Animator>().SetTrigger("Spin");
         for (int i = 0; i < 4; i++){
-            for (int j = 0; i < 5; i++)
+            for (int j = 0; i < 10; i++)
             {
                 var attenCode = Instantiate(attenCodePrefab);
                 attenCode.GetComponent<AttenCodeController>().Execute();

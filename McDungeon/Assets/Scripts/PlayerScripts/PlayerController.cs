@@ -109,6 +109,8 @@ namespace McDungeon
         [SerializeField] public RuntimeAnimatorController mcController;
         private Animator playerAnimator;
 
+        [SerializeField] private GameObject prefab_TA;
+
         void Start()
         {
             playerInventory = new PlayerInventory(this);
@@ -630,7 +632,19 @@ namespace McDungeon
                 {
                     if (spellCastTimer <= 0f)
                     {
-                        currentSpell.Execute(this.transform.position, mousePos);
+                        if (isMcMode && spell == 'I')
+                        {
+                            GameObject TA_spell = Instantiate(prefab_TA);
+                            Vector3 TA_pos = this.transform.position;
+                            TA_pos.x = TA_pos.x + 0.5f;
+                            TA_pos.y = TA_pos.y + 0.5f;
+
+                            TA_spell.transform.position = TA_pos;
+                        }
+                        else
+                        {
+                            currentSpell.Execute(this.transform.position, mousePos);
+                        }
                         setCD(spell);
                         Debug.Log("Spell Casted");
                     }
@@ -866,7 +880,7 @@ namespace McDungeon
                 {
                     bgAudioSource[0].Play();
                 }
-                
+
                 playerAnimator.runtimeAnimatorController = playerController;
             }
         }
