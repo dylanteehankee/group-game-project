@@ -636,8 +636,18 @@ namespace McDungeon
                         {
                             GameObject TA_spell = Instantiate(prefab_TA);
                             Vector3 TA_pos = this.transform.position;
-                            TA_pos.x = TA_pos.x + 0.5f;
-                            TA_pos.y = TA_pos.y + 0.5f;
+
+                            Vector3 distanceVec = (mousePos - this.transform.position);
+                            distanceVec.z = 0f;
+                            Vector3 spellDir = distanceVec.normalized;
+                            float distance = distanceVec.magnitude;
+
+                            if (distance > 4f)
+                            {
+                                distance = 4f;
+                            }
+
+                            TA_pos = this.transform.position + spellDir * distance;
 
                             TA_spell.transform.position = TA_pos;
                         }
