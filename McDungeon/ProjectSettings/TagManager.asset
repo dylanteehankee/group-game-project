@@ -28,6 +28,7 @@ TagManager:
   - BossHand
   - BossButton
   - MobSoundManager
+  - BossHitbox
   layers:
   - Default
   - TransparentFX
