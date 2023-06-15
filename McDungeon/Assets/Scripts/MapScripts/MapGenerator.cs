@@ -8,6 +8,7 @@ public class MapGenerator : MonoBehaviour
     //Variables
     //[SerializeField] private int numberOfRooms = 16;
 
+    [SerializeField] private GameObject miniMapHUD;
     [SerializeField] private GameObject miniRoom;
     [SerializeField] private GameObject miniMap;
     [SerializeField] private Sprite endRoomSprite;
@@ -280,11 +281,11 @@ public class MapGenerator : MonoBehaviour
     }
 
     public void DisableMiniMap(){
-        miniMap.SetActive(false);
+        miniMapHUD.SetActive(false);
     }
 
     public void EnableMiniMap(){
-        miniMap.SetActive(true);
+        miniMapHUD.SetActive(true);
     }
 
 }

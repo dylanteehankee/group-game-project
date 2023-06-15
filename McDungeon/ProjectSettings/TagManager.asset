@@ -30,6 +30,7 @@ TagManager:
   - MobSoundManager
   - BossHitbox
   - SpecialSoundManager
+  - MiniMap
   layers:
   - Default
   - TransparentFX

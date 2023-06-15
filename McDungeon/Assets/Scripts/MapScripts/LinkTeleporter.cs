@@ -26,11 +26,8 @@ public class LinkTeleporter : MonoBehaviour
     private MapGenerator mapGenerator;
 
     void Start(){
-        //look for gameobject with tag "MobSpawner"
         var CameraController = GameObject.FindWithTag("MainCamera");
         positionLockCamera = CameraController.GetComponent<PositionLockCamera>();
-
-        //look for gameobject with tag "RoomSoundManager"
         var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
         audioSource = roomSoundManager.GetComponents<AudioSource>();
         var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
@@ -44,6 +41,7 @@ public class LinkTeleporter : MonoBehaviour
         if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
             puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
+        
         grandparent = parent.transform.parent.gameObject;
         mapGenerator = grandparent.GetComponent<MapGenerator>();
     }
@@ -51,25 +49,19 @@ public class LinkTeleporter : MonoBehaviour
     void LateUpdate(){
         if (!TargetRoom && !beenDisabled)
         {
-            //disable collider so player can't teleport to a room that doesn't exist
+            // Disable collider so player can't teleport to a room that doesn't exist
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<Animator>().enabled = false;
-            //GetComponent<BoxCollider2D>().enabled = false;
             beenDisabled = true;
         }
 
         //RoomCompleted makes sure that this update only runs up until the room is completed
         if (TargetRoom && isInside && !RoomCompleted){
-            //if player already picked in startRoom, open door
+            // If player is in startRoom, keep door open.
             if (parent.CompareTag("StartRoom")){
-                /*if (enemyCount == 0){
-                    closeDoor = false;
-                }
-                else{
-                    closeDoor = true;
-                }*/
+                closeDoor = false;
             }
-            //if no enemies in room, set hasEnemies to false
+            // If no enemies in room, open door.
             else if (parent.CompareTag("CombatRoom")){
                 if (mobManager.GetMobs().Count == 0){
                     //play sound at array index 0
@@ -81,7 +73,6 @@ public class LinkTeleporter : MonoBehaviour
                     closeDoor = true;
                 }
             }
-            //if no puzzle in room, set hasPuzzle to false
             else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
                 if (puzzleController != null){
                     if (puzzleController.GetPuzzleRoomState() != PuzzleRoomState.Completed){
@@ -100,12 +91,14 @@ public class LinkTeleporter : MonoBehaviour
                         closeDoor = true;
                         if(puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
                            GetComponent<SpriteRenderer>().enabled = false;
+                           mapGenerator.DisableMiniMap();
                         }
                         else{
                             GetComponent<SpriteRenderer>().enabled = true;
                         }
                     }
                     else {
+                        mapGenerator.EnableMiniMap();
                         if(updateCameraLock){
                             //set position lock to player
                             positionLockCamera.changeCameraMode(CameraMode.LockOnPlayer, new Vector2Int(0, 0));
@@ -120,18 +113,18 @@ public class LinkTeleporter : MonoBehaviour
                     }
                 }
             }
-            //if player already is in shop, keep door open
+            // If player already is in shop, keep door open.
             else if (parent.CompareTag("ShopRoom")){
                 closeDoor = false;
                 RoomCompleted = true;
             }
-            //if player already is in endRoom, keep door closed
+            // If player already is in endRoom, keep door closed.
             else if (parent.CompareTag("EndRoom")){
                 closeDoor = false;
                 RoomCompleted = true;
             }
             
-            //if player is inside room, close door if closeDoor is true
+            // If closeDoor is true, close door and disable collider
             if (closeDoor){
                 animator.SetBool("CloseDoor", true);
                 GetComponent<BoxCollider2D>().enabled = false;
@@ -142,6 +135,7 @@ public class LinkTeleporter : MonoBehaviour
         }
     }
 
+    // Open door after 1 second, and enable collider after 1 second.
     IEnumerator waitToOpenDoor(){
         yield return new WaitForSeconds(1);
         animator.SetBool("CloseDoor", false);
@@ -191,10 +185,9 @@ public class LinkTeleporter : MonoBehaviour
                     mapGenerator.DisableMiniMap();
                     other.GetComponent<PlayerController>().PlayerEnterPuzzle();
                 }
-                // If player is leaving tutorial room or puzzle room, unlock camera, and enable minimap.
+                // If player is leaving tutorial room or puzzle room, unlock camera.
                 if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
                 {
-                    mapGenerator.EnableMiniMap();
                     positionLockCamera.LockOnPlayer();
                     other.GetComponent<PlayerController>().PlayerLeavePuzzle();
                 }
