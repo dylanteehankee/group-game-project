@@ -127,7 +127,6 @@ This also caused problems when players were fighting and wanted to use a health 
 Moving forwards, I would definitely do some user interface research and get feedback from people who were not familiar with the system.  
 
 
-
 ## Mobs - Orien Cheng
 
 ### Mob AI
@@ -555,7 +554,7 @@ The sound implementation mostly consisted of sorting sounds into 4 categories: b
  
 
 ## Lighting and Camera - Honghui
-We used the URP (Universal Render Pipeline) package from unity to enable the 2D lightings. Most of the lighting is pre-defined in the prefabs when we make them, we also make some objects such as UI have `un-lit` (not affect by light, always shows up) material to emphasize them. Some of the lights were controled by script for cut-scene effects.
+We used the URP (Universal Render Pipeline) package from unity to enable the 2D lightings. Most of the lighting is pre-defined in the prefabs when we make them, we also make some objects such as UI have `un-lit` (not affect by light, always shows up) material to emphasize them. Some of the lights were controled by script for cut-scene effects. Intentionally keep combat rooms dim and a torch light around player to create a isolated and "surrounded by danger" game feel. The global light is disabled in hard mode to further enhance this feeling.
  
 The camera mode is tight to players' action.
  - LockOnPlayer: Normal mode in which the camera follows the player, we decided to have this type of camera to enhance the first-person feeling when the player explores the map.
