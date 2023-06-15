@@ -2,37 +2,24 @@
 
 ## Summary ##
 
-**A paragraph-length pitch for your game.**
-
 Our player is trapped in the depths of a dungeon and must solve puzzles and fight monsters to advance through each room. Each room may bring them closer to freedom, but there’s no way to know what dangers might be in store for them. They may encounter mages, gnomes, and knights or a merchant who might or might not help in their journey.
 
 ## Gameplay Explanation ##
 
-**In this section, explain how the game should be played. Treat this as a manual within a game. It is encouraged to explain the button mappings and the most optimal gameplay strategy.**
+Player movement is controlled using WASD. The melee weapon is controlled by the mouse position, and Left Click to initiate a swing. The player have 4 spells, bounded to `Right Click`, `Q`, `E`, and `Space`, that casts a Fireball, Lighting, Water, and Blizzard respectively. Similarly to the melee weapon, the spells are also guided by mouse position, and a button hold is used to represent the cast time of the spell. Release the spell button after 0.5 seconds for Fireball and 1 second for the rest to cast the spell. There are special mechanics to these spells. The Fireball spell is capable of piercing through and burning monsters, and is able to bounce off the wall 3 times. The Lightning spell summons 3 auto-targetting lightning bolts that target to the nearest monster, and damage the monsters. The Water spell summons a AOE damage circle that starts at the player and moves towards the direction of where the mouse was when the spell was casted. The Blizzard spell creates a AOE circle based on the mouse position, like Mage's Blizzard in WoW, and freezes any mob that gets hit.
 
-Player movement is controlled using WASD. The melee weapon is controlled by the mouse position, and Left Click to initiate a swing. The player have 4 spells, bounded to Right Click, Q, E, and Space, that casts a Fireball, Lighting, Water, and Blizzard respectively. Similarly to the melee weapon, the spells are also guided by mouse position, and a button hold is used to represent the cast time of the spell. Release the spell button after CASTTIME second/s to cast the spell. There are special mechanics to these spells. The Fireball spell is capable of piercing through and burning monsters, and is able to bounce off the wall 3 times. The Lightning spell summons 3 auto-targetting lightning bolts that target to the nearest monster, and damage the monsters. The Water spell summons a AOE damage circle that starts at the player and moves towards the direction of where the mouse was when the spell was casted. The Blizzard spell creates a AOE circle based on the mouse position, like Mage's Blizzard in WoW, and freezes any mob that gets hit.
+The player also has an inventory system, bounded to `I`, where the player can see the weapons, armor, and potions they have collected. The player may click on any weapon or armor and click Equip to equip the new weapon or armor. The player may also navigate to the Items tab in order to access their potions that they may use during their adventure to heal themselves when at low health.
 
-The player also has an inventory system, bounded to I, where the player can see the weapons, armor, and potions they have collected. The player may click on any weapon or armor and click Equip to equip the new weapon or armor. The player may also navigate to the Items tab in order to access their potions that they may use during their adventure to heal themselves when at low health.
-
-There are 4 types of rooms: Combat, Puzzle, Shop, and Boss. Within the Combat Rooms, the player must kill the spawned monsters in order to clear the the Combat Room to progress to the next room. Within Puzzle Rooms, there are unlit torches scattered across the walls of the room that must be hit with a Fireball spell within a set amount of time, either through direct fire or through bounces. These torches do extinguish after // seconds, so all torches must be lit at the same time in order to progress to the next room. If the player completes the puzzle early, as indicated on the chest timer, the player will be rewarded with random item drops. If the player fails to complete the Puzzle Room within the set amount of time, the player will have to defeat the activated knights before they may progress. Beware, these knights are very difficult. The Shop Room is where the player may spend their gold that they have collected during their journey. The player may buy items such as new weapons, armor, and health potions to strengthen themselves for the remaining exploration. The player may also sell any items they have collected during their adventure. Finally, the player will encounter the red Boss Room, where the player must walk to the center to be moved to start the boss fight.
+There are 4 types of rooms: Combat, Puzzle, Shop, and Boss. Within the Combat Rooms, the player must kill the spawned monsters in order to clear the the Combat Room to progress to the next room. Within Puzzle Rooms, there are unlit torches scattered across the walls of the room that must be hit with a Fireball spell within a set amount of time, either through direct fire or through bounces. These torches do extinguish after 10 seconds, so all torches must be lit at the same time in order to progress to the next room. If the player completes the puzzle early, as indicated on the chest timer, the player will be rewarded with random item drops. If the player fails to complete the Puzzle Room within the set amount of time, the player will have to defeat the activated knights before they may progress. Beware, these knights are very difficult. The Shop Room is where the player may spend their gold that they have collected during their journey. The player may buy items such as new weapons, armor, and health potions to strengthen themselves for the remaining exploration. The player may also sell any items they have collected during their adventure. Finally, the player will encounter the red Boss Room, where the player must walk to the center to be moved to start the boss fight.
 
 There are 2 difficulties to the game, normal and hard mode, shown as portals on the top of the Starting Room. The player may interact with either portal with F to select their difficulty. The difference of choosing hard mode compared to normal at the moment is currently only a lighting change, where the game becomes much darker and harder to see. There is also a special mode that must be unlocked through a Konami-Code like system, where you must input a specific button order to unlock the mode. To use the konami-code, you need to move player to the magic-array painting in the center of start room, press "Space" to activate the system, then input/tap "S-W-A-S-W-A" to triger the unlock.
 
-**If you did work that should be factored in to your grade that does not fit easily into the proscribed roles, add it here! Please include links to resources and descriptions of game-related material that does not fit into roles here.**
+#### Expected Bugs
+1. The player can attack with no weapon equipped.
+2. The Player can attack while frozen.
+3. Casting a Fireball while hugging the top wall always sends it off-screen.
 
 # Main Roles #
-
-Your goal is to relate the work of your role and sub-role in terms of the content of the course. Please look at the role sections below for specific instructions for each role.
-
-Below is a template for you to highlight items of your work. These provide the evidence needed for your work to be evaluated. Try to have at least 4 such descriptions. They will be assessed on the quality of the underlying system and how they are linked to course content. 
-
-*Short Description* - Long description of your work item that includes how it is relevant to topics discussed in class. [link to evidence in your repository](https://github.com/dr-jam/ECS189L/edit/project-description/ProjectDocumentTemplate.md)
-
-Here is an example:  
-*Procedural Terrain* - The background of the game consists of procedurally-generated terrain that is produced with Perlin noise. This terrain can be modified by the game at run-time via a call to its script methods. The intent is to allow the player to modify the terrain. This system is based on the component design pattern and the procedural content generation portions of the course. [The PCG terrain generation script](https://github.com/dr-jam/CameraControlExercise/blob/513b927e87fc686fe627bf7d4ff6ff841cf34e9f/Obscura/Assets/Scripts/TerrainGenerator.cs#L6).
-
-You should replay any **bold text** with your relevant information. Liberally use the template when necessary and appropriate.
-
 
 ## User Interface
 
@@ -275,7 +262,7 @@ The puzzle buttons had be extremely obvious in order for Players to get an under
 
 <sub>*As of the time writing this (6/13/2023), this is the complete list of all assets I have created excluding: UI Elements, Boss Health Bar, and a Scrapped Torch.*<sub>
 
-## Puzzle
+## Puzzle - Krystal Chau/Jason Fu
 
 ### Design
 The main concepts behind most puzzles were made on graph paper, where I could correlate each square on the paper to a tile in game. I chose to desgin on paper because it was the best way to test many different designs quickly and without too much of a turnaround time so that the implementor(Jason) could work on the room. 
