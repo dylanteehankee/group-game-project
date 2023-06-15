@@ -84,7 +84,7 @@ The initial plan on the spell part was to make 2 spells per element for the play
 ### Mob AI
 The concept of the Mob AI was to track and move toward the player, and attack the player when the player is within the mob's attack range. There were 6 mobs in concept: Slime, Skeleton, Knight, GNome, GNelf, and Mage.
 
-In its earliest phases, the design was very simplistic, the mob had to take damage, and the mob had to keep track, move towards, and then attack the player. There were no Mob assets to begin with so they started out with simple Hexagon prefabs so that the interaction between player and mob could be tested. Each mob was designed very simplistically, with Slime, Skeleton, and Knight all melee attacking. GNome was designed to throw a projectile and spawn GNelfs, and Mage was designed to cast either a Fireball or Frostbolt. These projectiles would have their own controllers similarly to (Exercise 4)[] and my self designed pirate command in (Exercise 1)[] . Each mob had its own controller, derived from the `IMobController` Interface, that allowed the player easy access to call the function `TakeDamage()`. The `MobManager.cs` was designed after to keep track of all the mobs in a list, with functions `Subscribe()`, `Unsubscribe()`, and `Notify()` to keep track and control all mobs that were spawned, just like in [Exercise 3](SOME LINK). There were some simple functions designed, such as `SpawnMobs()` and`GetMobs()`, so that the room manager was able spawn mobs and keep track of whether the list of mobs was empty so that the player may progress.
+In its earliest phases, the design was very simplistic, the mob had to take damage, and the mob had to keep track, move towards, and then attack the player. There were no Mob assets to begin with so they started out with simple Hexagon prefabs so that the interaction between player and mob could be tested. Each mob was designed very simplistically, with Slime, Skeleton, and Knight all melee attacking. GNome was designed to throw a projectile and spawn GNelfs, and Mage was designed to cast either a Fireball or Frostbolt. These projectiles would have their own controllers similarly to [Exercise 4](https://github.com/ensemble-ai/exercise-4-factory-pattern-oycheng) and my self designed pirate command in [Exercise 1](https://github.com/ensemble-ai/exercise-1-command-pattern-oycheng) . Each mob had its own controller, derived from the `IMobController` Interface, that allowed the player easy access to call the function `TakeDamage()`. The `MobManager.cs` was designed after to keep track of all the mobs in a list, with functions `Subscribe()`, `Unsubscribe()`, and `Notify()` to keep track and control all mobs that were spawned, just like in [Exercise 3](SOME LINK). There were some simple functions designed, such as `SpawnMobs()` and`GetMobs()`, so that the room manager was able spawn mobs and keep track of whether the list of mobs was empty so that the player may progress.
 
 We wanted more variety within the mobs, as many of the mobs shared the same attack patterns or traits, so we redesigned Skeleton, and Knight and made a small rework to the Slime. The skeleton was redesigned so that it threw a bone projectile, and it needed to retrieve its bone before it can throw it again. The decision to have the Skeleton pick up its thrown bone was to differentiate from the GNome, who threw knife projectiles at the player. The Knight was redesigned so that it had a respawning shield that takes a free hit. The Slime was minorly changed so that it slowed the player.
 
@@ -210,7 +210,7 @@ Weapons and armor were created as a way for the player to have some kind of cust
 | All Weapons | ![Weapon All](https://piskel-imgstore-b.appspot.com/img/894ddd97-09c0-11ee-81c4-c98958b07512.gif) | All Armor | ![Armor All](https://piskel-imgstore-b.appspot.com/img/30704302-09c1-11ee-9126-c98958b07512.gif) |
 | :------------: |:------------: |:------------: |:------------: |
 
-#### Attack (Unsused)
+#### Attack (Unused)
 | ![Wooden](https://piskel-imgstore-b.appspot.com/img/7799f29c-09c0-11ee-a8e6-c98958b07512.gif) | ![Iron](https://piskel-imgstore-b.appspot.com/img/552a4723-09c1-11ee-bbdb-c98958b07512.gif) | ![Ice](https://piskel-imgstore-b.appspot.com/img/5cc34ef3-09c1-11ee-bf1d-c98958b07512.gif) | ![Amethyst](https://piskel-imgstore-b.appspot.com/img/6867375c-09c1-11ee-be6b-c98958b07512.gif) | ![Ruby](https://piskel-imgstore-b.appspot.com/img/732aa259-09c1-11ee-a4b9-c98958b07512.gif) | ![Emerald](https://piskel-imgstore-b.appspot.com/img/7e90b98f-09c1-11ee-b28a-c98958b07512.gif) |  
 | :------------: |:------------: |:------------: |:------------: |:------------: |:------------: |
 
@@ -290,7 +290,7 @@ Most of my puzzles went through multiple design changes as our game was develope
 | Room 1 Version 1 | Room 2 Version 1 |
 | :------------: | :------------: |
 | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670143070278/IMG_4571.jpg" width="50%"><br><img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670562496525/IMG_4572.jpg" width="50%"> | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1113420536094150696/IMG_4576.jpg" width="70%">  |
-| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to teh puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
+| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to the puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
 
 Once these problems were brought to my attention, I opted to redesign each puzzle so that they would fit in the screen's 9 by 5 block limit, while trying to keep the rooms as close to the original designs.
 
@@ -445,27 +445,15 @@ Each room had their own preset conditions to complete. If the room is not comple
 | Chain Ball <br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118722436750393394/Ball_Chain.png"> |
 | Item Pedastel<br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721229872975892/Item_Pedestal_Base.png"> |
 
-## Input
-
-**Describe the default input configuration.**
-
-**Add an entry for each platform or input style your project supports.**
-
-## Game Logic
-
-**Document what game states and game data you managed and what design patterns you used to complete your task.**
-
 # Sub-Roles
 
 ## Project Manager - Orien Cheng
-
-**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
 
 ### Project Management
 From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our (Initial Game Plan)[https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing] Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
 An (Excel Sheet)[https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true] was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
 
-## Game Feel - Mixed
+## Game Feel - Orien Cheng
 Using information from personal playtesting and from the Project Game Showcase, many factors were changed or tweaked to enhance game feel.
 
 *Puzzle Rooms* - Puzzle rooms initially felt very clunky with the existing spell designs, with high cast time and long cooldowns. Although those cast times and cooldowns were meant for combat, it massively slowed down the gameplay during puzzle rooms so much so that the tutorial room was very easily failable. Some suggested changes were lowering both the cast time and cooldown of the Fireball spell specifically for the puzzle room, so that the player can test multiple angles much faster, and to increase the torch duration once it had been hit by a Fireball. Another issue that came up during the Project Game Showcase was that certain UI elements were blocking torch visibility, so moving the timer to back to the center of the screen and disabling the minimap and zooming out more for puzzle rooms were suggested as solutions.
@@ -475,8 +463,6 @@ Using information from personal playtesting and from the Project Game Showcase, 
 *Tutorial Puzzle Room* - The tutorial room currently gives weapons and potions as rewards for completing it fast, however it didn't make sense for the tutorial room to give a weapon that would replace the starting weapon that had not been used at all. Thus, a suggestion for removing weapon drops for the Tutorial Puzzle Room was made.
 
 *Player* - During personal playtests and duing the Project Game Showcase, the general consensus was that the player moved too slow. I had suggested to increase the player move speed to help with the flow of the game, however due to time constraints and required testing with new player speed, we were not able to implement the change.
- 
-*Lighting* - Intentionally keep combat rooms dim and a torch light around player to create a isolated and surrounded by danger game feel. The global light is disabled in hard mode to further enhance this feeling.
 
 ## Audio - Krystal Chau
 
@@ -595,22 +581,5 @@ Upon entering the vent in the final room, the player enters the Boss Room and wi
 |<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722787809435698/Bridge_Side_L.png">|
 |<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722788061102150/Bridge_Side_R_Top.png">|
 |<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722676463239168/Boxes.png">|
-  
-## Gameplay Testing
-
-**Add a link to the full results of your gameplay tests.**
-
-**Summarize the key findings from your gameplay tests.**
-
-## Narrative Design
-
-**Document how the narrative is present in the game via assets, gameplay systems, and gameplay.** 
-
-## Press Kit and Trailer
-
-**Include links to your presskit materials and trailer.**
-
-**Describe how you showcased your work. How did you choose what to show in the trailer? Why did you choose your screenshots?**
-
 
 
