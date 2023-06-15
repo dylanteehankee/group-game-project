@@ -87,7 +87,22 @@ namespace McDungeon
             }
             this.elapsedThrowTime += Time.deltaTime;
         }
-        
+
+        public virtual void TakeDamage(float damage, EffectTypes type)
+        {
+            this.mobHealth -= damage;
+            if (this.mobHealth >= 0)
+            {
+                Destroy(this.bone);
+            }
+            this.death();
+            this.stunned = true;
+            this.status(type);
+            StopCoroutine(stunStatus());
+            StartCoroutine(stunStatus());
+            StartCoroutine("hitConfirm");
+        }
+
         public bool HasBone()
         {
             return hasBone;

@@ -34,7 +34,7 @@ namespace McDungeon
 
         void Update()
         {
-            if (this.active && !this.stunned && !this.isFreeze)
+            if (this.active)
             {
                 this.getShield();
                 Vector2 location = this.transform.position;
@@ -74,9 +74,14 @@ namespace McDungeon
             }
             else if (this.elapsedAttackTime > ATTACKDURATION / 2 && !hitPlayer)
             {
-                this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
-                this.hitPlayer = true;
+                Vector2 location = this.transform.position;
+                Vector2 playerLocation = this.playerObject.transform.position;
+                if (Vector2.Distance(location, playerLocation) < this.attackRange)
+                {
+                    this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
+                    this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
+                    this.hitPlayer = true;
+                }
             }
             this.elapsedAttackTime += Time.deltaTime;
         }
@@ -95,9 +100,6 @@ namespace McDungeon
                 {
                     this.mobHealth -= damage;
                     this.death();
-                    this.stunned = true;
-                    StopCoroutine(stunStatus());
-                    StartCoroutine(stunStatus());
                     StartCoroutine("hitConfirm");
                 }
             }
@@ -105,6 +107,7 @@ namespace McDungeon
 
         protected override IEnumerator stunStatus()
         {
+            // DO NOTHING
             if (!this.stunObject)
             {
                 this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.5f));

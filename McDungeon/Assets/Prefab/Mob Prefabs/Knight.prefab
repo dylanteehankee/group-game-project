@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: c03df4d3efc3e4d5fb70c4ba74bd750d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -216,9 +216,8 @@ MonoBehaviour:
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   mobHealth: 30
-  attackRange: 2
+  attackRange: 2.5
   moveSpeed: 1
-  shieldPrefab: {fileID: 0}
   damage: 4
   attackSpeed: 2
   shieldObject: {fileID: 4561448730924890287}
