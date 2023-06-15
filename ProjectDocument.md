@@ -56,7 +56,7 @@ When the weapon is idealing (not attacking), the `weapon follower` will show up 
 | Weapon |   |   |
 | :------------: |:------------: |:------------: |
 |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Attack.gif" alt="Attack" width="80%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/WeaponFollow.gif" alt="WeaponFollow" width="120%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/counterweight.png" alt="counterweight" width="100%"> |
-| Weapon Attack | Weapon Follow | | Counter-weight Idea | 
+| Weapon Attack | Weapon Follow | Counter-weight Idea | 
 
 note: the Counter-weight is compeletely transparent and collider diabled in game, here is showing idea
 
@@ -465,7 +465,7 @@ Each room had their own preset conditions to complete. If the room is not comple
 From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our (Initial Game Plan)[https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing] Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
 An (Excel Sheet)[https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true] was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
 
-## Game Feel
+## Game Feel - Mixed
 Using information from personal playtesting and from the Project Game Showcase, many factors were changed or tweaked to enhance game feel.
 
 *Puzzle Rooms* - Puzzle rooms initially felt very clunky with the existing spell designs, with high cast time and long cooldowns. Although those cast times and cooldowns were meant for combat, it massively slowed down the gameplay during puzzle rooms so much so that the tutorial room was very easily failable. Some suggested changes were lowering both the cast time and cooldown of the Fireball spell specifically for the puzzle room, so that the player can test multiple angles much faster, and to increase the torch duration once it had been hit by a Fireball. Another issue that came up during the Project Game Showcase was that certain UI elements were blocking torch visibility, so moving the timer to back to the center of the screen and disabling the minimap and zooming out more for puzzle rooms were suggested as solutions.
@@ -475,10 +475,8 @@ Using information from personal playtesting and from the Project Game Showcase, 
 *Tutorial Puzzle Room* - The tutorial room currently gives weapons and potions as rewards for completing it fast, however it didn't make sense for the tutorial room to give a weapon that would replace the starting weapon that had not been used at all. Thus, a suggestion for removing weapon drops for the Tutorial Puzzle Room was made.
 
 *Player* - During personal playtests and duing the Project Game Showcase, the general consensus was that the player moved too slow. I had suggested to increase the player move speed to help with the flow of the game, however due to time constraints and required testing with new player speed, we were not able to implement the change.
-
-## Cross-Platform
-
-**Describe the platforms you targeted for your game release. For each, describe the process and unique actions taken for each platform. What obstacles did you overcome? What was easier than expected?**
+ 
+*Lighting* - Intentionally keep combat rooms dim and a torch light around player to create a isolated and surrounded by danger game feel. The global light is disabled in hard mode to further enhance this feeling.
 
 ## Audio - Krystal Chau
 
@@ -519,6 +517,45 @@ I made sure to create sound for most attacks to that the Player could distingush
 
 The sound implementation mostly consisted of sorting sounds into 4 categories: background music, room sounds, player/mob sounds, and special sounds. Then I would create a dedicated `SoundManager` prefab for the category, create a custom tag for it, and assign all sounds as a sound component. Depending on what sound it was adding, I would locate the tag and proceed to call the sound through playing the corresponding sound's array index in it's sound manager. This gave the me an easier way to find and add in audio, since I would not have to spend time counting `Audio Source` components to find the indexing of each sound. The old exceptions were sounds that were always played upon use, where I opted to directly add the `Audio Source` compontent to the game object itself and set it to "Play on Awake."
 
+ 
+
+## Lighting and Camera - Honghui
+We used the URP (Universal Render Pipeline) package from unity to enable the 2D lightings. Most of the lighting is pre-defined in the prefabs when we make them, we also make some objects such as UI have `un-lit` (not affect by light, always shows up) material to emphasize them. Some of the lights were controled by script for cut-scene effects.
+ 
+The camera mode is tight to players' action.
+ - LockOnPlayer: Normal mode in which the camera follows the player, we decided to have this type of camera to enhance the first-person feeling when the player explores the map.
+ - LockOnRoom: Puzzle mode in which the camera Locks on the center of Room for puzzle solving.
+ - MoveToTarget: Used for cut-scene when moving camera to a object.
+ - ReturnToPlayer: Transaction mode when switching back to Lock Player so the camera doesn't instantly teleport to the player.
+
+|Camera & Lighting Demo| | |
+| :-------: | :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseNormalMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseHardMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UnlockMcMirror.gif" width = 70%>|
+| Use Normal Mirror | Use Hard Mirror | Unlock Special Mirror|
+ 
+## Start Room Design and Implementation - Honghui (with Dylan contributed in designing)
+We porposed to have a start-room intead of a start meau UI for the immersed game experience. The design of start room is that a player been summoned from a initial portal to this world and the initial portal closed after summon so he/she need to find a way out from cross the Normal/Hard world from the mirror portals. The third portal was designed as Easter egg that allow current player to escape immediately but summon Dr. McCoy as "sacrifice"; however, is protected by a magical curtain from use.
+ 
+The make the special mode unloaking have some magical background, I integrate Dylan's idea of have Konami code with the 4 element we choosed to make a `Magic Array` in the center of start room for the ritual (Konami Code Input). I also make the code tights to the element base on the position they shown in the Magical Array. The sequence of code is collect from each member excpet myself by order of their reply and last code was from Dr. McCoy (last lightning - 'A'). The intention of these designs is to fake the special mode as a summon spell in the Magical Array consist [Space-S-W-A-S-W-A] as step to cast the summon.
+
+The implementation of Konami Code compelete animation was breaking by step and controlled by a timmer.
+ 
+|| Magic Array Design|
+| :-------: | :-: |
+| First version design <br> (by me)| <img src = "" width = 70%>|
+| Revised to integrate better to floor <br> (by Krystal) | <img src = "" width = 70%>|
+ 
+|Portal Animation| | |
+| :-------: | :-------: | :-------: |
+| <img src = "" width = 70%>| <img src = "" width = 70%>| <img src = "" width = 70%>|
+| NormalPortal | HardPortal | McPortal|
+
+note: the Konami Code demo shown in Camera demo.
+note: the rest parts of mirror was created by Krystal.
+ 
+Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves including Dr. McCoy.
+ 
+ 
 ## Boss Concept and Design - Marc Paolo Yap
 I thought of the boss concept, and boss stage design with the clear reference to Among Us. All of the create sprites and tiles, shown under here are all drawn by me using the free website [Piskel](https://www.piskelapp.com/). The Boss AI and scripting was handled by Orien Cheng.
 
