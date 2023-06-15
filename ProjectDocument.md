@@ -52,6 +52,13 @@ To make sure the weapon rotation center is the (0, 0) of the weapon prefab, the 
 
 When the weapon is idealing (not attacking), the `weapon follower` will show up near the player to show the equipped weapon. The logic of `weapon follower` is similar to the `PositionFolloweCamera` from (exercise 2)[]. It stays still when it's distance to the player is less than `InnerRadius`; moves at `followSpeed` that's slightly slower than the player when distance with the player in between `InnerRadius` and `OuterRadius`; and maintains the max `OuterRadius` when is reaching max leash distance.
 
+
+| Weapon |   |   |
+| :------------: |:------------: |:------------: |
+|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Attack.gif" alt="Attack" width="100%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/WeaponFollow.gif" alt="WeaponFollow" width="100%">  | <img src="counterweight.png" alt="counterweight" width="100%"> |
+| Weapon Attack | Weapon Follow | | Counter-weight Idea | 
+note: the Counter-weight is compeletely transparent and collider diabled in game, here is showing idea
+
 ### Combat - Spells
 The purpose of spells is to enhance the player's ranged combat ability. In the early stage, spell instantiation was included inside PlayerController, but the script soon became too large and hard to manage. So I followed the `factory pattern` from (exercise 4)[] to pack spell instantiation logics into the `ISpellMaker` interface that has `ShowRange()` and `Execute()` for indication of spell position and instantiation. The spell management structure was inspired by the (`SpellFactory`)[] participation exercise to include all Spell Execution logics in the spell prefabs so all the internal logic is customized and self-contained for easy utilization by spell makers. The utilization of the particle system for spell effect was inspired by the (`SpellFactory`)[] exercise.
 
@@ -61,12 +68,10 @@ The spell of 4 elements was designed to serve different roles:
 - `Blizzard` (bound to `Space`) is the AOE control spell. It randomly generates ice-sharps in selected areas, and each ice-sharp will go through forming, falling, and exploding stages and then do a small AOE damage around the ice-sharp.
 - `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
 
-
 | Spells |   |   |  |
 | :------------: |:------------: |:------------: |:------------: |
-|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Fire.gif" alt="Fire-Ball" width="100%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Water.gif" alt="Water" width="30%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif" alt="Blizzard" width="25%"> |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Thunder.gif" alt="Thunder" width="60%">  |
+|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Fire.gif" alt="Fire-Ball" width="100%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Water.gif" alt="Water" width="100%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif" alt="Blizzard" width="100%"> |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Thunder.gif" alt="Thunder" width="100%">  |
 | Fire-Ball | Water-Surge | | Blizzard | Thunder | 
-
 
 The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
 The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
