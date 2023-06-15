@@ -28,6 +28,9 @@ TagManager:
   - BossHand
   - BossButton
   - MobSoundManager
+  - BossHitbox
+  - SpecialSoundManager
+  - MiniMap
   layers:
   - Default
   - TransparentFX
@@ -79,4 +82,7 @@ TagManager:
     locked: 0
   - name: Walls
     uniqueID: 1228758821
+    locked: 0
+  - name: UI
+    uniqueID: 1894032141
     locked: 0

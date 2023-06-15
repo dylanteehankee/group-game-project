@@ -70,7 +70,7 @@ namespace McDungeon
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
         private GameMode mode = GameMode.Normal;
-        private bool isMcMode = false;
+        [SerializeField] private bool isMcMode = false;
 
         private Light2D globalLight;
         private Light2D torchLight;
@@ -94,18 +94,28 @@ namespace McDungeon
 
         private AudioSource[] audioSource;
         private AudioSource[] bgAudioSource;
+        private AudioSource[] specialAudioSource;
+
         private bool playerDead = false;
 
         private SpriteRenderer[] spellReadyIcon;
 
+        private UIManager uiManager;
 
-        void Awake()
-        {
-            playerInventory = new PlayerInventory(this);
-        }
+        public GameObject gameManager;
+
+        private bool finishedStart = false;
+
+
+        [SerializeField] public RuntimeAnimatorController playerController;
+        [SerializeField] public RuntimeAnimatorController mcController;
+        private Animator playerAnimator;
+
+        [SerializeField] private GameObject prefab_TA;
 
         void Start()
         {
+            playerInventory = new PlayerInventory(this);
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -163,16 +173,27 @@ namespace McDungeon
             audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
+            var specialSoundManager = GameObject.FindWithTag("SpecialSoundManager");
+            specialAudioSource = specialSoundManager.GetComponents<AudioSource>();
+
+            uiManager = gameManager.GetComponent<UIManager>();
 
             spellReadyIcon = new SpriteRenderer[4];
             spellReadyIcon[0] = GameObject.Find("CoolDownReady").transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[1] = GameObject.Find("CoolDownReady").transform.GetChild(1).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[2] = GameObject.Find("CoolDownReady").transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             spellReadyIcon[3] = GameObject.Find("CoolDownReady").transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
+            finishedStart = true;
+
+            playerAnimator = this.gameObject.GetComponent<Animator>();
+
+            isMcMode = false;
         }
 
         void FixedUpdate()
         {
+            if (!finishedStart)
+                return;
             if (playerDead)
             {
                 return;
@@ -231,8 +252,11 @@ namespace McDungeon
 
         void Update()
         {
+            if (!finishedStart)
+                return;
             if (GlobalStates.isPaused)
             {
+                Debug.Log("I'm paused");
                 return;
             }
 
@@ -251,6 +275,7 @@ namespace McDungeon
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
                 {
+                    Debug.Log("Firing and attacking");
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
                     audioSource[5].Play();
@@ -347,7 +372,7 @@ namespace McDungeon
                     knockBack: myWeapon.knockBack * 100f,
                     true
                 );
-                //closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
+                closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
             }
             /*
             closeRangeWeapon.Config(
@@ -376,6 +401,7 @@ namespace McDungeon
             {
                 this.playerHealth -= damage;
                 this.status(type);
+                StartCoroutine("hitConfirm");
                 healthController.SetNewHealth(this.playerHealth);
 
                 hitTimer = 0f;
@@ -387,15 +413,27 @@ namespace McDungeon
 
         public void checkDeath()
         {
-            if (playerHealth < 0f)
+            if (playerHealth <= 0f)
             {
                 // Dead
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one * 2f);
                 playerDead = true;
                 audioSource[9].Play();
+                uiManager.GameOver();
             }
         }
 
+        private IEnumerator hitConfirm()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.red;
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.white;
+            }
+        }
+        
         public PlayerInventory GetPlayerInventory()
         {
             return playerInventory;
@@ -551,7 +589,7 @@ namespace McDungeon
             {
                 spellReadyIcon[2].enabled = true;
             }
-            
+
             if (lightningCoolDowntimer <= 0f && !spellReadyIcon[3].enabled)
             {
                 spellReadyIcon[3].enabled = true;
@@ -613,7 +651,31 @@ namespace McDungeon
                 {
                     if (spellCastTimer <= 0f)
                     {
-                        currentSpell.Execute(this.transform.position, mousePos);
+                        if (isMcMode && spell == 'I')
+                        {
+                            GameObject TA_spell = Instantiate(prefab_TA);
+                            Vector3 TA_pos = this.transform.position;
+
+                            Vector3 distanceVec = (mousePos - this.transform.position);
+                            distanceVec.z = 0f;
+                            Vector3 spellDir = distanceVec.normalized;
+                            float distance = distanceVec.magnitude;
+
+                            if (distance > 4f)
+                            {
+                                distance = 4f;
+                            }
+
+                            TA_pos = this.transform.position + spellDir * distance;
+
+                            TA_spell.transform.position = TA_pos;
+
+                            specialAudioSource[Random.Range(0,2)].Play();
+                        }
+                        else
+                        {
+                            currentSpell.Execute(this.transform.position, mousePos);
+                        }
                         setCD(spell);
                         Debug.Log("Spell Casted");
                     }
@@ -837,6 +899,9 @@ namespace McDungeon
                 {
                     bgAudioSource[2].Play();
                 }
+
+                playerAnimator.runtimeAnimatorController = mcController;
+
             }
             else
             {
@@ -846,6 +911,8 @@ namespace McDungeon
                 {
                     bgAudioSource[0].Play();
                 }
+
+                playerAnimator.runtimeAnimatorController = playerController;
             }
         }
 
@@ -884,15 +951,26 @@ namespace McDungeon
 
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
-    
+
         public void PlayerEnterPuzzle()
         {
+            fireCoolDown = 1f;
+            fireCoolDowntimer = 0f;
+            fireCastDuration = 0.2f;
 
+            if ( globalLight.intensity == 0f)
+            {
+                globalLight.intensity = 0.1f;
+            }
         }
 
         public void PlayerLeavePuzzle()
         {
+            fireCoolDown = 3f;
+            fireCoolDowntimer = 0f;
+            fireCastDuration = 0.5f;
 
+            globalLight.intensity = lightIntensity;
         }
     }
 }

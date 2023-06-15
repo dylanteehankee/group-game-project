@@ -4,10 +4,19 @@
 
 **A paragraph-length pitch for your game.**
 
+Our player is trapped in the depths of a dungeon and must solve puzzles and fight monsters to advance through each room. Each room may bring them closer to freedom, but there’s no way to know what dangers might be in store for them. They may encounter mages, gnomes, and knights or a merchant who might or might not help in their journey.
+
 ## Gameplay Explanation ##
 
 **In this section, explain how the game should be played. Treat this as a manual within a game. It is encouraged to explain the button mappings and the most optimal gameplay strategy.**
 
+Player movement is controlled using WASD. The melee weapon is controlled by the mouse position, and Left Click to initiate a swing. The player have 4 spells, bounded to Right Click, Q, E, and Space, that casts a Fireball, Lighting, Water, and Blizzard respectively. Similarly to the melee weapon, the spells are also guided by mouse position, and a button hold is used to represent the cast time of the spell. Release the spell button after CASTTIME second/s to cast the spell. There are special mechanics to these spells. The Fireball spell is capable of piercing through and burning monsters, and is able to bounce off the wall 3 times. The Lightning spell summons 3 auto-targetting lightning bolts that target to the nearest monster, and damage the monsters. The Water spell summons a AOE damage circle that starts at the player and moves towards the direction of where the mouse was when the spell was casted. The Blizzard spell creates a AOE circle based on the mouse position, like Mage's Blizzard in WoW, and freezes any mob that gets hit.
+
+The player also has an inventory system, bounded to I, where the player can see the weapons, armor, and potions they have collected. The player may click on any weapon or armor and click Equip to equip the new weapon or armor. The player may also navigate to the Items tab in order to access their potions that they may use during their adventure to heal themselves when at low health.
+
+There are 4 types of rooms: Combat, Puzzle, Shop, and Boss. Within the Combat Rooms, the player must kill the spawned monsters in order to clear the the Combat Room to progress to the next room. Within Puzzle Rooms, there are unlit torches scattered across the walls of the room that must be hit with a Fireball spell within a set amount of time, either through direct fire or through bounces. These torches do extinguish after // seconds, so all torches must be lit at the same time in order to progress to the next room. If the player completes the puzzle early, as indicated on the chest timer, the player will be rewarded with random item drops. If the player fails to complete the Puzzle Room within the set amount of time, the player will have to defeat the activated knights before they may progress. Beware, these knights are very difficult. The Shop Room is where the player may spend their gold that they have collected during their journey. The player may buy items such as new weapons, armor, and health potions to strengthen themselves for the remaining exploration. The player may also sell any items they have collected during their adventure. Finally, the player will encounter the red Boss Room, where the player must walk to the center to be moved to start the boss fight.
+
+There are 2 difficulties to the game, normal and hard mode, shown as portals on the top of the Starting Room. The player may interact with either portal with F to select their difficulty. The difference of choosing hard mode compared to normal at the moment is currently only a lighting change, where the game becomes much darker and harder to see. There is also a special mode that must be unlocked through a Konami-Code like system, where you must input a specific button order to unlock the mode.
 
 **If you did work that should be factored in to your grade that does not fit easily into the proscribed roles, add it here! Please include links to resources and descriptions of game-related material that does not fit into roles here.**
 
@@ -24,9 +33,6 @@ Here is an example:
 
 You should replay any **bold text** with your relevant information. Liberally use the template when necessary and appropriate.
 
-## Producer
-
-**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
 
 ## User Interface
 
@@ -36,7 +42,7 @@ You should replay any **bold text** with your relevant information. Liberally us
 
 **Describe the basics of movement and physics in your game. Is it the standard physics model? What did you change or modify? Did you make your movement scripts that do not use the physics system?**
 
-## Animation and Visuals
+## Animation and Visuals - Krystal Chau
 
 ### Concept Art
 The context of the game's environment was imperative to even beginning the process of creating assets. Knowing this, I created a number of concepts for the player, mobs, and the map itself so that my teammates and I would have a clearer vision of what the game would look and feel like. This way we could continue on with a relative consensus of what the game's feel and story was like so that their individual parts would not stray too far from the concepts.<br>
@@ -132,7 +138,7 @@ Weapons and armor were created as a way for the player to have some kind of cust
 | All Weapons | ![Weapon All](https://piskel-imgstore-b.appspot.com/img/894ddd97-09c0-11ee-81c4-c98958b07512.gif) | All Armor | ![Armor All](https://piskel-imgstore-b.appspot.com/img/30704302-09c1-11ee-9126-c98958b07512.gif) |
 | :------------: |:------------: |:------------: |:------------: |
 
-#### Attack
+#### Attack (Unsused)
 | ![Wooden](https://piskel-imgstore-b.appspot.com/img/7799f29c-09c0-11ee-a8e6-c98958b07512.gif) | ![Iron](https://piskel-imgstore-b.appspot.com/img/552a4723-09c1-11ee-bbdb-c98958b07512.gif) | ![Ice](https://piskel-imgstore-b.appspot.com/img/5cc34ef3-09c1-11ee-bf1d-c98958b07512.gif) | ![Amethyst](https://piskel-imgstore-b.appspot.com/img/6867375c-09c1-11ee-be6b-c98958b07512.gif) | ![Ruby](https://piskel-imgstore-b.appspot.com/img/732aa259-09c1-11ee-a4b9-c98958b07512.gif) | ![Emerald](https://piskel-imgstore-b.appspot.com/img/7e90b98f-09c1-11ee-b28a-c98958b07512.gif) |  
 | :------------: |:------------: |:------------: |:------------: |:------------: |:------------: |
 
@@ -195,6 +201,53 @@ The puzzle buttons had be extremely obvious in order for Players to get an under
 
 <sub>*As of the time writing this (6/13/2023), this is the complete list of all assets I have created excluding: UI Elements, Boss Health Bar, and a Scrapped Torch.*<sub>
 
+## Puzzle
+
+### Design
+The main concepts behind most puzzles were made on graph paper, where I could correlate each square on the paper to a tile in game. I chose to desgin on paper because it was the best way to test many different designs quickly and without too much of a turnaround time so that the implementor(Jason) could work on the room. 
+
+We chose to do a "bouncing angles" type of puzzle where the goal is to light all the torches in the room by bouncing fireballs of the walls and obsticals of the room to hit them under a certain about of time because our spell implementor(Honghui) ended up creating the fireball spell quite early on in the game creating process. This way the spell could be useful to not only attack, but also to solve puzzles which helped further integrate the mechanic with the game as a whole. 
+
+Originally, the puzzles were supposed to reward the player with an upgrade to their fireball spell and to punish failure with the special knight mob that would only activate upon puzzle failure, but the upgrade was scrapped as we felt it was no longer necessary. Despite the scrapping of the previous reward, we felt that it was still important to provide an incentive for players to complete puzzles so that they would be less tempted to wait out the puzzle timer, so we provided random drops that might or might not be better than their current gear and strengthened the knights.
+
+We ended up creating a total of 5 puzzle rooms, including the tutorial, 4 of them designed by Krystal and 1 by Jason.
+
+### Puzzles Designed by Krystal
+Most of my puzzles went through multiple design changes as our game was developed due to the screen's restriction of the player's sight. The first itteration of puzzles too large for the player to be able to see all torches on the map, so it forced the player to guess angles to bounce fireballs, rather then making more educated decisions. 
+
+| Room 1 Version 1 | Room 2 Version 1 |
+| :------------: | :------------: |
+| <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670143070278/IMG_4571.jpg" width="50%"><br><img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670562496525/IMG_4572.jpg" width="50%"> | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1113420536094150696/IMG_4576.jpg" width="70%">  |
+| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to teh puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
+
+Once these problems were brought to my attention, I opted to redesign each puzzle so that they would fit in the screen's 9 by 5 block limit, while trying to keep the rooms as close to the original designs.
+
+| Room 1 Version 2 | Room 2 Version 2 |
+| :------------: | :------------: |
+| <img src="https://cdn.discordapp.com/attachments/1073950912801947698/1118667150979240026/IMG_4591.jpg" width="70%"> | <img src="https://cdn.discordapp.com/attachments/1073950912801947698/1118667279689863198/IMG_4591.jpg" width="70%"> |
+
+Both of the new designs were inside the constraints of the player's field of vision, coupled with a new mechanic to lock the camera on the center of the room so that the player would always be able to see the entire map. This change effectively made each puzzle much less of blind guessing, but more of the intended educated shooting.
+
+The 3rd room I created was made after the above observations, so it was created with only one drafting. The major difference between this puzzle and the others I created was the new mechanic of moving walls, made by Jason as he was creating his own.
+
+| Room 3 | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1117286341957402775/IMG_4589.jpg" width="30%" style="transform:rotate(270deg);"> |
+| :------------: | :------------: |
+
+The last room to mention is the Tutorial puzzle that is supposed to teach the player the mechanics of puzzles, was actually created sometime between the first puzzle version 1 and the second puzzle version 1.
+
+| Tutorial Puzzle |  |
+| :------------: |:------------: |
+|  This was the first iteration of the tutorial room, but had the same player field of view problems as the fist and second puzzles, so it was proptly resized to 9 by 5 in the current game | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112974720434966628/IMG_4574.jpg" width="70%"> |
+| Unfortunately, after testing the game at the game showcase, we have decided that the tutorial room simply does not prepare the player well enough to complete puzzles on thier own, but do not currently have the dev time for it, so it will remain as is. |  |
+
+### Puzzle Designed by Jason
+
+<!-- Feel free to add anything to the stuff above if you want to - Krystal -->
+
+### Implementation
+
+
+
 ## Input
 
 **Describe the default input configuration.**
@@ -206,6 +259,14 @@ The puzzle buttons had be extremely obvious in order for Players to get an under
 **Document what game states and game data you managed and what design patterns you used to complete your task.**
 
 # Sub-Roles
+
+## Producer
+
+**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
+
+## Game Feel
+
+**Document what you added to and how you tweaked your game to improve its game feel.**
 
 ## Cross-Platform
 
@@ -235,14 +296,20 @@ because of the boss itself. There is a huge style change, but the style change a
 
 Therefore, we should be allowed to use this in our game.
 
+### Special Sounds
+There is/will be special voice lines from Arunpreet that fire in the special mode when using one of the spells. The reasoning for this was that, we thought it would be funny and would add to the "special-ness" of special mode.
+
 ### Sound Effects
 
 [`Whoosh Sounds Effects HD (No Copyright)`](https://www.youtube.com/watch?v=TitDsqWGtxs&ab_channel=YouTubeSoundEffects) by *YouTube Sound Effects* - Sword whoosh for both the [Player](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#the-player) and [Knight](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#knight).
+
 [`Flash Fire Ignite-Sound Effect (HD)`](https://www.youtube.com/watch?v=I2_DotYhuAA&ab_channel=FameFX) by *Fame FX* - Torch Igniting.
 
 All other sound effects are created by me using [BeepBox](https://www.beepbox.co/#9n31s0k0l00e03t2ma7g0fj07r1i0o432T7v1u41f0q011d08H_RJSIrsAArrrrrh0IaE0T1v1u62f0qwx10s811d08A0F0B0Q00adPfe39E4b761862863bT0v1u12f10s4q00d03w2h2E0T2v1u15f10w4qw02d03w0E0b4h400000000h4g000000014h000000004h400000000p16000000) to emulate each sound as best as I could in the 8-bit style. 
 
 I made sure to create sound for most attacks to that the Player could distingush the sound of being hit or the sound of an attack from an enemy. I also made sounds to indicate actions like spells or opening the inventory, so that actions would not just result in visual queues and so that these actions are more satisfying to the player. 
+
+The sound implementation mostly consisted of sorting sounds into 4 categories: background music, room sounds, player/mob sounds, and special sounds. Then I would create a dedicated `SoundManager` prefab for the category, create a custom tag for it, and assign all sounds as a sound component. Depending on what sound it was adding, I would locate the tag and proceed to call the sound through playing the corresponding sound's array index in it's sound manager. This gave the me an easier way to find and add in audio, since I would not have to spend time counting `Audio Source` components to find the indexing of each sound. The old exceptions were sounds that were always played upon use, where I opted to directly add the `Audio Source` compontent to the game object itself and set it to "Play on Awake."
 
 ## Gameplay Testing
 
@@ -262,6 +329,3 @@ I made sure to create sound for most attacks to that the Player could distingush
 
 
 
-## Game Feel
-
-**Document what you added to and how you tweaked your game to improve its game feel.**

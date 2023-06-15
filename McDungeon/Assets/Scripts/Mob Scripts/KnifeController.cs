@@ -22,7 +22,10 @@ namespace McDungeon
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed);
                 collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
             }
-            Destroy(this.gameObject);
+            if (collision.gameObject.tag != "Throwable")
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         public void Throw(Vector2 playerLocation)

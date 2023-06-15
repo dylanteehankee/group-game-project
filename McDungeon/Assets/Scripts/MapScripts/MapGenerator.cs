@@ -8,6 +8,7 @@ public class MapGenerator : MonoBehaviour
     //Variables
     //[SerializeField] private int numberOfRooms = 16;
 
+    [SerializeField] private GameObject miniMapHUD;
     [SerializeField] private GameObject miniRoom;
     [SerializeField] private GameObject miniMap;
     [SerializeField] private Sprite endRoomSprite;
@@ -19,7 +20,6 @@ public class MapGenerator : MonoBehaviour
     private GameObject startRoom, tutorialRoom, endRoom;
     private Vector2Int currentRoomCoordinates;
     private Dictionary<Vector2Int, GameObject> roomDictionary = new Dictionary<Vector2Int, GameObject>();
-    private float resetCounter = 3f;
 
     private int[,] map;
 
@@ -212,7 +212,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //set start room = current room to yellow by getting its keyvalue
-        currentRoomCoordinates = getKeyFromValue(roomDictionary, startRoom);
+        currentRoomCoordinates = GetKeyFromValue(roomDictionary, startRoom);
         GameObject startMiniRoom = miniMap.transform.GetChild(currentRoomCoordinates.x * map.GetLength(1) + currentRoomCoordinates.y).gameObject;
         startMiniRoom.GetComponent<SpriteRenderer>().color = Color.white;
 
@@ -226,7 +226,7 @@ public class MapGenerator : MonoBehaviour
         prevRoom.GetComponent<SpriteRenderer>().color = Color.grey;
         
         //get current room position in map
-        currentRoomCoordinates = getKeyFromValue(roomDictionary, currentRoom);
+        currentRoomCoordinates = GetKeyFromValue(roomDictionary, currentRoom);
         //get current room position in minimap
         GameObject miniRoom = miniMap.transform.GetChild(currentRoomCoordinates.x * map.GetLength(1) + currentRoomCoordinates.y).gameObject;
         //set current room to white
@@ -270,8 +270,8 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    //get key from value in dictionary
-    private Vector2Int getKeyFromValue(Dictionary<Vector2Int, GameObject> dict, GameObject val){
+    // Get key from value in dictionary. Used to get the coordinates of the current room.
+    private Vector2Int GetKeyFromValue(Dictionary<Vector2Int, GameObject> dict, GameObject val){
         foreach (KeyValuePair<Vector2Int, GameObject> entry in dict){
             if (entry.Value == val){
                 return entry.Key;
@@ -280,11 +280,12 @@ public class MapGenerator : MonoBehaviour
         return new Vector2Int(-1, -1);
     }
 
-    public void destroyMiniMap(){
-        //destroy minimap child objects under minimap
-        for(int i = 0; i < miniMap.transform.childCount; i++){
-            Destroy(miniMap.transform.GetChild(i).gameObject);
-        }
+    public void DisableMiniMap(){
+        miniMapHUD.SetActive(false);
+    }
+
+    public void EnableMiniMap(){
+        miniMapHUD.SetActive(true);
     }
 
 }

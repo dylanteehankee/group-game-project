@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -7838374189976845100}
   - component: {fileID: 1501748273899886608}
   m_Layer: 6
-  m_Name: FrostBolt
+  m_Name: Frostbolt
   m_TagString: Throwable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5089,5 +5089,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8999c3c49eac4cd18b206f753b2daf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellSpeed: 500
+  spellSpeed: 750
   type: 3

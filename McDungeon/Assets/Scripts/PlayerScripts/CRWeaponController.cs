@@ -30,6 +30,7 @@ namespace McDungeon
         [SerializeField] private Sprite weapon_3;
         [SerializeField] private Sprite weapon_4;
         [SerializeField] private Sprite weapon_5;
+        [SerializeField] private Sprite weapon_6;
         private int currentWeaponIdex = 0;
         private float weaponScaleRatio = 1f;
 
@@ -49,10 +50,12 @@ namespace McDungeon
             hitBoxCllider.enabled = false;
             Debug.Log("hitbox name: ===========[" + hitbox.name + "]=======================");
             Debug.Log("Awake hitbox render: ===========[" + hitBoxRender + "]=======================");
+            ChangeWeapon(0);
         }
 
         void LateUpdate()
         {
+            //Debug.Log("Update hitbox render: ===========[" + hitBoxRender + "]=======================");
             if (active)
             {
                 WeaponUpdate();
@@ -96,6 +99,7 @@ namespace McDungeon
 
             if (Input.GetButtonUp("Fire1"))
             {
+                Debug.Log("Firing and attacking");
                 attacking = true;
                 hitBoxRender.enabled = true;
                 hitBoxCllider.enabled = true;
@@ -120,6 +124,7 @@ namespace McDungeon
 
         private void Attack()
         {
+            
             float angle = attackAngle / 2f - attackAngle * atkProgress;
             this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
@@ -146,14 +151,18 @@ namespace McDungeon
 
         public void ChangeWeapon(int weaponIndex)
         {
-
+            if(hitBoxRender == null)
+            {
+                Debug.Log("Bad ");
+                return;
+            }
             // Need resize base on scale
             Vector3 scale = new Vector3(1.7f, 1.7f, 1f);
             scale = scale * weaponScaleRatio;
 
-            if(hitbox == null) return;
-            hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
-            Debug.Log("hitboxRender name: ===========[" + hitBoxRender + "]=======================");
+            //if(hitbox == null) return;
+            //hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
+            Debug.Log("hitboxRender name: ===========[" + this.hitBoxRender + "]=======================");
             Debug.Log("hitboxRender color: ===========[" + hitBoxRender.color + "]=======================");
             hitBoxRender.transform.localScale = scale;
             hitBoxCounterweightRender.transform.localScale = scale;
@@ -200,6 +209,11 @@ namespace McDungeon
                     hitBoxRender.sprite = weapon_5;
                     followerWeaponRender.sprite = weapon_5;
                     hitBoxCounterweightRender.sprite = weapon_5;
+                    break;
+                case 6:
+                    hitBoxRender.sprite = weapon_6;
+                    followerWeaponRender.sprite = weapon_6;
+                    hitBoxCounterweightRender.sprite = weapon_6;
                     break;
             }
 

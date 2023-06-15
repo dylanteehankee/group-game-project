@@ -9,7 +9,8 @@ public class BossHandController : MonoBehaviour
     private GameObject buttonObject;
     Vector3 initialPosition;
     private GameObject playerObject;
-    private float attackTime = 1.0f;
+    private float attackTime = 0.75f;
+    private float slamSpeed = 15.0f;
     private int damage = 2;
     private bool isAttack = false;
     private bool hitPlayer = false;
@@ -21,20 +22,18 @@ public class BossHandController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(this.transform.position.y != this.buttonObject.transform.position.y)
+        if(this.transform.position.y >= this.buttonObject.transform.position.y + 0.5)
         {
-            float deltaY = this.buttonObject.transform.position.y - this.transform.position.y;
-            deltaY += .2f;
-            this.transform.Translate(new Vector2(0, deltaY) / 0.25f * Time.fixedDeltaTime);
+            this.transform.Translate(new Vector2(0, -slamSpeed) * Time.fixedDeltaTime);
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (this.isAttack && !this.hitPlayer && collider.gameObject.tag == "PlayerHitbox")
+        if (this.isAttack && !this.hitPlayer && collision.gameObject.tag == "PlayerHitbox")
         {
-            Debug.Log("HIT");
-            collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.down * 600);
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
             this.hitPlayer = true;
         }
     }
@@ -43,7 +42,6 @@ public class BossHandController : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         this.playerObject = playerObject;
-        Debug.Log("HANDATTACK");
         this.initialPosition = this.transform.position;
         var newPosition = new Vector2(this.buttonObject.transform.position.x, this.transform.position.y);
         this.transform.position = newPosition;

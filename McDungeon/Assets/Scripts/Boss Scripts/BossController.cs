@@ -18,7 +18,7 @@ public class BossController : MonoBehaviour
     private GameObject laserObject;
     [SerializeField]
     private float bossHealth = 100.0f;
-    private float moveSpeed = 0.5f;
+    private float moveSpeed = 2f;
     private float laserDamage = 2.0f;
     private float attackSpeed = 5.0f;
     private float attackCD = 0.0f;
@@ -125,7 +125,7 @@ public class BossController : MonoBehaviour
     private IEnumerator attackLaser()
     {
         this.animator.SetBool("Laser", true);
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.5f);
         this.laserObject.GetComponent<LaserController>().Execute();
         yield return new WaitForSeconds(this.laserAttackTime);
         this.animator.SetBool("Laser", false);
@@ -136,9 +136,9 @@ public class BossController : MonoBehaviour
 
     private IEnumerator attackHand(BossHandController handControl)
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2.25f);
         handControl.Execute(this.playerObject);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.75f);
         this.isAttack = false;
         this.animator.SetBool("Attack", false);
         this.attackCD = 0;
@@ -148,26 +148,30 @@ public class BossController : MonoBehaviour
         this.bossHealth -= damage;
         this.death();
         this.status(type);
+        StartCoroutine("hitConfirm");
     }
 
-    private IEnumerator damageEffect()
+    private IEnumerator hitConfirm()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 2; i++)
         {
-            yield return new WaitForSeconds(0.5f);
-            // Change color
+            yield return new WaitForSeconds(0.15f);
+            this.spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.15f);
+            this.spriteRenderer.color = Color.white;
         }
     }
+    
     private void death()
     {
         if (this.bossHealth <= 0)
         {
-            deathAnimation();
+            StartCoroutine("deathAnimation");
         }
     }
 
     private IEnumerator deathAnimation()
-    {
+    {   
         //Death animation
         yield return new WaitForSeconds(deathAnimationTime);
         Destroy(this.gameObject);

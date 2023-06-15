@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa3a441114ab4f37b92d6606459f53a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knifeSpeed: 500
+  knifeSpeed: 700
   damage: 2
 --- !u!95 &-7565237090769662939
 Animator:

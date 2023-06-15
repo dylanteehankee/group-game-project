@@ -7,8 +7,6 @@ namespace McDungeon
     public class KnightController : Mob
     {
         [SerializeField]
-        private GameObject shieldPrefab;
-        [SerializeField]
         private int damage = 2;
         [SerializeField]
         private float attackSpeed = 3.0f;
@@ -17,13 +15,14 @@ namespace McDungeon
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
-        private float shieldCooldown = 10.0f;
-        private float elapsedShieldCD = 0.0f;
-        private bool shieldObject;
+        private float shieldCooldown = 3.0f;
+        private float elapsedShieldCD = 2.9f;
+        private bool hasShield = false;
+        [SerializeField]
+        private GameObject shieldObject;
         private bool active = false;
         [SerializeField]
         private GameObject swordDropPrefab;
-
         private AudioSource[] audioSource;
 
         void Start()
@@ -35,7 +34,7 @@ namespace McDungeon
 
         void Update()
         {
-            if (this.active && !this.stunned && !this.isFreeze)
+            if (this.active)
             {
                 this.getShield();
                 Vector2 location = this.transform.position;
@@ -75,9 +74,14 @@ namespace McDungeon
             }
             else if (this.elapsedAttackTime > ATTACKDURATION / 2 && !hitPlayer)
             {
-                this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
-                this.hitPlayer = true;
+                Vector2 location = this.transform.position;
+                Vector2 playerLocation = this.playerObject.transform.position;
+                if (Vector2.Distance(location, playerLocation) < this.attackRange)
+                {
+                    this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
+                    this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
+                    this.hitPlayer = true;
+                }
             }
             this.elapsedAttackTime += Time.deltaTime;
         }
@@ -86,25 +90,24 @@ namespace McDungeon
         {
             if (this.active)
             {
-                if (shieldObject)
+                if (hasShield)
                 {
-                    shieldObject = false;
+                    hasShield = false;
+                    this.shieldObject.SetActive(false);
                     elapsedShieldCD = 0;
                 }
                 else
                 {
                     this.mobHealth -= damage;
                     this.death();
-                    this.status(type);
-                    this.stunned = true;
-                    StopCoroutine(stunStatus());
-                    StartCoroutine(stunStatus());
+                    StartCoroutine("hitConfirm");
                 }
             }
         }
 
         protected override IEnumerator stunStatus()
         {
+            // DO NOTHING
             if (!this.stunObject)
             {
                 this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.5f));
@@ -121,34 +124,7 @@ namespace McDungeon
 
         protected override void status(EffectTypes type)
         {
-            switch (type)
-            {
-                case EffectTypes.None:
-                    break;
-                case EffectTypes.Ablaze:
-                    if (!this.ablazeObject)
-                    {
-                        this.ablazeObject = this.statusEffects.Ablaze(this.transform, Vector2.one, Vector2.zero);
-                        this.isAblaze = true;
-                    }
-                    StopCoroutine("ablazeStatus");
-                    StartCoroutine("ablazeStatus");
-                    break;
-                case EffectTypes.Freeze:
-                    if (!this.freezeObject)
-                    {
-                        this.freezeObject = this.statusEffects.Freeze(this.transform, new Vector2(3, 1.5f), Vector2.zero);
-                        this.animator.SetBool("Freeze", true);
-                        this.isFreeze = true;
-                    }
-                    StopCoroutine("freezeStatus");
-                    StartCoroutine("freezeStatus");
-                    break;
-                case EffectTypes.Slow:
-                    StopCoroutine("slowStatus");
-                    StartCoroutine("slowStatus");
-                    break;
-            }
+            // DO NOTHING
         }
 
         public void ActivateKnight()
@@ -165,12 +141,12 @@ namespace McDungeon
 
         private void getShield()
         {
-            if (!shieldObject)
+            if (!hasShield)
             {
                 if (elapsedShieldCD >= shieldCooldown)
                 {
-                    Debug.Log("GET SHIELD");
-                    shieldObject = true;
+                    this.shieldObject.SetActive(true);
+                    hasShield = true;
                 }
                 else
                 {

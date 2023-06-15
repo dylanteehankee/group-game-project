@@ -102,7 +102,12 @@ namespace McDungeon
             else if (other.gameObject.tag == "MobHitbox")
             {
                 IMobController mobControl = other.gameObject.GetComponent<IMobController>();
-                mobControl.TakeDamage(1f, EffectTypes.Freeze);
+                mobControl.TakeDamage(0.1f, EffectTypes.Freeze);
+            }
+            else if (other.gameObject.tag == "BossHitbox")
+            {
+                BossController mobControl = other.gameObject.GetComponent<BossController>();
+                mobControl.TakeDamage(0.1f, EffectTypes.None);
             }
         }
     }

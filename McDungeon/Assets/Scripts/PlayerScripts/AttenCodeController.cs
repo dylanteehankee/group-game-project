@@ -11,7 +11,7 @@ public class AttenCodeController : MonoBehaviour
     private float speed = 500.0f;
     public void Execute()
     {
-        Vector2 direction = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f));
+        Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
         direction.Normalize();
         this.GetComponent<Rigidbody2D>().AddForce(direction * speed);
     }
