@@ -71,7 +71,7 @@ The spell of 4 elements was designed to serve different roles:
 | Spells |   |   |  |
 | :------------: |:------------: |:------------: |:------------: |
 |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Fire.gif" alt="Fire-Ball" width="100%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Water.gif" alt="Water" width="100%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif" alt="Blizzard" width="100%"> |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Thunder.gif" alt="Thunder" width="80%">  |
-| Fire-Ball | Water-Surge | | Blizzard | Thunder | 
+| Fire-Ball | Water-Surge | Blizzard | Thunder | 
 
 The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
 The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
