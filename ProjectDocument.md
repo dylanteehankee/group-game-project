@@ -388,7 +388,7 @@ After it picks both the starting room and the training room, the drunkard starts
 
 After it generates all the temporary rooms, the drunkard stops walking. Multiple functions are then called to assing the different room types that are remaining. `GenerateShopLayer()` generates the shops replacing temporary rooms with its value, `3`, this makes sure that no shop rooms are placed adjacent to a shop room. `GeneratePuzzleLayer()` functions simialrly to `GenerateShopLayer()` placing its value `5` on top of temporary rooms and ensuring that they're not placed adjacent to another puzzle room. `GenerateCombatLayer()` just fills the remaining temporary rooms with the combat room value `4`. Finally, `GenerateEndRoom()` looks for a room that exist, is not completly surrounded by rooms, and is as far away (by distance not by rooms) from the start room and places the end room `6` on a random empty spot adjacent to it. 
 
-I initially had planned to generated the end room to be the furthest amount of rooms away from the starting room but I found it too complicated to do within the remaining time.
+I initially had planned to generated the end room to be the furthest amount of rooms away from the starting room but I found it too complicated to do within the remaining time. I also felt like I could've used a better map generation method but decided to go for the more simplistic route.
 
 ### Linking the Rooms Together
 I used the `MapGenerator.cs` script to link all the rooms together via teleporters, esentially creating the pathway between rooms.
@@ -405,11 +405,13 @@ This linkage is done via the `LinkTeleporter.cs` script attached to all teleport
 
 While linking these rooms, I also made sure that the teleporter sprites were not rendered via the `LinkTeleporter.cs` script by checking if `TargetRoom` was null. The wall tiles were also updated properly to reflect the map layout. This meant that if there was no target room the walls will visually get updated, this is all handled by the `TileUpdate.cs` script attached to the wall gameobject of each room.
 
+I felt like this could've been done more efficently if I used a central teleporter controller for each room.
+ 
 <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118727890373181470/UpdatedRoomTiles.PNG">
 
 ### MiniMap
 
-The minimap is generated via the `MapGenerator.cs` script. It creates a bunch of `miniRoom` gameobjects arranged in a matrix and is shown via the canvas ui. Visited rooms are colored with light grey, current room is colored with white, and unvisited adjacent rooms are colored with dark grey. The boss room has a unique icon. This minimap design was heavily inspired by the Binding of Isaac: Rebirth.
+The minimap is generated via the `MapGenerator.cs` script. It creates a bunch of `miniRoom` gameobjects arranged in a matrix and is shown via the canvas ui. The minimap has a transparent background for better visibility. Visited rooms are colored with light grey, current room is colored with white, and unvisited adjacent rooms are colored with dark grey. The boss room has a unique icon. This minimap design was heavily inspired by the Binding of Isaac: Rebirth.
 
 <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726549475180594/image.png">
 
