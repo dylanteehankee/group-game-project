@@ -62,7 +62,8 @@ The spell of 4 elements was designed to serve different roles:
 - `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
 
 
-| ![Fire-Ball]() | ![Water-Surge]() | | ![Blizzard]() | ![Thunder]() | 
+| :------------: | :------------: |
+| ![Fire-Ball]() | ![Water-Surge]() | | ![Blizzard](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif) | ![Thunder]() | 
 | Fire-Ball | Water-Surge | | Blizzard | Thunder | 
 
 
