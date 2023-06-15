@@ -23,6 +23,7 @@ public class LinkTeleporter : MonoBehaviour
     private PuzzleController puzzleController;
     private AudioSource[] audioSource;
     private AudioSource[] bgAudioSource;
+    private MapGenerator mapGenerator;
 
     void Start(){
         //look for gameobject with tag "MobSpawner"
@@ -44,6 +45,7 @@ public class LinkTeleporter : MonoBehaviour
             puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
         grandparent = parent.transform.parent.gameObject;
+        mapGenerator = grandparent.GetComponent<MapGenerator>();
     }
 
     void LateUpdate(){
@@ -183,18 +185,20 @@ public class LinkTeleporter : MonoBehaviour
                 Portal2.GetComponent<LinkTeleporter>().isInside = true;
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
-
+                // If player is entering tutorial room or puzzle room, lock camera and disable minimap.
                 if (parentTarget.CompareTag("TutorialRoom") || parentTarget.CompareTag("PuzzleRoom"))
                 {
+                    mapGenerator.DisableMiniMap();
                     other.GetComponent<PlayerController>().PlayerEnterPuzzle();
                 }
-
+                // If player is leaving tutorial room or puzzle room, unlock camera, and enable minimap.
                 if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
                 {
+                    mapGenerator.EnableMiniMap();
                     positionLockCamera.LockOnPlayer();
                     other.GetComponent<PlayerController>().PlayerLeavePuzzle();
                 }
-
+                // If player is in combat room, spawn mobs.
                 if (parentTarget.CompareTag("CombatRoom") && !TargetRoom.GetComponent<LinkTeleporter>().RoomCompleted)
                 {
                     GameObject grid = parentTarget.transform.GetChild(0).gameObject;
@@ -207,10 +211,10 @@ public class LinkTeleporter : MonoBehaviour
 
                     mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
                 }
-                //if player is in end room, pause background music, else play background music
-                //can only have 1 background music playing at a time
+                // If player is in end room, pause background music, else play background music.
+                // Only have 1 background music can be playing at a time.
                 if (parentTarget.CompareTag("EndRoom")){
-                    //pause background music
+                    // Pause background music if in end room and enabled.
                     if (bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
                         bgAudioSource[0].Pause();
                     }
@@ -220,7 +224,7 @@ public class LinkTeleporter : MonoBehaviour
                 }
                 else
                 {
-                    //play background music if not
+                    // Play background music if not playing and enabled.
                     if (!bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
                         bgAudioSource[0].Play();
                     }
@@ -229,35 +233,8 @@ public class LinkTeleporter : MonoBehaviour
                     }
                 }
 
-                grandparent.GetComponent<MapGenerator>().UpdateMiniMap(parentTarget);
+                mapGenerator.UpdateMiniMap(parentTarget);
             }
         }
     }
-
-    //Reset all global variables
-    //TODO: reset all variables in the room
-    // public void ResetAll(){
-    //     //reset all variables
-    //     TargetRoom = null;
-    //     Teleported = false;
-    //     isInside = false;
-    //     beenDisabled = false;
-    //     RoomCompleted = false;
-    //     closeDoor = false;
-    //     onWallTile = false;
-    //     candlePos1 = Vector3.zero;
-    //     candlePos2 = Vector3.zero;
-    //     grandparent = null;
-    //     parent = null;
-    //     mobSpawner = null;
-    //     puzzleController = null;
-    //     animator = null;
-
-    //     //set animator to true
-    //     GetComponent<SpriteRenderer>().enabled = true;
-    //     GetComponent<Animator>().enabled = true;
-
-    //     //Instatiate all again
-    //     Start();
-    // }
 }
