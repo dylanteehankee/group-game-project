@@ -545,8 +545,8 @@ The implementation of Konami Code compelete animation was breaking by step and c
  
 || Magic Array Design|
 | :-------: | :-: |
-| First version design <br> (by me)| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old" width = 100%>|
-| Revised to integrate better to floor <br> (by Krystal) | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new" width = 100%>|
+| First version design <br> (by me)| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old.png" width = 100%>|
+| Revised to integrate better to floor <br> (by Krystal) | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new.png" width = 100%>|
  
 |Portal Animation| | |
 | :-------: | :-------: | :-------: |
