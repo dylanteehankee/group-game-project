@@ -60,7 +60,11 @@ The spell of 4 elements was designed to serve different roles:
 - `Water-Surge` (bound to `E`) is the AOE damage spell. It creates a circle range that slowly moves towards the mouse position and damage and stuns the enemy periodically. Inspired by the (`Lerp Playground`)[] demo, the curved particle speed of the particle system is used to show the `charging` and `burst` state.
 - `Blizzard` (bound to `Space`) is the AOE control spell. It randomly generates ice-sharps in selected areas, and each ice-sharp will go through forming, falling, and exploding stages and then do a small AOE damage around the ice-sharp.
 - `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
-- 
+
+
+| ![Blizzard](https://piskel-imgstore-b.appspot.com/img/368cc26e-09bd-11ee-b587-c98958b07512.gif) | ![Blizzard](https://piskel-imgstore-b.appspot.com/img/368cc26e-09bd-11ee-b587-c98958b07512.gif) | 
+
+
 The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
 The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
 
