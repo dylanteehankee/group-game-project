@@ -63,7 +63,7 @@ The spell of 4 elements was designed to serve different roles:
 
 
 | :------------: | :------------: |
-| ![Fire-Ball]() | ![Water-Surge]() | | <img src="[./filename.gif](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif)" alt="Blizzard" width="20%"> | ![Thunder]() | 
+| ![Fire-Ball]() | ![Water-Surge]() | | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif" alt="Blizzard" width="20%"> | ![Thunder]() | 
 | Fire-Ball | Water-Surge | | Blizzard | Thunder | 
 
 
