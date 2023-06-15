@@ -124,6 +124,10 @@ public class LinkTeleporter : MonoBehaviour
                         GetComponent<Animator>().enabled = true;
                         if (mobManager.GetMobs().Count == 0)
                         {
+                            if(!audioSource[0].isPlaying)
+                            {
+                                audioSource[0].Play();
+                            }
                             closeDoor = false;
                             RoomCompleted = true;
                         }
