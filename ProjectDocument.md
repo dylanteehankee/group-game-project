@@ -50,8 +50,10 @@ To separate the weapon logic from player control, I designed the weapon to funct
 
 To make sure the weapon rotation center is the (0, 0) of the weapon prefab, the `counter weight` sub-object was attached to the weapon prefab to be the same shape, not rendered, and opposite position across (0,0) to make sure the weapon prefab's center is in (0, 0) for rotation to function correctly.
 
-When the weapon is idealing (not attacking), the `weapon follower` will show up near the player to show the equipped weapon. The logic of `weapon follower` is similar to the `PositionFolloweCamera` from [exercise 2](https://github.com/dr-jam/CameraControlExercise). It stays still when it's distance to the player is less than `InnerRadius`; moves at `followSpeed` that's slightly slower than the player when distance with the player in between `InnerRadius` and `OuterRadius`; and maintains the max `OuterRadius` when is reaching max leash distance.
-
+When the weapon is idealing (not attacking), the `weapon follower` will show up near the player to show the equipped weapon. The logic of `weapon follower` is similar to the `PositionFolloweCamera` from [exercise 2](https://github.com/dr-jam/CameraControlExercise). 
+- It stays still when it's distance to the player is less than `InnerRadius`
+- oves at `followSpeed` that's slightly slower than the player when distance with the player in between `InnerRadius` and `OuterRadius`
+- Maintains the max `OuterRadius` when is reaching max leash distance.
 
 | Weapon |   |   |
 | :------------: |:------------: |:------------: |
