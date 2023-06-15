@@ -38,9 +38,29 @@ You should replay any **bold text** with your relevant information. Liberally us
 
 **Describe your user interface and how it relates to gameplay. This can be done via the template.**
 
-## Movement/Physics
+## Player Control & Combat - Honghui Li
 
-**Describe the basics of movement and physics in your game. Is it the standard physics model? What did you change or modify? Did you make your movement scripts that do not use the physics system?**
+### Movement
+The player-controlled movement is done by capturing directional input and manipulating the `Player` game object's `transform` in  `FixedUpdate()` to have more control over the movement and stability with physic interactions. The direction of movement is captured using Input.GetAxis() on `Horizontal` and `Vertical` for x and y values; then normalized to ensure the player moved at the same speed in all directions. The movement itself is performed by calculating the move-offset using `speed * speedModifier * Time.fixedDeltaTime` and applying move-offset using transform.position or use transform.Translate(). The speedModifier is used for slow debuffon the player and speed-bust power-ups.
+
+There are also non-player controlled movements when a special event is happening, such as interaction with portals. Multiple boolean values were used to ensure the player's movements corresponded with the free-move / event.
+
+### Combat - Weapon
+To separate the weapon logic from player control, I designed the weapon to function independently from PlayerController and receive the signal from PlayerController for the attack. The `CRWeapon` (Close Range Weapon) prefab is attached under `Player`, so there move together. The attack is achieved by activating the weapon `hitbox` and `sprite renderer` to show the swinging weapon and enable the hitbox detection. The swing of the weapon is controlled by a customized lerp function `Attack()` that lerp attackProgress from 0f to 1f and repositions the weapon to corresponding angle. With these controls, the weapon can show up, swing through configured attackAngle centered at the mouse position, and then disappear when finished attack.
+
+When the weapon is idealing (not attacking), the `weapon follower` will show up near the player to show the equipped weapon. The logic of `weapon follower` is similar to the `PositionFolloweCamera` from (exercise 2)[]. It stays still when it's distance to the player is less than `InnerRadius`; moves at `followSpeed` that's slightly slower than the player when distance with the player in between `InnerRadius` and `OuterRadius`; and maintains the max `OuterRadius` when is reaching max leash distance.
+
+### Combat - Spells
+The purpose of spells is to enhance the player's ranged combat ability. In the early stage, spell instantiation was included inside PlayerController, but the script soon became too large and hard to manage. So I followed the `factory pattern` from (exercise 4)[] to pack spell instantiation logics into the `ISpellMaker` interface that has `ShowRange()` and `Execute()` for indication of spell position and instantiation. The spell management structure was inspired by the (`SpellFactory`)[] participation exercise to include all Spell Execution logics in the spell prefabs so all the internal logic is customized and self-contained for easy utilization by spell makers. The utilization of the particle system for spell effect was inspired by the (`SpellFactory`)[] exercise.
+
+The spell of 4 elements was designed to serve different roles:
+- `Fire-Ball` (bound to `fire2`) is the main range dagame spell and serves puzzle rooms. It shoots a fireball toward the mouse position damage and burns the enemy it hits.
+- `Water-Surge` (bound to `E`) is the AOE damage spell. It creates a circle range that slowly moves towards the mouse position and damage and stuns the enemy periodically. Inspired by the (`Lerp Playground`)[] demo, the curved particle speed of the particle system is used to show the `charging` and `burst` state.
+- `Blizzard` (bound to `Space`) is the AOE control spell. It randomly generates ice-sharps in selected areas, and each ice-sharp will go through forming, falling, and exploding stages and then do a small AOE damage around the ice-sharp.
+- `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
+- 
+The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
+The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
 
 ## Mobs - Orien Cheng
 
