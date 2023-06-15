@@ -528,10 +528,13 @@ The camera mode is tight to players' action.
  - MoveToTarget: Used for cut-scene when moving camera to a object.
  - ReturnToPlayer: Transaction mode when switching back to Lock Player so the camera doesn't instantly teleport to the player.
 
+ 
 |Camera & Lighting Demo| | |
 | :-------: | :-------: | :-------: |
-| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseNormalMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseHardMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UnlockMcMirror.gif" width = 70%>|
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseNormalMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseHardMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UnlockMcMirror.gif" width = 100%>|
 | Use Normal Mirror | Use Hard Mirror | Unlock Special Mirror|
+ 
+note: the implmentation of cut-scene effects logic is relying on PlayerController to manage and call APIs of StartRoomLight and Camera for execution.
  
 ## Start Room Design and Implementation - Honghui (with Dylan contributed in designing)
 We porposed to have a start-room intead of a start meau UI for the immersed game experience. The design of start room is that a player been summoned from a initial portal to this world and the initial portal closed after summon so he/she need to find a way out from cross the Normal/Hard world from the mirror portals. The third portal was designed as Easter egg that allow current player to escape immediately but summon Dr. McCoy as "sacrifice"; however, is protected by a magical curtain from use.
@@ -549,6 +552,11 @@ The implementation of Konami Code compelete animation was breaking by step and c
 | :-------: | :-------: | :-------: |
 | <img src = "" width = 70%>| <img src = "" width = 70%>| <img src = "" width = 70%>|
 | NormalPortal | HardPortal | McPortal|
+ 
+|Portal Face| | |
+| :-------: | :-------: | :-------: |
+| <img src = "" width = 70%>| <img src = "" width = 70%>| <img src = "" width = 70%>|
+| Normal (didn't used) | Hard | Dr. McCoy's github picture|
 
 note: the Konami Code demo shown in Camera demo.
 note: the rest parts of mirror was created by Krystal.
