@@ -124,6 +124,10 @@ public class LinkTeleporter : MonoBehaviour
                         GetComponent<Animator>().enabled = true;
                         if (mobManager.GetMobs().Count == 0)
                         {
+                            if(!audioSource[0].isPlaying)
+                            {
+                                audioSource[0].Play();
+                            }
                             closeDoor = false;
                             RoomCompleted = true;
                         }
@@ -210,7 +214,6 @@ public class LinkTeleporter : MonoBehaviour
                 // If player is entering tutorial room or puzzle room, lock camera and disable minimap.
                 if (parentTarget.CompareTag("TutorialRoom") || parentTarget.CompareTag("PuzzleRoom"))
                 {
-                    mapGenerator.DisableMiniMap();
                     other.GetComponent<PlayerController>().PlayerEnterPuzzle();
                 }
                 // If player is leaving tutorial room or puzzle room, unlock camera.
