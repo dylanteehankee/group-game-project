@@ -83,6 +83,7 @@ namespace McDungeon
             this.status(type);
             StopCoroutine(stunStatus());
             StartCoroutine(stunStatus());
+            StartCoroutine("hitConfirm");
         }
 
         protected void death()
@@ -91,6 +92,17 @@ namespace McDungeon
             {
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one);
                 Destroy(this.gameObject);
+            }
+        }
+
+        private IEnumerator hitConfirm()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.red;
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.white;
             }
         }
 

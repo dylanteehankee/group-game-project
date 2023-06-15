@@ -166,7 +166,7 @@ MonoBehaviour:
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   mobHealth: 4
   attackRange: 1
-  moveSpeed: 2
+  moveSpeed: 3
   attackSpeed: 1
   damage: 1
 --- !u!95 &6889405568441182925

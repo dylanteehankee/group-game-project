@@ -94,6 +94,8 @@ namespace McDungeon
 
         private AudioSource[] audioSource;
         private AudioSource[] bgAudioSource;
+        private AudioSource[] specialAudioSource;
+
         private bool playerDead = false;
 
         private SpriteRenderer[] spellReadyIcon;
@@ -171,6 +173,9 @@ namespace McDungeon
             audioSource = mobSoundManager.GetComponents<AudioSource>();
             var backgroundSoundManager = GameObject.FindWithTag("BGSoundManager");
             bgAudioSource = backgroundSoundManager.GetComponents<AudioSource>();
+            var specialSoundManager = GameObject.FindWithTag("SpecialSoundManager");
+            specialAudioSource = specialSoundManager.GetComponents<AudioSource>();
+
             uiManager = gameManager.GetComponent<UIManager>();
 
             spellReadyIcon = new SpriteRenderer[4];
@@ -396,6 +401,7 @@ namespace McDungeon
             {
                 this.playerHealth -= damage;
                 this.status(type);
+                StartCoroutine("hitConfirm");
                 healthController.SetNewHealth(this.playerHealth);
 
                 hitTimer = 0f;
@@ -417,6 +423,17 @@ namespace McDungeon
             }
         }
 
+        private IEnumerator hitConfirm()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.red;
+                yield return new WaitForSeconds(0.15f);
+                this.spriteRenderer.color = Color.white;
+            }
+        }
+        
         public PlayerInventory GetPlayerInventory()
         {
             return playerInventory;
@@ -652,6 +669,8 @@ namespace McDungeon
                             TA_pos = this.transform.position + spellDir * distance;
 
                             TA_spell.transform.position = TA_pos;
+
+                            specialAudioSource[Random.Range(0,2)].Play();
                         }
                         else
                         {

@@ -6,9 +6,9 @@ public class ButtonController : MonoBehaviour
 {
     [SerializeField]
     private GameObject playerObject;
-    private float followTime = 2.25f;
+    private float inactiveTime = 2.0f;
     private bool isFollowing = false;
-    private float pushTime = 1.5f;
+    private float pushTime = 1.0f;
 
     void FixedUpdate()
     {
@@ -29,17 +29,19 @@ public class ButtonController : MonoBehaviour
     private IEnumerator followPlayer()
     {
         this.isFollowing = true;
-        yield return new WaitForSeconds(this.followTime);
+        yield return new WaitForSeconds(inactiveTime);
         this.isFollowing = false;
+        this.GetComponent<Animator>().SetTrigger("Active");
         yield return new WaitForSeconds(this.pushTime);
         this.gameObject.SetActive(false);
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.tag == "BossHand")
-        {
-            this.GetComponent<Animator>().SetTrigger("Press");
-        }
-    }
+    // void OnTriggerEnter2D(Collider2D collider)
+    // {
+    //     if (collider.gameObject.tag == "BossHand")
+    //     {
+    //         Debug.Log("PRESSBUTTON");
+    //         this.GetComponent<Animator>().SetTrigger("Press");
+    //     }
+    // }
 }

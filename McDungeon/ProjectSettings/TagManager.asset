@@ -29,6 +29,8 @@ TagManager:
   - BossButton
   - MobSoundManager
   - BossHitbox
+  - SpecialSoundManager
+  - MiniMap
   layers:
   - Default
   - TransparentFX
