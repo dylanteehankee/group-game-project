@@ -305,7 +305,130 @@ The last room to mention is the Tutorial puzzle that is supposed to teach the pl
 
 ### Implementation
 
+## Map Visuals, Logic and Design - Marc Paolo Yap
 
+### Overview
+
+I used a teleport based system in order to link several rooms together to form a cohesive map. This was done to allow for most of the map related gameobjects to be already loaded upon entering the scene. In order for the game to feel unique every run, I made it so that how the rooms are linked are based on the map configuration matrix which is procedurally generated.
+
+In addition to this majority of the map-related assets were created by me (Paolo) using the free website [Piskel](https://www.piskelapp.com/).
+
+## Rooms
+
+### Setting Up the Scene
+
+I created the initial design for a single room grid in our game environment. I needed this to be done in order to create the rest of the map.
+
+I decided to use tile maps for room creation as this gave flexibility and ease of use when creating different layouts and design
+
+### Design and Creation
+
+I had different iterations of the room tile map as we weren't sure yet on how are room should look like. Either having it look isometric at a 45 degree angle or to have it completly top-down similar to The Legend of Zelda (1987) or the Binding of Isaac: Rebirth.
+
+<img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726997787545650/DefaultRoom_Layout.PNG width = 70%>
+
+| _Room Tile Maps_ | | |
+| :-: | :-: | :-: |
+|  Initial Design for Wall   | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726657549811712/BridgeFloor.png>  |
+| Finialized Design for Wall | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230535675904/DungeonWall.png>  | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118722437568278548/DungeonWall_6.png> |
+|  Initial Design for Floor  | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230321758228/DungeonFloor.png> |
+| Finalized Design for Floor |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230091067412/FloorTile.png>   |
+
+We decided on having a total of 6 room types: <br>
+Start Room, Tutorial Room, Puzzle Room, Combat Room, and the End Room.
+
+I decided to have a total of 16 rooms in order to prolong the game, this consisted of:
+- 1x Start Room
+- 1x Tutorial Room
+- 8x Combat Rooms
+- 2x Shop Rooms
+- 3x Puzzle Rooms (3 are chosen out of 4 existing)
+- 1x End Room
+
+These rooms had their own respective colors and layout. Starting Room was set to the default room and color.
+
+| Room Type |   Layouts  |
+| :-------: | :-: |
+|      Combat Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726658065703055/CombatRooms.PNG>  |
+|      Tutorial Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118750031554543636/TutorialRoom.PNG>  |
+|      Puzzle Room <br>(was initially different sized but changed for consistency)    |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726999066824744/PuzzleRooms.PNG>  |
+|      Shop Room <br> (Additional assets and layout were created by Krystal, Jason, and I)     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726999561732226/ShopRooms.PNG>  |
+|      End Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726997997256734/EndRoom.PNG>  |
+
+## End Room
+|||
+| :-------: | :-: |
+| Boss Room Entrance <br> <br> Found inside the End Room, and teleports the player to the boss room when colliding with the trigger | ![BossEntrance](https://piskel-imgstore-b.appspot.com/img/f61eb1d1-0b25-11ee-878c-b7bc24a2ee1f.gif)|
+
+Animation and trigger is handled by the `VentDetector.cs`, and `BossEntrance.cs` script.
+
+Teleportation to boss room is handled by the `BossTeleport.cs` script via on trigger.
+
+
+## Map Layout
+
+### Procedurally Generated
+The map was procedurally generated using a heavily modified drunkard walk algortithm in `DrunkardWalk.cs` tailored to fit our layout. This algorithm could potentially make any n x m matrix map by modifying some values, but I kept these values set to follow our map constraints (specific number of total rooms, specific number of combat, puzzle, shop rooms).
+
+I used an enum `RoomTypes` that represented different room types:
+- 0 being No Room
+- 1 being Starting Room
+- 2 being Tutorial Room
+- 3 being Shop Rooms
+- 4 being Combat Rooms
+- 5 being Puzzle Rooms
+- 6 being End Rooms
+- 7 being Temporary Rooms
+
+The public function `GenerateMatrix` returns a n by n generated matrix that could be fed later to our `MapGenerator.cs` script.
+
+`GenerateMatrix` first chooses a starting room randomly in the matrix by setting the matrix [n][m] value to `1`. It then calls the `GenerateTrainingRoom` which generates a training room by assiging the matrix value to `2` always adjacent to the starting room. 
+
+After it picks both the starting room and the training room, the drunkard starts walking randomly in different directions which is stored in the `nextRoom` value for 100 steps trying to create a total of 15 rooms (end room is added at the very end). If the drunkard hasn't finished creating all 15 rooms within the amount of steps, it just regenerates the matrix again. This drunkard will assign the value of a temporary room, which is `7`, only on empty spots in the matrix. I also made a constraint that it cannot place a room adjacent to the starting room, as the tutorial room has to be the only room next to it.
+
+After it generates all the temporary rooms, the drunkard stops walking. Multiple functions are then called to assing the different room types that are remaining. `GenerateShopLayer()` generates the shops replacing temporary rooms with its value, `3`, this makes sure that no shop rooms are placed adjacent to a shop room. `GeneratePuzzleLayer()` functions simialrly to `GenerateShopLayer()` placing its value `5` on top of temporary rooms and ensuring that they're not placed adjacent to another puzzle room. `GenerateCombatLayer()` just fills the remaining temporary rooms with the combat room value `4`. Finally, `GenerateEndRoom()` looks for a room that exist, is not completly surrounded by rooms, and is as far away (by distance not by rooms) from the start room and places the end room `6` on a random empty spot adjacent to it. 
+
+I initially had planned to generated the end room to be the furthest amount of rooms away from the starting room but I found it too complicated to do within the remaining time.
+
+### Linking the Rooms Together
+I used the `MapGenerator.cs` script to link all the rooms together via teleporters, esentially creating the pathway between rooms.
+
+`MapGenerator.cs` on `Start()`, looks for all the type of room gameobjects that exist within the scene and adds them to their respective lists via the `AssignList()` method.
+
+Then from RNG, the map is selected, there is a 25% chance of a premade `crewmate` shaped map being picked, and a 75% chance of being a randomly generated map from `DrunkardWalk.cs`.
+
+ Then according to their respective location in the matrix, `AssignRoom()` is called to iterate throught the fed n by m matrix and uses its `Vector2Int` position in the matrix as the `roomDictionary` key and assigns the respective room gameobject as the `roomDictionary` value based on the room value in the matrix.
+
+`AssignPortal()` is then called which iterates through the map matrix and checks the current room's right and bottom if there exists a room. If there exists a room on the right, the current room's left teleporter `PortalA1` will link to the right adjacent room's left teleporter `PortalA2`. Similarly, if there exists a room on the bottom, the current room's bottom teleporter `PortalB1` will link to the bottom adjacent room's top teleporter `PortalB2`. 
+
+This linkage is done via the `LinkTeleporter.cs` script attached to all teleporters (via prefab) by assigning the `TargetRoom` gameobject to each others teleporter. If a player walks to the teleporter via an `OnTriggerEnter2D` it teleports the player to the targer room.
+
+While linking these rooms, I also made sure that the teleporter sprites were not rendered via the `LinkTeleporter.cs` script by checking if `TargetRoom` was null. The wall tiles were also updated properly to reflect the map layout. This meant that if there was no target room the walls will visually get updated, this is all handled by the `TileUpdate.cs` script attached to the wall gameobject of each room.
+
+<img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118727890373181470/UpdatedRoomTiles.PNG">
+
+### MiniMap
+
+The minimap is generated via the `MapGenerator.cs` script. It creates a bunch of `miniRoom` gameobjects arranged in a matrix and is shown via the canvas ui. Visited rooms are colored with light grey, current room is colored with white, and unvisited adjacent rooms are colored with dark grey. The boss room has a unique icon. This minimap design was heavily inspired by the Binding of Isaac: Rebirth.
+
+<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726549475180594/image.png">
+
+The icon sprites were drawn by me:
+| Icon |  |
+| :-------: | :-: |
+| Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118776117470429294/MiniRoomTexture.png"> |
+| Boss Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721228761477200/BossIcon.png"> |
+
+### Room Logic
+Each room had their own preset conditions to complete. If the room is not completed when entered, then the teleporters (represented by the gate sprites) will be closed and kept shut. This is mostly handled by the `LinkTeleporter.cs` script found in each teleporter. For puzzle rooms/tutorial room, upon entering, the camera shifts to center on the room, and the minimap disables for better visibility. When the puzzle starts, the tiles updates via `TileUpdate.cs` to create an enclosed room with no escape until the player completes or defeats the knights that will spawn when failing (by checking the mob count). For combat rooms, the room is shut if there are mobs and completes once they all die. 
+
+### Additional Room Related Sprite Work
+
+| Sprites |  |
+| :-------: | :-: |
+| Candles | ![Candle](https://piskel-imgstore-b.appspot.com/img/8a7601dc-0b3f-11ee-b56b-b7bc24a2ee1f.gif) |
+| Chain Ball <br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118722436750393394/Ball_Chain.png"> |
+| Item Pedastel<br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721229872975892/Item_Pedestal_Base.png"> |
 
 ## Input
 
@@ -381,6 +504,39 @@ I made sure to create sound for most attacks to that the Player could distingush
 
 The sound implementation mostly consisted of sorting sounds into 4 categories: background music, room sounds, player/mob sounds, and special sounds. Then I would create a dedicated `SoundManager` prefab for the category, create a custom tag for it, and assign all sounds as a sound component. Depending on what sound it was adding, I would locate the tag and proceed to call the sound through playing the corresponding sound's array index in it's sound manager. This gave the me an easier way to find and add in audio, since I would not have to spend time counting `Audio Source` components to find the indexing of each sound. The old exceptions were sounds that were always played upon use, where I opted to directly add the `Audio Source` compontent to the game object itself and set it to "Play on Awake."
 
+## Boss Concept and Design - Marc Paolo Yap
+I thought of the boss concept, and boss stage design with the clear reference to Among Us. All of the create sprites and tiles, shown under here are all drawn by me using the free website [Piskel](https://www.piskelapp.com/). The Boss AI and scripting was handled by Orien Cheng.
+
+Upon entering the vent in the final room, the player enters the Boss Room and will be guided upwards. At a certain point when going up, there is a trigger via `BossTrigger.cs` that starts the boss, prevents the player from backtracking, and changes the music.
+
+|| Paint.exe Concept Art|
+| :-------: | :-: |
+| Boss Entrance & Design <br> (decided on the right one)| <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726655922421812/Boss_Final.png" width = 50%>|
+| Boss 1st Phase <br> (only one we decided using) | <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726656417333368/Boss_Phase_1.png" width = 50%>|
+| Boss 2nd Phase <br> (unused) | <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726656736108634/Boss_Phase_2.png" width = 50%>|
+
+### Boss Assets
+|Left Hand| Head | Right Hand|
+|:-:|:-:|:-: |
+|![BossLeft](https://piskel-imgstore-b.appspot.com/img/92611bca-0b1f-11ee-9f75-b7bc24a2ee1f.gif)|![BossHead](https://piskel-imgstore-b.appspot.com/img/28ca839c-0b1f-11ee-bf19-b7bc24a2ee1f.gif)|![BossRight](https://piskel-imgstore-b.appspot.com/img/7334a91c-0b1f-11ee-a2f6-b7bc24a2ee1f.gif)|
+|Laser Beam| ![Beam](https://piskel-imgstore-b.appspot.com/img/345188dc-0b1f-11ee-abce-b7bc24a2ee1f.gif)|
+|Button |![Button](https://piskel-imgstore-b.appspot.com/img/5d54c18f-0b1f-11ee-bea3-b7bc24a2ee1f.gif)|
+
+### Boss Map
+
+<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726657247805560/BossRoom.PNG">
+
+|Tiles for TileMap|
+|:-:|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722437006241862/Bridge_Wall.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722437245321257/BridgeFloor.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118721229239623700/Bridge_Wall_2.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722786442092584/Bridge_Bottom_Side_L.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722787272572938/Bridge_Side_Corner_R.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722787809435698/Bridge_Side_L.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722788061102150/Bridge_Side_R_Top.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722676463239168/Boxes.png">|
+  
 ## Gameplay Testing
 
 **Add a link to the full results of your gameplay tests.**
