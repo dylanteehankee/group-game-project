@@ -64,6 +64,8 @@ The spell of 4 elements was designed to serve different roles:
 The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
 The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
 
+The initial plan on the spell part was to make 2 spells per element for the player to choose/purchase and implement the interaction between elements to allow players to build their combat style. For example, the original design for the water spell is for a `wet` status on monsters that make them easier to be frizzed or induce lightning. We also planned to include a few special purposed spells for consumable scroll items, such as a `light scroll` that light up the entire room for hard mode combat assist. But these plans were selectively pushed back due to task transferring and time manner.
+
 ## Mobs - Orien Cheng
 
 ### Mob AI
