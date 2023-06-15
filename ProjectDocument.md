@@ -81,7 +81,7 @@ The casting/ready stage of spell casting is shown by particle effect around play
 
 The initial plan on the spell part was to make 2 spells per element for the player to choose/purchase and implement the interaction between elements to allow players to build their combat style. For example, the original design for the water spell is for a `wet` status on monsters that make them easier to be frizzed or induce lightning. We also planned to include a few special purposed spells for consumable scroll items, such as a `light scroll` that light up the entire room for hard mode combat assist. But these plans were selectively pushed back due to task transferring and time manner.
 
-## Inventory System - Jason
+## Inventory System - Jason Fu
 ### Design Goal
 My goal was to create a robust inventory backend that could be used in this game and future games to come. This goal however, presented the challenge of designing a generic, reusable system that could be easily adapted to the wide variety of inventories seen in different games. For example, some inventories may have a limited capacity, or limited amount of physical space where items could be arranged in. Items could also be stored individually or in stacks, sometimes with a limit on the number of items in a stack. Since these variations greatly impact the user interface side of inventory systems, I decided to start by designing the backend.
 ### Backend Design
@@ -89,42 +89,107 @@ The inventory backend design centers around the principle of reliability. As ite
 #### ItemManager
 To help achieve this, the static ItemManager class keeps track of inventory items by assigning each item a unique ID and storing the item in a dictionary where each item is referenced by its ID. Each inventory item derives from a base GameItem class whose base constructor registers itself with the ItemManager, adding it to the dictionary and attaining an ID. Rather than exchanging a reference to the object itself, these systems passed the item’s unique ID and were required to go through the ItemManager to get the actual item. With centralized item tracking and unique ID assignments, duplicating items is far more difficult. 
 #### ItemStatus and ItemCollection Interface
-To prevent items from being assigned to multiple conflicting systems at once, each GameItem stores an ItemStatus enum, whose value represents a specific item state. For example, McDungeon has four ItemStatuses: *Unowned - item is unowned by the player
-*ItemInventory - item is present in the player’s inventory of items
-*PlayerInventory - item is present in the player’s inventory of equipment
-*Equipped - item is equipped by the player
+To prevent items from being assigned to multiple conflicting systems at once, each GameItem stores an ItemStatus enum, whose value represents a specific item state. For example, McDungeon has four ItemStatuses: 
+* Unowned - item is unowned by the player
+* ItemInventory - item is present in the player’s inventory of items
+* PlayerInventory - item is present in the player’s inventory of equipment
+* Equipped - item is equipped by the player
+
 Note that each status can represent a different number of objects possessing the item, such as unowned with 0 possesers, and equipped with both the active player and the equipment inventory possessing the item. Therefore each ItemStatus has a flexible list of collections that are connected to that status. Specifically, the ItemCollection interface represents something in the game that can possess items, and the RegisterItemCollectionWithStatus() method ensures that when an item has a particular ItemStatus, the registered ItemCollection is guaranteed to contain that item. Furthermore, the transition of an item from one ItemStatus to another is performed through the ChangeItemStatus() function, which makes sure each party is okay with the transition before it is performed. Namely, every item collection registered with the previous ItemStatus has to be okay with the item’s removal, the item itself has to be okay with the transition, and every item collection registered with the future ItemStatus has to be okay with the item’s addition. This design is to further prevent unwanted item duplication or removal as they are passed between systems. 
 #### ItemCollection Implementations
 For McDungeon, I designed three ItemCollections. The first is the NonStackableInventoryCollection which represents items that cannot be stacked such as equipment, and the second is the StackableInventoryCollection which represents items that can be stacked such as HP potion items. Each collection was designed to store its items in multiple different orders depending on the inventory sort method and its accompanying comparator, but this was not used in McDungeon. The third is the player inventory, which represents equipped items by the player and is limited to a weapon and armor slot. 
 #### Basic UML diagram 
-<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118820708005462026/Inventory_System_-_BackendSimple.jpeg" width="50%"> 
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118820708005462026/Inventory_System_-_BackendSimple.jpeg" width="50%">
 
-### Frontend Design
+
+### Frontend
+#### Design Pattern
 Following this, I moved onto designing the frontend. While this implementation would be specific to McDungeon, I was still having trouble designing a reliable system. I learned about frontend design patterns such as the EBC/EBI and MVC and decided on the model view controller design pattern. 
 #### Original Design
 Originally I had planned for a 3 panel inventory screen.
 * The right panel would display inventory items in a grid that the user could select.
 * The center panel would display information about the selected item and buttons to perform actions, such as equipping, or selling the item.
 * The left panel would display a player card that shows the currently equipped items and various stats and currencies.
+
 However, after showcasing implementations of the design with the team, we decided that a single panel design would work better. 
 #### Single Panel Design
-The single left panel would:
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871130359480440/UI1.PNG" width="50%"><img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871130695020584/UI2.PNG" width="50%">
+
+The single right panel would:
 * Display inventory items in a grid that the user could interact with
 * When mousing over an item, a hovering panel would display information about the item
 * When selecting an item, the hovering panel would fix and have buttons the users could interact with
 * Display equipped weapon, armor, and various stats/currencies above the inventory grid
 #### Brief overview of the MVC design
-<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118821910239776818/Inventory_System_-_MVCSimple.jpeg" width="50%"> 
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118821910239776818/Inventory_System_-_MVCSimple.jpeg" width="50%">
 
 Notably, the InventoryController interacted with the ItemManager backend and handled any actions the user could take to modify the inventories and the InventoryCollections model stored the various ItemCollection classes that data was retrieved from.
-
 
 ### Challenges
 There are however, drawbacks and challenges to the inventory design. One challenge I faced was when to refresh the inventory UI. Originally, I had planned that opening the inventory would freeze other aspects of the game. When this design element did not go through, players could collect items or buy items from the merchant while the inventory was open, which forced panel refreshing to be triggered by external sources.
 
-This also caused problems when players were fighting and wanted to use a health potion. They would have to press the I key, navigate to the items page, click the potion, then use it during the fight as opposed to when time was stationary. I also noticed that deselecting items was not intuitive. Players kept trying to click outside of the hover panel UI to deselect an item rather than clicking on the inventory slot again to deselect it.
+This also caused problems when players were fighting and wanted to use a health potion. They would have to press the I key, navigate to the items page, click the potion, then use it during the fight as opposed to when time was stationary. I also noticed that deselecting items was not intuitive. Players kept trying to click outside of the hover panel UI to deselect an item rather than clicking on the inventory slot again to deselect it. Moving forwards, I would definitely do some user interface research and get feedback from people who were not familiar with the system.  
 
-Moving forwards, I would definitely do some user interface research and get feedback from people who were not familiar with the system.  
+### UI
+Besides inventory UI, I created other UI elements.
+
+### Player Health Bar
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871128379768873/Hearts.PNG" width="10%">
+
+The player health bar displays player health in the upper left corner. The health controller was designed such that the number of health points contained in each heart could be changed, alongside max health and current health. The bar would then display the correct number of full hearts, half hearts, and empty hearts. Because of this flexibility, the number of hearts was rounded up, such that if each heart was worth 3 hit points and the player had 2 hit points, then a full heart would be displayed. Similarly, 1 hit point would display a half heart. 
+
+### Shop Room 
+To create the shop room and its corresponding UI I created a central ShopMerchantController class to facilitate the buying and displaying of elements. 
+
+The ShopUIManager class manages the UI that displays item stats and allows the player the buy the item.
+
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871129013108856/merchant.PNG" width="50%">
+
+The ShopCrateController class represents each crate in the shop room. Besides storing the item it is showcasing, it also detects when the player is close enough and informs the ShopMerchantController.
+
+The merchant room was designed such that the number of crates and items it can host can be dynamically increased or decreased. The items sold are initialized inside the ShopMerchantController class. 
+
+### Pause Menu 
+Towards the end of the project, I created the rudimentary pause menu. By pressing Escape, the user can pause the game with an option to restart.
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871129273139251/Paused.PNG" width="50%"> 
+
+The game was paused by setting the Time.timeScale to 0. This however, only pauses certain systems in the game. Accompanying the timeScale change, a global state object has its isPaused boolean set to true. This is used to disable certain features that aren’t affected by timeScale, such as Update() functions where key presses are detected to toggle inventory.
+
+There is a bug currently where if the inventory is open, the game can be paused. Pausing the game should instead close the inventory. 
+
+The restart button works by using the SceneManager to reload the active scene. Unfortunately this caused several game breaking bugs that were difficult to fix. Some interesting bugs we encountered were that:
+
+* The Start() scripts were called in a different order than the initial ordering - Switched from Start() to Awake()
+* Update() function of a script is called before Start() is finished calling - Finding this was difficult, but to fix it, simply add an isStartFinished boolean
+* GameObjects that once existed during the Start function are missing after the start function but exist again after a random period of time - Specifically, the Player’s weapon hitbox does not exist for a short period after CRWeaponController’s start() is called. To fix this, add a check to make sure the game object is not null, then call the method multiple times so that there will be one successful call when the game object is no longer null. 
+
+### Death Screen
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871128027430962/dead.PNG" width="50%"> 
+
+Upon player death, the death screen lowers a black curtain and shows a dead player along with a restart button. The restart button functions exactly the same as the one in the pause menu. 
+
+### Item System
+The items in the game were divided primarily into two types: Consumable items and Equipment items. All of these items extended the GameItem class used by the Inventory system. 
+
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118874883720499351/Inventory_System_-_Items.jpeg" width="50%"> 
+
+#### Separate Item Drops
+Since none of the above items are a monobehaviour however, item drops themselves had to be a separate object and have its own controller. Specifically, the EquipmentDrop class contains either a Weapon or Armor that it adds to the player inventory when collected, and the HealthPotionDrop class contains a HealthPotion that it adds to the item inventory once collected. Both of these classes derived from the DroppedItemController.
+Item drop in the puzzle room appear like so:
+
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871128715296888/itemdrops.PNG" width="25%"> 
+
+#### ItemFactory
+To aid with the creation of items, the ItemFactory class creates different item prefabs. The ItemFactory was primarily used by the PuzzleController, which indicates whether a big or small puzzle reward should be provided. The ItemFactory then pulls random items from different prize tiers, groupings of items with relatively similar strength, that it then deposits for the player to pickup.
+
+The biggest challenge with the item system however, was integrating the items with other systems. 
+
+#### Integration with the Player
+The Weapon object specifies stats the player’s weapon should adopt. To ensure that the player wields the correct weapon, the SyncWeaponWithInventory() method was added to PlayerController, which passes on the weapon stats to the CRWeaponController class. 
+
+In the case where the equipped weapon is null, which indicates that the player does not have a weapon equipped, there is currently no behavior to disable the weapon. Instead, the CRWeaponController will maintain the same stats it had from the previously equipped Weapon. 
+
+The HealthPotion integration was simpler, as the RestoreHealth() method can be invoked, and the health potion heal amount is passed in. 
 
 
 ## Mobs - Orien Cheng
@@ -358,13 +423,11 @@ The last room to mention is the Tutorial puzzle that is supposed to teach the pl
 | Tutorial Puzzle |  |
 | :------------: |:------------: |
 |  This was the first iteration of the tutorial room, but had the same player field of view problems as the fist and second puzzles, so it was proptly resized to 9 by 5 in the current game | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112974720434966628/IMG_4574.jpg" width="70%"> |
-| Unfortunately, after testing the game at the game showcase, we have decided that the tutorial room simply does not prepare the player well enough to complete puzzles on thier own, but do not currently have the dev time for it, so it will remain as is. |  |
+| Unfortunately, after testing the game at the game showcase, we have decided that the tutorial room simply does not prepare the player well enough to complete puzzles on thier own, but do not currently have the dev time for it, so it will remain as is. | 
 
-### Puzzle Designed by Jason
-
-<!-- Feel free to add anything to the stuff above if you want to - Krystal -->
-
-### Implementation
+| Puzzle Designed by Jason | Room 4 |
+| :------------: | :------------: |
+| This was one of the first rooms to feature the moving walls mechanic. To complete the puzzle with 2 fireballs, the player needs to bounce off the walls while they are in motion. In retrospect, the optimal solution to the puzzle is too difficult compared to the other puzzles. However, players are able to solve it using more than 2 fireballs. | <img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118886350989570078/puzzle4.jpg" width="70%">  |
 
 ## Map Visuals, Logic and Design - Marc Paolo Yap
 
@@ -511,6 +574,115 @@ Using information from personal playtesting and from the Project Game Showcase, 
 *Tutorial Puzzle Room* - The tutorial room currently gives weapons and potions as rewards for completing it fast, however it didn't make sense for the tutorial room to give a weapon that would replace the starting weapon that had not been used at all. Thus, a suggestion for removing weapon drops for the Tutorial Puzzle Room was made.
 
 *Player* - During personal playtests and duing the Project Game Showcase, the general consensus was that the player moved too slow. I had suggested to increase the player move speed to help with the flow of the game, however due to time constraints and required testing with new player speed, we were not able to implement the change.
+
+
+
+## Puzzle Implementation - Jason Fu
+### Design Pattern
+My goal for puzzle implementation was to design a flexible, reusable puzzle engine that could handle a wide variety of puzzle elements. Since the specific puzzle elements and designs were undecided at first, I designed the puzzle engine similar to how I designed the inventory system, using a flexible MVC design pattern. 
+
+
+However, as I was planning out my object hierarchy I suspected that it would make more sense for the View and Controller for each puzzle element to be tied together since both would have to be MonoBehaviours and were closely related. After talking with the professor, I changed my design so that View and Controller were tied together, labeled as Controller. My initial design was fairly simple: 
+
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118874884005703720/Inventory_System_-_PuzzleMVC_Simple.jpeg" width="25%"> 
+
+Since puzzle elements were a nebulous concept, I created a generic design centered around the PuzzleController.
+### Puzzle Controller and Model
+The PuzzleController class stores the state of the puzzle and the state of its elements in PuzzleStateModel, and manages the various puzzle element controllers. When a puzzle element is created, it is assigned a unique ID and its controller is stored in a dictionary by the unique ID inside PuzzleController. Similarly, the associated PuzzleElementStateModel is stored by the same unique ID in a dictionary inside PuzzleStateModel. 
+
+
+For puzzle elements to interact with each other, a RespondTo() method was specified in the PuzzleElementController. This method would be invoked by a trigger, namely a change in another puzzle element’s state. The PuzzleController stores a list of elements whose RespondTo() function would be called if a state change of an element with a specific ID occurred. In order to register an element was a trigger to another element’s state change, the AddItemTrigger() method was used. Whenever a PuzzleElementModel had its puzzle state changed, it would call TriggerResponders() to call the various RespondTo() functions of registered respondents. With these core features of puzzle elements implemented, I began to design specific elements based on initial designs. 
+### Puzzle Design
+Based on the initial designs, there were three primary types of elements for the puzzle rooms.
+* Buttons - Interactive buttons the player could step on to change other elements in the puzzle.
+* Walls - Walls that served as additional obstacles to the room, some static and others changeable.
+* Torches -  Lightable torches that served as the objective of the puzzle. 
+
+While I left my win condition for puzzles flexible at first, the objective of every puzzle ended up being lighting up all the torches to complete the puzzle room.
+### Buttons
+Each button had two possible states, as can be seen in ButtonStateModel: *Pressed* and *Unpressed*. 
+Two types of buttons were created:
+* Push button - *Pressed* when the player stepped on it, and *Unpressed* when the player was not actively stepping on it.
+* Switch button - toggle between *Pressed* and *Unpressed* each time the player began to newly step on the button, which meant that the player would have to step off the button then on again in order to trigger a state change. 
+  
+### Walls
+Each wall had four possible states, as can be seen in WallStateModel: Open, Closed, Opening, Closing. The reason for the additional transition states(opening and closing) was so that wall transitions did not appear jarringly instantaneous. 
+Three types of walls were created: 
+* Static wall - stationary wall
+* Disappearing wall - wall that vanished when Open and materialized when Closed
+* Sliding wall - wall that moved between two points, depending on if open or closed
+
+Variations of the sliding wall and disappearing wall that responded to a specific button state ID were created. Parameters of each individual wall were left flexible and could be tuned, including:
+* Wall dimensions
+* Transition time between open and closed
+* Delay time when reacting to a button state change
+* The block sprite overlaying the wall
+
+Walls were particularly tricky because depending on the size of the wall, block sprites needed to be overlayed at the right positions, and other items resized. 
+
+
+One such item was the bouncy wall prefab. For the fireballs to bounce, a bouncy wall prefab object needed to be used, which was a resizable rectangular sprite that the fireball would calculate bounce angles from. 
+
+
+Four bouncy wall prefabs were placed on the top, bottom, left, and right of each wall object. 
+
+
+In the first iteration, the bouncy wall colliders were too thick, such that when the fireball hit anywhere near a corner, it would detect two simultaneous bouncy walls and bounce at an awkward angle. Therefore the walls were adjusted to as thin as possible. Even now that the bouncy walls are paper thin, there are times when the fireball will bounce off near corners at awkward angles. 
+
+
+Another issue was the reappearance of walls when a fireball was inside the wall, such as when a disappearing wall begins to reappear with a fireball in the center. Therefore an internal wall collider was added that would destroy the fireball when such incidents occurred. Tuning the size of the interior wall collider was tricky since it couldn’t be too large or else the fireballs would be destroyed on bounce from the exterior, or too small since the fireball would appear traveling inside the wall for a period. 
+
+
+### Torches
+Each torch had two possible states, as can be seen in TorchStateModel: Lit and Unlit. 
+
+Each torch would start off Unlit but would transition to Lit every time a fireball touched it. 
+
+Torches were designed with a possibility of expiring after a certain duration of time, transitioning from Lit to Unlit, which would add additional time pressure to the player. Note that each time a fireball collided with the torch it would reset the expiration time. 
+
+### Puzzle Timer
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871129713557535/puzzletimer.PNG" width="25%">
+
+The puzzle timer was created to add a time constraint to the player as well as to reward the player for completing puzzles efficiently. If a player completes before the first time listed, they get a large reward. If they complete before the timer reaches zero, they get a smaller reward. If they fail to complete the puzzle, the knights activate. 
+
+
+
+
+The rewards for the tutorial room specifically are different. Completing the tutorial room by the efficient time grants a smaller reward, and completing it before zero grants a few health potion drops. 
+
+
+### Loading Levels
+Rather than placing the objects on the scene directly, I wanted to create the puzzles at runtime. To achieve this, I originally had a method that initialized a series of puzzle elements but this took up too much space. Instead, I stored puzzle room data inside of a CSV file that was loaded while the game was in progress. The puzzle room data had to follow a specific format
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118874883422687232/csv.PNG" width="50%"> 
+
+
+Interestingly enough, the Unity Build could not use System.IO to load files so instead Resouces.LoadText was used to replace it. 
+
+
+After discussing with the TA, I learned that perhaps an XML or JSON file would make more intuitive sense than a CSV, but unfortunately I did not get around to making the switch. 
+
+
+### Coordinating With Other Systems
+Developing the puzzle rooms involved coordinating with a lot of other systems in the game, including the map, players, and enemies. 
+
+
+### Puzzle StartButton
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118871130028126238/startbutton.PNG" width="25%">
+
+At one point during the puzzle implementation, an issue arose between the puzzle designs and map mechanics. Since players would be entering the puzzle room through doors, they could end up at an unanticipated starting position for the puzzle. Furthermore, doors were not intended to exist while playing through the puzzle. To resolve this problem, I proposed a puzzle start button. To start the puzzle, the player would have to step on a button in a specific part of the room, which would close the doors and spawn puzzle elements. 
+
+### Room Center 
+Since each puzzle room had a different center position and the elements were loaded at runtime based on xy coordinates, a PuzzleHome object was created at the bottom left of each room to make placing elements consistent. 
+
+### Puzzle Testing with Player
+When developing and testing the puzzles, there was originally no fireball cooldown or cast time. Once this was added, the puzzles became more difficult and so design adjustments were made. 
+
+### Knights
+The addition of knights went smoothly since they had methods that were designed to be called at different stages of the puzzle. 
+
+### Camera Vision
+When testing the puzzles, we found that it was difficult to solve puzzles without being able to see the entirety of the puzzle room. Therefore each puzzle was resized to 9x5 and the camera was fixed when entering the puzzle room. 
+
 
 ## Audio - Krystal Chau
 
