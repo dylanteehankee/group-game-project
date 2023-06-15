@@ -55,7 +55,7 @@ When the weapon is idealing (not attacking), the `weapon follower` will show up 
 
 | Weapon |   |   |
 | :------------: |:------------: |:------------: |
-|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Attack.gif" alt="Attack" width="80%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/WeaponFollow.gif" alt="WeaponFollow" width="100%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/counterweight.png" alt="counterweight" width="100%"> |
+|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Attack.gif" alt="Attack" width="80%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/WeaponFollow.gif" alt="WeaponFollow" width="120%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/counterweight.png" alt="counterweight" width="100%"> |
 | Weapon Attack | Weapon Follow | | Counter-weight Idea | 
 note: the Counter-weight is compeletely transparent and collider diabled in game, here is showing idea
 
