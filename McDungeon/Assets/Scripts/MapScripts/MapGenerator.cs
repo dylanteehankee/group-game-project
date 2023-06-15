@@ -36,11 +36,11 @@ public class MapGenerator : MonoBehaviour
     //Map - nxn matrix of rooms
     //16 rooms, 8 combat, 3 puzzle, 2 shop, 1 boss, 1 start, 1 tutorial
 
-    private int[,] mapAmogus = new int[9,9] { 
+    private int[,] mapAmogus = new int[9, 9] { 
     //amongus shaped map
     {0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0},
-    {0,0,4,2,1,0,0,0,0}, 
+    {0,0,4,2,1,0,0,0,0},
     {0,3,5,0,0,6,0,0,0},
     {0,4,4,0,4,3,0,0,0},
     {0,4,5,4,4,0,0,0,0},
@@ -75,33 +75,40 @@ public class MapGenerator : MonoBehaviour
         int RandomMap = Random.Range(0, 20);
 
         // 75% chance of drunkard walk map, 25% chance of amongus map
-        if (RandomMap >= 15){
+        if (RandomMap >= 15)
+        {
             map = mapAmogus;
         }
-        else{
+        else
+        {
             map = GetComponent<DrunkardWalk>().GenerateMatrix();
         }
-        
+
         AssignRoom(map);
         AssignPortal(map);
 
         DrawMiniMap();
     }
 
-    private void AssignList(){
-        foreach (GameObject room in combatRooms){
+    private void AssignList()
+    {
+        foreach (GameObject room in combatRooms)
+        {
             combatRoomList.Add(room);
         }
-        foreach (GameObject room in puzzleRooms){
+        foreach (GameObject room in puzzleRooms)
+        {
             puzzleRoomList.Add(room);
         }
-        foreach (GameObject room in shopRooms){
+        foreach (GameObject room in shopRooms)
+        {
             shopRoomList.Add(room);
         }
     }
 
     //Pick a room according to the map
-    private GameObject PickRoom(int roomType){
+    private GameObject PickRoom(int roomType)
+    {
         switch (roomType)
         {
             case 1:
@@ -130,12 +137,16 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    private void AssignRoom(int[,] map){
+    private void AssignRoom(int[,] map)
+    {
         //assigns the room to the current position in the map
-        for (int i = 0; i < map.GetLength(0); i++){
-            for (int j = 0; j < map.GetLength(1); j ++){
-                int currentRoomIndex = map[i,j];
-                if (currentRoomIndex != 0){
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                int currentRoomIndex = map[i, j];
+                if (currentRoomIndex != 0)
+                {
                     Vector2Int currentRoom = new Vector2Int(i, j);
                     GameObject room = PickRoom(currentRoomIndex);
                     roomDictionary.Add(currentRoom, room);
@@ -148,12 +159,16 @@ public class MapGenerator : MonoBehaviour
     //and prevRoom to the room at the previous position
     //also assigns and checks if there are rooms above, below, left and right of the current room
     //if any of these rooms are the previous room, it will not make a portal to that room
-    private void AssignPortal(int[,] map){
+    private void AssignPortal(int[,] map)
+    {
 
-        for (int i = 0; i < map.GetLength(0); i++){
-            for (int j = 0; j < map.GetLength(1); j ++){
-                int currentRoomIndex = map[i,j];
-                if(currentRoomIndex != 0){
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                int currentRoomIndex = map[i, j];
+                if (currentRoomIndex != 0)
+                {
 
                     Vector2Int currentRoomKey = new Vector2Int(i, j);
                     GameObject room = roomDictionary[currentRoomKey];
@@ -161,7 +176,8 @@ public class MapGenerator : MonoBehaviour
                     if (i + 1 < map.GetLength(0) && map[i + 1, j] != 0)
                     {
                         Vector2Int adjacentRoomKey = new Vector2Int(i + 1, j);
-                        if(roomDictionary.ContainsKey(adjacentRoomKey)){
+                        if (roomDictionary.ContainsKey(adjacentRoomKey))
+                        {
                             GameObject adjacentRoom = roomDictionary[adjacentRoomKey];
                             //Link Teleporter A1 to Teleporter A2
                             GameObject PortalA1 = room.transform.GetChild(2).gameObject;
@@ -174,7 +190,8 @@ public class MapGenerator : MonoBehaviour
                     if (j + 1 < map.GetLength(1) && map[i, j + 1] != 0)
                     {
                         Vector2Int adjacentRoomKey = new Vector2Int(i, j + 1);
-                        if(roomDictionary.ContainsKey(adjacentRoomKey)){
+                        if (roomDictionary.ContainsKey(adjacentRoomKey))
+                        {
                             GameObject adjacentRoom = roomDictionary[adjacentRoomKey];
                             //Link Teleporter B1 to Teleporter B2
                             GameObject PortalB1 = room.transform.GetChild(3).gameObject;
@@ -190,19 +207,23 @@ public class MapGenerator : MonoBehaviour
 
     //Draw mini map based on the map matrix
     // this creates a minimap gameobject and initializes miniRoom for each room as a child of minimap
-    private void DrawMiniMap(){
+    private void DrawMiniMap()
+    {
         //create squares for each room
-        for (int i = 0; i < map.GetLength(0); i++){
-            for (int j = 0; j < map.GetLength(1); j ++){
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
                 //instatiates a miniRoom prefab per room the same position as the room in the map
                 GameObject miniRoomPrefab = Instantiate(miniRoom, miniMap.transform);
                 //set the scale of the miniRoom to half the size of the room
                 miniRoomPrefab.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 //sets the position of the miniRoom according to the position in the map, relative to the minimap
-                miniRoomPrefab.transform.localPosition = new Vector3(j*0.75f, -i*0.75f, 0);
+                miniRoomPrefab.transform.localPosition = new Vector3(j * 0.75f, -i * 0.75f, 0);
                 //make all of them in layer 3
                 //if matrix value is 6, change sprite to end room sprite
-                if (map[i,j] == 6){
+                if (map[i, j] == 6)
+                {
                     miniRoomPrefab.GetComponent<SpriteRenderer>().sprite = endRoomSprite;
                 }
                 miniRoomPrefab.GetComponent<SpriteRenderer>().sortingOrder = 40;
@@ -220,11 +241,12 @@ public class MapGenerator : MonoBehaviour
         UpdateAdjacent(currentRoomCoordinates);
     }
     //Update minimap based on current room
-    public void UpdateMiniMap(GameObject currentRoom){
+    public void UpdateMiniMap(GameObject currentRoom)
+    {
         //set previous room to white
         GameObject prevRoom = miniMap.transform.GetChild(currentRoomCoordinates.x * map.GetLength(1) + currentRoomCoordinates.y).gameObject;
         prevRoom.GetComponent<SpriteRenderer>().color = Color.grey;
-        
+
         //get current room position in map
         currentRoomCoordinates = GetKeyFromValue(roomDictionary, currentRoom);
         //get current room position in minimap
@@ -237,54 +259,68 @@ public class MapGenerator : MonoBehaviour
     }
 
     // Check Adjacent Rooms
-    private void UpdateAdjacent(Vector2Int currentRoomCoordinates){
+    private void UpdateAdjacent(Vector2Int currentRoomCoordinates)
+    {
         //set adjacent rooms up, down, left, and right that are transparent to orange
-        if (currentRoomCoordinates.x + 1 < map.GetLength(0)){
+        if (currentRoomCoordinates.x + 1 < map.GetLength(0))
+        {
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x + 1, currentRoomCoordinates.y);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
             //check if the color is transparent
-            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0)
+            {
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
-        if (currentRoomCoordinates.x - 1 >= 0){
+        if (currentRoomCoordinates.x - 1 >= 0)
+        {
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x - 1, currentRoomCoordinates.y);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
-            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0)
+            {
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
-        if (currentRoomCoordinates.y + 1 < map.GetLength(1)){
+        if (currentRoomCoordinates.y + 1 < map.GetLength(1))
+        {
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y + 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
-            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0)
+            {
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
-        if (currentRoomCoordinates.y - 1 >= 0){
+        if (currentRoomCoordinates.y - 1 >= 0)
+        {
             Vector2Int adjacentRoomCoordinates = new Vector2Int(currentRoomCoordinates.x, currentRoomCoordinates.y - 1);
             GameObject adjacentMiniRoom = miniMap.transform.GetChild(adjacentRoomCoordinates.x * map.GetLength(1) + adjacentRoomCoordinates.y).gameObject;
-            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0){
+            if (adjacentMiniRoom.GetComponent<SpriteRenderer>().color == new Color(0, 0, 0, 0) && map[adjacentRoomCoordinates.x, adjacentRoomCoordinates.y] != 0)
+            {
                 adjacentMiniRoom.GetComponent<SpriteRenderer>().color = new Color32(53, 56, 57, 255);
             }
         }
     }
 
     // Get key from value in dictionary. Used to get the coordinates of the current room.
-    private Vector2Int GetKeyFromValue(Dictionary<Vector2Int, GameObject> dict, GameObject val){
-        foreach (KeyValuePair<Vector2Int, GameObject> entry in dict){
-            if (entry.Value == val){
+    private Vector2Int GetKeyFromValue(Dictionary<Vector2Int, GameObject> dict, GameObject val)
+    {
+        foreach (KeyValuePair<Vector2Int, GameObject> entry in dict)
+        {
+            if (entry.Value == val)
+            {
                 return entry.Key;
             }
         }
         return new Vector2Int(-1, -1);
     }
 
-    public void DisableMiniMap(){
+    public void DisableMiniMap()
+    {
         miniMapHUD.SetActive(false);
     }
 
-    public void EnableMiniMap(){
+    public void EnableMiniMap()
+    {
         miniMapHUD.SetActive(true);
     }
 

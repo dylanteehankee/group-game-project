@@ -8,7 +8,7 @@ public class DrunkardWalk : MonoBehaviour
     private static int maxCombatRooms = 8;
     private static int maxPuzzleRooms = 3;
     private static int maxShopRooms = 2;
-    
+
     private Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
     private int matrixLength = 10;
     private int numberOfRooms = 16;
@@ -22,11 +22,11 @@ public class DrunkardWalk : MonoBehaviour
     private int roomIndex = 0;
     private int stepIndex = 0;
     private int shopRoomCount, puzzleRoomCount, combatRoomCount, endRoomCount;
-    
+
 
     private enum RoomType
     {
-        
+
         None, // is 0 in matrix, empty room
         StartRoom, // prints 1 in matrix, only one
         TutorialRoom, // prints 2 in matrix, only one, always adjacent to StartRoom
@@ -38,7 +38,8 @@ public class DrunkardWalk : MonoBehaviour
     }
 
     //keep track of current room, previous room, and next room
-    public int[,] GenerateMatrix(){
+    public int[,] GenerateMatrix()
+    {
         ResetValues();
 
         // Set StartRoom Start at random row, random column
@@ -54,8 +55,9 @@ public class DrunkardWalk : MonoBehaviour
         // Walk through the matrix, randomly choosing a direction to go to
         // keep walking until the number of rooms is reached
         // do not adda a room if it is out of bounds or if it is already a room
-        while(roomIndex <= numberOfRooms - 1){
-            if(roomIndex ==  numberOfRooms - 1)
+        while (roomIndex <= numberOfRooms - 1)
+        {
+            if (roomIndex == numberOfRooms - 1)
             {
                 break;
             }
@@ -69,21 +71,24 @@ public class DrunkardWalk : MonoBehaviour
 
             stepIndex++;
 
-            if (stepIndex > maxSteps && roomIndex < numberOfRooms - 1){
+            if (stepIndex > maxSteps && roomIndex < numberOfRooms - 1)
+            {
                 ResetValues();
                 GenerateMatrix();
                 break;
             }
 
             //if nextRoom is adjacent to startRoom, choose another direction
-            if (nextRoom == rooms[0] + Vector2Int.up || nextRoom == rooms[0] + Vector2Int.down || nextRoom == rooms[0] + Vector2Int.left || nextRoom == rooms[0] + Vector2Int.right){
+            if (nextRoom == rooms[0] + Vector2Int.up || nextRoom == rooms[0] + Vector2Int.down || nextRoom == rooms[0] + Vector2Int.left || nextRoom == rooms[0] + Vector2Int.right)
+            {
                 continue;
             }
             //if nextRoom is out of bounds, choose another direction
-            if (nextRoom.x < 0 || nextRoom.x >= matrixLength || nextRoom.y < 0 || nextRoom.y >= matrixLength){
+            if (nextRoom.x < 0 || nextRoom.x >= matrixLength || nextRoom.y < 0 || nextRoom.y >= matrixLength)
+            {
                 continue;
             }
-            
+
             // if nextRoom is already a room, choose another direction or go back to previous room
             if (matrix[nextRoom.x, nextRoom.y] != (int)RoomType.None)
             {
@@ -99,12 +104,12 @@ public class DrunkardWalk : MonoBehaviour
                     case 2:
                         nextRoom = currentRoom; // go back to current room
                         continue;
-                }   
+                }
             }
 
             //assign the nextRoom as a placeholder room
             matrix[nextRoom.x, nextRoom.y] = (int)RoomType.TempRoom;
-            
+
 
             //set the currentRoom to the nextRoom
             rooms[roomIndex] = nextRoom;
@@ -135,73 +140,94 @@ public class DrunkardWalk : MonoBehaviour
         return matrix;
     }
 
-    private void GenerateTrainingRoom(){
+    private void GenerateTrainingRoom()
+    {
         // check all corners and edges, don't have to check the top corners
         // tutorial room can only be at the right, left, or down of start room
 
         //if currentRoom is bottom left corner, TutorialRoom can only be at the right of StartRoom
-        if (currentRoom.x == matrixLength - 1 && currentRoom.y == 0){
+        if (currentRoom.x == matrixLength - 1 && currentRoom.y == 0)
+        {
             Debug.Log("bottom left corner");
             matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
             rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
         }
         //if currentRoom is bottom right corner, TutorialRoom can only be at the left of StartRoom
-        else if (currentRoom.x == matrixLength - 1 && currentRoom.y == matrixLength - 1){
+        else if (currentRoom.x == matrixLength - 1 && currentRoom.y == matrixLength - 1)
+        {
             Debug.Log("bottom right corner");
             matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
             rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
         }
         //if currentRoom is at the right edge, TutorialRoom can only be at the left or down of StartRoom
-        else if (currentRoom.y == matrixLength - 1){
+        else if (currentRoom.y == matrixLength - 1)
+        {
             Debug.Log("right edge");
             //choose between left or down
             int randomDirection = Random.Range(0, 2);
-            if (randomDirection == 0){
+            if (randomDirection == 0)
+            {
                 matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
-            } else {
+            }
+            else
+            {
                 matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
             }
         }
         //if currentRoom is at the left edge, TutorialRoom can only be at the right or down of StartRoom
-        else if (currentRoom.y == 0){
+        else if (currentRoom.y == 0)
+        {
             Debug.Log("left edge");
             //choose between right or down
             int randomDirection = Random.Range(0, 2);
-            if (randomDirection == 0){
+            if (randomDirection == 0)
+            {
                 matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
-            } else {
+            }
+            else
+            {
                 matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
             }
         }
         //if currentRoom is at the bottom edge, TutorialRoom can only be at the left or right of StartRoom
-        else if (currentRoom.x == matrixLength - 1){
+        else if (currentRoom.x == matrixLength - 1)
+        {
             Debug.Log("bottom edge");
             //choose between left or right
             int randomDirection = Random.Range(0, 2);
-            if (randomDirection == 0){
+            if (randomDirection == 0)
+            {
                 matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
-            } else {
+            }
+            else
+            {
                 matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
             }
         }
         //otherwise can be either left, right, or down
-        else {
+        else
+        {
             Debug.Log("else");
             //choose between left, right, or down
             int randomDirection = Random.Range(0, 3);
-            if (randomDirection == 0){
+            if (randomDirection == 0)
+            {
                 matrix[currentRoom.x, currentRoom.y - 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y - 1);
-            } else if (randomDirection == 1){
+            }
+            else if (randomDirection == 1)
+            {
                 matrix[currentRoom.x, currentRoom.y + 1] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x, currentRoom.y + 1);
-            } else {
+            }
+            else
+            {
                 matrix[currentRoom.x + 1, currentRoom.y] = (int)RoomType.TutorialRoom;
                 rooms[roomIndex] = new Vector2Int(currentRoom.x + 1, currentRoom.y);
             }
@@ -212,53 +238,63 @@ public class DrunkardWalk : MonoBehaviour
         currentRoom = rooms[roomIndex - 1];
     }
 
-    private void GenerateShopLayer(){
+    private void GenerateShopLayer()
+    {
         //set random shop rooms, try to set them as far away from each other as possible
         int shopRoomCount = 0;
 
         List<Vector2Int> roomsShop = new List<Vector2Int>();
 
-        foreach (Vector2Int room in rooms){
-            if (matrix[room.x, room.y] == (int)RoomType.TempRoom){
+        foreach (Vector2Int room in rooms)
+        {
+            if (matrix[room.x, room.y] == (int)RoomType.TempRoom)
+            {
                 roomsShop.Add(room);
             }
         }
 
-        while (shopRoomCount < maxShopRooms && roomsShop.Count > 0){
+        while (shopRoomCount < maxShopRooms && roomsShop.Count > 0)
+        {
 
             int randomIndex = Random.Range(0, roomsShop.Count);
             Vector2Int randomRoom = roomsShop[randomIndex];
 
             //check if randomRoom is adjacent to shopRoom or training room, if it is remove it from the possible rooms
-            if(CheckDuplicateAdjacency(randomRoom, RoomType.ShopRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom) ){
+            if (CheckDuplicateAdjacency(randomRoom, RoomType.ShopRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom))
+            {
                 roomsShop.Remove(randomRoom);
                 continue;
             }
-            
+
             matrix[randomRoom.x, randomRoom.y] = (int)RoomType.ShopRoom;
             roomsShop.Remove(randomRoom);
             shopRoomCount++;
         }
     }
 
-    private void GeneratePuzzleLayer(){
+    private void GeneratePuzzleLayer()
+    {
         //set random puzzle rooms, try to set them as far away from each other as possible
         int puzzleRoomCount = 0;
 
         List<Vector2Int> roomsPuzzle = new List<Vector2Int>();
 
-        foreach (Vector2Int room in rooms){
-            if (matrix[room.x, room.y] == (int)RoomType.TempRoom){
+        foreach (Vector2Int room in rooms)
+        {
+            if (matrix[room.x, room.y] == (int)RoomType.TempRoom)
+            {
                 roomsPuzzle.Add(room);
             }
         }
 
-        while (puzzleRoomCount < maxPuzzleRooms && roomsPuzzle.Count > 0){
+        while (puzzleRoomCount < maxPuzzleRooms && roomsPuzzle.Count > 0)
+        {
             int randomIndex = Random.Range(0, roomsPuzzle.Count);
             Vector2Int randomRoom = roomsPuzzle[randomIndex];
 
             //check if adjacent to PuzzleRoom
-            if(CheckDuplicateAdjacency(randomRoom, RoomType.PuzzleRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom)){
+            if (CheckDuplicateAdjacency(randomRoom, RoomType.PuzzleRoom) || CheckDuplicateAdjacency(randomRoom, RoomType.TutorialRoom))
+            {
                 roomsPuzzle.Remove(randomRoom);
                 continue;
             }
@@ -269,31 +305,42 @@ public class DrunkardWalk : MonoBehaviour
         }
     }
 
-    private void GenerateCombatLayer(){
+    private void GenerateCombatLayer()
+    {
         //fill the rest of the rooms with combat rooms
-        for (int i = 0; i < matrixLength; i++){
-            for (int j = 0; j < matrixLength; j++){
-                if (matrix[i, j] == (int)RoomType.TempRoom){
+        for (int i = 0; i < matrixLength; i++)
+        {
+            for (int j = 0; j < matrixLength; j++)
+            {
+                if (matrix[i, j] == (int)RoomType.TempRoom)
+                {
                     matrix[i, j] = (int)RoomType.CombatRoom;
                 }
             }
         }
     }
 
-    private void GenerateEndRoom(){
+    private void GenerateEndRoom()
+    {
         //furthest room from start room
         //should be adjacent to any other room
         int maxDistance = 0;
         Vector2Int endRoom = new Vector2Int(0, 0);
 
-        if (endRoomCount == 0){
-            for (int i = 0; i < matrixLength; i++){
-                for (int j = 0; j < matrixLength; j++){
-                    if (matrix[i, j] == (int)RoomType.None){
+        if (endRoomCount == 0)
+        {
+            for (int i = 0; i < matrixLength; i++)
+            {
+                for (int j = 0; j < matrixLength; j++)
+                {
+                    if (matrix[i, j] == (int)RoomType.None)
+                    {
                         int distance = Mathf.Abs(rooms[0].x - i) + Mathf.Abs(rooms[0].y - j);
                         int checkNeighbors = CheckNeighbors(new Vector2Int(i, j));
-                        if(checkNeighbors > 0 && checkNeighbors < 3){
-                            if (distance > maxDistance){
+                        if (checkNeighbors > 0 && checkNeighbors < 3)
+                        {
+                            if (distance > maxDistance)
+                            {
                                 maxDistance = distance;
                                 endRoom = new Vector2Int(i, j);
                             }
@@ -301,31 +348,40 @@ public class DrunkardWalk : MonoBehaviour
                     }
                 }
             }
-            
+
             matrix[endRoom.x, endRoom.y] = (int)RoomType.EndRoom;
             endRoomCount++;
         }
     }
 
-    private int CheckNeighbors(Vector2Int roomCheck){
+    private int CheckNeighbors(Vector2Int roomCheck)
+    {
         int count = 0;
-        if (roomCheck.x - 1 >= 0){
-            if (matrix[roomCheck.x - 1, roomCheck.y] != (int)RoomType.None){
+        if (roomCheck.x - 1 >= 0)
+        {
+            if (matrix[roomCheck.x - 1, roomCheck.y] != (int)RoomType.None)
+            {
                 count++;
             }
         }
-        if (roomCheck.x + 1 < matrixLength){
-            if (matrix[roomCheck.x + 1, roomCheck.y] != (int)RoomType.None){
+        if (roomCheck.x + 1 < matrixLength)
+        {
+            if (matrix[roomCheck.x + 1, roomCheck.y] != (int)RoomType.None)
+            {
                 count++;
             }
         }
-        if (roomCheck.y - 1 >= 0){
-            if (matrix[roomCheck.x, roomCheck.y - 1] != (int)RoomType.None){
+        if (roomCheck.y - 1 >= 0)
+        {
+            if (matrix[roomCheck.x, roomCheck.y - 1] != (int)RoomType.None)
+            {
                 count++;
             }
         }
-        if (roomCheck.y + 1 < matrixLength){
-            if (matrix[roomCheck.x, roomCheck.y + 1] != (int)RoomType.None){
+        if (roomCheck.y + 1 < matrixLength)
+        {
+            if (matrix[roomCheck.x, roomCheck.y + 1] != (int)RoomType.None)
+            {
                 count++;
             }
         }
@@ -334,32 +390,42 @@ public class DrunkardWalk : MonoBehaviour
 
     //checks all adjacent rooms to see if they are the same type
     //should be kept in matrix bounds
-    private bool CheckDuplicateAdjacency(Vector2Int roomCheck, RoomType roomType){
-        if (roomCheck.x - 1 >= 0){
-            if (matrix[roomCheck.x - 1, roomCheck.y] == (int)roomType){
+    private bool CheckDuplicateAdjacency(Vector2Int roomCheck, RoomType roomType)
+    {
+        if (roomCheck.x - 1 >= 0)
+        {
+            if (matrix[roomCheck.x - 1, roomCheck.y] == (int)roomType)
+            {
                 return true;
             }
         }
-        if (roomCheck.x + 1 < matrixLength){
-            if (matrix[roomCheck.x + 1, roomCheck.y] == (int)roomType){
+        if (roomCheck.x + 1 < matrixLength)
+        {
+            if (matrix[roomCheck.x + 1, roomCheck.y] == (int)roomType)
+            {
                 return true;
             }
         }
-        if (roomCheck.y - 1 >= 0){
-            if (matrix[roomCheck.x, roomCheck.y - 1] == (int)roomType){
+        if (roomCheck.y - 1 >= 0)
+        {
+            if (matrix[roomCheck.x, roomCheck.y - 1] == (int)roomType)
+            {
                 return true;
             }
         }
-        if (roomCheck.y + 1 < matrixLength){
-            if (matrix[roomCheck.x, roomCheck.y + 1] == (int)roomType){
+        if (roomCheck.y + 1 < matrixLength)
+        {
+            if (matrix[roomCheck.x, roomCheck.y + 1] == (int)roomType)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    
-    private void ResetValues() {
+
+    private void ResetValues()
+    {
         //reset all values
         rooms = new Vector2Int[numberOfRooms];
         matrix = new int[matrixLength, matrixLength];
@@ -371,13 +437,17 @@ public class DrunkardWalk : MonoBehaviour
         endRoomCount = 0;
     }
 
-    private void PrintMatrix(){
+    private void PrintMatrix()
+    {
         string matrixString = "";
         int RoomCount = 0;
-        for (int i = 0; i < matrixLength; i++){
-            for (int j = 0; j < matrixLength; j++){
+        for (int i = 0; i < matrixLength; i++)
+        {
+            for (int j = 0; j < matrixLength; j++)
+            {
                 matrixString += matrix[i, j] + " ";
-                if (matrix[i, j] != (int)RoomType.None){
+                if (matrix[i, j] != (int)RoomType.None)
+                {
                     RoomCount++;
                 }
             }

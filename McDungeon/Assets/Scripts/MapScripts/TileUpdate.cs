@@ -22,13 +22,16 @@ public class TileUpdate : MonoBehaviour
         GameObject parent = transform.parent.gameObject;
         grandParent = parent.transform.parent.gameObject;
 
-        if((grandParent.CompareTag("TutorialRoom") || grandParent.CompareTag("PuzzleRoom"))){
+        if ((grandParent.CompareTag("TutorialRoom") || grandParent.CompareTag("PuzzleRoom")))
+        {
             puzzleController = grandParent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
 
         //get all teleporter tags under the same parent
-        foreach (Transform child in parent.transform.parent){
-            if (child.gameObject.tag == "Teleporter"){
+        foreach (Transform child in parent.transform.parent)
+        {
+            if (child.gameObject.tag == "Teleporter")
+            {
                 teleporterList.Add(child.gameObject);
             }
         }
@@ -36,47 +39,58 @@ public class TileUpdate : MonoBehaviour
     }
 
     //
-    private void Update() {
+    private void Update()
+    {
 
         // TODO: Make this stop running after the room is completed.
         //check if teleporter game object and tile are at the same position
-        if (teleporterList != null && !teleporterList[0].GetComponent<LinkTeleporter>().RoomCompleted){
-            foreach (GameObject teleporter in teleporterList){
+        if (teleporterList != null && !teleporterList[0].GetComponent<LinkTeleporter>().RoomCompleted)
+        {
+            foreach (GameObject teleporter in teleporterList)
+            {
                 // Get current tile teleporter is on.
                 currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);
 
                 // Get adjacent tiles based on rotation of teleporter.
-                if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 0)){
-                        adjacent1 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
-                        adjacent2 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
+                if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 0))
+                {
+                    adjacent1 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
+                    adjacent2 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
                 }
-                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90))
+                {
                     adjacent1 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
                     adjacent2 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
                 }
-                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180))
+                {
                     adjacent1 = new Vector3Int(currentCell.x + 1, currentCell.y, currentCell.z);
                     adjacent2 = new Vector3Int(currentCell.x - 1, currentCell.y, currentCell.z);
                 }
-                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+                else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90))
+                {
                     adjacent1 = new Vector3Int(currentCell.x, currentCell.y + 1, currentCell.z);
                     adjacent2 = new Vector3Int(currentCell.x, currentCell.y - 1, currentCell.z);
                 }
 
-                if (teleporter.GetComponent<LinkTeleporter>().TargetRoom == null){
+                if (teleporter.GetComponent<LinkTeleporter>().TargetRoom == null)
+                {
                     replaceTileMap.SetTile(adjacent1, tileReplacement);
                     replaceTileMap.SetTile(adjacent2, tileReplacement);
                     replaceTileMap.SetTile(currentCell, tileReplacement);
                 }
-                else if((grandParent.CompareTag("TutorialRoom") || grandParent.CompareTag("PuzzleRoom"))){
-                    if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
+                else if ((grandParent.CompareTag("TutorialRoom") || grandParent.CompareTag("PuzzleRoom")))
+                {
+                    if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress)
+                    {
                         //TODO:
                         // Debug.Log("Puzzle room in progress");
                         replaceTileMap.SetTile(adjacent1, tileReplacement);
                         replaceTileMap.SetTile(adjacent2, tileReplacement);
                         replaceTileMap.SetTile(currentCell, tileReplacement);
                     }
-                    else if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.Completed){
+                    else if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.Completed)
+                    {
                         replaceTileMap.SetTile(adjacent1, leftGateTile);
                         replaceTileMap.SetTile(adjacent2, rightGateTile);
                         replaceTileMap.SetTile(currentCell, middleGateTile);
@@ -89,28 +103,32 @@ public class TileUpdate : MonoBehaviour
     }
 
     //Tile rotation 
-    void TileRotation (GameObject teleporter){
+    void TileRotation(GameObject teleporter)
+    {
         //rotate tiles according to rotation of teleporter
-        if (teleporter.transform.localRotation == Quaternion.Euler(0,0,90)){
-            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,90), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,90), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,90), Vector3.one));
+        if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 90))
+        {
+            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 90), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 90), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 90), Vector3.one));
         }
-        else if(teleporter.transform.localRotation == Quaternion.Euler(0,0,180)){
-            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,180), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,180), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,180), Vector3.one));
+        else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, 180))
+        {
+            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 180), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 180), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 180), Vector3.one));
         }
-        else if(teleporter.transform.localRotation == Quaternion.Euler(0,0,-90)){
-            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
-            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0,0,270), Vector3.one));
+        else if (teleporter.transform.localRotation == Quaternion.Euler(0, 0, -90))
+        {
+            replaceTileMap.SetTransformMatrix(currentCell, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 270), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent1, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 270), Vector3.one));
+            replaceTileMap.SetTransformMatrix(adjacent2, Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, 270), Vector3.one));
         }
     }
 
     // Reset tiles to original state
     // public void ResetAll(){
-        
+
     //     foreach (GameObject teleporter in teleporterList){
     //         // Get current tile teleporter is on.
     //         currentCell = replaceTileMap.WorldToCell(teleporter.transform.position);
