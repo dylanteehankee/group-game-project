@@ -29,6 +29,7 @@ TagManager:
   - BossButton
   - MobSoundManager
   - BossHitbox
+  - SpecialSoundManager
   layers:
   - Default
   - TransparentFX

@@ -132,7 +132,7 @@ Weapons and armor were created as a way for the player to have some kind of cust
 | All Weapons | ![Weapon All](https://piskel-imgstore-b.appspot.com/img/894ddd97-09c0-11ee-81c4-c98958b07512.gif) | All Armor | ![Armor All](https://piskel-imgstore-b.appspot.com/img/30704302-09c1-11ee-9126-c98958b07512.gif) |
 | :------------: |:------------: |:------------: |:------------: |
 
-#### Attack
+#### Attack (Unsused)
 | ![Wooden](https://piskel-imgstore-b.appspot.com/img/7799f29c-09c0-11ee-a8e6-c98958b07512.gif) | ![Iron](https://piskel-imgstore-b.appspot.com/img/552a4723-09c1-11ee-bbdb-c98958b07512.gif) | ![Ice](https://piskel-imgstore-b.appspot.com/img/5cc34ef3-09c1-11ee-bf1d-c98958b07512.gif) | ![Amethyst](https://piskel-imgstore-b.appspot.com/img/6867375c-09c1-11ee-be6b-c98958b07512.gif) | ![Ruby](https://piskel-imgstore-b.appspot.com/img/732aa259-09c1-11ee-a4b9-c98958b07512.gif) | ![Emerald](https://piskel-imgstore-b.appspot.com/img/7e90b98f-09c1-11ee-b28a-c98958b07512.gif) |  
 | :------------: |:------------: |:------------: |:------------: |:------------: |:------------: |
 
@@ -195,6 +195,53 @@ The puzzle buttons had be extremely obvious in order for Players to get an under
 
 <sub>*As of the time writing this (6/13/2023), this is the complete list of all assets I have created excluding: UI Elements, Boss Health Bar, and a Scrapped Torch.*<sub>
 
+## Puzzle
+
+### Design
+The main concepts behind most puzzles were made on graph paper, where I could correlate each square on the paper to a tile in game. I chose to desgin on paper because it was the best way to test many different designs quickly and without too much of a turnaround time so that the implementor(Jason) could work on the room. 
+
+We chose to do a "bouncing angles" type of puzzle where the goal is to light all the torches in the room by bouncing fireballs of the walls and obsticals of the room to hit them under a certain about of time because our spell implementor(Honghui) ended up creating the fireball spell quite early on in the game creating process. This way the spell could be useful to not only attack, but also to solve puzzles which helped further integrate the mechanic with the game as a whole. 
+
+Originally, the puzzles were supposed to reward the player with an upgrade to their fireball spell and to punish failure with the special knight mob that would only activate upon puzzle failure, but the upgrade was scrapped as we felt it was no longer necessary. Despite the scrapping of the previous reward, we felt that it was still important to provide an incentive for players to complete puzzles so that they would be less tempted to wait out the puzzle timer, so we provided random drops that might or might not be better than their current gear and strengthened the knights.
+
+We ended up creating a total of 5 puzzle rooms, including the tutorial, 4 of them designed by Krystal and 1 by Jason.
+
+### Puzzles Designed by Krystal
+Most of my puzzles went through multiple design changes as our game was developed due to the screen's restriction of the player's sight. The first itteration of puzzles too large for the player to be able to see all torches on the map, so it forced the player to guess angles to bounce fireballs, rather then making more educated decisions. 
+
+| Room 1 Version 1 | Room 2 Version 1 |
+| :------------: | :------------: |
+| <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670143070278/IMG_4571.jpg" width="50%"><br><img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670562496525/IMG_4572.jpg" width="50%"> | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1113420536094150696/IMG_4576.jpg" width="70%">  |
+| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to teh puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
+
+Once these problems were brought to my attention, I opted to redesign each puzzle so that they would fit in the screen's 9 by 5 block limit, while trying to keep the rooms as close to the original designs.
+
+| Room 1 Version 2 | Room 2 Version 2 |
+| :------------: | :------------: |
+| <img src="https://cdn.discordapp.com/attachments/1073950912801947698/1118667150979240026/IMG_4591.jpg" width="70%"> | <img src="https://cdn.discordapp.com/attachments/1073950912801947698/1118667279689863198/IMG_4591.jpg" width="70%"> |
+
+Both of the new designs were inside the constraints of the player's field of vision, coupled with a new mechanic to lock the camera on the center of the room so that the player would always be able to see the entire map. This change effectively made each puzzle much less of blind guessing, but more of the intended educated shooting.
+
+The 3rd room I created was made after the above observations, so it was created with only one drafting. The major difference between this puzzle and the others I created was the new mechanic of moving walls, made by Jason as he was creating his own.
+
+| Room 3 | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1117286341957402775/IMG_4589.jpg" width="30%" style="transform:rotate(270deg);"> |
+| :------------: | :------------: |
+
+The last room to mention is the Tutorial puzzle that is supposed to teach the player the mechanics of puzzles, was actually created sometime between the first puzzle version 1 and the second puzzle version 1.
+
+| Tutorial Puzzle |  |
+| :------------: |:------------: |
+|  This was the first iteration of the tutorial room, but had the same player field of view problems as the fist and second puzzles, so it was proptly resized to 9 by 5 in the current game | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112974720434966628/IMG_4574.jpg" width="70%"> |
+| Unfortunately, after testing the game at the game showcase, we have decided that the tutorial room simply does not prepare the player well enough to complete puzzles on thier own, but do not currently have the dev time for it, so it will remain as is. |  |
+
+### Puzzle Designed by Jason
+
+<!-- Feel free to add anything to the stuff above if you want to - Krystal -->
+
+### Implementation
+
+
+
 ## Input
 
 **Describe the default input configuration.**
@@ -235,14 +282,20 @@ because of the boss itself. There is a huge style change, but the style change a
 
 Therefore, we should be allowed to use this in our game.
 
+### Special Sounds
+There is/will be special voice lines from Arunpreet that fire in the special mode when using one of the spells. The reasoning for this was that, we thought it would be funny and would add to the "special-ness" of special mode.
+
 ### Sound Effects
 
 [`Whoosh Sounds Effects HD (No Copyright)`](https://www.youtube.com/watch?v=TitDsqWGtxs&ab_channel=YouTubeSoundEffects) by *YouTube Sound Effects* - Sword whoosh for both the [Player](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#the-player) and [Knight](https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocument.md#knight).
+
 [`Flash Fire Ignite-Sound Effect (HD)`](https://www.youtube.com/watch?v=I2_DotYhuAA&ab_channel=FameFX) by *Fame FX* - Torch Igniting.
 
 All other sound effects are created by me using [BeepBox](https://www.beepbox.co/#9n31s0k0l00e03t2ma7g0fj07r1i0o432T7v1u41f0q011d08H_RJSIrsAArrrrrh0IaE0T1v1u62f0qwx10s811d08A0F0B0Q00adPfe39E4b761862863bT0v1u12f10s4q00d03w2h2E0T2v1u15f10w4qw02d03w0E0b4h400000000h4g000000014h000000004h400000000p16000000) to emulate each sound as best as I could in the 8-bit style. 
 
 I made sure to create sound for most attacks to that the Player could distingush the sound of being hit or the sound of an attack from an enemy. I also made sounds to indicate actions like spells or opening the inventory, so that actions would not just result in visual queues and so that these actions are more satisfying to the player. 
+
+The sound implementation mostly consisted of sorting sounds into 4 categories: background music, room sounds, player/mob sounds, and special sounds. Then I would create a dedicated `SoundManager` prefab for the category, create a custom tag for it, and assign all sounds as a sound component. Depending on what sound it was adding, I would locate the tag and proceed to call the sound through playing the corresponding sound's array index in it's sound manager. This gave the me an easier way to find and add in audio, since I would not have to spend time counting `Audio Source` components to find the indexing of each sound. The old exceptions were sounds that were always played upon use, where I opted to directly add the `Audio Source` compontent to the game object itself and set it to "Play on Awake."
 
 ## Gameplay Testing
 
