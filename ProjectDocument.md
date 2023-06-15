@@ -543,11 +543,11 @@ The make the special mode unloaking have some magical background, I integrate Dy
 
 The implementation of Konami Code compelete animation was breaking by step and controlled by a timmer.
  
-|| Magic Array Design|
-| :-------: | :-: |
-| First version design <br> (by me)| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old.png" width = 100%>|
-| Revised to integrate better to floor <br> (by Krystal) | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new.png" width = 100%>|
- 
+| Magic Array Design | |
+| :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old.png" width = 50%> | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new.png" width = 50%>|
+| First version design <br> (by me | Revised to integrate better to floor <br> (by Krystal) |
+
 |Portal Animation| | |
 | :-------: | :-------: | :-------: |
 | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McPortal.gif" width = 70%>|
