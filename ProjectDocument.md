@@ -81,6 +81,52 @@ The casting/ready stage of spell casting is shown by particle effect around play
 
 The initial plan on the spell part was to make 2 spells per element for the player to choose/purchase and implement the interaction between elements to allow players to build their combat style. For example, the original design for the water spell is for a `wet` status on monsters that make them easier to be frizzed or induce lightning. We also planned to include a few special purposed spells for consumable scroll items, such as a `light scroll` that light up the entire room for hard mode combat assist. But these plans were selectively pushed back due to task transferring and time manner.
 
+## Inventory System - Jason
+### Design Goal
+My goal was to create a robust inventory backend that could be used in this game and future games to come. This goal however, presented the challenge of designing a generic, reusable system that could be easily adapted to the wide variety of inventories seen in different games. For example, some inventories may have a limited capacity, or limited amount of physical space where items could be arranged in. Items could also be stored individually or in stacks, sometimes with a limit on the number of items in a stack. Since these variations greatly impact the user interface side of inventory systems, I decided to start by designing the backend.
+### Backend Design
+The inventory backend design centers around the principle of reliability. As items are exchanged between and within different systems, it is possible for there to be unintended duplications or deletions of items. I wanted to design the backend in such a way where game breaking behavior could not happen.    
+#### ItemManager
+To help achieve this, the static ItemManager class keeps track of inventory items by assigning each item a unique ID and storing the item in a dictionary where each item is referenced by its ID. Each inventory item derives from a base GameItem class whose base constructor registers itself with the ItemManager, adding it to the dictionary and attaining an ID. Rather than exchanging a reference to the object itself, these systems passed the item’s unique ID and were required to go through the ItemManager to get the actual item. With centralized item tracking and unique ID assignments, duplicating items is far more difficult. 
+#### ItemStatus and ItemCollection Interface
+To prevent items from being assigned to multiple conflicting systems at once, each GameItem stores an ItemStatus enum, whose value represents a specific item state. For example, McDungeon has four ItemStatuses: *Unowned - item is unowned by the player
+*ItemInventory - item is present in the player’s inventory of items
+*PlayerInventory - item is present in the player’s inventory of equipment
+*Equipped - item is equipped by the player
+Note that each status can represent a different number of objects possessing the item, such as unowned with 0 possesers, and equipped with both the active player and the equipment inventory possessing the item. Therefore each ItemStatus has a flexible list of collections that are connected to that status. Specifically, the ItemCollection interface represents something in the game that can possess items, and the RegisterItemCollectionWithStatus() method ensures that when an item has a particular ItemStatus, the registered ItemCollection is guaranteed to contain that item. Furthermore, the transition of an item from one ItemStatus to another is performed through the ChangeItemStatus() function, which makes sure each party is okay with the transition before it is performed. Namely, every item collection registered with the previous ItemStatus has to be okay with the item’s removal, the item itself has to be okay with the transition, and every item collection registered with the future ItemStatus has to be okay with the item’s addition. This design is to further prevent unwanted item duplication or removal as they are passed between systems. 
+#### ItemCollection Implementations
+For McDungeon, I designed three ItemCollections. The first is the NonStackableInventoryCollection which represents items that cannot be stacked such as equipment, and the second is the StackableInventoryCollection which represents items that can be stacked such as HP potion items. Each collection was designed to store its items in multiple different orders depending on the inventory sort method and its accompanying comparator, but this was not used in McDungeon. The third is the player inventory, which represents equipped items by the player and is limited to a weapon and armor slot. 
+#### Basic UML diagram 
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118820708005462026/Inventory_System_-_BackendSimple.jpeg" width="50%"> 
+
+### Frontend Design
+Following this, I moved onto designing the frontend. While this implementation would be specific to McDungeon, I was still having trouble designing a reliable system. I learned about frontend design patterns such as the EBC/EBI and MVC and decided on the model view controller design pattern. 
+#### Original Design
+Originally I had planned for a 3 panel inventory screen.
+* The right panel would display inventory items in a grid that the user could select.
+* The center panel would display information about the selected item and buttons to perform actions, such as equipping, or selling the item.
+* The left panel would display a player card that shows the currently equipped items and various stats and currencies.
+However, after showcasing implementations of the design with the team, we decided that a single panel design would work better. 
+#### Single Panel Design
+The single left panel would:
+* Display inventory items in a grid that the user could interact with
+* When mousing over an item, a hovering panel would display information about the item
+* When selecting an item, the hovering panel would fix and have buttons the users could interact with
+* Display equipped weapon, armor, and various stats/currencies above the inventory grid
+#### Brief overview of the MVC design
+<img src="https://cdn.discordapp.com/attachments/1118820527600062555/1118821910239776818/Inventory_System_-_MVCSimple.jpeg" width="50%"> 
+
+Notably, the InventoryController interacted with the ItemManager backend and handled any actions the user could take to modify the inventories and the InventoryCollections model stored the various ItemCollection classes that data was retrieved from.
+
+
+### Challenges
+There are however, drawbacks and challenges to the inventory design. One challenge I faced was when to refresh the inventory UI. Originally, I had planned that opening the inventory would freeze other aspects of the game. When this design element did not go through, players could collect items or buy items from the merchant while the inventory was open, which forced panel refreshing to be triggered by external sources.
+
+This also caused problems when players were fighting and wanted to use a health potion. They would have to press the I key, navigate to the items page, click the potion, then use it during the fight as opposed to when time was stationary. I also noticed that deselecting items was not intuitive. Players kept trying to click outside of the hover panel UI to deselect an item rather than clicking on the inventory slot again to deselect it.
+
+Moving forwards, I would definitely do some user interface research and get feedback from people who were not familiar with the system.  
+
+
 ## Mobs - Orien Cheng
 
 ### Mob AI
