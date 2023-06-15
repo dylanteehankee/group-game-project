@@ -27,6 +27,17 @@ public class LaserController : MonoBehaviour
     {
         if (collider.gameObject.tag == "PlayerHitbox")
         {
+            Vector2 location = this.transform.position;
+            Vector2 playerLocation = collider.transform.position;
+            var deltaX = playerLocation.x - location.x;
+            if (deltaX > 0)
+            {
+                collider.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.right * 50);
+            }
+            else
+            {
+                collider.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.left * 50);
+            }
             Debug.Log("HIT");
             collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
         }
