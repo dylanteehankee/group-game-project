@@ -42,6 +42,41 @@ You should replay any **bold text** with your relevant information. Liberally us
 
 **Describe the basics of movement and physics in your game. Is it the standard physics model? What did you change or modify? Did you make your movement scripts that do not use the physics system?**
 
+## Mobs - Orien Cheng
+
+### Mob AI
+The concept of the Mob AI was to track and move toward the player, and attack the player when the player is within the mob's attack range. There were 6 mobs in concept: Slime, Skeleton, Knight, GNome, GNelf, and Mage.
+
+In its earliest phases, the design was very simplistic, the mob had to take damage, and the mob had to keep track, move towards, and then attack the player. There were no Mob assets to begin with so they started out with simple Hexagon prefabs so that the interaction between player and mob could be tested. Each mob was designed very simplistically, with Slime, Skeleton, and Knight all melee attacking. GNome was designed to throw a projectile and spawn GNelfs, and Mage was designed to cast either a Fireball or Frostbolt. These projectiles would have their own controllers similarly to (Exercise 4)[] and my self designed pirate command in (Exercise 1)[] . Each mob had its own controller, derived from the `IMobController` Interface, that allowed the player easy access to call the function `TakeDamage()`. The `MobManager.cs` was designed after to keep track of all the mobs in a list, with functions `Subscribe()`, `Unsubscribe()`, and `Notify()` to keep track and control all mobs that were spawned, just like in [Exercise 3](SOME LINK). There were some simple functions designed, such as `SpawnMobs()` and`GetMobs()`, so that the room manager was able spawn mobs and keep track of whether the list of mobs was empty so that the player may progress.
+
+We wanted more variety within the mobs, as many of the mobs shared the same attack patterns or traits, so we redesigned Skeleton, and Knight and made a small rework to the Slime. The skeleton was redesigned so that it threw a bone projectile, and it needed to retrieve its bone before it can throw it again. The decision to have the Skeleton pick up its thrown bone was to differentiate from the GNome, who threw knife projectiles at the player. The Knight was redesigned so that it had a respawning shield that takes a free hit. The Slime was minorly changed so that it slowed the player.
+
+A design bug came up while reworking Skeletons, where a different Skeleton can steal another's bone. In such case, the Skeleton that got their bone stolen ended up dancing inplace. I decided to make this bug into a feature, reworking how Skeletons would pick up thier bones, with the possibility that another Skeleton could steal a bone. During this development phase, a race condition was created where a bone could interact with two Skeleton hitboxes simultaneously, and a Skeleton could interact with two bone hitboxes simultaneously. Using knowledge of semaphores, they were implemented to prevent two Skeletons being able to gain a bone from 1 bone, and vice versa.
+
+Each mob had a state machine system. The Slime, GNelf, and Knight have a similar system, move toward the player, if the player was within its attack range, attack the player, and repeat the cycle. Skeleton had a modification to that. Skeletons would move toward the player, and if it was within its attack range, it would throw its bone projectile. It then would retrieve the bone, and repeat the cycle. The Mage was designed to move toward the player just like the rest of the mobs, and if the player was in range of the Mage, it would start casting either a Fireball or Frostbolt and the cycle would repeat. Similarly to the Skeleton and Mage, the GNome combines both systems. It would move toward the player, and if it was within range of the player, throw a knife projectile. And similarly to Mages, if its cast cooldown was up, it would start casting on the spot until it gets inturrupted by a hit. If this cast went off, GNelfs would spawn around the GNome, and the cycle repeats.
+
+### Status Effects
+As we wanted to implement status effects such as burn, freeze, and slow, I designed a Scriptable Object, `StatusEffects.cs`, that could be used globally for statuses. This Scriptable Object would store the status prefabs and status durations for death, stun, burn, and freeze, and would contain functions that would instantiate these prefabs. A design issue came up during this, where each mob had hundreds of lines of code that were identical between all mob controllers. This prompted me to rewrite all mob controllers using the abstract class `Mob.cs` that would still inherit the interface `IMobController.cs`, and allow generic functions to be written for all mob controllers. Some of these functions were virtual functions, allowing certain mob types to override the existing function to fit into the mob design. Each of these status effects use Coroutines to control its duration, where each time a status effect would occur, the existing Coroutine for that status effect would be stopped and a new one would be started, continuing the status effect.
+
+In the end, I realized that I could have changed this implementation so that instead of a prefab being generated every time a status effect occurred, each mob prefab would contain the status effect sprites instead so that the `SetActive()` function could be used to show different statuses on the model.
+
+This Scriptable Object was then extended to the `playerController.cs` to allow mobs to apply statuses onto the player, with accompanying functions added for the player.
+
+### Boss AI
+The concept of the Boss AI was to take the Among Us player and create a boss fight with multiple attack patterns designed from the Among Us game.
+
+Having Mob AI already made, the Boss AI was relatively simple in comparison. Many of the functions that were used in Mob AI were transferrable to Boss AI, however the Boss AI would need different attack patterns. As the theme of the boss was Among Us, we decided that the two attack patterns were the button slam and the laser beam. Having learned about child GameObjects and `SetActive()`, two hands representing the left and right hand, a button, and the laser beam was added into the Boss prefab as child objects. These child objects would be activated when the Boss AI is on that attack pattern and deactivated once it has been finished.
+
+### Mob and Boss Rigging
+As assets were introduced, Animators were added to all mob prefabs, and animations and animator controllers were implemented based on the design of the mob.
+
+Due to the design of each mob, every mob had a different animation state machine. However, all mobs contained booleans for Attack, Freeze, and Stun within its animator controller that led to its attack animation or idle/still animation respectively. Each mob's controller contained a function, `spriteControl()`, that changed the direction of the sprite to either up, down, left, or right while the mob was moving. As all mobs had an attack animation, except for GNelf who just charges at you, an attack state machine was needed to be implemented on all mobs. This attack state machine would track the elapsed attack animation time, and trigger the player damage or projectile instantiation at the correct point of time during the animation. This was heavily adjusted during Game Feel testing, which I also conducted.
+
+### TA AI
+We wanted to put in an Easter Egg player spell for the game's special mode.
+
+TA AI, or Arunpreet AI, does 1 job, attract mobs and throw attendance codes at them. When Arunpreet is spawned, a black hole effect is triggered. Similarly to my implementation of a black hole in the spell factory extra exercise, it takes the list of mobs and moves them towards Arunpreet's character model. Then he randomly throws attendance code projectiles in all directions and disappears.
+
 ## Animation and Visuals - Krystal Chau
 
 ### Concept Art
@@ -260,19 +295,30 @@ The last room to mention is the Tutorial puzzle that is supposed to teach the pl
 
 # Sub-Roles
 
-## Producer
+## Project Manager - Orien Cheng
 
 **Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
 
-## Game Feel
+### Project Management
+From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our (Initial Game Plan)[https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing] Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
+An (Excel Sheet)[https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true] was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
 
-**Document what you added to and how you tweaked your game to improve its game feel.**
+## Game Feel
+Using information from personal playtesting and from the Project Game Showcase, many factors were changed or tweaked to enhance game feel.
+
+*Puzzle Rooms* - Puzzle rooms initially felt very clunky with the existing spell designs, with high cast time and long cooldowns. Although those cast times and cooldowns were meant for combat, it massively slowed down the gameplay during puzzle rooms so much so that the tutorial room was very easily failable. Some suggested changes were lowering both the cast time and cooldown of the Fireball spell specifically for the puzzle room, so that the player can test multiple angles much faster, and to increase the torch duration once it had been hit by a Fireball. Another issue that came up during the Project Game Showcase was that certain UI elements were blocking torch visibility, so moving the timer to back to the center of the screen and disabling the minimap and zooming out more for puzzle rooms were suggested as solutions.
+
+*Combat Rooms* - Initially we had long cast times, and not being able to cast while moving, however it was concluded that the casting felt very clunky, and too inhibiting. This was then changed to a lower cast time, and being able to cast while moving, making it less punishing on the player if they wanted to use spells. I had also initially known that mobs were very overpowered or strong, where some projectiles were not dodgeable or cast times and cooldowns were way too low, so many of the mob numbers were tweaked so that there is a slight challenge to fighting mobs.
+
+*Tutorial Puzzle Room* - The tutorial room currently gives weapons and potions as rewards for completing it fast, however it didn't make sense for the tutorial room to give a weapon that would replace the starting weapon that had not been used at all. Thus, a suggestion for removing weapon drops for the Tutorial Puzzle Room was made.
+
+*Player* - During personal playtests and duing the Project Game Showcase, the general consensus was that the player moved too slow. I had suggested to increase the player move speed to help with the flow of the game, however due to time constraints and required testing with new player speed, we were not able to implement the change.
 
 ## Cross-Platform
 
 **Describe the platforms you targeted for your game release. For each, describe the process and unique actions taken for each platform. What obstacles did you overcome? What was easier than expected?**
 
-## Audio
+## Audio - Krystal Chau
 
 ### Background Music
 I make multiple attempts to create my own soundtracks using a free to use website called [BeepBox](https://www.beepbox.co/#9n31s0k0l00e03t2ma7g0fj07r1i0o432T7v1u41f0q011d08H_RJSIrsAArrrrrh0IaE0T1v1u62f0qwx10s811d08A0F0B0Q00adPfe39E4b761862863bT0v1u12f10s4q00d03w2h2E0T2v1u15f10w4qw02d03w0E0b4h400000000h4g000000014h000000004h400000000p16000000), but was unsuccessfull as what every I created was alway either too happy for a dunegon atmosphere or just [bad](https://www.beepbox.co/player/#song=9n31sbk7l00e0nt2ma7g0nj07r1i0o432T5v6ug6f0qE1132d42H07000000000000h2E11iT7v6u07f20h4134q012d7aHt7760Md9xb9pb9h1I8E0T7v6u41f0q011d08H_RJSIrsAArrrrrh0IaE0T3v6uf8f0q0x10p71d08S-IqiiiiiiiiiiiiE1bib000Pc0004Pc14001014y8N8y8y8Qgy8w4h4h5i4hkh5mtlh5llkh5l4h8h5jcx4kp23tFJvok18lkQvgzwF2Ezjn-5-ihRRRlW1BQ7dQ6m2CFMhVHjubY3nF-DUg7jQRf8VmwVkaqfQhM178AtsIhS4tkD9g5ldvEGWqqqqquiFFFFFFFFFFFFFFFF_b_W5ZdHYaGquQw860FGUILPU7ab-gHIJFGOznEbRd682ewzE8W2ewzE8W2ewzDjTAt17ghQ4tdQV2yCUYwnFEO2ewzE8W2fgerEer0) in general. After my failures, my goal was to find a soundtrack that not only fit the medieval fantasy dungeon vibe of the game, but was also 8-bit. My reasoning for wanting an 8-bit soundtrack is quite simply inspired by `Undertale` and it's outstanding soundtrack. Therefore, I found [`8-Bit Fantasy & Adventure Music`](https://www.youtube.com/watch?v=5bn3Jmvep1k&ab_channel=xDeviruchi), royalty free music by *xDeviruchi*, using [Track 10](https://www.youtube.com/watch?v=5bn3Jmvep1k&t=2082s) for combat/puzzle rooms and [`Persona 5 Among Us Remix`](https://www.youtube.com/watch?v=x0KRvAJDlRw&ab_channel=Pukirox) for the boss fight.
