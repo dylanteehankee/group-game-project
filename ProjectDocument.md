@@ -326,15 +326,15 @@ I used a teleport based system in order to link several rooms together to form a
 
 In addition to this majority of the map-related assets were created by me (Paolo) using the free website [Piskel](https://www.piskelapp.com/).
 
-## Rooms
+### Rooms
 
-### Setting Up the Scene
+#### Setting Up the Scene
 
 I created the initial design for a single room grid in our game environment. I needed this to be done in order to create the rest of the map.
 
 I decided to use tile maps for room creation as this gave flexibility and ease of use when creating different layouts and design
 
-### Design and Creation
+#### Design and Creation
 
 I had different iterations of the room tile map as we weren't sure yet on how are room should look like. Either having it look isometric at a 45 degree angle or to have it completly top-down similar to The Legend of Zelda (1987) or the Binding of Isaac: Rebirth.
 
@@ -368,7 +368,7 @@ These rooms had their own respective colors and layout. Starting Room was set to
 |      Shop Room <br> (Additional assets and layout were created by Krystal, Jason, and I)     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726999561732226/ShopRooms.PNG>  |
 |      End Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726997997256734/EndRoom.PNG>  |
 
-## End Room
+### End Room
 |||
 | :-------: | :-: |
 | Boss Room Entrance <br> <br> Found inside the End Room, and teleports the player to the boss room when colliding with the trigger | ![BossEntrance](https://piskel-imgstore-b.appspot.com/img/f61eb1d1-0b25-11ee-878c-b7bc24a2ee1f.gif)|
@@ -378,9 +378,9 @@ Animation and trigger is handled by the `VentDetector.cs`, and `BossEntrance.cs`
 Teleportation to boss room is handled by the `BossTeleport.cs` script via on trigger.
 
 
-## Map Layout
+### Map Layout
 
-### Procedurally Generated
+#### Procedurally Generated
 The map was procedurally generated using a heavily modified drunkard walk algortithm in `DrunkardWalk.cs` tailored to fit our layout. This algorithm could potentially make any n x m matrix map by modifying some values, but I kept these values set to follow our map constraints (specific number of total rooms, specific number of combat, puzzle, shop rooms).
 
 I used an enum `RoomTypes` that represented different room types:
@@ -403,7 +403,7 @@ After it generates all the temporary rooms, the drunkard stops walking. Multiple
 
 I initially had planned to generated the end room to be the furthest amount of rooms away from the starting room but I found it too complicated to do within the remaining time. I also felt like I could've used a better map generation method but decided to go for the more simplistic route.
 
-### Linking the Rooms Together
+#### Linking the Rooms Together
 I used the `MapGenerator.cs` script to link all the rooms together via teleporters, esentially creating the pathway between rooms.
 
 `MapGenerator.cs` on `Start()`, looks for all the type of room gameobjects that exist within the scene and adds them to their respective lists via the `AssignList()` method.
@@ -422,7 +422,7 @@ I felt like this could've been done more efficently if I used a central teleport
  
 <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118727890373181470/UpdatedRoomTiles.PNG">
 
-### MiniMap
+#### MiniMap
 
 The minimap is generated via the `MapGenerator.cs` script. It creates a bunch of `miniRoom` gameobjects arranged in a matrix and is shown via the canvas ui. The minimap has a transparent background for better visibility. Visited rooms are colored with light grey, current room is colored with white, and unvisited adjacent rooms are colored with dark grey. The boss room has a unique icon. This minimap design was heavily inspired by the Binding of Isaac: Rebirth.
 
@@ -434,10 +434,10 @@ The icon sprites were drawn by me:
 | Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118776117470429294/MiniRoomTexture.png"> |
 | Boss Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721228761477200/BossIcon.png"> |
 
-### Room Logic
+#### Room Logic
 Each room had their own preset conditions to complete. If the room is not completed when entered, then the teleporters (represented by the gate sprites) will be closed and kept shut. This is mostly handled by the `LinkTeleporter.cs` script found in each teleporter. For puzzle rooms/tutorial room, upon entering, the camera shifts to center on the room, and the minimap disables for better visibility. When the puzzle starts, the tiles updates via `TileUpdate.cs` to create an enclosed room with no escape until the player completes or defeats the knights that will spawn when failing (by checking the mob count). For combat rooms, the room is shut if there are mobs and completes once they all die. 
 
-### Additional Room Related Sprite Work
+#### Additional Room Related Sprite Work
 
 | Sprites |  |
 | :-------: | :-: |
@@ -556,13 +556,11 @@ The implementation of Konami Code compelete animation was breaking by step and c
 |Portal Face| | |
 | :-------: | :-------: | :-------: |
 | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McFace.png" width = 70%>|
-| Normal (didn't used) | Hard | Dr. McCoy's github picture|
+| Normal (didn't used) | Hard | [Dr. McCoy's github picture](https://github.com/dr-jam/GameplayProgramming)|
 
-note: the Konami Code demo shown in Camera demo.
-
-note: the rest parts of Mirrors was created by Krystal.
+note: the Konami Code demo shown in Camera demo. And the rest parts of Mirrors was created by Krystal.
  
-Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves including Dr. McCoy.
+Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves.
  
  
 ## Boss Concept and Design - Marc Paolo Yap
