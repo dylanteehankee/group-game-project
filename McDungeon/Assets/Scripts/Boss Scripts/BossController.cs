@@ -161,7 +161,7 @@ public class BossController : MonoBehaviour
             this.spriteRenderer.color = Color.white;
         }
     }
-    
+
     private void death()
     {
         if (this.bossHealth <= 0)
@@ -171,7 +171,7 @@ public class BossController : MonoBehaviour
     }
 
     private IEnumerator deathAnimation()
-    {   
+    {
         //Death animation
         yield return new WaitForSeconds(deathAnimationTime);
         Destroy(this.gameObject);
