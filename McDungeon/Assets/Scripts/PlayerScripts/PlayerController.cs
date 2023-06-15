@@ -269,6 +269,11 @@ namespace McDungeon
             // Reduce all coll down count.
             updateCoolDowns();
 
+            if (isFreeze)
+            {
+                actionCoolDown = 0.1f;
+            }
+
             // Manage Action
             if (actionCoolDown <= 0f)
             {
