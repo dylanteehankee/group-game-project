@@ -28,7 +28,7 @@ public class BossController : MonoBehaviour
     private float laserAttackTime = 3.5f;
     private bool isAblaze = false;
     private GameObject ablazeObject;
-    private float deathAnimationTime = 5.0f;
+    private float deathAnimationTime = 0.75f;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
@@ -172,7 +172,7 @@ public class BossController : MonoBehaviour
 
     private IEnumerator deathAnimation()
     {
-        //Death animation
+        this.animator.SetTrigger("Death");
         yield return new WaitForSeconds(deathAnimationTime);
         Destroy(this.gameObject);
     }
