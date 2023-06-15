@@ -556,13 +556,11 @@ The implementation of Konami Code compelete animation was breaking by step and c
 |Portal Face| | |
 | :-------: | :-------: | :-------: |
 | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McFace.png" width = 70%>|
-| Normal (didn't used) | Hard | Dr. McCoy's github picture|
+| Normal (didn't used) | Hard | [Dr. McCoy's github picture](https://github.com/dr-jam/GameplayProgramming)|
 
-note: the Konami Code demo shown in Camera demo.
-
-note: the rest parts of Mirrors was created by Krystal.
+note: the Konami Code demo shown in Camera demo. And the rest parts of Mirrors was created by Krystal.
  
-Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves including Dr. McCoy.
+Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves.
  
  
 ## Boss Concept and Design - Marc Paolo Yap
