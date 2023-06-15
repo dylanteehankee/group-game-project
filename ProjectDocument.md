@@ -4,10 +4,19 @@
 
 **A paragraph-length pitch for your game.**
 
+Our player is trapped in the depths of a dungeon and must solve puzzles and fight monsters to advance through each room. Each room may bring them closer to freedom, but there’s no way to know what dangers might be in store for them. They may encounter mages, gnomes, and knights or a merchant who might or might not help in their journey.
+
 ## Gameplay Explanation ##
 
 **In this section, explain how the game should be played. Treat this as a manual within a game. It is encouraged to explain the button mappings and the most optimal gameplay strategy.**
 
+Player movement is controlled using WASD. The melee weapon is controlled by the mouse position, and Left Click to initiate a swing. The player have 4 spells, bounded to Right Click, Q, E, and Space, that casts a Fireball, Lighting, Water, and Blizzard respectively. Similarly to the melee weapon, the spells are also guided by mouse position, and a button hold is used to represent the cast time of the spell. Release the spell button after CASTTIME second/s to cast the spell. There are special mechanics to these spells. The Fireball spell is capable of piercing through and burning monsters, and is able to bounce off the wall 3 times. The Lightning spell summons 3 auto-targetting lightning bolts that target to the nearest monster, and damage the monsters. The Water spell summons a AOE damage circle that starts at the player and moves towards the direction of where the mouse was when the spell was casted. The Blizzard spell creates a AOE circle based on the mouse position, like Mage's Blizzard in WoW, and freezes any mob that gets hit.
+
+The player also has an inventory system, bounded to I, where the player can see the weapons, armor, and potions they have collected. The player may click on any weapon or armor and click Equip to equip the new weapon or armor. The player may also navigate to the Items tab in order to access their potions that they may use during their adventure to heal themselves when at low health.
+
+There are 4 types of rooms: Combat, Puzzle, Shop, and Boss. Within the Combat Rooms, the player must kill the spawned monsters in order to clear the the Combat Room to progress to the next room. Within Puzzle Rooms, there are unlit torches scattered across the walls of the room that must be hit with a Fireball spell within a set amount of time, either through direct fire or through bounces. These torches do extinguish after // seconds, so all torches must be lit at the same time in order to progress to the next room. If the player completes the puzzle early, as indicated on the chest timer, the player will be rewarded with random item drops. If the player fails to complete the Puzzle Room within the set amount of time, the player will have to defeat the activated knights before they may progress. Beware, these knights are very difficult. The Shop Room is where the player may spend their gold that they have collected during their journey. The player may buy items such as new weapons, armor, and health potions to strengthen themselves for the remaining exploration. The player may also sell any items they have collected during their adventure. Finally, the player will encounter the red Boss Room, where the player must walk to the center to be moved to start the boss fight.
+
+There are 2 difficulties to the game, normal and hard mode, shown as portals on the top of the Starting Room. The player may interact with either portal with F to select their difficulty. The difference of choosing hard mode compared to normal at the moment is currently only a lighting change, where the game becomes much darker and harder to see. There is also a special mode that must be unlocked through a Konami-Code like system, where you must input a specific button order to unlock the mode.
 
 **If you did work that should be factored in to your grade that does not fit easily into the proscribed roles, add it here! Please include links to resources and descriptions of game-related material that does not fit into roles here.**
 
@@ -24,9 +33,6 @@ Here is an example:
 
 You should replay any **bold text** with your relevant information. Liberally use the template when necessary and appropriate.
 
-## Producer
-
-**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
 
 ## User Interface
 
@@ -36,7 +42,7 @@ You should replay any **bold text** with your relevant information. Liberally us
 
 **Describe the basics of movement and physics in your game. Is it the standard physics model? What did you change or modify? Did you make your movement scripts that do not use the physics system?**
 
-## Animation and Visuals
+## Animation and Visuals - Krystal Chau
 
 ### Concept Art
 The context of the game's environment was imperative to even beginning the process of creating assets. Knowing this, I created a number of concepts for the player, mobs, and the map itself so that my teammates and I would have a clearer vision of what the game would look and feel like. This way we could continue on with a relative consensus of what the game's feel and story was like so that their individual parts would not stray too far from the concepts.<br>
@@ -207,6 +213,14 @@ The puzzle buttons had be extremely obvious in order for Players to get an under
 
 # Sub-Roles
 
+## Producer
+
+**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
+
+## Game Feel
+
+**Document what you added to and how you tweaked your game to improve its game feel.**
+
 ## Cross-Platform
 
 **Describe the platforms you targeted for your game release. For each, describe the process and unique actions taken for each platform. What obstacles did you overcome? What was easier than expected?**
@@ -262,6 +276,3 @@ I made sure to create sound for most attacks to that the Player could distingush
 
 
 
-## Game Feel
-
-**Document what you added to and how you tweaked your game to improve its game feel.**
