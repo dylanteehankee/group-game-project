@@ -62,7 +62,8 @@ The spell of 4 elements was designed to serve different roles:
 - `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
 
 
-| ![Blizzard](https://piskel-imgstore-b.appspot.com/img/368cc26e-09bd-11ee-b587-c98958b07512.gif) | ![Blizzard](https://piskel-imgstore-b.appspot.com/img/368cc26e-09bd-11ee-b587-c98958b07512.gif) | 
+| ![Fire-Ball]() | ![Water-Surge]() | | ![Blizzard]() | ![Thunder]() | 
+| Fire-Ball | Water-Surge | | Blizzard | Thunder | 
 
 
 The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
