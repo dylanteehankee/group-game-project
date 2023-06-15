@@ -5,17 +5,17 @@ using McDungeon;
 
 public class LinkTeleporter : MonoBehaviour
 {
-    public GameObject TargetRoom {get; set;} = null;
-    public bool Teleported {get; set;} = false;
-    public bool isInside {get; set;} = false;
+    public GameObject TargetRoom { get; set; } = null;
+    public bool Teleported { get; set; } = false;
+    public bool isInside { get; set; } = false;
     private GameObject parent, grandparent;
     public bool beenDisabled = false;
     private bool combatStarted = false;
-    public bool RoomCompleted {get; set;} = false;
-    private bool closeDoor = false; 
+    public bool RoomCompleted { get; set; } = false;
+    private bool closeDoor = false;
     private Vector2 candlePos1, candlePos2;
     private PuzzleStateModel puzzleState;
-    public bool onWallTile {get; set;} = false;
+    public bool onWallTile { get; set; } = false;
     private Animator animator;
     private MobManager mobManager;
     private PositionLockCamera positionLockCamera;
@@ -25,7 +25,8 @@ public class LinkTeleporter : MonoBehaviour
     private AudioSource[] bgAudioSource;
     private MapGenerator mapGenerator;
 
-    void Start(){
+    void Start()
+    {
         var CameraController = GameObject.FindWithTag("MainCamera");
         positionLockCamera = CameraController.GetComponent<PositionLockCamera>();
         var roomSoundManager = GameObject.FindWithTag("RoomSoundManager");
@@ -38,15 +39,17 @@ public class LinkTeleporter : MonoBehaviour
         animator = GetComponent<Animator>();
         parent = transform.parent.gameObject;
         //if parent is a puzzle room, get puzzle controller
-        if(parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
+        if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
+        {
             puzzleController = parent.transform.GetChild(5).GetComponent<PuzzleController>();
         }
-        
+
         grandparent = parent.transform.parent.gameObject;
         mapGenerator = grandparent.GetComponent<MapGenerator>();
     }
 
-    void LateUpdate(){
+    void LateUpdate()
+    {
         if (!TargetRoom && !beenDisabled)
         {
             // Disable collider so player can't teleport to a room that doesn't exist
@@ -56,28 +59,37 @@ public class LinkTeleporter : MonoBehaviour
         }
 
         //RoomCompleted makes sure that this update only runs up until the room is completed
-        if (TargetRoom && isInside && !RoomCompleted){
+        if (TargetRoom && isInside && !RoomCompleted)
+        {
             // If player is in startRoom, keep door open.
-            if (parent.CompareTag("StartRoom")){
+            if (parent.CompareTag("StartRoom"))
+            {
                 closeDoor = false;
             }
             // If no enemies in room, open door.
-            else if (parent.CompareTag("CombatRoom")){
-                if (mobManager.GetMobs().Count == 0){
+            else if (parent.CompareTag("CombatRoom"))
+            {
+                if (mobManager.GetMobs().Count == 0)
+                {
                     //play sound at array index 0
                     audioSource[0].Play();
                     closeDoor = false;
                     RoomCompleted = true;
                 }
-                else{
+                else
+                {
                     closeDoor = true;
                 }
             }
-            else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom")){
-                if (puzzleController != null){
-                    if (puzzleController.GetPuzzleRoomState() != PuzzleRoomState.Completed){
+            else if (parent.CompareTag("TutorialRoom") || parent.CompareTag("PuzzleRoom"))
+            {
+                if (puzzleController != null)
+                {
+                    if (puzzleController.GetPuzzleRoomState() != PuzzleRoomState.Completed)
+                    {
                         //do this once
-                        if (!updateCameraLock){
+                        if (!updateCameraLock)
+                        {
                             //set position lock to center of room
                             var tele1 = parent.transform.GetChild(1).gameObject;
                             var tele2 = parent.transform.GetChild(2).gameObject;
@@ -89,24 +101,29 @@ public class LinkTeleporter : MonoBehaviour
                             updateCameraLock = true;
                         }
                         closeDoor = true;
-                        if(puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress){
-                           GetComponent<SpriteRenderer>().enabled = false;
-                           mapGenerator.DisableMiniMap();
+                        if (puzzleController.GetPuzzleRoomState() == PuzzleRoomState.InProgress)
+                        {
+                            GetComponent<SpriteRenderer>().enabled = false;
+                            mapGenerator.DisableMiniMap();
                         }
-                        else{
+                        else
+                        {
                             GetComponent<SpriteRenderer>().enabled = true;
                         }
                     }
-                    else {
+                    else
+                    {
                         mapGenerator.EnableMiniMap();
-                        if(updateCameraLock){
+                        if (updateCameraLock)
+                        {
                             //set position lock to player
                             positionLockCamera.changeCameraMode(CameraMode.LockOnPlayer, new Vector2Int(0, 0));
                             updateCameraLock = false;
                         }
                         GetComponent<SpriteRenderer>().enabled = true;
                         GetComponent<Animator>().enabled = true;
-                        if(mobManager.GetMobs().Count == 0){
+                        if (mobManager.GetMobs().Count == 0)
+                        {
                             closeDoor = false;
                             RoomCompleted = true;
                         }
@@ -114,29 +131,34 @@ public class LinkTeleporter : MonoBehaviour
                 }
             }
             // If player already is in shop, keep door open.
-            else if (parent.CompareTag("ShopRoom")){
+            else if (parent.CompareTag("ShopRoom"))
+            {
                 closeDoor = false;
                 RoomCompleted = true;
             }
             // If player already is in endRoom, keep door closed.
-            else if (parent.CompareTag("EndRoom")){
+            else if (parent.CompareTag("EndRoom"))
+            {
                 closeDoor = false;
                 RoomCompleted = true;
             }
-            
+
             // If closeDoor is true, close door and disable collider
-            if (closeDoor){
+            if (closeDoor)
+            {
                 animator.SetBool("CloseDoor", true);
                 GetComponent<BoxCollider2D>().enabled = false;
             }
-            else{
+            else
+            {
                 StartCoroutine(waitToOpenDoor());
             }
         }
     }
 
     // Open door after 1 second, and enable collider after 1 second.
-    IEnumerator waitToOpenDoor(){
+    IEnumerator waitToOpenDoor()
+    {
         yield return new WaitForSeconds(1);
         animator.SetBool("CloseDoor", false);
         yield return new WaitForSeconds(1);
@@ -145,26 +167,32 @@ public class LinkTeleporter : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Wall")){
+        if (other.CompareTag("Wall"))
+        {
             onWallTile = true;
         }
 
-        if (TargetRoom != null){
+        if (TargetRoom != null)
+        {
             if (other.CompareTag("PlayerHitbox"))
             {
                 //TargetRoom.GetComponent<LinkTeleporter>().Teleported = true;
                 //transform position of player to a unit in front of the target room
                 //check target rotation and teleport in front of the door
-                if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0)){
+                if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 0))
+                {
                     other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y - 2.5f);
                 }
-                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90)){
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 90))
+                {
                     other.transform.position = new Vector2(TargetRoom.transform.position.x + 2, TargetRoom.transform.position.y);
                 }
-                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180)){
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, 180))
+                {
                     other.transform.position = new Vector2(TargetRoom.transform.position.x, TargetRoom.transform.position.y + 2.5f);
                 }
-                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90)){
+                else if (TargetRoom.transform.localRotation == Quaternion.Euler(0, 0, -90))
+                {
                     other.transform.position = new Vector2(TargetRoom.transform.position.x - 2, TargetRoom.transform.position.y);
                 }
 
@@ -206,22 +234,27 @@ public class LinkTeleporter : MonoBehaviour
                 }
                 // If player is in end room, pause background music, else play background music.
                 // Only have 1 background music can be playing at a time.
-                if (parentTarget.CompareTag("EndRoom")){
+                if (parentTarget.CompareTag("EndRoom"))
+                {
                     // Pause background music if in end room and enabled.
-                    if (bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
+                    if (bgAudioSource[0].isPlaying && bgAudioSource[0].enabled)
+                    {
                         bgAudioSource[0].Pause();
                     }
-                    else if (bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
+                    else if (bgAudioSource[2].isPlaying && bgAudioSource[2].enabled)
+                    {
                         bgAudioSource[2].Pause();
                     }
                 }
                 else
                 {
                     // Play background music if not playing and enabled.
-                    if (!bgAudioSource[0].isPlaying && bgAudioSource[0].enabled){
+                    if (!bgAudioSource[0].isPlaying && bgAudioSource[0].enabled)
+                    {
                         bgAudioSource[0].Play();
                     }
-                    else if (!bgAudioSource[2].isPlaying && bgAudioSource[2].enabled){
+                    else if (!bgAudioSource[2].isPlaying && bgAudioSource[2].enabled)
+                    {
                         bgAudioSource[2].Play();
                     }
                 }
