@@ -545,17 +545,17 @@ The implementation of Konami Code compelete animation was breaking by step and c
  
 || Magic Array Design|
 | :-------: | :-: |
-| First version design <br> (by me)| <img src = "" width = 70%>|
-| Revised to integrate better to floor <br> (by Krystal) | <img src = "" width = 70%>|
+| First version design <br> (by me)| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old" width = 100%>|
+| Revised to integrate better to floor <br> (by Krystal) | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new" width = 100%>|
  
 |Portal Animation| | |
 | :-------: | :-------: | :-------: |
-| <img src = "" width = 70%>| <img src = "" width = 70%>| <img src = "" width = 70%>|
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McPortal.gif" width = 70%>|
 | NormalPortal | HardPortal | McPortal|
  
 |Portal Face| | |
 | :-------: | :-------: | :-------: |
-| <img src = "" width = 70%>| <img src = "" width = 70%>| <img src = "" width = 70%>|
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McFace.png" width = 70%>|
 | Normal (didn't used) | Hard | Dr. McCoy's github picture|
 
 note: the Konami Code demo shown in Camera demo.
