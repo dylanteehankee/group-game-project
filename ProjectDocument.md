@@ -38,9 +38,48 @@ You should replay any **bold text** with your relevant information. Liberally us
 
 **Describe your user interface and how it relates to gameplay. This can be done via the template.**
 
-## Movement/Physics
+## Player Control & Combat - Honghui Li
 
-**Describe the basics of movement and physics in your game. Is it the standard physics model? What did you change or modify? Did you make your movement scripts that do not use the physics system?**
+### Movement
+The player-controlled movement is done by capturing directional input and manipulating the `Player` game object's `transform` in  `FixedUpdate()` to have more control over the movement and stability with physic interactions. The direction of movement is captured using Input.GetAxis() on `Horizontal` and `Vertical` for x and y values; then normalized to ensure the player moved at the same speed in all directions. The movement itself is performed by calculating the move-offset using `speed * speedModifier * Time.fixedDeltaTime` and applying move-offset using transform.position or use transform.Translate(). The speedModifier is used for slow debuffon the player and speed-bust power-ups.
+
+There are also non-player controlled movements when a special event is happening, such as interaction with portals. Multiple boolean values were used to ensure the player's movements corresponded with the free-move / event.
+
+### Combat - Weapon
+To separate the weapon logic from player control, I designed the weapon to function independently from PlayerController and receive the signal from PlayerController for the attack. The `CRWeapon` (Close Range Weapon) prefab is attached under `Player`, so there move together. The attack is achieved by activating the weapon `hitbox` and `sprite renderer` to show the swinging weapon and enable the hitbox detection. The swing of the weapon is controlled by a customized lerp function `Attack()` that lerp attackProgress from 0f to 1f and repositions the weapon to corresponding angle. With these controls, the weapon can show up, swing through configured attackAngle centered at the mouse position, and then disappear when finished attack.
+
+To make sure the weapon rotation center is the (0, 0) of the weapon prefab, the `counter weight` sub-object was attached to the weapon prefab to be the same shape, not rendered, and opposite position across (0,0) to make sure the weapon prefab's center is in (0, 0) for rotation to function correctly.
+
+When the weapon is idealing (not attacking), the `weapon follower` will show up near the player to show the equipped weapon. The logic of `weapon follower` is similar to the `PositionFolloweCamera` from [exercise 2](https://github.com/dr-jam/CameraControlExercise). 
+- It stays still when it's distance to the player is less than `InnerRadius`
+- oves at `followSpeed` that's slightly slower than the player when distance with the player in between `InnerRadius` and `OuterRadius`
+- Maintains the max `OuterRadius` when is reaching max leash distance.
+
+| Weapon |   |   |
+| :------------: |:------------: |:------------: |
+|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Attack.gif" alt="Attack" width="80%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/WeaponFollow.gif" alt="WeaponFollow" width="120%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/counterweight.png" alt="counterweight" width="100%"> |
+| Weapon Attack | Weapon Follow | Counter-weight Idea | 
+
+note: the Counter-weight is compeletely transparent and collider diabled in game, here is showing idea
+
+### Combat - Spells
+The purpose of spells is to enhance the player's ranged combat ability. In the early stage, spell instantiation was included inside PlayerController, but the script soon became too large and hard to manage. So I followed the `factory pattern` from [exercise 4](https://github.com/dr-jam/FactoryExercise) to pack spell instantiation logics into the `ISpellMaker` interface that has `ShowRange()` and `Execute()` for indication of spell position and instantiation. The spell management structure was inspired by the [`SpellFactory`](https://github.com/dr-jam/GameplayProgramming/tree/master/Projects/Factory) participation exercise to include all Spell Execution logics in the spell prefabs so all the internal logic is customized and self-contained for easy utilization by spell makers. The utilization of the particle system for spell effect was inspired by the [`SpellFactory`](https://github.com/dr-jam/GameplayProgramming/tree/master/Projects/Factory) exercise.
+
+The spell of 4 elements was designed to serve different roles:
+- `Fire-Ball` (bound to `fire2`) is the main range dagame spell and serves puzzle rooms. It shoots a fireball toward the mouse position damage and burns the enemy it hits.
+- `Water-Surge` (bound to `E`) is the AOE damage spell. It creates a circle range that slowly moves towards the mouse position and damage and stuns the enemy periodically. Inspired by the [`Lerp Playground`](https://github.com/dr-jam/GameplayProgramming/tree/master/Projects/Lerp%20Playground) demo, the curved particle speed of the particle system is used to show the `charging` and `burst` state.
+- `Blizzard` (bound to `Space`) is the AOE control spell. It randomly generates ice-sharps in selected areas, and each ice-sharp will go through forming, falling, and exploding stages and then do a small AOE damage around the ice-sharp.
+- `Thunder` (bound to `Q`) is the Monster-Targted spell. It randomly selects a few monsters to chase and then strike. It serves more on information gain in hard/dark mode which will guaranty to reveal some monsters' position in the dark.
+
+| Spells |   |   |  |
+| :------------: |:------------: |:------------: |:------------: |
+|  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Fire.gif" alt="Fire-Ball" width="100%">  |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Water.gif" alt="Water" width="100%">  | <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Blizzard.gif" alt="Blizzard" width="100%"> |  <img src="https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Thunder.gif" alt="Thunder" width="80%">  |
+| Fire-Ball | Water-Surge | Blizzard | Thunder | 
+
+The spell also has different level UPR 2D light effect attached to them for hard mode information gain.
+The casting/ready stage of spell casting is shown by particle effect around player and is inspired by the (healing effect from classmate's `SpellFactory` exeersice)[].
+
+The initial plan on the spell part was to make 2 spells per element for the player to choose/purchase and implement the interaction between elements to allow players to build their combat style. For example, the original design for the water spell is for a `wet` status on monsters that make them easier to be frizzed or induce lightning. We also planned to include a few special purposed spells for consumable scroll items, such as a `light scroll` that light up the entire room for hard mode combat assist. But these plans were selectively pushed back due to task transferring and time manner.
 
 ## Inventory System - Jason
 ### Design Goal
@@ -94,7 +133,7 @@ Moving forwards, I would definitely do some user interface research and get feed
 ### Mob AI
 The concept of the Mob AI was to track and move toward the player, and attack the player when the player is within the mob's attack range. There were 6 mobs in concept: Slime, Skeleton, Knight, GNome, GNelf, and Mage.
 
-In its earliest phases, the design was very simplistic, the mob had to take damage, and the mob had to keep track, move towards, and then attack the player. There were no Mob assets to begin with so they started out with simple Hexagon prefabs so that the interaction between player and mob could be tested. Each mob was designed very simplistically, with Slime, Skeleton, and Knight all melee attacking. GNome was designed to throw a projectile and spawn GNelfs, and Mage was designed to cast either a Fireball or Frostbolt. These projectiles would have their own controllers similarly to (Exercise 4)[] and my self designed pirate command in (Exercise 1)[] . Each mob had its own controller, derived from the `IMobController` Interface, that allowed the player easy access to call the function `TakeDamage()`. The `MobManager.cs` was designed after to keep track of all the mobs in a list, with functions `Subscribe()`, `Unsubscribe()`, and `Notify()` to keep track and control all mobs that were spawned, just like in [Exercise 3](SOME LINK). There were some simple functions designed, such as `SpawnMobs()` and`GetMobs()`, so that the room manager was able spawn mobs and keep track of whether the list of mobs was empty so that the player may progress.
+In its earliest phases, the design was very simplistic, the mob had to take damage, and the mob had to keep track, move towards, and then attack the player. There were no Mob assets to begin with so they started out with simple Hexagon prefabs so that the interaction between player and mob could be tested. Each mob was designed very simplistically, with Slime, Skeleton, and Knight all melee attacking. GNome was designed to throw a projectile and spawn GNelfs, and Mage was designed to cast either a Fireball or Frostbolt. These projectiles would have their own controllers similarly to [Exercise 4](https://github.com/ensemble-ai/exercise-4-factory-pattern-oycheng) and my self designed pirate command in [Exercise 1](https://github.com/ensemble-ai/exercise-1-command-pattern-oycheng) . Each mob had its own controller, derived from the `IMobController` Interface, that allowed the player easy access to call the function `TakeDamage()`. The `MobManager.cs` was designed after to keep track of all the mobs in a list, with functions `Subscribe()`, `Unsubscribe()`, and `Notify()` to keep track and control all mobs that were spawned, just like in [Exercise 3](SOME LINK). There were some simple functions designed, such as `SpawnMobs()` and`GetMobs()`, so that the room manager was able spawn mobs and keep track of whether the list of mobs was empty so that the player may progress.
 
 We wanted more variety within the mobs, as many of the mobs shared the same attack patterns or traits, so we redesigned Skeleton, and Knight and made a small rework to the Slime. The skeleton was redesigned so that it threw a bone projectile, and it needed to retrieve its bone before it can throw it again. The decision to have the Skeleton pick up its thrown bone was to differentiate from the GNome, who threw knife projectiles at the player. The Knight was redesigned so that it had a respawning shield that takes a free hit. The Slime was minorly changed so that it slowed the player.
 
@@ -220,7 +259,7 @@ Weapons and armor were created as a way for the player to have some kind of cust
 | All Weapons | ![Weapon All](https://piskel-imgstore-b.appspot.com/img/894ddd97-09c0-11ee-81c4-c98958b07512.gif) | All Armor | ![Armor All](https://piskel-imgstore-b.appspot.com/img/30704302-09c1-11ee-9126-c98958b07512.gif) |
 | :------------: |:------------: |:------------: |:------------: |
 
-#### Attack (Unsused)
+#### Attack (Unused)
 | ![Wooden](https://piskel-imgstore-b.appspot.com/img/7799f29c-09c0-11ee-a8e6-c98958b07512.gif) | ![Iron](https://piskel-imgstore-b.appspot.com/img/552a4723-09c1-11ee-bbdb-c98958b07512.gif) | ![Ice](https://piskel-imgstore-b.appspot.com/img/5cc34ef3-09c1-11ee-bf1d-c98958b07512.gif) | ![Amethyst](https://piskel-imgstore-b.appspot.com/img/6867375c-09c1-11ee-be6b-c98958b07512.gif) | ![Ruby](https://piskel-imgstore-b.appspot.com/img/732aa259-09c1-11ee-a4b9-c98958b07512.gif) | ![Emerald](https://piskel-imgstore-b.appspot.com/img/7e90b98f-09c1-11ee-b28a-c98958b07512.gif) |  
 | :------------: |:------------: |:------------: |:------------: |:------------: |:------------: |
 
@@ -300,7 +339,7 @@ Most of my puzzles went through multiple design changes as our game was develope
 | Room 1 Version 1 | Room 2 Version 1 |
 | :------------: | :------------: |
 | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670143070278/IMG_4571.jpg" width="50%"><br><img src="https://cdn.discordapp.com/attachments/1112968117509959701/1112968670562496525/IMG_4572.jpg" width="50%"> | <img src="https://cdn.discordapp.com/attachments/1112968117509959701/1113420536094150696/IMG_4576.jpg" width="70%">  |
-| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to teh puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
+| As this was the first ever puzzle made, I made sure to include multiple explainations of what each mechanic would do and what the "answer" to the puzzle was. This room was 11 by 6 units and was reflected that way in the game when implemented. However, the player was not able to see the torches on both sides at the same time making it difficult for the player to solve rooms as intended. | This puzzle was even larger and had the same mechanics as the first puzzle room. It also had the same problems as the first room, where each room was just too large for players to see much of anything. |
 
 Once these problems were brought to my attention, I opted to redesign each puzzle so that they would fit in the screen's 9 by 5 block limit, while trying to keep the rooms as close to the original designs.
 
@@ -328,29 +367,142 @@ The last room to mention is the Tutorial puzzle that is supposed to teach the pl
 
 ### Implementation
 
+## Map Visuals, Logic and Design - Marc Paolo Yap
+
+### Overview
+
+I used a teleport based system in order to link several rooms together to form a cohesive map. This was done to allow for most of the map related gameobjects to be already loaded upon entering the scene. In order for the game to feel unique every run, I made it so that how the rooms are linked are based on the map configuration matrix which is procedurally generated.
+
+In addition to this majority of the map-related assets were created by me (Paolo) using the free website [Piskel](https://www.piskelapp.com/).
+
+### Rooms
+
+#### Setting Up the Scene
+
+I created the initial design for a single room grid in our game environment. I needed this to be done in order to create the rest of the map.
+
+I decided to use tile maps for room creation as this gave flexibility and ease of use when creating different layouts and design
+
+#### Design and Creation
+
+I had different iterations of the room tile map as we weren't sure yet on how are room should look like. Either having it look isometric at a 45 degree angle or to have it completly top-down similar to The Legend of Zelda (1987) or the Binding of Isaac: Rebirth.
+
+<img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726997787545650/DefaultRoom_Layout.PNG width = 70%>
+
+| _Room Tile Maps_ | | |
+| :-: | :-: | :-: |
+|  Initial Design for Wall   | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726657549811712/BridgeFloor.png>  |
+| Finialized Design for Wall | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230535675904/DungeonWall.png>  | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118722437568278548/DungeonWall_6.png> |
+|  Initial Design for Floor  | <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230321758228/DungeonFloor.png> |
+| Finalized Design for Floor |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118721230091067412/FloorTile.png>   |
+
+We decided on having a total of 6 room types: <br>
+Start Room, Tutorial Room, Puzzle Room, Combat Room, and the End Room.
+
+I decided to have a total of 16 rooms in order to prolong the game, this consisted of:
+- 1x Start Room
+- 1x Tutorial Room
+- 8x Combat Rooms
+- 2x Shop Rooms
+- 3x Puzzle Rooms (3 are chosen out of 4 existing)
+- 1x End Room
+
+These rooms had their own respective colors and layout. Starting Room was set to the default room and color.
+
+| Room Type |   Layouts  |
+| :-------: | :-: |
+|      Combat Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726658065703055/CombatRooms.PNG>  |
+|      Tutorial Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118750031554543636/TutorialRoom.PNG>  |
+|      Puzzle Room <br>(was initially different sized but changed for consistency)    |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726999066824744/PuzzleRooms.PNG>  |
+|      Shop Room <br> (Additional assets and layout were created by Krystal, Jason, and I)     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726999561732226/ShopRooms.PNG>  |
+|      End Room     |  <img src = https://cdn.discordapp.com/attachments/1116541534087684108/1118726997997256734/EndRoom.PNG>  |
+
+### End Room
+|||
+| :-------: | :-: |
+| Boss Room Entrance <br> <br> Found inside the End Room, and teleports the player to the boss room when colliding with the trigger | ![BossEntrance](https://piskel-imgstore-b.appspot.com/img/f61eb1d1-0b25-11ee-878c-b7bc24a2ee1f.gif)|
+
+Animation and trigger is handled by the `VentDetector.cs`, and `BossEntrance.cs` script.
+
+Teleportation to boss room is handled by the `BossTeleport.cs` script via on trigger.
 
 
-## Input
+### Map Layout
 
-**Describe the default input configuration.**
+#### Procedurally Generated
+The map was procedurally generated using a heavily modified drunkard walk algortithm in `DrunkardWalk.cs` tailored to fit our layout. This algorithm could potentially make any n x m matrix map by modifying some values, but I kept these values set to follow our map constraints (specific number of total rooms, specific number of combat, puzzle, shop rooms).
 
-**Add an entry for each platform or input style your project supports.**
+I used an enum `RoomTypes` that represented different room types:
+- 0 being No Room
+- 1 being Starting Room
+- 2 being Tutorial Room
+- 3 being Shop Rooms
+- 4 being Combat Rooms
+- 5 being Puzzle Rooms
+- 6 being End Rooms
+- 7 being Temporary Rooms
 
-## Game Logic
+The public function `GenerateMatrix` returns a n by n generated matrix that could be fed later to our `MapGenerator.cs` script.
 
-**Document what game states and game data you managed and what design patterns you used to complete your task.**
+`GenerateMatrix` first chooses a starting room randomly in the matrix by setting the matrix [n][m] value to `1`. It then calls the `GenerateTrainingRoom` which generates a training room by assiging the matrix value to `2` always adjacent to the starting room. 
+
+After it picks both the starting room and the training room, the drunkard starts walking randomly in different directions which is stored in the `nextRoom` value for 100 steps trying to create a total of 15 rooms (end room is added at the very end). If the drunkard hasn't finished creating all 15 rooms within the amount of steps, it just regenerates the matrix again. This drunkard will assign the value of a temporary room, which is `7`, only on empty spots in the matrix. I also made a constraint that it cannot place a room adjacent to the starting room, as the tutorial room has to be the only room next to it.
+
+After it generates all the temporary rooms, the drunkard stops walking. Multiple functions are then called to assing the different room types that are remaining. `GenerateShopLayer()` generates the shops replacing temporary rooms with its value, `3`, this makes sure that no shop rooms are placed adjacent to a shop room. `GeneratePuzzleLayer()` functions simialrly to `GenerateShopLayer()` placing its value `5` on top of temporary rooms and ensuring that they're not placed adjacent to another puzzle room. `GenerateCombatLayer()` just fills the remaining temporary rooms with the combat room value `4`. Finally, `GenerateEndRoom()` looks for a room that exist, is not completly surrounded by rooms, and is as far away (by distance not by rooms) from the start room and places the end room `6` on a random empty spot adjacent to it. 
+
+I initially had planned to generated the end room to be the furthest amount of rooms away from the starting room but I found it too complicated to do within the remaining time. I also felt like I could've used a better map generation method but decided to go for the more simplistic route.
+
+#### Linking the Rooms Together
+I used the `MapGenerator.cs` script to link all the rooms together via teleporters, esentially creating the pathway between rooms.
+
+`MapGenerator.cs` on `Start()`, looks for all the type of room gameobjects that exist within the scene and adds them to their respective lists via the `AssignList()` method.
+
+Then from RNG, the map is selected, there is a 25% chance of a premade `crewmate` shaped map being picked, and a 75% chance of being a randomly generated map from `DrunkardWalk.cs`.
+
+ Then according to their respective location in the matrix, `AssignRoom()` is called to iterate throught the fed n by m matrix and uses its `Vector2Int` position in the matrix as the `roomDictionary` key and assigns the respective room gameobject as the `roomDictionary` value based on the room value in the matrix.
+
+`AssignPortal()` is then called which iterates through the map matrix and checks the current room's right and bottom if there exists a room. If there exists a room on the right, the current room's left teleporter `PortalA1` will link to the right adjacent room's left teleporter `PortalA2`. Similarly, if there exists a room on the bottom, the current room's bottom teleporter `PortalB1` will link to the bottom adjacent room's top teleporter `PortalB2`. 
+
+This linkage is done via the `LinkTeleporter.cs` script attached to all teleporters (via prefab) by assigning the `TargetRoom` gameobject to each others teleporter. If a player walks to the teleporter via an `OnTriggerEnter2D` it teleports the player to the targer room.
+
+While linking these rooms, I also made sure that the teleporter sprites were not rendered via the `LinkTeleporter.cs` script by checking if `TargetRoom` was null. The wall tiles were also updated properly to reflect the map layout. This meant that if there was no target room the walls will visually get updated, this is all handled by the `TileUpdate.cs` script attached to the wall gameobject of each room.
+
+I felt like this could've been done more efficently if I used a central teleporter controller for each room.
+ 
+<img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118727890373181470/UpdatedRoomTiles.PNG">
+
+#### MiniMap
+
+The minimap is generated via the `MapGenerator.cs` script. It creates a bunch of `miniRoom` gameobjects arranged in a matrix and is shown via the canvas ui. The minimap has a transparent background for better visibility. Visited rooms are colored with light grey, current room is colored with white, and unvisited adjacent rooms are colored with dark grey. The boss room has a unique icon. This minimap design was heavily inspired by the Binding of Isaac: Rebirth.
+
+<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726549475180594/image.png">
+
+The icon sprites were drawn by me:
+| Icon |  |
+| :-------: | :-: |
+| Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118776117470429294/MiniRoomTexture.png"> |
+| Boss Room | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721228761477200/BossIcon.png"> |
+
+#### Room Logic
+Each room had their own preset conditions to complete. If the room is not completed when entered, then the teleporters (represented by the gate sprites) will be closed and kept shut. This is mostly handled by the `LinkTeleporter.cs` script found in each teleporter. For puzzle rooms/tutorial room, upon entering, the camera shifts to center on the room, and the minimap disables for better visibility. When the puzzle starts, the tiles updates via `TileUpdate.cs` to create an enclosed room with no escape until the player completes or defeats the knights that will spawn when failing (by checking the mob count). For combat rooms, the room is shut if there are mobs and completes once they all die. 
+
+#### Additional Room Related Sprite Work
+
+| Sprites |  |
+| :-------: | :-: |
+| Candles | ![Candle](https://piskel-imgstore-b.appspot.com/img/8a7601dc-0b3f-11ee-b56b-b7bc24a2ee1f.gif) |
+| Chain Ball <br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118722436750393394/Ball_Chain.png"> |
+| Item Pedastel<br> (unused) | <img src= "https://cdn.discordapp.com/attachments/1116541534087684108/1118721229872975892/Item_Pedestal_Base.png"> |
 
 # Sub-Roles
 
 ## Project Manager - Orien Cheng
 
-**Describe the steps you took in your role as producer. Typical items include group scheduling mechanism, links to meeting notes, descriptions of team logistics problems with their resolution, project organization tools (e.g., timelines, depedency/task tracking, Gantt charts, etc.), and repository management methodology.**
-
 ### Project Management
 From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our (Initial Game Plan)[https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing] Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
 An (Excel Sheet)[https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true] was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
 
-## Game Feel
+## Game Feel - Orien Cheng
 Using information from personal playtesting and from the Project Game Showcase, many factors were changed or tweaked to enhance game feel.
 
 *Puzzle Rooms* - Puzzle rooms initially felt very clunky with the existing spell designs, with high cast time and long cooldowns. Although those cast times and cooldowns were meant for combat, it massively slowed down the gameplay during puzzle rooms so much so that the tutorial room was very easily failable. Some suggested changes were lowering both the cast time and cooldown of the Fireball spell specifically for the puzzle room, so that the player can test multiple angles much faster, and to increase the torch duration once it had been hit by a Fireball. Another issue that came up during the Project Game Showcase was that certain UI elements were blocking torch visibility, so moving the timer to back to the center of the screen and disabling the minimap and zooming out more for puzzle rooms were suggested as solutions.
@@ -360,10 +512,6 @@ Using information from personal playtesting and from the Project Game Showcase, 
 *Tutorial Puzzle Room* - The tutorial room currently gives weapons and potions as rewards for completing it fast, however it didn't make sense for the tutorial room to give a weapon that would replace the starting weapon that had not been used at all. Thus, a suggestion for removing weapon drops for the Tutorial Puzzle Room was made.
 
 *Player* - During personal playtests and duing the Project Game Showcase, the general consensus was that the player moved too slow. I had suggested to increase the player move speed to help with the flow of the game, however due to time constraints and required testing with new player speed, we were not able to implement the change.
-
-## Cross-Platform
-
-**Describe the platforms you targeted for your game release. For each, describe the process and unique actions taken for each platform. What obstacles did you overcome? What was easier than expected?**
 
 ## Audio - Krystal Chau
 
@@ -404,21 +552,83 @@ I made sure to create sound for most attacks to that the Player could distingush
 
 The sound implementation mostly consisted of sorting sounds into 4 categories: background music, room sounds, player/mob sounds, and special sounds. Then I would create a dedicated `SoundManager` prefab for the category, create a custom tag for it, and assign all sounds as a sound component. Depending on what sound it was adding, I would locate the tag and proceed to call the sound through playing the corresponding sound's array index in it's sound manager. This gave the me an easier way to find and add in audio, since I would not have to spend time counting `Audio Source` components to find the indexing of each sound. The old exceptions were sounds that were always played upon use, where I opted to directly add the `Audio Source` compontent to the game object itself and set it to "Play on Awake."
 
-## Gameplay Testing
+ 
 
-**Add a link to the full results of your gameplay tests.**
+## Lighting and Camera - Honghui
+We used the URP (Universal Render Pipeline) package from unity to enable the 2D lightings. Most of the lighting is pre-defined in the prefabs when we make them, we also make some objects such as UI have `un-lit` (not affect by light, always shows up) material to emphasize them. Some of the lights were controled by script for cut-scene effects.
+ 
+The camera mode is tight to players' action.
+ - LockOnPlayer: Normal mode in which the camera follows the player, we decided to have this type of camera to enhance the first-person feeling when the player explores the map.
+ - LockOnRoom: Puzzle mode in which the camera Locks on the center of Room for puzzle solving.
+ - MoveToTarget: Used for cut-scene when moving camera to a object.
+ - ReturnToPlayer: Transaction mode when switching back to Lock Player so the camera doesn't instantly teleport to the player.
 
-**Summarize the key findings from your gameplay tests.**
+ 
+|Camera & Lighting Demo| | |
+| :-------: | :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseNormalMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UseHardMirror.gif" width = 100%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/UnlockMcMirror.gif" width = 100%>|
+| Use Normal Mirror | Use Hard Mirror | Unlock Special Mirror|
+ 
+note: the implmentation of cut-scene effects logic is relying on PlayerController to manage and call APIs of StartRoomLight and Camera for execution.
+ 
+## Start Room Design and Implementation - Honghui (with Dylan contributed in designing)
+We porposed to have a start-room intead of a start meau UI for the immersed game experience. The design of start room is that a player been summoned from a initial portal to this world and the initial portal closed after summon so he/she need to find a way out from cross the Normal/Hard world from the mirror portals. The third portal was designed as Easter egg that allow current player to escape immediately but summon Dr. McCoy as "sacrifice"; however, is protected by a magical curtain from use.
+ 
+The make the special mode unloaking have some magical background, I integrate Dylan's idea of have Konami code with the 4 element we choosed to make a `Magic Array` in the center of start room for the ritual (Konami Code Input). I also make the code tights to the element base on the position they shown in the Magical Array. The sequence of code is collect from each member excpet myself by order of their reply and last code was from Dr. McCoy (last lightning - 'A'). The intention of these designs is to fake the special mode as a summon spell in the Magical Array consist [Space-S-W-A-S-W-A] as step to cast the summon.
 
-## Narrative Design
+The implementation of Konami Code compelete animation was breaking by step and controlled by a timmer.
+ 
+| Magic Array Design | |
+| :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_old.png" width = 50%> | <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/Carpet_new.png" width = 50%>|
+| First version design <br> (by me) | Revised to integrate better to floor <br> (by Krystal) |
 
-**Document how the narrative is present in the game via assets, gameplay systems, and gameplay.** 
+|Portal Animation| | |
+| :-------: | :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardPortal.gif" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McPortal.gif" width = 70%>|
+| NormalPortal | HardPortal | McPortal|
+ 
+|Portal Face| | |
+| :-------: | :-------: | :-------: |
+| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/NormalFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/HardFace.png" width = 70%>| <img src = "https://github.com/oycheng/McDungeon/blob/MapPlayerPuzzle/ProjectDocumentMaterial/McFace.png" width = 70%>|
+| Normal (didn't used) | Hard | [Dr. McCoy's github picture](https://github.com/dr-jam/GameplayProgramming)|
 
-## Press Kit and Trailer
+note: the Konami Code demo shown in Camera demo. And the rest parts of Mirrors was created by Krystal.
+ 
+Some pushed back designs of the Start Room include cues to the Konami Code by putting some examable items related to each member + Dr. McCoy to cue their credit to the game, and the dialog will include the code choosed by them (excpet me) or how to enter the code ("need some 'space' to cast speical spell") . This was to make the room less empty and also gives credit to ourselves.
+ 
+ 
+## Boss Concept and Design - Marc Paolo Yap
+I thought of the boss concept, and boss stage design with the clear reference to Among Us. All of the create sprites and tiles, shown under here are all drawn by me using the free website [Piskel](https://www.piskelapp.com/). The Boss AI and scripting was handled by Orien Cheng.
 
-**Include links to your presskit materials and trailer.**
+Upon entering the vent in the final room, the player enters the Boss Room and will be guided upwards. At a certain point when going up, there is a trigger via `BossTrigger.cs` that starts the boss, prevents the player from backtracking, and changes the music.
 
-**Describe how you showcased your work. How did you choose what to show in the trailer? Why did you choose your screenshots?**
+|| Paint.exe Concept Art|
+| :-------: | :-: |
+| Boss Entrance & Design <br> (decided on the right one)| <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726655922421812/Boss_Final.png" width = 50%>|
+| Boss 1st Phase <br> (only one we decided using) | <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726656417333368/Boss_Phase_1.png" width = 50%>|
+| Boss 2nd Phase <br> (unused) | <img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726656736108634/Boss_Phase_2.png" width = 50%>|
 
+### Boss Assets
+|Left Hand| Head | Right Hand|
+|:-:|:-:|:-: |
+|![BossLeft](https://piskel-imgstore-b.appspot.com/img/92611bca-0b1f-11ee-9f75-b7bc24a2ee1f.gif)|![BossHead](https://piskel-imgstore-b.appspot.com/img/28ca839c-0b1f-11ee-bf19-b7bc24a2ee1f.gif)|![BossRight](https://piskel-imgstore-b.appspot.com/img/7334a91c-0b1f-11ee-a2f6-b7bc24a2ee1f.gif)|
+|Laser Beam| ![Beam](https://piskel-imgstore-b.appspot.com/img/345188dc-0b1f-11ee-abce-b7bc24a2ee1f.gif)|
+|Button |![Button](https://piskel-imgstore-b.appspot.com/img/5d54c18f-0b1f-11ee-bea3-b7bc24a2ee1f.gif)|
+
+### Boss Map
+
+<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118726657247805560/BossRoom.PNG">
+
+|Tiles for TileMap|
+|:-:|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722437006241862/Bridge_Wall.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722437245321257/BridgeFloor.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118721229239623700/Bridge_Wall_2.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722786442092584/Bridge_Bottom_Side_L.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722787272572938/Bridge_Side_Corner_R.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722787809435698/Bridge_Side_L.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722788061102150/Bridge_Side_R_Top.png">|
+|<img src = "https://cdn.discordapp.com/attachments/1116541534087684108/1118722676463239168/Boxes.png">|
 
 
