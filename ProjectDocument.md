@@ -548,8 +548,8 @@ Each room had their own preset conditions to complete. If the room is not comple
 ## Project Manager - Orien Cheng
 
 ### Project Management
-From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our (Initial Game Plan)[https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing] Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
-An (Excel Sheet)[https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true] was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
+From my understanding of game design and game development cycles, I conducted regular weekly meetings to check on each teams progress and to make sure that the game development was on track. I scheduled our [Initial Game Plan](https://docs.google.com/document/d/1nOKUQqh0cJJVvcR_yvxZgWWZTnJzXiF4eff2JPueFGs/edit?usp=sharing) Gantt Chart, with an emphasis on focusing on creating quick and simple systems early in the development cycle, so that certain dependencies could be tested early on to ensure cohesion throughout our game.
+An [Excel Sheet](https://docs.google.com/spreadsheets/d/1dQqFI7IdrA2Wo5TLjiHZfgli4moYHDZg/edit?usp=sharing&ouid=117100085502910190489&rtpof=true&sd=true) was used to keep track of each person's tasks with expected deadlines to ensure that certain features could be tested at specific times.
 
 ## Game Feel - Orien Cheng
 Using information from personal playtesting and from the Project Game Showcase, many factors were changed or tweaked to enhance game feel.
