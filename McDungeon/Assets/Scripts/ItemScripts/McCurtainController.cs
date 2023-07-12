@@ -20,24 +20,15 @@ namespace McDungeon
         {
             if (unlocked)
             {
-                if (timer > 0f)
-                {
-                    timer -= Time.deltaTime;
-                }
+                timer -= Time.deltaTime;
 
                 if (timer <= 5f)
                 {
-                    if (!disabledAnimator)
-                    {
-                        this.gameObject.GetComponent<Animator>().enabled = false;
-                        disabledAnimator = true;
-                    }
-
                     transparency -= 255f / 10f * Time.deltaTime;
                     ChangeTransparency();
                 }
 
-                if (timer <= 0f)
+                else if (timer <= 0f)
                 {
                     transparency = 0f;
                     ChangeTransparency();
@@ -49,7 +40,6 @@ namespace McDungeon
         public void Unlock()
         {
             unlocked = true;
-            timer = 10f;
             this.gameObject.GetComponent<Animator>().enabled = true;
             this.transform.parent.GetComponent<PortalController>().Unlock();
         }
@@ -59,16 +49,13 @@ namespace McDungeon
             Color color = renderer.material.color;
             if (transparency < 0f)
             {
-
                 color.a = 0f;
             }
             else
             {
                 color.a = transparency;
-
             }
             renderer.material.color = color;
         }
-
     }
 }

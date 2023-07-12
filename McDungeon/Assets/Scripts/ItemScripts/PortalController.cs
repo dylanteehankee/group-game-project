@@ -7,24 +7,14 @@ namespace McDungeon
         [SerializeField] private GameObject button;
         [SerializeField] private GameObject portal;
         [SerializeField] private GameObject face;
-        [SerializeField] private GameObject cover;
         [SerializeField] private GameMode mode;
         [SerializeField] private bool special;
-        [SerializeField] private bool unlocked;
-
+        [SerializeField] private bool unlocked = false;
         [SerializeField] private PlayerController playerControl;
-        
-        private bool active;
+        private bool active = false;
 
         void Start()
         {
-            active = false;
-            button.SetActive(false);
-            unlocked = false;
-            portal.SetActive(false);
-            face.SetActive(false);
-
-
             this.playerControl = GameObject.Find("Player").gameObject.GetComponent<PlayerController>();
         }
 
@@ -34,35 +24,28 @@ namespace McDungeon
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    // Interaction Happened.
-                    Debug.Log("Interacted with this portal");
-
-                    if(special)
+                    Debug.Log("trigger");
+                    if (!special || unlocked)
                     {
-                        if (!unlocked)
-                        {
-                            Debug.Log("Portal Locked");
-
-                            return;
-                        }
+                        Debug.Log("trigger2");
+                        playerControl.StartUsePortal(this.gameObject.transform.position, mode);
                     }
-
-
-                    // Non-special or unlocked.
-                    Debug.Log("Activated Portal");
-                    playerControl.StartUsePortal(this.gameObject.transform.position, mode);
-
                 }
             }
+        }
+
+        private void setStatus(bool status)
+        {
+            active = status;
+            button.SetActive(status);
+            portal.SetActive(status);
+            face.SetActive(status);
         }
 
         public void Unlock()
         {
             unlocked = true;
-            active = true;
-            button.SetActive(true);
-            portal.SetActive(true);
-            face.SetActive(true);
+            setStatus(true);
         }
 
         void OnTriggerEnter2D(Collider2D other)
@@ -71,10 +54,7 @@ namespace McDungeon
 
             if (other.gameObject.tag == "Player")
             {
-                active = true;
-                button.SetActive(true);
-                portal.SetActive(true);
-                face.SetActive(true);
+                setStatus(true);
             }
         }
 
@@ -84,10 +64,7 @@ namespace McDungeon
 
             if (other.gameObject.tag == "Player")
             {
-                active = false;
-                button.SetActive(false);
-                portal.SetActive(false);
-                face.SetActive(false);
+                setStatus(false);
             }
         }
     }

@@ -9,13 +9,12 @@ namespace McDungeon
         [SerializeField] private float speed;
         private SpriteRenderer renderer;
         private float transparency;
-        private float increase;
+        private float increase = 1f;
 
         void Start()
         {
             renderer = this.gameObject.GetComponent<SpriteRenderer>();
             transparency = minTransparence;
-            increase = 1f;
         }
 
         void Update()
@@ -38,13 +37,11 @@ namespace McDungeon
             Color color = renderer.material.color;
             if (transparency < 0f)
             {
-
                 color.a = 0f;
             }
             else
             {
                 color.a = transparency;
-
             }
             renderer.material.color = color;
         }
