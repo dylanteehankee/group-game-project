@@ -41,7 +41,7 @@ public class ItemFactory : MonoBehaviour
 
     }
 
-    public void DropHealthPotions(Transform parent, int count, Vector3 position, float variance)
+    public void DropHealthPotions(Transform parent, int count, Vector3 position, float variance = 0.2f)
     {
         for(int i = 0 ; i < count ; i++)
         {
@@ -85,6 +85,11 @@ public class ItemFactory : MonoBehaviour
         GameObject equipmentDrop = Instantiate(equipmentDropPrefab, parent);
         equipmentDrop.GetComponent<EquipmentDrop>().Init(tuple.item, tuple.dropSprite);
         equipmentDrop.transform.localPosition = position + new Vector3(Random.Range(variance * -1, variance), Random.Range(variance * -1, variance), 0);
+    }
+
+    public void DropEquipmentItemFromTier(Transform parent, Vector3 position, int tierNum)
+    {
+        DropEquipmentItemFromTier(parent, position, 0.2f, tierNum);
     }
 
     private (Sprite dropSprite, EquipmentItem item) GetTier1Item()
