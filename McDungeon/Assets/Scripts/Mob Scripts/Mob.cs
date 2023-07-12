@@ -79,10 +79,18 @@ namespace McDungeon
         {
             this.mobHealth -= damage;
             this.death();
-            this.stunned = true;
-            this.status(type);
-            StopCoroutine(stunStatus());
-            StartCoroutine(stunStatus());
+            
+            if (type == EffectTypes.None)
+            {
+                this.stunned = true;
+                StopCoroutine(stunStatus());
+                StartCoroutine(stunStatus());
+            }
+            else
+            {
+                this.status(type);
+            }
+            
             StartCoroutine("hitConfirm");
         }
 
