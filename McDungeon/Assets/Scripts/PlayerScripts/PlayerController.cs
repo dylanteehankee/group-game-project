@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public enum GameMode
-{
-    Normal,
-    Hard,
-    Unchange
-}
-
 namespace McDungeon
 {
     public class PlayerController : MonoBehaviour
@@ -24,10 +17,11 @@ namespace McDungeon
         [SerializeField] private CapsuleCollider2D bodyCollider;
         [SerializeField] private StartRoomLightController roomLightControl;
         [SerializeField] private CarpetKonamiController carpetLightControl;
-        [SerializeField] protected int playerMaxHealth;
-        [SerializeField] protected float playerHealth;
+        [SerializeField] protected int playerMaxHealth = 10;
+        [SerializeField] protected float playerHealth = 10f;
+        [SerializeField] private GameDifficulty gameDifficulty;
         private PlayerHealthController healthController;
-        private float hitTakenInterverl;
+        private float hitCooldown = 0.2f;
         private float hitTimer;
         private bool readyForAction = true;
 
@@ -37,7 +31,6 @@ namespace McDungeon
         private ISpellMaker spell_ice;
         private ISpellMaker spell_water;
         private ISpellMaker spell_lightning;
-        private ISpellMaker spell_special;
         private char spell;
 
         private float actionCoolDown = 0f;
@@ -47,20 +40,10 @@ namespace McDungeon
         private float waterCoolDown = 6f;
         private float iceCoolDown = 6f;
         private float lightningCoolDown = 6f;
-        private float fireCoolDowntimer = 0f;
-        private float waterCoolDowntimer = 0f;
-        private float iceCoolDowntimer = 0f;
-        private float lightningCoolDowntimer = 0f;
-
-        private float fireCastDuration = 0.5f;
-        private float waterCastDuration = 1f;
-        private float iceCastDuration = 1f;
-        private float lightningCastDuration = 1f;
-        private float spellCastTimer = 0f;
+        private bool[] spellReadyArray = {true, true, true, true};
         private bool castingSpell = false;
-        private bool spellReady = false;
-        private ParticleSystem spellChargeIndicator;
         private ParticleSystem spellReadyIndicator;
+        private ParticleSystem spellCastIndicator;
 
 
         private bool usingPortal = false;
@@ -69,7 +52,6 @@ namespace McDungeon
         private float oldIntensity = 0.1f;
         private float lightIntensity = 0.1f;
         private Vector3 mirrorPos;
-        private GameMode mode = GameMode.Normal;
         [SerializeField] private bool isMcMode = false;
 
         private Light2D globalLight;
@@ -111,7 +93,7 @@ namespace McDungeon
         [SerializeField] public RuntimeAnimatorController mcController;
         private Animator playerAnimator;
 
-        [SerializeField] private GameObject prefab_TA;
+        [SerializeField] private GameObject prefabTA;
 
         void Start()
         {
@@ -126,20 +108,16 @@ namespace McDungeon
             spell_water = spellHome.GetComponent<WaterSurgeMaker>();
             spell_lightning = spellHome.GetComponent<ThunderdMaker>();
 
-            spell_special = spell_fire;
-            spellChargeIndicator = this.transform.GetChild(3).GetComponent<ParticleSystem>();
-            spellReadyIndicator = this.transform.GetChild(4).GetComponent<ParticleSystem>();
-            spellReady = false;
+            spellReadyIndicator = this.transform.GetChild(3).GetComponent<ParticleSystem>();
+            spellCastIndicator = this.transform.GetChild(4).GetComponent<ParticleSystem>();
 
-            spellChargeIndicator.Stop();
-            spellChargeIndicator.Clear();
             spellReadyIndicator.Stop();
             spellReadyIndicator.Clear();
+            spellCastIndicator.Stop();
+            spellCastIndicator.Clear();
 
             closeRangeWeapon = Weapon.transform.GetChild(0).gameObject.GetComponent<CRWeaponController>();
             closeRangeWeapon.Config(3f, 10f, 120f, 800f, true);
-
-            hitTakenInterverl = 0.2f; // 0.2 sec
             /*
             GameObject.Find("GameManager").GetComponent<UIManager>().GenerateTextBubble(
                 this.gameObject.transform,
@@ -157,8 +135,6 @@ namespace McDungeon
             roomLightControl = GameObject.Find("StartingRoom").GetComponent<StartRoomLightController>();
             carpetLightControl = GameObject.Find("Carpet").GetComponent<CarpetKonamiController>();
 
-            playerMaxHealth = 10;
-            playerHealth = 10f;
             healthController.ChangeMaxHealth(playerMaxHealth);
             healthController.SetNewHealth(playerHealth);
 
@@ -187,18 +163,15 @@ namespace McDungeon
 
             playerAnimator = this.gameObject.GetComponent<Animator>();
 
-            isMcMode = false;
+            this.gameDifficulty.SetDifficulty(GameMode.Normal);
         }
 
         void FixedUpdate()
         {
-            if (!finishedStart)
-                return;
-            if (playerDead)
+            if (!finishedStart || playerDead)
             {
                 return;
             }
-
             if (usingPortal)
             {
                 usePortal();
@@ -252,92 +225,75 @@ namespace McDungeon
 
         void Update()
         {
-            if (!finishedStart)
-                return;
-            if (GlobalStates.isPaused)
-            {
-                Debug.Log("I'm paused");
-                return;
-            }
-
-            if (playerDead)
+            if (!finishedStart || GlobalStates.isPaused || playerDead)
             {
                 return;
             }
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // Reduce all coll down count.
-            updateCoolDowns();
+            
+            if (actionCoolDown >= 0f)
+            {
+                actionCoolDown -= Time.deltaTime;
+            }
+            // Hit timer management.
+            if (hitTimer <= hitCooldown)
+            {
+                hitTimer += Time.deltaTime;
+            } 
 
             // Manage Action
-            if (actionCoolDown <= 0f)
+            if (actionCoolDown <= 0f && !castingSpell && !usingPortal)
             {
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    Debug.Log("Firing and attacking");
                     closeRangeWeapon.SetActive(true);
                     actionCoolDown = atkCoolDown;
                     audioSource[5].Play();
                 }
-                else if (Input.GetButtonDown("Fire2") && fireCoolDowntimer <= 0f)
+                else if (Input.GetKey(KeyCode.Mouse1) && spellReadyArray[0])
                 {
                     spell_fire.Activate();
-                    spellCastTimer = fireCastDuration;
-                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
-                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
-                    chargeModule.startColor = spellColor[0];
+                    ParticleSystem.MainModule readyModule = spellCastIndicator.main;
                     readyModule.startColor = spellColor[0];
-                    spellChargeIndicator.Play();
+                    spellCastIndicator.Play();
 
                     spell = 'F';
                     castingSpell = true;
-                    actionCoolDown = 100f; // Prevent other action
                     audioSource[6].Play();
                 }
-                else if (Input.GetKey(KeyCode.E) && waterCoolDowntimer <= 0f)
+                else if (Input.GetKey(KeyCode.E) && spellReadyArray[1])
                 {
                     spell_water.Activate();
-                    spellCastTimer = waterCastDuration;
-                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
-                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
-                    chargeModule.startColor = spellColor[1];
+                    ParticleSystem.MainModule readyModule = spellCastIndicator.main;
                     readyModule.startColor = spellColor[1];
-                    spellChargeIndicator.Play();
+                    spellCastIndicator.Play();
 
                     spell = 'W';
                     castingSpell = true;
-                    actionCoolDown = 100f; // Prevent other action
                     audioSource[10].Play();
                 }
-                else if (Input.GetKey(KeyCode.Space) && iceCoolDowntimer <= 0f)
+                else if (Input.GetKey(KeyCode.Space) && spellReadyArray[2])
                 {
                     spell_ice.Activate();
-                    spellCastTimer = iceCastDuration;
-                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
-                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
-                    chargeModule.startColor = spellColor[2];
+                    ParticleSystem.MainModule readyModule = spellCastIndicator.main;
                     readyModule.startColor = spellColor[2];
-                    spellChargeIndicator.Play();
+                    spellCastIndicator.Play();
 
                     spell = 'I';
                     castingSpell = true;
-                    actionCoolDown = 100f; // Prevent other action
                     audioSource[7].Play();
                 }
-                else if (Input.GetKey(KeyCode.Q) && lightningCoolDowntimer <= 0f)
+                else if (Input.GetKey(KeyCode.Q) && spellReadyArray[3])
                 {
                     spell_lightning.Activate();
-                    spellCastTimer = lightningCastDuration;
-                    ParticleSystem.MainModule chargeModule = spellChargeIndicator.main;
-                    ParticleSystem.MainModule readyModule = spellReadyIndicator.main;
-                    chargeModule.startColor = spellColor[3];
+                    ParticleSystem.MainModule readyModule = spellCastIndicator.main;
                     readyModule.startColor = spellColor[3];
-                    spellChargeIndicator.Play();
+                    spellCastIndicator.Play();
 
                     spell = 'L';
                     castingSpell = true;
-                    actionCoolDown = 100f; // Prevent other action
                     audioSource[11].Play();
                 }
             }
@@ -345,12 +301,6 @@ namespace McDungeon
             if (castingSpell)
             {
                 castSpell(mousePos);
-            }
-
-            // Hit timer management.
-            if (hitTimer < hitTakenInterverl)
-            {
-                hitTimer += Time.deltaTime;
             }
         }
 
@@ -385,19 +335,19 @@ namespace McDungeon
             */
         }
 
-        void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.tag == "None")
-            {
-                Debug.Log("Collision Enter: " + collision.gameObject.name);
-            }
+        // void OnCollisionEnter2D(Collision2D collision)
+        // {
+        //     if (collision.gameObject.tag == "None")
+        //     {
+        //         Debug.Log("Collision Enter: " + collision.gameObject.name);
+        //     }
 
-            // Perform actions or logic when the collision occurs
-        }
+        //     // Perform actions or logic when the collision occurs
+        // }
 
         public void TakeDamage(int damage, EffectTypes type)
         {
-            if (hitTimer > hitTakenInterverl)
+            if (hitTimer > hitCooldown)
             {
                 this.playerHealth -= damage;
                 this.status(type);
@@ -548,203 +498,70 @@ namespace McDungeon
             this.speedModifier = 1.0f;
         }
 
-        private void updateCoolDowns()
-        {
-            if (actionCoolDown > 0f)
-            {
-                actionCoolDown -= Time.deltaTime;
-            }
-
-            if (fireCoolDown > 0f)
-            {
-                fireCoolDowntimer -= Time.deltaTime;
-            }
-            if (waterCoolDown > 0f)
-            {
-                waterCoolDowntimer -= Time.deltaTime;
-            }
-
-            if (iceCoolDown > 0f)
-            {
-                iceCoolDowntimer -= Time.deltaTime;
-            }
-
-            if (lightningCoolDown > 0f)
-            {
-                lightningCoolDowntimer -= Time.deltaTime;
-            }
-
-            // Show ready if is ready.
-            if (fireCoolDowntimer <= 0f && !spellReadyIcon[0].enabled)
-            {
-                spellReadyIcon[0].enabled = true;
-            }
-
-            if (waterCoolDowntimer <= 0f && !spellReadyIcon[1].enabled)
-            {
-                spellReadyIcon[1].enabled = true;
-            }
-
-            if (iceCoolDowntimer <= 0f && !spellReadyIcon[2].enabled)
-            {
-                spellReadyIcon[2].enabled = true;
-            }
-
-            if (lightningCoolDowntimer <= 0f && !spellReadyIcon[3].enabled)
-            {
-                spellReadyIcon[3].enabled = true;
-            }
-
-        }
-
         private void castSpell(Vector3 mousePos)
         {
-            if (spell == 'W' || spell == 'I' || spell == 'L')
-            {
-                ISpellMaker currentSpell = spell_water;
-                KeyCode currentSpellKey = KeyCode.E;
+            ISpellMaker currSpell = spell_water;
+            KeyCode currKey = KeyCode.E;
 
-                switch (spell)
+            switch (spell)
                 {
+                    case 'F':
+                        currSpell = spell_fire;
+                        currKey = KeyCode.Mouse1;
+                        break;
                     case 'W':
-                        currentSpell = spell_water;
-                        currentSpellKey = KeyCode.E;
+                        currSpell = spell_water;
+                        currKey = KeyCode.E;
                         break;
                     case 'I':
-                        currentSpell = spell_ice;
-                        currentSpellKey = KeyCode.Space;
+                        currSpell = spell_ice;
+                        currKey = KeyCode.Space;
                         break;
                     case 'L':
-                        currentSpell = spell_lightning;
-                        currentSpellKey = KeyCode.Q;
+                        currSpell = spell_lightning;
+                        currKey = KeyCode.Q;
                         break;
                 }
 
-
-                // Spell Casting progress monitor.
-                if (Input.GetKey(currentSpellKey) && spellCastTimer > 0f)
-                {
-                    currentSpell.ShowRange(this.transform.position, mousePos);
-                    spellCastTimer -= Time.deltaTime;
-                    Debug.Log("Spell casting");
-                }
-                else if (Input.GetKey(currentSpellKey))
-                {
-                    // Still aiming
-                    currentSpell.ShowRange(this.transform.position, mousePos);
-                }
-
-                if (spellCastTimer <= 0f)
-                {
-                    // Show ready
-                    if (!spellReady)
-                    {
-                        spellChargeIndicator.Stop();
-                        spellChargeIndicator.Clear();
-                        spellReadyIndicator.Play();
-                        spellReady = true;
-                        Debug.Log("Spell ready");
-                    }
-                }
-
-                if (Input.GetKeyUp(currentSpellKey))
-                {
-                    if (spellCastTimer <= 0f)
-                    {
-                        if (isMcMode && spell == 'I')
-                        {
-                            GameObject TA_spell = Instantiate(prefab_TA);
-                            Vector3 TA_pos = this.transform.position;
-
-                            Vector3 distanceVec = (mousePos - this.transform.position);
-                            distanceVec.z = 0f;
-                            Vector3 spellDir = distanceVec.normalized;
-                            float distance = distanceVec.magnitude;
-
-                            if (distance > 4f)
-                            {
-                                distance = 4f;
-                            }
-
-                            TA_pos = this.transform.position + spellDir * distance;
-
-                            TA_spell.transform.position = TA_pos;
-
-                            specialAudioSource[Random.Range(0,2)].Play();
-                        }
-                        else
-                        {
-                            currentSpell.Execute(this.transform.position, mousePos);
-                        }
-                        setCD(spell);
-                        Debug.Log("Spell Casted");
-                    }
-                    else
-                    {
-                        Debug.Log("Spell Cancelled");
-                    }
-
-                    spellChargeIndicator.Stop();
-                    spellChargeIndicator.Clear();
-                    spellReadyIndicator.Stop();
-                    spellReadyIndicator.Clear();
-
-                    spellReady = false;
-                    actionCoolDown = 0.1f;
-                    castingSpell = false;
-                }
-            }
-            else
+            // Spell aiming
+            if (Input.GetKey(currKey))
             {
-                // Spell Casting progress monitor.
-                if (Input.GetButton("Fire2") && spellCastTimer > 0f)
-                {
-                    spell_special.ShowRange(this.transform.position, mousePos);
-                    spellCastTimer -= Time.deltaTime;
-                    Debug.Log("Spell casting");
-                }
-                else if (Input.GetButton("Fire2"))
-                {
-                    // Still aiming
-                    spell_special.ShowRange(this.transform.position, mousePos);
-                }
+                currSpell.ShowRange(this.transform.position, mousePos);
+            }
 
-                if (spellCastTimer <= 0f)
+            else if (Input.GetKeyUp(currKey))
+            {
+                if (isMcMode && spell == 'I')
                 {
-                    // Show ready
-                    if (!spellReady)
-                    {
-                        spellChargeIndicator.Stop();
-                        spellChargeIndicator.Clear();
-                        spellReadyIndicator.Play();
-                        spellReady = true;
-                        Debug.Log("Spell ready");
-                    }
-                }
+                    GameObject taSpell = Instantiate(prefabTA);
+                    Vector3 taPos = this.transform.position;
 
-                if (Input.GetButtonUp("Fire2"))
-                {
-                    if (spellCastTimer <= 0f)
+                    Vector3 distanceVec = (mousePos - this.transform.position);
+                    distanceVec.z = 0f;
+                    Vector3 spellDir = distanceVec.normalized;
+                    float distance = distanceVec.magnitude;
+
+                    if (distance > 4f)
                     {
-                        spell_special.Execute(this.transform.position, mousePos);
-                        setCD(spell);
-                        Debug.Log("Spell Casted");
-                    }
-                    else
-                    {
-                        Debug.Log("Spell Cancelled");
+                        distance = 4f;
                     }
 
-                    spellChargeIndicator.Stop();
-                    spellChargeIndicator.Clear();
-                    spellReadyIndicator.Stop();
-                    spellReadyIndicator.Clear();
+                    taPos = this.transform.position + spellDir * distance;
 
-                    spellReady = false;
-                    actionCoolDown = 0.1f;
-                    castingSpell = false;
+                    taSpell.transform.position = taPos;
+
+                    specialAudioSource[Random.Range(0,2)].Play();
                 }
+                else
+                {
+                    currSpell.Execute(this.transform.position, mousePos);
+                }
+                setCD(spell);
+                spellCastIndicator.Stop();
+                spellCastIndicator.Clear();
 
+                actionCoolDown = 0.5f;
+                castingSpell = false;
             }
         }
 
@@ -753,23 +570,32 @@ namespace McDungeon
             switch (spell)
             {
                 case 'F':
-                    fireCoolDowntimer = fireCoolDown;
-                    spellReadyIcon[0].enabled = false;
+                    StartCoroutine(spellCD(fireCoolDown, 0));
                     break;
                 case 'W':
-                    waterCoolDowntimer = waterCoolDown;
-                    spellReadyIcon[1].enabled = false;
+                    StartCoroutine(spellCD(waterCoolDown, 1));
                     break;
                 case 'I':
-                    iceCoolDowntimer = iceCoolDown;
-                    spellReadyIcon[2].enabled = false;
+                    StartCoroutine(spellCD(iceCoolDown, 2));
                     break;
                 case 'L':
-                    lightningCoolDowntimer = lightningCoolDown;
-                    spellReadyIcon[3].enabled = false;
+                    StartCoroutine(spellCD(lightningCoolDown, 3));
                     break;
             }
+        }
 
+        private IEnumerator spellCD(float cooldown, int spellID)
+        {
+            spellReadyArray[spellID] = false;
+            yield return new WaitForSeconds(cooldown);
+            spellReadyArray[spellID] = true;
+            spellReadyIcon[spellID].enabled = true;
+            ParticleSystem.MainModule spellReady = spellReadyIndicator.main;
+            spellReady.startColor = spellColor[spellID];
+            spellReadyIndicator.Play();
+            yield return new WaitForSeconds(0.5f);
+            spellReadyIndicator.Stop();
+            spellReadyIndicator.Clear();
         }
 
         private void usePortal()
@@ -782,7 +608,6 @@ namespace McDungeon
                 {
                     this.gameObject.transform.position = mirrorPos + new Vector3(0f, -0.5f, 0f);
                     reachedFront = true;
-                    Debug.Log("Done reached front");
                 }
                 else
                 {
@@ -919,26 +744,27 @@ namespace McDungeon
         public void StartUsePortal(Vector3 mirrorPos, GameMode mode = GameMode.Normal)
         {
             this.mirrorPos = mirrorPos;
-            this.mode = mode;
             bodyCollider.isTrigger = true;
-
-            if (mode == GameMode.Unchange)
-            {
-                lightIntensity = lightIntensity;
+            
+            if (mode == GameMode.Special){
                 isMcMode = !isMcMode;
-            }
-            else if (mode == GameMode.Normal)
-            {
-                lightIntensity = 0.1f;
             }
             else
             {
-                lightIntensity = 0f;
+                this.gameDifficulty.SetDifficulty(mode);
+                if (mode == GameMode.Normal)
+                {
+                    lightIntensity = 0.1f;
+                }
+                else if (mode == GameMode.Hard)
+                {
+                    lightIntensity = 0f;
+                }
             }
+            
 
             oldIntensity = globalLight.intensity;
 
-            actionCoolDown = 100f;
             usingPortal = true;
             reachedFront = false;
             reachedInside = false;
@@ -948,16 +774,12 @@ namespace McDungeon
         public void UnlockingMcMirror()
         {
             unlockingMcMirror = true;
-
             GameObject.Find("Main Camera").GetComponent<PositionLockCamera>().changeCameraMode(CameraMode.MoveToTarget, new Vector2(4.4f, 3.7f));
         }
 
         public void PlayerEnterPuzzle()
         {
             fireCoolDown = 1f;
-            fireCoolDowntimer = 0f;
-            fireCastDuration = 0.2f;
-
             if ( globalLight.intensity == 0f)
             {
                 globalLight.intensity = 0.1f;
@@ -967,9 +789,6 @@ namespace McDungeon
         public void PlayerLeavePuzzle()
         {
             fireCoolDown = 3f;
-            fireCoolDowntimer = 0f;
-            fireCastDuration = 0.5f;
-
             globalLight.intensity = lightIntensity;
         }
     }
