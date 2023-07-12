@@ -48,8 +48,6 @@ namespace McDungeon
             attacking = false;
             hitBoxRender.enabled = false;
             hitBoxCllider.enabled = false;
-            Debug.Log("hitbox name: ===========[" + hitbox.name + "]=======================");
-            Debug.Log("Awake hitbox render: ===========[" + hitBoxRender + "]=======================");
             ChangeWeapon(0);
         }
 
@@ -76,7 +74,6 @@ namespace McDungeon
             this.knockBack = knockBack;
             this.active = active;
             this.attackSpeedFactor = attackSpeedFactor;
-            Debug.Log("configed weapon + " + attackAngle);
         }
 
         public void SetActive(bool setToState)

@@ -28,8 +28,6 @@ namespace McDungeon
 
         void Start()
         {
-            entered = false;
-            active = false;
             progress = 0;
             codeParts = new GameObject[6];
             elementParts = new GameObject[4];
