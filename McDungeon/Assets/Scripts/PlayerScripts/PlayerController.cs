@@ -251,7 +251,7 @@ namespace McDungeon
                     actionCoolDown = atkCoolDown;
                     audioSource[5].Play();
                 }
-                else if (Input.GetKey(KeyCode.Mouse1) && spellReadyArray[0])
+                else if (Input.GetKey(KeyCode.Alpha1) && spellReadyArray[0])
                 {
                     spell_fire.Activate();
                     ParticleSystem.MainModule readyModule = spellCastIndicator.main;
@@ -262,7 +262,7 @@ namespace McDungeon
                     castingSpell = true;
                     audioSource[6].Play();
                 }
-                else if (Input.GetKey(KeyCode.E) && spellReadyArray[1])
+                else if (Input.GetKey(KeyCode.Alpha3) && spellReadyArray[1])
                 {
                     spell_water.Activate();
                     ParticleSystem.MainModule readyModule = spellCastIndicator.main;
@@ -273,7 +273,7 @@ namespace McDungeon
                     castingSpell = true;
                     audioSource[10].Play();
                 }
-                else if (Input.GetKey(KeyCode.Space) && spellReadyArray[2])
+                else if (Input.GetKey(KeyCode.Alpha4) && spellReadyArray[2])
                 {
                     spell_ice.Activate();
                     ParticleSystem.MainModule readyModule = spellCastIndicator.main;
@@ -284,7 +284,7 @@ namespace McDungeon
                     castingSpell = true;
                     audioSource[7].Play();
                 }
-                else if (Input.GetKey(KeyCode.Q) && spellReadyArray[3])
+                else if (Input.GetKey(KeyCode.Alpha2) && spellReadyArray[3])
                 {
                     spell_lightning.Activate();
                     ParticleSystem.MainModule readyModule = spellCastIndicator.main;
@@ -499,26 +499,26 @@ namespace McDungeon
 
         private void castSpell(Vector3 mousePos)
         {
-            ISpellMaker currSpell = spell_water;
-            KeyCode currKey = KeyCode.E;
+            ISpellMaker currSpell = spell_fire;
+            KeyCode currKey = KeyCode.Alpha1;
 
             switch (spell)
                 {
                     case 'F':
                         currSpell = spell_fire;
-                        currKey = KeyCode.Mouse1;
+                        currKey = KeyCode.Alpha1;
                         break;
                     case 'W':
                         currSpell = spell_water;
-                        currKey = KeyCode.E;
+                        currKey = KeyCode.Alpha3;
                         break;
                     case 'I':
                         currSpell = spell_ice;
-                        currKey = KeyCode.Space;
+                        currKey = KeyCode.Alpha4;
                         break;
                     case 'L':
                         currSpell = spell_lightning;
-                        currKey = KeyCode.Q;
+                        currKey = KeyCode.Alpha2;
                         break;
                 }
 
