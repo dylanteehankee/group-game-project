@@ -58,7 +58,6 @@ namespace McDungeon
         private Light2D torchLight;
         private float roomLightIntensity = 1f;
 
-        private bool stunned = false;
         private bool isAblaze = false;
         private bool isFreeze = false;
         private GameObject stunObject;
@@ -205,7 +204,7 @@ namespace McDungeon
             else
             {
                 // move player
-                if (!stunned && !isFreeze)
+                if (!isFreeze)
                 {
                     Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
                     direction = direction.normalized;
@@ -243,7 +242,7 @@ namespace McDungeon
             } 
 
             // Manage Action
-            if (actionCoolDown <= 0f && !castingSpell && !usingPortal)
+            if (actionCoolDown <= 0f && !castingSpell && !usingPortal && !isFreeze)
             {
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
