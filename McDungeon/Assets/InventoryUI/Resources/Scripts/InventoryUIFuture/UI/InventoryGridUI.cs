@@ -65,7 +65,7 @@ public class InventoryGridUI : MonoBehaviour
     public void LoadItems(List<KeyValuePair<string, List<string>>> items, List<int> equippedIndices, 
         List<int> selectedIndices, bool isHovered, Action<InventorySlot> onClickDelegate, Action<InventorySlot, bool> onHoverDelegate)
     {
-        TogglePagesButton(false, true);
+        TogglePagesButton(false, false);
         for(int i = 0 ; i < slots.Length; i++)
         {
             if(i < items.Count)

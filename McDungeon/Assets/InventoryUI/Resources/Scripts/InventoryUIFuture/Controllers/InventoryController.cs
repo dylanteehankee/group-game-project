@@ -103,30 +103,32 @@ public class InventoryController : MonoBehaviour
                 if(ItemManager.GetGameItem(inventoryUIModel.selectedGameItemIDs[0]).GetStatus() == ItemStatus.Equipped)
                 {
                     hoverItemUI.SetButtonsActive(new List<HoverItemButtonNames>{
-                        HoverItemButtonNames.UnequipItem,
-                        HoverItemButtonNames.SellItem
+                        HoverItemButtonNames.UnequipItem/*,
+                        HoverItemButtonNames.SellItem*/
                     });
                 }
                 else
                 {
                     hoverItemUI.SetButtonsActive(new List<HoverItemButtonNames>{
-                        HoverItemButtonNames.EquipItem,
-                        HoverItemButtonNames.SellItem
+                        HoverItemButtonNames.EquipItem
+                        /*,
+                        HoverItemButtonNames.SellItem*/
                     });
                 }
                 hoverItemUI.LoadItemSingular(inventoryUIModel.selectedGameItemIDs[0]);
                 break;
             case ItemCollectionName.PlayerInventory:
                 hoverItemUI.SetButtonsActive(new List<HoverItemButtonNames>{
-                    HoverItemButtonNames.UnequipItem,
-                    HoverItemButtonNames.SellItem
+                    HoverItemButtonNames.UnequipItem
+                    /*,
+                        HoverItemButtonNames.SellItem*/
                 });
                 hoverItemUI.LoadItemSingular(inventoryUIModel.selectedGameItemIDs[0]);
                 break;
             case ItemCollectionName.StackableItems:
                 hoverItemUI.SetButtonsActive(new List<HoverItemButtonNames>{
-                    HoverItemButtonNames.UseItem,
-                    HoverItemButtonNames.SellItem
+                    HoverItemButtonNames.UseItem/*,
+                        HoverItemButtonNames.SellItem*/
                 });
                 hoverItemUI.LoadItemStack(
                     inventoryUIModel.selectedGameItemName,
@@ -558,7 +560,7 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    public void ChangeinventorySortMethod(string newSortMethod)
+    public void ChangeInventorySortMethod(string newSortMethod)
     {
 
     }
