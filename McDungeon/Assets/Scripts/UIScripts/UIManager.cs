@@ -92,6 +92,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void QuiteGame()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
+
 
     // Update is called once per frame
     void Update()

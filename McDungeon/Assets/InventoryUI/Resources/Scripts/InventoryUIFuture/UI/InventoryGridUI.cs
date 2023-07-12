@@ -24,6 +24,7 @@ public class InventoryGridUI : MonoBehaviour
     public void LoadItems(List<string> items, List<int> equippedIndices, List<int> selectedIndices, 
         bool isHovered, Action<InventorySlot> onClickDelegate, Action<InventorySlot, bool> onHoverDelegate)
     {
+        TogglePagesButton(false, false);
         for(int i = 0 ; i < slots.Length; i++)
         {
             if(i < items.Count)
@@ -64,6 +65,7 @@ public class InventoryGridUI : MonoBehaviour
     public void LoadItems(List<KeyValuePair<string, List<string>>> items, List<int> equippedIndices, 
         List<int> selectedIndices, bool isHovered, Action<InventorySlot> onClickDelegate, Action<InventorySlot, bool> onHoverDelegate)
     {
+        TogglePagesButton(false, true);
         for(int i = 0 ; i < slots.Length; i++)
         {
             if(i < items.Count)
@@ -95,9 +97,25 @@ public class InventoryGridUI : MonoBehaviour
         }
     }
 
-    public void ShowPrevButton(bool toShow)
+    public void TogglePagesButton(bool showPrev, bool showNext)
     {
-        //To implement or decide what to do with this
+        if(showPrev == true)
+        {
+            prevPageButton.SetActive(true);
+        }
+        else
+        {
+            prevPageButton.SetActive(false);
+        }
+
+        if(showNext == true)
+        {
+            nextPageButton.SetActive(true);
+        }
+        else
+        {
+            nextPageButton.SetActive(false);
+        }
     }
 
 }

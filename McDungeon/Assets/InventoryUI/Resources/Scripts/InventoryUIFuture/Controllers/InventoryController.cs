@@ -170,12 +170,6 @@ public class InventoryController : MonoBehaviour
 
     private void RefreshInventoryGridUI()
     {
-        /*
-        if(inventoryUIModel.selectedGameItemIDs == null)
-            Debug.Log("Refreshed with none selected");
-        else
-            Debug.Log("Refreshed with selected " + inventoryUIModel.selectedGameItemIDs);
-        */
         switch(inventoryUIModel.openInventoryCollection)
         {
             case ItemCollectionName.EquipmentItems:
@@ -606,9 +600,19 @@ public class InventoryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GlobalStates.isPaused)
+        if(GlobalStates.isPaused){
+            //Disable inventory when paused
+            
+            if(inventoryUIModel.isActive)
+            {
+                inventoryUIModel.isActive = false;
+                uiCanvas.SetActive(inventoryUIModel.isActive);
+            }
+            
             return;
-        if(Input.GetKeyDown(KeyCode.I))
+        }
+
+        if(Input.GetKeyDown(KeyCode.B))
         {
             ToggleInventory();
         }
