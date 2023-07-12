@@ -13,8 +13,8 @@ namespace McDungeon
         [SerializeField] private Vector3 direction;
         [SerializeField] private float speed;
         [SerializeField] private GameObject prefab_iceSharp;
-        private float timeSinceBorn;
-        private int generatedAmount;
+        private float timeSinceBorn = 0f;
+        private int generatedAmount = 0;
         private float generationInterval;
         private float unitHeight = 5f; // Distance between Cloud and GroundRange.
         private float unitRadiusX = 2f; // Shape of range.
@@ -29,8 +29,6 @@ namespace McDungeon
             unitRadiusX = unitRadiusX * scale;
             unitRadiusY = unitRadiusY * scale;
 
-            timeSinceBorn = 0f;
-            generatedAmount = 0;
             generationInterval = 1 / generationRate;
         }
 
@@ -69,7 +67,6 @@ namespace McDungeon
                 float ratioToCenter = Random.Range(0.05f, 1f);
                 ratioToCenter -= ratioToCenter % 0.02f;
                 Vector2 randomPoint = Random.insideUnitCircle.normalized * ratioToCenter;
-                // Debug.Log(randomPoint);
 
                 // Generate corresponded start/end position for ice-sharp.
                 Vector3 startPos = new Vector3(randomPoint.x * unitRadiusX * cloudRatio, unitHeight + randomPoint.y * unitRadiusY * cloudRatio, 0f);
@@ -83,7 +80,6 @@ namespace McDungeon
                 // Generate new IceSharp.
                 GameObject iceSharp = Instantiate(prefab_iceSharp, this.transform.position, Quaternion.identity);
                 iceSharp.GetComponent<FallingIceSharpController>().Config(startPos, endPos, 1f, 1f, 3f, targetScale);
-                // Debug.Log("ice sharp generated");
 
                 generatedAmount++;
             }

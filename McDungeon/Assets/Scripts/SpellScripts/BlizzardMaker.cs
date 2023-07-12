@@ -39,7 +39,6 @@ namespace McDungeon
         {
             timer = 0.02f; // Refreash Timer
             // Recalculate Spell position.
-            Debug.Log("Spell Aiming");
             Vector3 distanceVec = (mousePos - posistion);
             distanceVec.z = 0f;
             Vector3 spellDir = distanceVec.normalized;
@@ -76,7 +75,7 @@ namespace McDungeon
             spellPos = posistion + spellDir * distance;
 
             GameObject blizzard = Instantiate(prefab_blizzard, spellPos, Quaternion.identity);
-            blizzard.GetComponent<BlizzardController>().Config(6, 10f, 1f, false, spellDir, 0f);
+            blizzard.GetComponent<BlizzardController>().Config(3, 4f, .75f, false, spellDir, 0f);
 
             return blizzard;
         }

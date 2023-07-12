@@ -21,7 +21,6 @@ namespace McDungeon
         public void ShowRange(Vector3 posistion, Vector3 mousePos)
         {
             // Draw fireball direction.
-            Debug.Log("Spell Aiming");
         }
 
 
@@ -30,9 +29,7 @@ namespace McDungeon
             // Instantiate spell
             Vector3 spellDir = (mousePos - posistion).normalized;
             GameObject fireBall = Instantiate(prefab_fireball, posistion, Quaternion.identity);
-            fireBall.GetComponent<FireBallController>().Config(6f, 10f, 3, spellDir);
-
-            // Debug.Log("spellDir: " + spellDir);
+            fireBall.GetComponent<FireBallController>().Config(6f, 5f, 3, spellDir);
 
             return fireBall;
         }

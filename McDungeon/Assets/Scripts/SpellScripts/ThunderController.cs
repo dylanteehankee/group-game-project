@@ -29,8 +29,8 @@ namespace McDungeon
                 float y = Mathf.Sin(angle);
 
                 direction = new Vector3(x, y, 0f);
-                Destroy(this.gameObject, 10f);
             }
+            Destroy(this.gameObject, 10f);
         }
 
         void Update()
@@ -75,11 +75,7 @@ namespace McDungeon
 
 
                     strikeTimer = -10f; // Will never triger again.
-                }
-                else if (strikeTimer < -12f)
-                {
-                    Destroy(this.gameObject);
-                }
+                } 
             }
         }
     }

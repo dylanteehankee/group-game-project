@@ -21,9 +21,8 @@ namespace McDungeon
         [SerializeField] protected float playerHealth = 10f;
         [SerializeField] private GameDifficulty gameDifficulty;
         private PlayerHealthController healthController;
-        private float hitCooldown = 0.2f;
+        private float hitCD = 0.2f;
         private float hitTimer;
-        private bool readyForAction = true;
 
         private float speedModifier = 1.0f;
 
@@ -33,13 +32,15 @@ namespace McDungeon
         private ISpellMaker spell_lightning;
         private char spell;
 
-        private float actionCoolDown = 0f;
-        private float atkCoolDown = 0.5f;
+        private float attackElapsedCD = 0f;
+        private float attackCD = 0.5f;
 
-        private float fireCoolDown = 3f;
-        private float waterCoolDown = 6f;
-        private float iceCoolDown = 6f;
-        private float lightningCoolDown = 6f;
+        private float fireCD;
+        private float firePuzzleCD = 2f;
+        private float fireCombatCD = 8f;
+        private float waterCD = 12f;
+        private float iceCD = 12f;
+        private float lightningCD = 12f;
         private bool[] spellReadyArray = {true, true, true, true};
         private bool castingSpell = false;
         private ParticleSystem spellReadyIndicator;
@@ -100,6 +101,7 @@ namespace McDungeon
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
+            fireCD = fireCombatCD;
             spellHome = GameObject.Find("SpellMakerHome");
             healthController = GameObject.Find("PlayerHealth").GetComponent<PlayerHealthController>();
             spell_fire = spellHome.GetComponent<FireBallMaker>();
@@ -231,24 +233,24 @@ namespace McDungeon
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             
-            if (actionCoolDown >= 0f)
+            if (attackElapsedCD >= 0f)
             {
-                actionCoolDown -= Time.deltaTime;
+                attackElapsedCD -= Time.deltaTime;
             }
             // Hit timer management.
-            if (hitTimer <= hitCooldown)
+            if (hitTimer <= hitCD)
             {
                 hitTimer += Time.deltaTime;
             } 
 
             // Manage Action
-            if (actionCoolDown <= 0f && !castingSpell && !usingPortal && !isFreeze)
+            if (attackElapsedCD <= 0f && !castingSpell && !usingPortal && !isFreeze)
             {
                 // Read input to determine next action.
                 if (Input.GetButtonDown("Fire1"))
                 {
                     closeRangeWeapon.SetActive(true);
-                    actionCoolDown = atkCoolDown;
+                    attackElapsedCD = attackCD;
                     audioSource[5].Play();
                 }
                 else if (Input.GetKey(KeyCode.Alpha1) && spellReadyArray[0])
@@ -334,19 +336,9 @@ namespace McDungeon
             */
         }
 
-        // void OnCollisionEnter2D(Collision2D collision)
-        // {
-        //     if (collision.gameObject.tag == "None")
-        //     {
-        //         Debug.Log("Collision Enter: " + collision.gameObject.name);
-        //     }
-
-        //     // Perform actions or logic when the collision occurs
-        // }
-
         public void TakeDamage(int damage, EffectTypes type)
         {
-            if (hitTimer > hitCooldown)
+            if (hitTimer > hitCD)
             {
                 this.playerHealth -= damage;
                 this.status(type);
@@ -559,7 +551,7 @@ namespace McDungeon
                 spellCastIndicator.Stop();
                 spellCastIndicator.Clear();
 
-                actionCoolDown = 0.5f;
+                attackElapsedCD = 0.5f;
                 castingSpell = false;
             }
         }
@@ -569,24 +561,24 @@ namespace McDungeon
             switch (spell)
             {
                 case 'F':
-                    StartCoroutine(spellCD(fireCoolDown, 0));
+                    StartCoroutine(spellCD(fireCD, 0));
                     break;
                 case 'W':
-                    StartCoroutine(spellCD(waterCoolDown, 1));
+                    StartCoroutine(spellCD(waterCD, 1));
                     break;
                 case 'I':
-                    StartCoroutine(spellCD(iceCoolDown, 2));
+                    StartCoroutine(spellCD(iceCD, 2));
                     break;
                 case 'L':
-                    StartCoroutine(spellCD(lightningCoolDown, 3));
+                    StartCoroutine(spellCD(lightningCD, 3));
                     break;
             }
         }
 
-        private IEnumerator spellCD(float cooldown, int spellID)
+        private IEnumerator spellCD(float CD, int spellID)
         {
             spellReadyArray[spellID] = false;
-            yield return new WaitForSeconds(cooldown);
+            yield return new WaitForSeconds(CD);
             spellReadyArray[spellID] = true;
             spellReadyIcon[spellID].enabled = true;
             ParticleSystem.MainModule spellReady = spellReadyIndicator.main;
@@ -664,7 +656,7 @@ namespace McDungeon
                     this.gameObject.transform.position = mirrorPos + new Vector3(0f, -2f, 0f);
 
                     bodyCollider.isTrigger = false;
-                    actionCoolDown = 0f;
+                    attackElapsedCD = 0f;
                     usingPortal = false;
                     speedModifier = 1f;
                     globalLight.intensity = lightIntensity;
@@ -778,7 +770,7 @@ namespace McDungeon
 
         public void PlayerEnterPuzzle()
         {
-            fireCoolDown = 1f;
+            fireCD = firePuzzleCD;
             if ( globalLight.intensity == 0f)
             {
                 globalLight.intensity = 0.1f;
@@ -787,7 +779,7 @@ namespace McDungeon
 
         public void PlayerLeavePuzzle()
         {
-            fireCoolDown = 3f;
+            fireCD = fireCombatCD;
             globalLight.intensity = lightIntensity;
         }
     }

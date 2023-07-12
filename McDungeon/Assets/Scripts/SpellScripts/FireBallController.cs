@@ -7,23 +7,11 @@ namespace McDungeon
 {
     public class FireBallController : MonoBehaviour
     {
-        [SerializeField] private float speed;
-        [SerializeField] private float lifeTime;
+        [SerializeField] private float speed = 1f;
+        [SerializeField] private float lifeTime = 10f;
         [SerializeField] private int maxBounce;
         [SerializeField] private Vector3 direction;
-        private float timeSinceBorn;
-        private int bouncedCount;
-
-        void Start()
-        {
-            if (speed == 0f)
-            {
-                speed = 1f;
-                lifeTime = 10f;
-                timeSinceBorn = 0f;
-                bouncedCount = 0;
-            }
-        }
+        private int bouncedCount = 0;
 
         public void Config(float newSpeed, float newLifeTime, int newMaxBounce, Vector3 newDirection)
         {
@@ -32,29 +20,20 @@ namespace McDungeon
             this.maxBounce = newMaxBounce;
             newDirection.z = 0f;
             this.direction = newDirection.normalized;
+            Destroy(this.gameObject, lifeTime);
         }
-
 
         public void Config(float newSpeed, float newLifeTime, int newMaxBounce)
         {
             this.speed = newSpeed;
             this.lifeTime = newLifeTime;
             this.maxBounce = newMaxBounce;
+            Destroy(this.gameObject, lifeTime);
         }
 
         void Update()
         {
             this.transform.position = this.transform.position + speed * direction * Time.deltaTime;
-
-            if (timeSinceBorn < lifeTime)
-            {
-                timeSinceBorn += Time.deltaTime;
-            }
-            else
-            {
-                Destroy(this.gameObject);
-            }
-            
         }
 
         void OnTriggerEnter2D(Collider2D other)
@@ -84,11 +63,13 @@ namespace McDungeon
             {
                 IMobController mobControl = other.gameObject.GetComponent<IMobController>();
                 mobControl.TakeDamage(3f, EffectTypes.Ablaze);
+                Destroy(this.gameObject);
             }
             else if (other.gameObject.tag == "BossHitbox")
             {
                 BossController mobControl = other.gameObject.GetComponent<BossController>();
                 mobControl.TakeDamage(3f, EffectTypes.Ablaze);
+                Destroy(this.gameObject);
             }
         }
     }

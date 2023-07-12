@@ -17,7 +17,7 @@ namespace McDungeon
         private ParticleSystem.MainModule particelModule;
         private CircleCollider2D collider2D;
         private SpriteRenderer effectRenderer;
-        private float surgeCount;
+        private float surgeCount = 0f;
 
         void Start()
         {
@@ -31,8 +31,6 @@ namespace McDungeon
             particelSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particelModule.duration = surgeInterval;
             particelSystem.Play();
-
-            surgeCount = 0;
         }
 
         public void Config(float speed, float lifeTime, float surgeInterval, Vector3 direction)
@@ -73,17 +71,12 @@ namespace McDungeon
                 Destroy(this.gameObject);
             }
 
-
             timeSinceBorn += Time.deltaTime;
         }
 
         void OnTriggerEnter2D(Collider2D other)
         {
-
-            if (other.gameObject.tag == "BouncyWall")
-            {
-            }
-            else if (other.gameObject.tag == "MobHitbox")
+            if (other.gameObject.tag == "MobHitbox")
             {
                 IMobController mobControl = other.gameObject.GetComponent<IMobController>();
                 mobControl.TakeDamage(2f, EffectTypes.Slow);

@@ -18,9 +18,9 @@ namespace McDungeon
         [SerializeField]
         private GameObject potionDropPrefab;
         const float ABLAZEDURATION = 4.0f;
-        const float ABLAZEDAMAGE = 1.0f;
-        const float FREEZEDURATION = 4.0f;
-        const float SLOWDURATION = 4.0f;
+        const float ABLAZEDAMAGE = 0.5f;
+        const float FREEZEDURATION = 2.0f;
+        const float SLOWDURATION = 3.0f;
         const float SLOWMODIFIER = 0.5f;
 
         public void Death(Vector3 mobLocation, Vector2 size)

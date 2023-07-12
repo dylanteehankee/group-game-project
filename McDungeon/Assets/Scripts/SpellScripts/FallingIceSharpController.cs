@@ -84,13 +84,11 @@ namespace McDungeon
             else if (timeSinceBorn > lifeTime)
             {
                 // IceSharp Expired.
-                // Debug.Log("Destroied");
                 Destroy(this.gameObject);
             }
 
 
             timeSinceBorn += Time.deltaTime;
-            // Debug.Log("timeSinceBorn" + timeSinceBorn + "    -    lifeTime" + lifeTime);
         }
 
         void OnTriggerEnter2D(Collider2D other)
@@ -102,12 +100,12 @@ namespace McDungeon
             else if (other.gameObject.tag == "MobHitbox")
             {
                 IMobController mobControl = other.gameObject.GetComponent<IMobController>();
-                mobControl.TakeDamage(0.1f, EffectTypes.Freeze);
+                mobControl.TakeDamage(0f, EffectTypes.Freeze);
             }
             else if (other.gameObject.tag == "BossHitbox")
             {
                 BossController mobControl = other.gameObject.GetComponent<BossController>();
-                mobControl.TakeDamage(0.1f, EffectTypes.None);
+                mobControl.TakeDamage(0f, EffectTypes.None);
             }
         }
     }
