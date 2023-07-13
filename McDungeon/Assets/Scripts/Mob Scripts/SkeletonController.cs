@@ -95,7 +95,7 @@ namespace McDungeon
         public virtual void TakeDamage(float damage, EffectTypes type)
         {
             this.mobHealth -= damage;
-            if (this.mobHealth >= 0)
+            if (this.mobHealth <= 0)
             {
                 Destroy(this.bone);
             }
@@ -143,21 +143,25 @@ namespace McDungeon
             {
                 this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.7f));
             }
-            this.isThrowing = false;
             this.animator.SetBool("Stun", true);
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
-            this.elapsedThrowTime = 0;
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.stunned = false;
             Destroy(this.stunObject);
         }
 
         protected override void status(EffectTypes type)
         {
+            this.isThrowing = false;
+            this.elapsedThrowTime = 0;
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
+            
             switch (type)
             {
                 case EffectTypes.None:
+                    this.stunned = true;
+                    StopCoroutine("stunStatus");
+                    StartCoroutine("stunStatus");
                     break;
                 case EffectTypes.Ablaze:
                     if (!this.ablazeObject)

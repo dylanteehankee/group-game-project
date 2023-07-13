@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace McDungeon
@@ -12,6 +14,7 @@ namespace McDungeon
         [SerializeField] private bool unlocked = false;
         [SerializeField] private PlayerController playerControl;
         private bool active = false;
+        private bool inProgress = false;
 
         void Start()
         {
@@ -20,20 +23,25 @@ namespace McDungeon
 
         void Update()
         {
-            if (active)
+            if (active && inProgress)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    Debug.Log("trigger");
                     if (!special || unlocked)
                     {
-                        Debug.Log("trigger2");
+                        inProgress = true;
+                        StartCoroutine("inProg");
                         playerControl.StartUsePortal(this.gameObject.transform.position, mode);
                     }
                 }
             }
         }
 
+        private IEnumerator inProg()
+        {
+            yield return WaitForSeconds(8f);
+            inProgress = false;
+        }
         private void setStatus(bool status)
         {
             active = status;

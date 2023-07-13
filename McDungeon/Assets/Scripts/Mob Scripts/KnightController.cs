@@ -77,7 +77,7 @@ namespace McDungeon
             {
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = this.playerObject.transform.position;
-                if (Vector2.Distance(location, playerLocation) < this.attackRange)
+                if (Vector2.Distance(location, playerLocation) < this.attackRange + 0.5f)
                 {
                     this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
                     this.playerObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
@@ -109,18 +109,6 @@ namespace McDungeon
         protected override IEnumerator stunStatus()
         {
             // DO NOTHING
-            if (!this.stunObject)
-            {
-                this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2(0, 0.5f));
-            }
-            this.isAttacking = false;
-            this.animator.SetBool("Stun", true);
-            yield return new WaitForSeconds(stunDuration);
-            this.animator.SetBool("Stun", false);
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
-            this.elapsedAttackTime = 0;
-            this.stunned = false;
-            Destroy(this.stunObject);
         }
 
         protected override void status(EffectTypes type)
@@ -132,6 +120,7 @@ namespace McDungeon
         {
             this.active = true;
             this.GetComponent<Rigidbody2D>().isKinematic = false;
+            this.GetComponent<CapsuleCollider2D>().enabled = true;
             this.animator.SetBool("Active", true);
         }
 

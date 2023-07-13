@@ -173,7 +173,7 @@ namespace McDungeon
             {
                 return;
             }
-            if (usingPortal)
+            else if (usingPortal)
             {
                 usePortal();
             }
@@ -203,23 +203,19 @@ namespace McDungeon
                     unlockingMcMirror = false;
                 }
             }
-            else
+            else if (!isFreeze)
             {
-                // move player
-                if (!isFreeze)
-                {
-                    Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
-                    direction = direction.normalized;
+                Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+                direction = direction.normalized;
 
-                    this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
-                    if (isMcMode)
-                    {
-                        this.mcSpriteController(direction);
-                    }
-                    else
-                    {
-                        this.spriteController(direction);
-                    }
+                this.gameObject.transform.Translate(direction * speed * speedModifier * Time.fixedDeltaTime);
+                if (isMcMode)
+                {
+                    this.mcSpriteController(direction);
+                }
+                else
+                {
+                    this.spriteController(direction);
                 }
             }
         }

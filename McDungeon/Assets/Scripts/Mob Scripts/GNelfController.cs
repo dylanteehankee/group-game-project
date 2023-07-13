@@ -60,16 +60,19 @@ namespace McDungeon
             this.animator.SetBool("Stun", true);
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.stunned = false;
             Destroy(this.stunObject);
         }
 
         protected override void status(EffectTypes type)
         {
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             switch (type)
             {
                 case EffectTypes.None:
+                    this.stunned = true;
+                    StopCoroutine("stunStatus");
+                    StartCoroutine("stunStatus");
                     break;
                 case EffectTypes.Ablaze:
                     if (!this.ablazeObject)

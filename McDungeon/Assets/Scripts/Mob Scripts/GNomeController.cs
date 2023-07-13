@@ -112,25 +112,29 @@ namespace McDungeon
             {
                 this.stunObject = statusEffects.Stun(this.transform, Vector2.one, new Vector2 (0, 0.5f));
             }
-            this.isThrowing = false;
-            this.isCasting = false;
-            this.animator.SetBool("Cast", false);
             this.animator.SetBool("Stun", true);
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
-            this.elapsedThrowTime = 0;
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
-            this.elapsedCastTime = 0;
-            this.castCD = 0;
             this.stunned = false;
             Destroy(this.stunObject);
         }
 
         protected override void status(EffectTypes type)
         {
+            this.isThrowing = false;
+            this.isCasting = false;
+            this.animator.SetBool("Cast", false);
+            this.elapsedThrowTime = 0;
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
+            this.elapsedCastTime = 0;
+            this.castCD = 0;
+
             switch (type)
             {
                 case EffectTypes.None:
+                    this.stunned = true;
+                    StopCoroutine("stunStatus");
+                    StartCoroutine("stunStatus");
                     break;
                 case EffectTypes.Ablaze:
                     if (!this.ablazeObject)
