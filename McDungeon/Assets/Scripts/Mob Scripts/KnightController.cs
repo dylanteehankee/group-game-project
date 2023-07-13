@@ -109,6 +109,7 @@ namespace McDungeon
         protected override IEnumerator stunStatus()
         {
             // DO NOTHING
+            yield return new WaitForSeconds(stunDuration);
         }
 
         protected override void status(EffectTypes type)

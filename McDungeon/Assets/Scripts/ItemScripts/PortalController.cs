@@ -39,7 +39,7 @@ namespace McDungeon
 
         private IEnumerator inProg()
         {
-            yield return WaitForSeconds(8f);
+            yield return new WaitForSeconds(8f);
             inProgress = false;
         }
         private void setStatus(bool status)
