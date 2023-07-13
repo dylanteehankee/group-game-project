@@ -322,7 +322,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2.0000002}
+  m_Size: {x: 1, y: 2}
   m_Direction: 0
 --- !u!114 &3829944835086375360
 MonoBehaviour:
@@ -657,7 +657,7 @@ Transform:
   - {fileID: 9164391417537791685}
   - {fileID: 3988256100207350384}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9047964100590782711
 MonoBehaviour:
@@ -684,3 +684,4 @@ MonoBehaviour:
   weapon_3: {fileID: 1993517771, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
   weapon_4: {fileID: -1131988994, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
   weapon_5: {fileID: 1176711874, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
+  weapon_6: {fileID: 0}

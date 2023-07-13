@@ -14,7 +14,7 @@ namespace McDungeon
         [SerializeField] private float attackAngle;
         [SerializeField] private float knockBack;
         [SerializeField] private bool active;
-        private CapsuleCollider2D hitBoxCllider;
+        private CapsuleCollider2D hitBoxCollider;
         private CRWweaponHitBox hitBoxController;
         private SpriteRenderer hitBoxRender;
         private SpriteRenderer hitBoxCounterweightRender; // Making sure the sprite are same size for center the rotation-center
@@ -29,15 +29,15 @@ namespace McDungeon
         [SerializeField] private Sprite weapon_2;
         [SerializeField] private Sprite weapon_3;
         [SerializeField] private Sprite weapon_4;
-        [SerializeField] private Sprite weapon_5;
-        [SerializeField] private Sprite weapon_6;
+        [SerializeField] private Sprite weapon_5; // Dagger
+        [SerializeField] private Sprite weapon_6; // Kitchen Knife
         private int currentWeaponIdex = 0;
         private float weaponScaleRatio = 1f;
 
         void Awake()
         {
             hitbox = this.transform.GetChild(0).gameObject;
-            hitBoxCllider = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
+            hitBoxCollider = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CapsuleCollider2D>();
             hitBoxController = this.hitbox.transform.GetChild(0).gameObject.GetComponent<CRWweaponHitBox>();
             hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
             hitBoxCounterweightRender = this.hitbox.transform.GetChild(3).gameObject.GetComponent<SpriteRenderer>();
@@ -47,7 +47,7 @@ namespace McDungeon
             knockBack = 0f;
             attacking = false;
             hitBoxRender.enabled = false;
-            hitBoxCllider.enabled = false;
+            hitBoxCollider.enabled = false;
             ChangeWeapon(0);
         }
 
@@ -96,10 +96,10 @@ namespace McDungeon
 
             if (Input.GetButtonUp("Fire1"))
             {
-                Debug.Log("Firing and attacking");
+                // Debug.Log("Firing and attacking");
                 attacking = true;
                 hitBoxRender.enabled = true;
-                hitBoxCllider.enabled = true;
+                hitBoxCollider.enabled = true;
                 followerWeaponRender.enabled = false;
             }
 
@@ -129,7 +129,7 @@ namespace McDungeon
             {
                 attacking = false;
                 hitBoxRender.enabled = false;
-                hitBoxCllider.enabled = false;
+                hitBoxCollider.enabled = false;
                 followerWeaponRender.enabled = true;
                 atkProgress = 0f;
                 this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -150,28 +150,37 @@ namespace McDungeon
         {
             if(hitBoxRender == null)
             {
-                Debug.Log("Bad ");
+                // Debug.Log("Bad ");
                 return;
             }
             // Need resize base on scale
             Vector3 scale = new Vector3(1.7f, 1.7f, 1f);
             scale = scale * weaponScaleRatio;
 
-            //if(hitbox == null) return;
-            //hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
-            Debug.Log("hitboxRender name: ===========[" + this.hitBoxRender + "]=======================");
-            Debug.Log("hitboxRender color: ===========[" + hitBoxRender.color + "]=======================");
+            // if(hitbox == null) return;
+            // hitBoxRender = this.hitbox.transform.GetChild(2).gameObject.GetComponent<SpriteRenderer>();
+            // Debug.Log("hitboxRender name: ===========[" + this.hitBoxRender + "]=======================");
+            // Debug.Log("hitboxRender color: ===========[" + hitBoxRender.color + "]=======================");
             hitBoxRender.transform.localScale = scale;
             hitBoxCounterweightRender.transform.localScale = scale;
 
             if (weaponIndex == 5)
             {
-                // Need resize smaller for dagger
-                // Vector3 scale = new Vector3(1.7f, 1.7f, 1f);
-                // scale = scale * weaponScaleRatio;
-
-                // hitBoxRender.transform.localScale = scale;
-                // hitBoxCounterweightRender.transform.localScale = scale;
+                // Adjusts collider for Emerald Dagger.
+                hitBoxCollider.size = new Vector2(1.0f, 0.8f);
+                hitBoxCollider.offset = new Vector2(0.0f, -0.1f);
+            }
+            else if (weaponIndex == 6)
+            {
+                // Adjusts collider for Kitchen Knife.
+                hitBoxCollider.size = new Vector2(1.0f, 1.3f);
+                hitBoxCollider.offset = new Vector2(0.0f, -0.1f);
+            }
+            else 
+            {
+                // Adjusts collider for Swords.
+                hitBoxCollider.size = new Vector2(1.0f, 2.0f);
+                hitBoxCollider.offset = new Vector2(0f, 0.0f);
             }
 
             currentWeaponIdex = weaponIndex;

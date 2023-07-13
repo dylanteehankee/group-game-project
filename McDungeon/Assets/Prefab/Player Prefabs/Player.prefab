@@ -198,9 +198,12 @@ MonoBehaviour:
   carpetLightControl: {fileID: 0}
   playerMaxHealth: 0
   playerHealth: 0
+  gameSettings: {fileID: 0}
+  isMcMode: 0
   gameManager: {fileID: 0}
   playerController: {fileID: 0}
   mcController: {fileID: 0}
+  prefabTA: {fileID: 0}
 --- !u!1 &4723683637459498705
 GameObject:
   m_ObjectHideFlags: 0
@@ -10075,6 +10078,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5233482739103803592}
     m_Modifications:
+    - target: {fileID: 2833031770838565781, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -293285987, guid: dbf073aa0914d0d4ebc17e5ceb2b6271, type: 3}
     - target: {fileID: 2833031770838565781, guid: a7166e944bee8c54eb9a5dd3f7710915, type: 3}
       propertyPath: m_Enabled
       value: 0
