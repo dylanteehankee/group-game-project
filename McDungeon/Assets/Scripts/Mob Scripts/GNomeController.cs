@@ -12,7 +12,7 @@ namespace McDungeon
         private GameObject gNelfPrefab;
         [SerializeField]
         private float attackSpeed = 2.0f;
-        private float attackCD = 0.0f;
+        private float attackCD = -1.0f;
         private const float THROWDURATION = 0.8f;
         private float elapsedThrowTime = 0.0f;
         private bool isThrowing = false;

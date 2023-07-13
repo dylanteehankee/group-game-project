@@ -12,7 +12,7 @@ namespace McDungeon
         private GameObject frostboltPrefab;
         [SerializeField]
         private float castSpeed = 5.0f;
-        private float castCD = 0.0f;
+        private float castCD = -1.0f;
         [SerializeField]
         private float castTime = 2.0f;
         private float elapsedCastTime = 0.0f;

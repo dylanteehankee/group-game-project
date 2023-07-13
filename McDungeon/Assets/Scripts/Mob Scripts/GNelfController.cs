@@ -8,7 +8,7 @@ namespace McDungeon
     {
         [SerializeField]
         private float attackSpeed = 1.0f;
-        private float attackCD = 0.0f;
+        private float attackCD = -1.0f;
         [SerializeField]
         private int damage = 1;
 

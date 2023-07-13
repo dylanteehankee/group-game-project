@@ -10,7 +10,7 @@ namespace McDungeon
         private int damage = 1;
         [SerializeField]
         private float attackSpeed = 1.0f;
-        private float attackCD = 0.0f;
+        private float attackCD = -1.0f;
         private const float ATTACKDURATION = 1.0f;
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
