@@ -11,10 +11,11 @@ namespace McDungeon
         [SerializeField]
         private float attackSpeed = 1.0f;
         private float attackCD = -1.0f;
-        private const float THROWDURATION = 0.8f;
+        private const float THROWDURATION = 1.0f;
         private float elapsedThrowTime = 0.0f;
         private bool isThrowing = false;
         private bool hasBone = true;
+        private bool threwBone = false;
         private GameObject bone;
 
         void Start()
@@ -73,16 +74,18 @@ namespace McDungeon
             {
                 this.isThrowing = false;
                 this.elapsedThrowTime = 0;
+                this.hasBone = false;
+                this.threwBone = false;
                 return;
             }
-            else if (this.elapsedThrowTime > (THROWDURATION / 2) && hasBone)
+            else if (this.elapsedThrowTime > (THROWDURATION / 2) && !threwBone)
             {
                 deltaLocation.Normalize();
                 Vector2 location = this.transform.position;
                 this.bone = (GameObject)Instantiate(this.bonePrefab);
                 this.bone.transform.position = location + deltaLocation;
                 this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject);
-                this.hasBone = false;
+                this.threwBone = true;
                 Debug.Log("THROWING BONE");
             }
             this.elapsedThrowTime += Time.deltaTime;
