@@ -7,19 +7,19 @@ namespace McDungeon
     public class SlimeController : Mob
     {
         [SerializeField]
-        private int damage = 1;
+        private int[] damage = {1, 2};
         [SerializeField]
-        private float attackSpeed = 1.0f;
+        private float[] attackSpeed = {2.0f, 1.0f};
         private float attackCD = -1.0f;
         private const float ATTACKDURATION = 1.0f;
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
-
         private AudioSource[] audioSource;
 
         void Start()
         {
+            this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = GetComponent<Animator>();
 
@@ -33,12 +33,12 @@ namespace McDungeon
             {
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = this.playerObject.transform.position;
-                if (this.attackCD < this.attackSpeed)
+                if (this.attackCD < this.attackSpeed[difficulty])
                 {
                     this.attackCD += Time.deltaTime;
                 }
                 
-                if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCD > this.attackSpeed)) || isAttacking)
+                if (((Vector2.Distance(location, playerLocation) < this.attackRange) && (this.attackCD > this.attackSpeed[difficulty])) || isAttacking)
                 {
                     this.attackPlayer(playerLocation - location);
                 }
@@ -72,7 +72,7 @@ namespace McDungeon
             {
                 deltaLocation.Normalize();
                 this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.Slow);
+                this.playerObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.Slow);
                 this.hitPlayer = true;
             }
             this.elapsedAttackTime += Time.deltaTime;
@@ -120,7 +120,7 @@ namespace McDungeon
             this.spriteRenderer.flipY = false;
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.elapsedAttackTime = 0;
             this.stunned = false;
             Destroy(this.stunObject);

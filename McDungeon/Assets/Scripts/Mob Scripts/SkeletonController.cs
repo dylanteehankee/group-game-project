@@ -9,7 +9,7 @@ namespace McDungeon
         [SerializeField]
         private GameObject bonePrefab;
         [SerializeField]
-        private float attackSpeed = 1.0f;
+        private float[] attackSpeed = {2.0f, 1.0f};
         private float attackCD = -1.0f;
         private const float THROWDURATION = 1.0f;
         private float elapsedThrowTime = 0.0f;
@@ -20,6 +20,7 @@ namespace McDungeon
 
         void Start()
         {
+            this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
         }
@@ -32,7 +33,7 @@ namespace McDungeon
                 Vector2 playerLocation = this.playerObject.transform.position;
                 if ((Vector2.Distance(location, playerLocation) < this.attackRange && hasBone) || isThrowing)
                 {
-                    if (this.attackCD < this.attackSpeed)
+                    if (this.attackCD < this.attackSpeed[difficulty])
                     {
                         this.attackCD += Time.deltaTime;
                         this.moveTowardPlayer(location, playerLocation);
@@ -84,7 +85,7 @@ namespace McDungeon
                 Vector2 location = this.transform.position;
                 this.bone = (GameObject)Instantiate(this.bonePrefab);
                 this.bone.transform.position = location + deltaLocation;
-                this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject);
+                this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject, this.difficulty);
                 this.threwBone = true;
                 Debug.Log("THROWING BONE");
             }
@@ -147,7 +148,7 @@ namespace McDungeon
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
             this.elapsedThrowTime = 0;
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.stunned = false;
             Destroy(this.stunObject);
         }

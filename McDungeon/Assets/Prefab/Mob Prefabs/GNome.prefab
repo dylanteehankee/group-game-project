@@ -129,14 +129,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
+  gameSettings: {fileID: 11400000, guid: 1d6c9666712692546bf410e5f2066ccd, type: 2}
   mobHealth: 15
   attackRange: 5
   moveSpeed: 1
   knifePrefab: {fileID: 7757278891287518263, guid: b897274acf1d549558801d0c5f44471a, type: 3}
   gNelfPrefab: {fileID: 7178146216519888684, guid: 2013b24d140af401484b84be3c7209cd, type: 3}
-  attackSpeed: 2
-  castSpeed: 8
-  castTime: 3
+  attackSpeed:
+  - 2
+  - 1.5
+  castSpeed:
+  - 10
+  - 7
+  castTime:
+  - 3.6
+  - 2.4
 --- !u!95 &-5852795329368791669
 Animator:
   serializedVersion: 5

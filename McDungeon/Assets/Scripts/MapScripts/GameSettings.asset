@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c6f7c5e13aa6294fa119dce75dbd3d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 15fc20d7a6e15d64eb6c07a6961ce248, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   difficulty: 1

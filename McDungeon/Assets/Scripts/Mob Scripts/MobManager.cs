@@ -7,7 +7,7 @@ namespace McDungeon
     public class MobManager : MonoBehaviour
     {
         [SerializeField]
-        private int mobCount = 4;
+        private int mobCount = 6;
         [SerializeField]
         private GameObject slimePrefab;
         [SerializeField]
@@ -27,7 +27,7 @@ namespace McDungeon
             
             for (int i = 0; i < amount; i++) {
                 var randomMobType = (MobTypes)Random.Range(0, 4);
-                var mobPrefab = this.getMobPrefab(randomMobType);
+                var mobPrefab = this.getMobPrefab(MobTypes.Slime);
                 var newMob = (GameObject)Instantiate(mobPrefab, this.gameObject.transform);
                 this.Subscribe(newMob);
                 newMob.transform.position = new Vector2(Random.Range(topLeft.x, bottomRight.x), Random.Range(topLeft.y, bottomRight.y));

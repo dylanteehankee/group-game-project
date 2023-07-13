@@ -7,13 +7,14 @@ namespace McDungeon
     public class BoneController : MonoBehaviour
     {
         [SerializeField]
-        private int boneSpeed = 600;
+        private int[] boneSpeed = {600, 800};
         [SerializeField]
-        private int damage = 2;
+        private int[] damage = {1, 2};
         private float knockbackDuration = 1.0f;
         private bool active = true;
         private GameObject ownerSkeleton;
         private bool pickup = true;
+        private int difficulty;
 
         // Fix later to disable collision after collision
         // Add no collision if not moving
@@ -25,9 +26,9 @@ namespace McDungeon
                 Vector2 playerLocation = collision.transform.position;
                 var deltaLocation = playerLocation - location;
                 deltaLocation.Normalize();
-                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed[difficulty]);
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
+                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
             }
@@ -44,13 +45,14 @@ namespace McDungeon
             }
         }
 
-        public void Throw(Vector2 playerLocation, GameObject skeleton)
+        public void Throw(Vector2 playerLocation, GameObject skeleton, int difficulty)
         {
+            this.difficulty = difficulty;
             ownerSkeleton = skeleton;
             Vector2 location = this.transform.position;
             var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
-            this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed);
+            this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed[difficulty]);
             Destroy(this.gameObject, 40);
         }
 

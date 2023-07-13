@@ -164,11 +164,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
+  gameSettings: {fileID: 11400000, guid: 1d6c9666712692546bf410e5f2066ccd, type: 2}
   mobHealth: 4
   attackRange: 1
-  moveSpeed: 3
-  attackSpeed: 1
-  damage: 1
+  moveSpeed: 4
+  attackSpeed:
+  - 1
+  - 1
+  damage: 0100000001000000
 --- !u!95 &6889405568441182925
 Animator:
   serializedVersion: 5

@@ -11,18 +11,18 @@ namespace McDungeon
         [SerializeField]
         private GameObject frostboltPrefab;
         [SerializeField]
-        private float castSpeed = 5.0f;
+        private float[] castSpeed = {5.0f, 3.5f};
         private float castCD = -1.0f;
         [SerializeField]
-        private float castTime = 2.0f;
+        private float[] castTime = {2.0f, 1.5f};
         private float elapsedCastTime = 0.0f;
         private bool isCasting = false;
         private EffectTypes spellType = EffectTypes.None;
-        
         private AudioSource[] audioSource;
 
         void Start()
         {
+            this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
 
@@ -36,12 +36,12 @@ namespace McDungeon
             {
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = this.playerObject.transform.position;
-                if (this.castCD < this.castSpeed)
+                if (this.castCD < this.castSpeed[difficulty])
                 {
                     this.castCD += Time.deltaTime;
                 }
 
-                if ((Vector2.Distance(location, playerLocation) < this.attackRange && this.castCD > this.castSpeed) || isCasting)
+                if ((Vector2.Distance(location, playerLocation) < this.attackRange && this.castCD > this.castSpeed[difficulty]) || isCasting)
                 {
                     this.attackPlayer(playerLocation - location);
                 }
@@ -73,7 +73,7 @@ namespace McDungeon
                 }
                 isCasting = true;
             }
-            else if (this.elapsedCastTime > this.castTime)
+            else if (this.elapsedCastTime > this.castTime[difficulty])
             {
                 Vector2 location = this.transform.position;
                 GameObject spell;
@@ -93,7 +93,7 @@ namespace McDungeon
                 }
                 Debug.Log("CASTING");
                 spell.transform.position = location;
-                spell.GetComponent<MageSpellController>().Cast(this.playerObject.transform.position, this.spellType);
+                spell.GetComponent<MageSpellController>().Cast(this.playerObject.transform.position, this.spellType, this.difficulty);
                 this.isCasting = false;
                 this.elapsedCastTime = 0;
                 this.castCD = 0;

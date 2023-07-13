@@ -7,15 +7,15 @@ namespace McDungeon
     public class KnightController : Mob
     {
         [SerializeField]
-        private int damage = 2;
+        private int[] damage = {2, 3};
         [SerializeField]
-        private float attackSpeed = 3.0f;
+        private float[] attackSpeed = {3.0f, 2.0f};
         private float attackCD = -1.0f;
         private const float ATTACKDURATION = 0.8f;
         private float elapsedAttackTime = 0.0f;
         private bool isAttacking = false;
         private bool hitPlayer = false;
-        private float shieldCooldown = 3.0f;
+        private float[] shieldCooldown = {3.0f, 2.0f};
         private float elapsedShieldCD = 2.9f;
         private bool hasShield = false;
         [SerializeField]
@@ -27,6 +27,7 @@ namespace McDungeon
 
         void Start()
         {
+            this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
             this.audioSource = this.GetComponents<AudioSource>();
@@ -39,11 +40,11 @@ namespace McDungeon
                 this.getShield();
                 Vector2 location = this.transform.position;
                 Vector2 playerLocation = this.playerObject.transform.position;
-                if (this.attackCD < this.attackSpeed)
+                if (this.attackCD < this.attackSpeed[difficulty])
                 {
                     this.attackCD += Time.deltaTime;
                 }
-                if ((Vector2.Distance(location, playerLocation) < this.attackRange && this.attackCD > this.attackSpeed) || isAttacking)
+                if ((Vector2.Distance(location, playerLocation) < this.attackRange && this.attackCD > this.attackSpeed[difficulty]) || isAttacking)
                 {
                     this.attackPlayer(playerLocation - location);
                 }
@@ -79,7 +80,7 @@ namespace McDungeon
                 if (Vector2.Distance(location, playerLocation) < this.attackRange)
                 {
                     this.playerObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * 1000);
-                    this.playerObject.GetComponent<PlayerController>().TakeDamage(damage, EffectTypes.None);
+                    this.playerObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
                     this.hitPlayer = true;
                 }
             }
@@ -116,7 +117,7 @@ namespace McDungeon
             this.animator.SetBool("Stun", true);
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.elapsedAttackTime = 0;
             this.stunned = false;
             Destroy(this.stunObject);
@@ -143,7 +144,7 @@ namespace McDungeon
         {
             if (!hasShield)
             {
-                if (elapsedShieldCD >= shieldCooldown)
+                if (elapsedShieldCD >= shieldCooldown[difficulty])
                 {
                     this.shieldObject.SetActive(true);
                     hasShield = true;

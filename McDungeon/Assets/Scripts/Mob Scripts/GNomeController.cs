@@ -11,7 +11,7 @@ namespace McDungeon
         [SerializeField]
         private GameObject gNelfPrefab;
         [SerializeField]
-        private float attackSpeed = 2.0f;
+        private float[] attackSpeed = {2.0f, 1.5f};
         private float attackCD = -1.0f;
         private const float THROWDURATION = 0.8f;
         private float elapsedThrowTime = 0.0f;
@@ -19,14 +19,15 @@ namespace McDungeon
         private bool hasKnife = false;
         private bool isCasting = false;
         [SerializeField]
-        private float castSpeed = 10f;
+        private float[] castSpeed = {10f, 7f};
         private float castCD = 0.0f;
         [SerializeField]
-        private float castTime = 3.6f;
+        private float[] castTime = {3.6f, 2.4f};
         private float elapsedCastTime = 0.0f;
 
         void Start()
         {
+            this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
         }
@@ -39,11 +40,11 @@ namespace McDungeon
                 Vector2 playerLocation = this.playerObject.transform.position;
                 this.attackCD += Time.deltaTime;
                 this.castCD += Time.deltaTime;
-                if (!isThrowing && (this.castCD > castSpeed || isCasting))
+                if (!isThrowing && (this.castCD > castSpeed[difficulty] || isCasting))
                 {
                     this.casting();
                 }
-                else if((Vector2.Distance(location, playerLocation) < this.attackRange && this.attackCD > this.attackSpeed) || isThrowing)
+                else if((Vector2.Distance(location, playerLocation) < this.attackRange && this.attackCD > this.attackSpeed[difficulty]) || isThrowing)
                 {
                     this.attackPlayer(playerLocation - location);
                 }
@@ -76,7 +77,7 @@ namespace McDungeon
                 Vector2 location = this.transform.position;
                 var knife = (GameObject)Instantiate(this.knifePrefab);
                 knife.transform.position = location;
-                knife.GetComponent<KnifeController>().Throw(this.playerObject.transform.position);
+                knife.GetComponent<KnifeController>().Throw(this.playerObject.transform.position, this.difficulty);
                 this.hasKnife = false;
                 Debug.Log("THROWING KNIFE");
             }
@@ -91,7 +92,7 @@ namespace McDungeon
                 this.animator.SetBool("Cast", true);
                 isCasting = true;
             }
-            else if (this.elapsedCastTime > castTime)
+            else if (this.elapsedCastTime > castTime[difficulty])
             {
                 var spawner = this.transform.parent.gameObject.GetComponent<MobManager>();
                 spawner.SpawnGNelfs(this.gNelfPrefab, this.transform.position);
@@ -118,7 +119,7 @@ namespace McDungeon
             yield return new WaitForSeconds(stunDuration);
             this.animator.SetBool("Stun", false);
             this.elapsedThrowTime = 0;
-            this.attackCD = Mathf.Min(this.attackCD, attackSpeed * 0.8f);
+            this.attackCD = Mathf.Min(this.attackCD, attackSpeed[difficulty] * 0.8f);
             this.elapsedCastTime = 0;
             this.castCD = 0;
             this.stunned = false;

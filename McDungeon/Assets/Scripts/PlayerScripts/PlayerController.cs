@@ -19,7 +19,7 @@ namespace McDungeon
         [SerializeField] private CarpetKonamiController carpetLightControl;
         [SerializeField] protected int playerMaxHealth = 10;
         [SerializeField] protected float playerHealth = 10f;
-        [SerializeField] private GameDifficulty gameDifficulty;
+        [SerializeField] private GameSettings gameSettings;
         private PlayerHealthController healthController;
         private float hitCD = 0.2f;
         private float hitTimer;
@@ -164,7 +164,7 @@ namespace McDungeon
 
             playerAnimator = this.gameObject.GetComponent<Animator>();
 
-            this.gameDifficulty.SetDifficulty(GameMode.Normal);
+            this.gameSettings.SetDifficulty(GameMode.Normal);
         }
 
         void FixedUpdate()
@@ -491,8 +491,8 @@ namespace McDungeon
 
         private void castSpell(Vector3 mousePos)
         {
-            ISpellMaker currSpell = spell_fire;
-            KeyCode currKey = KeyCode.Alpha1;
+            ISpellMaker currSpell;
+            KeyCode currKey;
 
             switch (spell)
                 {
@@ -511,6 +511,10 @@ namespace McDungeon
                     case 'L':
                         currSpell = spell_lightning;
                         currKey = KeyCode.Alpha2;
+                        break;
+                    default:
+                        currSpell = spell_fire;
+                        currKey = KeyCode.Alpha1;
                         break;
                 }
 
@@ -736,13 +740,12 @@ namespace McDungeon
         {
             this.mirrorPos = mirrorPos;
             bodyCollider.isTrigger = true;
-            
             if (mode == GameMode.Special){
                 isMcMode = !isMcMode;
             }
             else
             {
-                this.gameDifficulty.SetDifficulty(mode);
+                this.gameSettings.SetDifficulty(mode);
                 if (mode == GameMode.Normal)
                 {
                     lightIntensity = 0.1f;
