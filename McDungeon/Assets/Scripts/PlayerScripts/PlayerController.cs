@@ -578,15 +578,15 @@ namespace McDungeon
         private IEnumerator spellCD(float CD, int spellID)
         {
             spellReadyArray[spellID] = false;
-            yield return new WaitForSeconds(CD);
-            spellReadyArray[spellID] = true;
-            spellReadyIcon[spellID].enabled = true;
+            yield return new WaitForSeconds(CD - 0.5f);
             ParticleSystem.MainModule spellReady = spellReadyIndicator.main;
             spellReady.startColor = spellColor[spellID];
             spellReadyIndicator.Play();
             yield return new WaitForSeconds(0.5f);
             spellReadyIndicator.Stop();
             spellReadyIndicator.Clear();
+            spellReadyArray[spellID] = true;
+            spellReadyIcon[spellID].enabled = true;
         }
 
         private void usePortal()
