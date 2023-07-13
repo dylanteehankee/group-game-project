@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebcfb48e58f9e4a8e8b51a2893f2238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneSpeed: 700
-  damage: 2
+  boneSpeed: 5802000020030000
+  damage: 0100000002000000
 --- !u!82 &3186245093549742895
 AudioSource:
   m_ObjectHideFlags: 0

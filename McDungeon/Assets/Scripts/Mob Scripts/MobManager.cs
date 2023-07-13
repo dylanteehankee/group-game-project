@@ -7,7 +7,7 @@ namespace McDungeon
     public class MobManager : MonoBehaviour
     {
         [SerializeField]
-        private int mobCount = 4;
+        private int mobCount = 6;
         [SerializeField]
         private GameObject slimePrefab;
         [SerializeField]

@@ -215,11 +215,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
+  gameSettings: {fileID: 11400000, guid: 1d6c9666712692546bf410e5f2066ccd, type: 2}
   mobHealth: 30
   attackRange: 2.5
   moveSpeed: 1
-  damage: 4
-  attackSpeed: 2
+  damage: 0200000003000000
+  attackSpeed:
+  - 3
+  - 2
   shieldObject: {fileID: 4561448730924890287}
   swordDropPrefab: {fileID: 0}
 --- !u!95 &-7438571717222125264

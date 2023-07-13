@@ -6,13 +6,13 @@ namespace McDungeon
 {
     public enum GameMode
     {
-        Special,
         Normal,
-        Hard
+        Hard,
+        Special
     }
 
     [CreateAssetMenu]
-    public class GameDifficulty : ScriptableObject
+    public class GameSettings : ScriptableObject
     {
         [SerializeField]
         private GameMode difficulty = GameMode.Normal;

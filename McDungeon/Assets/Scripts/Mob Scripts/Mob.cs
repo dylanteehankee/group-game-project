@@ -12,6 +12,9 @@ namespace McDungeon
         [SerializeField]
         protected StatusEffects statusEffects;
         [SerializeField]
+        protected GameSettings gameSettings;
+        protected int difficulty;
+        [SerializeField]
         protected float mobHealth;
         [SerializeField]
         protected float attackRange;
