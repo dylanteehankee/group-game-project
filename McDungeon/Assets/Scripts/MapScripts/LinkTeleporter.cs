@@ -231,9 +231,9 @@ public class LinkTeleporter : MonoBehaviour
                     candlePos1 = candle1.transform.position;
                     candlePos2 = candle2.transform.position;
 
-                    var RandomMob = Random.Range(0, 4);
+                    var randomMobCount = Random.Range(5, 10);
 
-                    mobManager.SpawnMobs((MobTypes)RandomMob, candlePos1, candlePos2);
+                    mobManager.SpawnMobs(candlePos1, candlePos2);
                 }
                 // If player is in end room, pause background music, else play background music.
                 // Only have 1 background music can be playing at a time.

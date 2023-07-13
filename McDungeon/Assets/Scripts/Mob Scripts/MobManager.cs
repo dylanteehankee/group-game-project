@@ -22,10 +22,12 @@ namespace McDungeon
         [SerializeField]
         private GameObject player;
 
-        public void SpawnMobs(MobTypes type, Vector2 topLeft, Vector2 bottomRight, int amount = 6)
+        public void SpawnMobs(Vector2 topLeft, Vector2 bottomRight, int amount = 6)
         {
-            var mobPrefab = this.getMobPrefab(type);
+            
             for (int i = 0; i < amount; i++) {
+                var randomMobType = (MobTypes)Random.Range(0, 4);
+                var mobPrefab = this.getMobPrefab(randomMobType);
                 var newMob = (GameObject)Instantiate(mobPrefab, this.gameObject.transform);
                 this.Subscribe(newMob);
                 newMob.transform.position = new Vector2(Random.Range(topLeft.x, bottomRight.x), Random.Range(topLeft.y, bottomRight.y));
