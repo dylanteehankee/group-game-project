@@ -230,8 +230,11 @@ public class LinkTeleporter : MonoBehaviour
                     GameObject candle2 = grid.transform.GetChild(5).gameObject;
                     candlePos1 = candle1.transform.position;
                     candlePos2 = candle2.transform.position;
-
-                    var randomMobCount = Random.Range(5, 10);
+                    // make sure mobs are spawned diagonally opposite by 1 unit from each other
+                    candlePos1.x += 2;
+                    candlePos1.y -= 2; 
+                    candlePos2.x -= 2;
+                    candlePos2.y += 2; 
 
                     mobManager.SpawnMobs(candlePos1, candlePos2);
                 }
