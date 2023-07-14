@@ -23,7 +23,7 @@ namespace McDungeon
 
         void Update()
         {
-            if (active && inProgress)
+            if (active && !inProgress)
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
