@@ -20,6 +20,8 @@ public class ItemFactory : MonoBehaviour
     public GameObject healthPotionDrop;
     public GameObject equipmentDropPrefab;
 
+    public GameObject defaultItemDrop;
+
     void Awake()
     {
         weaponSprites = new Sprite[7];
@@ -32,17 +34,9 @@ public class ItemFactory : MonoBehaviour
         weaponSprites[6] = weapon6;
     }
 
-    void Start()
+    public void DropHealthPotions(int count, Vector3 position, Transform parent, float variance = 0.2f)
     {
-
-    }
-    void Update()
-    {
-
-    }
-
-    public void DropHealthPotions(Transform parent, int count, Vector3 position, float variance = 0.2f)
-    {
+        Debug.Log(position);
         for(int i = 0 ; i < count ; i++)
         {
             GameObject hpDrop = Instantiate(healthPotionDrop, parent);
@@ -50,20 +44,25 @@ public class ItemFactory : MonoBehaviour
         }
     }
 
+    public void DropHealthPotions(int count, Vector3 position)
+    {
+        DropHealthPotions(count, position, defaultItemDrop.transform);
+    }
+
     public void DropBigPuzzleRewards(Transform parent, Vector3 position, float variance)
     {
         //DropItem(parent, position, variance, 1);
-        DropEquipmentItemFromTier(parent, position, variance, 3);
-        DropEquipmentItemFromTier(parent, position, variance, 2);
+        DropEquipmentItemFromTier(3, position, parent, variance);
+        DropEquipmentItemFromTier(2, position, parent, variance);
     }
 
     public void DropSmallPuzzleRewards(Transform parent, Vector3 position, float variance)
     {
-        DropEquipmentItemFromTier(parent, position, variance, 2);
-        DropEquipmentItemFromTier(parent, position, variance, 1);
+        DropEquipmentItemFromTier(2, position, parent, variance);
+        DropEquipmentItemFromTier(1, position, parent, variance);
     }
 
-    public void DropEquipmentItemFromTier(Transform parent, Vector3 position, float variance, int tierNum)
+    public void DropEquipmentItemFromTier(int tierNum, Vector3 position, Transform parent, float variance = 0.2f)
     {
         (Sprite dropSprite, EquipmentItem item) tuple;
         switch(tierNum)
@@ -87,9 +86,9 @@ public class ItemFactory : MonoBehaviour
         equipmentDrop.transform.localPosition = position + new Vector3(Random.Range(variance * -1, variance), Random.Range(variance * -1, variance), 0);
     }
 
-    public void DropEquipmentItemFromTier(Transform parent, Vector3 position, int tierNum)
+    public void DropEquipmentItemFromTier(int tierNum, Vector3 position)
     {
-        DropEquipmentItemFromTier(parent, position, 0.2f, tierNum);
+        DropEquipmentItemFromTier(tierNum, position, defaultItemDrop.transform);
     }
 
     private (Sprite dropSprite, EquipmentItem item) GetTier1Item()

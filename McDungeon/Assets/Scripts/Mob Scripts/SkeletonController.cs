@@ -20,6 +20,7 @@ namespace McDungeon
 
         void Start()
         {
+            itemFactory = GameObject.Find("GameManager").GetComponent<ItemFactory>();
             this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = this.GetComponent<Animator>();
@@ -87,7 +88,6 @@ namespace McDungeon
                 this.bone.transform.position = location + deltaLocation;
                 this.bone.GetComponent<BoneController>().Throw(this.playerObject.transform.position, this.gameObject, this.difficulty);
                 this.threwBone = true;
-                Debug.Log("THROWING BONE");
             }
             this.elapsedThrowTime += Time.deltaTime;
         }
@@ -95,10 +95,6 @@ namespace McDungeon
         public virtual void TakeDamage(float damage, EffectTypes type)
         {
             this.mobHealth -= damage;
-            if (this.mobHealth <= 0)
-            {
-                Destroy(this.bone);
-            }
             this.death();
             this.stunned = true;
             this.status(type);
@@ -116,7 +112,6 @@ namespace McDungeon
         {
             if (!hasBone)
             {
-                Debug.Log("Pickup");
                 this.hasBone = true;
                 this.attackCD = 0.0f;
             }
@@ -131,7 +126,6 @@ namespace McDungeon
         {
             if (!hasBone)
             {
-                Debug.Log("Triggered");
                 newBone.GetComponent<BoneController>().SetOwner(this.gameObject);
                 this.bone = newBone;
             }

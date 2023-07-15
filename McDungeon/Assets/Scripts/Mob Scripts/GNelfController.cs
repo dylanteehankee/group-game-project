@@ -99,5 +99,10 @@ namespace McDungeon
                     break;
             }
         }
+
+        protected override void itemDrops()
+        {
+            // DO NOTHING
+        }
     }
 }

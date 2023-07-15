@@ -117,6 +117,11 @@ namespace McDungeon
             // DO NOTHING
         }
 
+        protected override void itemDrops()
+        {
+            // DO NOTHING
+        }
+
         public void ActivateKnight()
         {
             this.active = true;

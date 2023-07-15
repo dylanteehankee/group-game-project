@@ -6,7 +6,7 @@ namespace McDungeon
 {
     public abstract class Mob : MonoBehaviour, IMobController
     {
-
+        public ItemFactory itemFactory;
         [SerializeField]
         protected GameObject playerObject;
         [SerializeField]
@@ -20,6 +20,8 @@ namespace McDungeon
         protected float attackRange;
         [SerializeField]
         protected float moveSpeed;
+        [SerializeField]
+        protected int itemTier;
         protected float speedModifier = 1.0f;
         private float knockbackDuration = 1.0f;
         protected float stunDuration = 1.0f;
@@ -91,6 +93,7 @@ namespace McDungeon
         {
             if (this.mobHealth <= 0)
             {
+                this.itemDrops();
                 statusEffects.Death(this.gameObject.transform.position, Vector2.one);
                 Destroy(this.gameObject);
             }
@@ -133,6 +136,27 @@ namespace McDungeon
             this.speedModifier = this.statusEffects.GetSlowModifier();
             yield return new WaitForSeconds(this.statusEffects.GetSlowDuration());
             this.speedModifier = 1.0f;
+        }
+
+        protected virtual void itemDrops()
+        {            
+            var hpCount = 0;
+            var hpChance = Random.Range(0f, 1f);
+            
+            var itemChance = Random.Range(0f, 1f);
+            if (hpChance >= 0.5)
+            {
+                if (hpChance >= 0.8)
+                    hpCount = 2;
+                else 
+                    hpCount = 1;
+                Debug.Log(hpCount);
+                itemFactory.DropHealthPotions(hpCount, this.gameObject.transform.position);
+            }
+            if (itemChance >= 0.8)
+            {
+                itemFactory.DropEquipmentItemFromTier(itemTier, this.gameObject.transform.position);
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ namespace McDungeon
 
         void Start()
         {
+            itemFactory = GameObject.Find("GameManager").GetComponent<ItemFactory>();
             this.difficulty = (int)gameSettings.GetDifficulty();
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             this.animator = GetComponent<Animator>();
