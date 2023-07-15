@@ -7,24 +7,22 @@ namespace McDungeon
     public class KnifeController : MonoBehaviour
     {
         [SerializeField]
-        private int[] knifeSpeed = {800, 1000};
+        private int[] knifeSpeed = {700, 800};
         [SerializeField]
         private int[] damage = {1, 1};
         private float knockbackDuration = 1.0f;
         private int difficulty;
 
-        void OnCollisionEnter2D(Collision2D collision)
+        void OnTriggerEnter2D(Collider2D collider)
         {
-            if (collision.gameObject.tag == "PlayerHitbox")
+            Debug.Log(collider.gameObject.tag);
+            if (collider.gameObject.tag == "PlayerHitbox")
             {
                 Vector2 location = this.transform.position;
-                Vector2 playerLocation = collision.transform.position;
+                Vector2 playerLocation = collider.transform.position;
                 var deltaLocation = playerLocation - location;
-                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed[difficulty]);
-                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
-            }
-            if (collision.gameObject.tag != "Throwable")
-            {
+                collider.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed[difficulty]);
+                collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
                 Destroy(this.gameObject);
             }
         }
@@ -36,7 +34,7 @@ namespace McDungeon
             var deltaLocation = playerLocation - location;
             deltaLocation.Normalize();
             this.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * knifeSpeed[difficulty]);
-            Destroy(this.gameObject, 3);
+            Destroy(this.gameObject, 1);
         }
     }
 }

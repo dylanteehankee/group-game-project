@@ -51,7 +51,7 @@ public class TAController : MonoBehaviour
     {
         this.GetComponent<Animator>().SetTrigger("Spin");
         for (int i = 0; i < 4; i++){
-            for (int j = 0; i < 10; i++)
+            for (int j = 0; j < 8; j++)
             {
                 var attenCode = Instantiate(attenCodePrefab);
                 attenCode.GetComponent<AttenCodeController>().Execute();
@@ -60,7 +60,6 @@ public class TAController : MonoBehaviour
             }
             yield return new WaitForSeconds(SPINDURATION / 4);
         }
-        //PLAY EMAIL ME
         yield return new WaitForSeconds(0.5f);
         Destroy(this.gameObject);
     }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3502319435856580324}
   m_Layer: 0
   m_Name: AttenCode
-  m_TagString: PlayerHitbox
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c7b0c98e1f942f3a4f058367233d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 1
   speed: 500
 --- !u!50 &3502319435856580324
 Rigidbody2D:

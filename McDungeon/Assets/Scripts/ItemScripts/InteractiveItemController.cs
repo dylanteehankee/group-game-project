@@ -27,7 +27,6 @@ namespace McDungeon
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     // Interaction Happened.
-                    Debug.Log("Interacted with the item");
                     ++used;
                     if (used >= maxUse)
                     {
@@ -40,8 +39,6 @@ namespace McDungeon
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log("Item collision Enter: " + other.gameObject.name);
-
             if (other.gameObject.tag == "Player")
             {
                 active = true;
@@ -52,8 +49,6 @@ namespace McDungeon
 
         void OnTriggerExit2D(Collider2D other)
         {
-            Debug.Log("Item collision Exit: " + other.gameObject.name);
-
             if (other.gameObject.tag == "Player")
             {
                 active = false;

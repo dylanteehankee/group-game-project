@@ -18,27 +18,27 @@ namespace McDungeon
 
         // Fix later to disable collision after collision
         // Add no collision if not moving
-        void OnCollisionEnter2D(Collision2D collision)
+        void OnTriggerEnter2D(Collider2D collider)
         {
-            if (this.active && collision.gameObject.tag == "PlayerHitbox")
+            if (this.active && collider.gameObject.tag == "PlayerHitbox")
             {
                 Vector2 location = this.transform.position;
-                Vector2 playerLocation = collision.transform.position;
+                Vector2 playerLocation = collider.transform.position;
                 var deltaLocation = playerLocation - location;
                 deltaLocation.Normalize();
-                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed[difficulty]);
+                collider.gameObject.GetComponent<Rigidbody2D>().AddForce(deltaLocation * boneSpeed[difficulty]);
                 this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                collision.gameObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
+                collider.gameObject.GetComponent<PlayerController>().TakeDamage(damage[difficulty], EffectTypes.None);
                 this.GetComponent<Animator>().SetTrigger("BoneIdle");
                 this.active = false;
             }
-            else if (pickup && collision.gameObject.tag == "MobHitbox" && !collision.gameObject.GetComponent<SkeletonController>().HasBone())
+            else if (pickup && collider.gameObject.tag == "MobHitbox" && !collider.gameObject.GetComponent<SkeletonController>().HasBone())
             {
                 pickup = false;
-                collision.gameObject.GetComponent<SkeletonController>().GrabBone();
-                if (collision.gameObject != ownerSkeleton)
+                collider.gameObject.GetComponent<SkeletonController>().GrabBone();
+                if (collider.gameObject != ownerSkeleton)
                 {
-                    var newBone = collision.gameObject.GetComponent<SkeletonController>().GetBone();
+                    var newBone = collider.gameObject.GetComponent<SkeletonController>().GetBone();
                     ownerSkeleton.GetComponent<SkeletonController>().Reassign(newBone);
                 }
                 Destroy(this.gameObject);

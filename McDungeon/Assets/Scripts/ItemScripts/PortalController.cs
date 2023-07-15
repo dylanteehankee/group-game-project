@@ -58,8 +58,6 @@ namespace McDungeon
 
         void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log("Item collision Enter: " + other.gameObject.name);
-
             if (other.gameObject.tag == "Player")
             {
                 setStatus(true);
@@ -68,8 +66,6 @@ namespace McDungeon
 
         void OnTriggerExit2D(Collider2D other)
         {
-            Debug.Log("Item collision Exit: " + other.gameObject.name);
-
             if (other.gameObject.tag == "Player")
             {
                 setStatus(false);

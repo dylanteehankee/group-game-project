@@ -21,7 +21,8 @@ public class AttenCodeController : MonoBehaviour
         if (collider.gameObject.tag == "MobHitbox")
         {
             collider.GetComponent<IMobController>().TakeDamage(this.damage, EffectTypes.Slow);
+            Destroy(this.gameObject);
         }
-        Destroy(this.gameObject);
+        
     }
 }
