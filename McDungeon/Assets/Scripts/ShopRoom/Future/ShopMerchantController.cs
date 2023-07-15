@@ -47,7 +47,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "King's Sword",
                     itemType: "Weapon",
-                    sellCost: 80,
+                    sellCost: 20,
                     inventoryIcon: itemFactory.weapon1,
                     damage: 5,
                     range: 2,
@@ -63,7 +63,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "Madman's Dagger",
                     itemType: "Weapon",
-                    sellCost: 100,
+                    sellCost: 30,
                     inventoryIcon: itemFactory.weapon6,
                     damage: 2,
                     range: 1,
@@ -79,7 +79,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "Heavy greatsword",
                     itemType: "Weapon",
-                    sellCost: 30,
+                    sellCost: 12,
                     inventoryIcon: itemFactory.weapon2,
                     damage: 7,
                     range: 2,
@@ -95,7 +95,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "Demonic Sword",
                     itemType: "Weapon",
-                    sellCost: 150,
+                    sellCost: 40,
                     inventoryIcon: itemFactory.weapon3,
                     damage: 8,
                     range: 2,
@@ -110,7 +110,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "Scimitar",
                     itemType: "Weapon",
-                    sellCost: 100,
+                    sellCost: 30,
                     inventoryIcon: itemFactory.weapon4,
                     damage: 4,
                     range: 3,
@@ -125,7 +125,7 @@ public class ShopMerchantController : MonoBehaviour
                 toAdd = new Weapon(
                     name: "Training Sword",
                     itemType: "Weapon",
-                    sellCost: 20,
+                    sellCost: 8,
                     inventoryIcon: itemFactory.weapon0,
                     damage: 3,
                     range: 2,
