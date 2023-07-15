@@ -127,12 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e20c08280b04440bc72b6fc6ceaac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemFactory: {fileID: 0}
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   gameSettings: {fileID: 11400000, guid: 1d6c9666712692546bf410e5f2066ccd, type: 2}
   mobHealth: 15
   attackRange: 5
   moveSpeed: 1
+  itemTier: 2
   knifePrefab: {fileID: 7757278891287518263, guid: b897274acf1d549558801d0c5f44471a, type: 3}
   gNelfPrefab: {fileID: 7178146216519888684, guid: 2013b24d140af401484b84be3c7209cd, type: 3}
   attackSpeed:

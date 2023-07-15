@@ -127,12 +127,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29ebe1efa904a4c27b976478fc5137d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemFactory: {fileID: 0}
   playerObject: {fileID: 0}
   statusEffects: {fileID: 11400000, guid: 5de0ffc2a304a455e99c5b270bcd2bcc, type: 2}
   gameSettings: {fileID: 11400000, guid: 1d6c9666712692546bf410e5f2066ccd, type: 2}
   mobHealth: 10
   attackRange: 6
   moveSpeed: 1
+  itemTier: 2
   fireballPrefab: {fileID: 7838530794719727910, guid: 17b6982ea66c04914ae928090b7673fd, type: 3}
   frostboltPrefab: {fileID: 7838530794719727910, guid: 89b4228957a9c41f0b43e11e453acfd2, type: 3}
   castSpeed:
