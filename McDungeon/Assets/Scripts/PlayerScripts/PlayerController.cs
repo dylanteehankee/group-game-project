@@ -248,9 +248,9 @@ namespace McDungeon
                 
                 if (Input.GetButtonDown("Fire1") && myWeapon != null)
                 {
+                    audioSource[5].Play();
                     closeRangeWeapon.SetActive(true);
                     attackElapsedCD = attackCD;
-                    audioSource[5].Play();
                 }
                 else if (Input.GetKey(KeyCode.Alpha1) && spellReadyArray[0])
                 {

@@ -122,12 +122,6 @@ namespace McDungeon
 
         private void Attack()
         {
-            
-            // if (currentWeaponIndex == 7) // if there is no weapon equiped, cant attack
-            // {
-            //     return;
-            // }
-
             float angle = attackAngle / 2f - attackAngle * atkProgress;
             this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
