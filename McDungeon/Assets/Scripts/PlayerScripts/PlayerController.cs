@@ -10,6 +10,7 @@ namespace McDungeon
         [SerializeField]
         protected StatusEffects statusEffects;
         private PlayerInventory playerInventory;
+        private Weapon myWeapon;
         [SerializeField] private GameObject spellHome;
         [SerializeField] private GameObject Weapon;
         [SerializeField] private CRWeaponController closeRangeWeapon;
@@ -87,7 +88,7 @@ namespace McDungeon
         public GameObject gameManager;
 
         private bool finishedStart = false;
-
+        
 
         [SerializeField] public RuntimeAnimatorController playerController;
         [SerializeField] public RuntimeAnimatorController mcController;
@@ -243,7 +244,8 @@ namespace McDungeon
             if (attackElapsedCD <= 0f && !castingSpell && !usingPortal && !isFreeze)
             {
                 // Read input to determine next action.
-                if (Input.GetButtonDown("Fire1"))
+                
+                if (Input.GetButtonDown("Fire1") && myWeapon != null)
                 {
                     closeRangeWeapon.SetActive(true);
                     attackElapsedCD = attackCD;
@@ -309,7 +311,7 @@ namespace McDungeon
 
         public void SyncWeaponWithInventory()
         {
-            Weapon myWeapon = playerInventory.GetWeaponItem();
+            myWeapon = playerInventory.GetWeaponItem();
             if (myWeapon != null)
             {
                 closeRangeWeapon.Config(
@@ -320,6 +322,10 @@ namespace McDungeon
                     true
                 );
                 closeRangeWeapon.ChangeWeapon(myWeapon.weaponSpriteID);
+            }
+            else 
+            {
+                closeRangeWeapon.NoWeapon();
             }
             /*
             closeRangeWeapon.Config(

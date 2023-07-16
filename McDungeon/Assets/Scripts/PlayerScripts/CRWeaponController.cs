@@ -31,7 +31,8 @@ namespace McDungeon
         [SerializeField] private Sprite weapon_4;
         [SerializeField] private Sprite weapon_5; // Dagger
         [SerializeField] private Sprite weapon_6; // Kitchen Knife
-        private int currentWeaponIdex = 0;
+        [SerializeField] private Sprite weapon_7; // Empty
+        private int currentWeaponIndex = 0;
         private float weaponScaleRatio = 1f;
 
         void Awake()
@@ -94,7 +95,7 @@ namespace McDungeon
 
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (Input.GetButtonUp("Fire1"))
+            if (Input.GetButtonUp("Fire1") && currentWeaponIndex != 7)
             {
                 // Debug.Log("Firing and attacking");
                 attacking = true;
@@ -122,6 +123,11 @@ namespace McDungeon
         private void Attack()
         {
             
+            // if (currentWeaponIndex == 7) // if there is no weapon equiped, cant attack
+            // {
+            //     return;
+            // }
+
             float angle = attackAngle / 2f - attackAngle * atkProgress;
             this.hitbox.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
 
@@ -146,9 +152,21 @@ namespace McDungeon
             }
         }
 
+        public void NoWeapon()
+        {
+            hitBoxRender.sprite = weapon_7;
+            followerWeaponRender.sprite = weapon_7;
+            hitBoxCounterweightRender.sprite = weapon_7;
+            currentWeaponIndex = 7;
+
+            hitBoxRender.enabled = false;
+            hitBoxCollider.enabled = false;
+            followerWeaponRender.enabled = true;
+        }
+
         public void ChangeWeapon(int weaponIndex)
         {
-            if(hitBoxRender == null)
+            if (hitBoxRender == null)
             {
                 // Debug.Log("Bad ");
                 return;
@@ -163,7 +181,7 @@ namespace McDungeon
             // Debug.Log("hitboxRender color: ===========[" + hitBoxRender.color + "]=======================");
             hitBoxRender.transform.localScale = scale;
             hitBoxCounterweightRender.transform.localScale = scale;
-
+            
             if (weaponIndex == 5)
             {
                 // Adjusts collider for Emerald Dagger.
@@ -183,7 +201,7 @@ namespace McDungeon
                 hitBoxCollider.offset = new Vector2(0f, 0.0f);
             }
 
-            currentWeaponIdex = weaponIndex;
+            currentWeaponIndex = weaponIndex;
             switch (weaponIndex)
             {
                 case 0:
@@ -228,7 +246,7 @@ namespace McDungeon
         public void ChangeWeaponSacle(float scaleRatio)
         {
             weaponScaleRatio = scaleRatio;
-            ChangeWeapon(currentWeaponIdex);
+            ChangeWeapon(currentWeaponIndex);
         }
     }
 }
