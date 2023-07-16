@@ -25,7 +25,7 @@ namespace McDungeon
         {
             if (active && !inProgress)
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.F) &&  !this.playerControl.GetModeLock())
                 {
                     if (!special || unlocked)
                     {

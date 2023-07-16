@@ -212,6 +212,10 @@ public class LinkTeleporter : MonoBehaviour
                 Portal3.GetComponent<LinkTeleporter>().isInside = true;
                 Portal4.GetComponent<LinkTeleporter>().isInside = true;
                 // If player is entering tutorial room or puzzle room, lock camera and disable minimap.
+                if (parentTarget.CompareTag("TutorialRoom"))
+                {
+                    other.GetComponent<PlayerController>().LockMode();
+                }
                 if (parentTarget.CompareTag("TutorialRoom") || parentTarget.CompareTag("PuzzleRoom"))
                 {
                     other.GetComponent<PlayerController>().PlayerEnterPuzzle();

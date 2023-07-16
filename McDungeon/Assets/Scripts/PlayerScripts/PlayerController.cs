@@ -21,6 +21,7 @@ namespace McDungeon
         [SerializeField] protected int playerMaxHealth = 10;
         [SerializeField] protected float playerHealth = 10f;
         [SerializeField] private GameSettings gameSettings;
+        private bool modeLock = false;
         private PlayerHealthController healthController;
         private float hitCD = 0.2f;
         private float hitTimer;
@@ -384,30 +385,37 @@ namespace McDungeon
 
         private void spriteController(Vector2 direction)
         {
-            this.animator.SetBool("Idle", false);
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            if (isMcMode)
+                    {
+                        this.mcSpriteController(direction);
+                    }
+            else
             {
-                this.animator.SetInteger("Direction", 0);
-                if (direction.x < 0)
+                this.animator.SetBool("Idle", false);
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
                 {
-                    this.spriteRenderer.flipX = true;
+                    this.animator.SetInteger("Direction", 0);
+                    if (direction.x < 0)
+                    {
+                        this.spriteRenderer.flipX = true;
+                    }
+                    else
+                    {
+                        this.spriteRenderer.flipX = false;
+                    }
+                }
+                else if (direction.y < 0)
+                {
+                    this.animator.SetInteger("Direction", -1);
+                }
+                else if (direction.y > 0)
+                {
+                    this.animator.SetInteger("Direction", 1);
                 }
                 else
                 {
-                    this.spriteRenderer.flipX = false;
+                    this.animator.SetBool("Idle", true);
                 }
-            }
-            else if (direction.y < 0)
-            {
-                this.animator.SetInteger("Direction", -1);
-            }
-            else if (direction.y > 0)
-            {
-                this.animator.SetInteger("Direction", 1);
-            }
-            else
-            {
-                this.animator.SetBool("Idle", true);
             }
         }
 
@@ -609,14 +617,7 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    if (isMcMode)
-                    {
-                        this.mcSpriteController(direction);
-                    }
-                    else
-                    {
-                        this.spriteController(direction);
-                    }
+                    this.spriteController(direction);
                 }
             }
             else if (!reachedInside)
@@ -637,14 +638,7 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    if (isMcMode)
-                    {
-                        this.mcSpriteController(direction);
-                    }
-                    else
-                    {
-                        this.spriteController(direction);
-                    }
+                    this.spriteController(direction);
 
                     globalLight.intensity = globalLight.intensity - speed * speedModifier * Time.deltaTime * oldIntensity;
                     torchLight.intensity = torchLight.intensity - speed * speedModifier * Time.deltaTime * 0.5f;
@@ -674,14 +668,7 @@ namespace McDungeon
                 else
                 {
                     this.gameObject.transform.position = this.gameObject.transform.position + direction * speed * speedModifier * Time.deltaTime;
-                    if (isMcMode)
-                    {
-                        this.mcSpriteController(direction);
-                    }
-                    else
-                    {
-                        this.spriteController(direction);
-                    }
+                    this.spriteController(direction);
 
                     globalLight.intensity = globalLight.intensity + speed * speedModifier * Time.deltaTime * lightIntensity / 2.5f;
                     torchLight.intensity = torchLight.intensity + speed * speedModifier * Time.deltaTime * 0.5f / 2.5f;
@@ -765,6 +752,16 @@ namespace McDungeon
             reachedFront = false;
             reachedInside = false;
             speedModifier = 0.7f;
+        }
+
+        public void LockMode()
+        {
+            this.modeLock = true;
+        }
+
+        public bool GetModeLock()
+        {
+            return this.modeLock;
         }
 
         public void UnlockingMcMirror()
